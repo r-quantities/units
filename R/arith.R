@@ -88,11 +88,10 @@ as.units = function(x, value = "1") {
 #' a = as.units(1:3, "m/s")
 #' b = as.units(1:3, "m/s")
 #' a + b
-Ops.units <- function(e1, e2)
-{
-#    if (nargs() == 1)
-#        stop(gettextf("unary '%s' not defined for \"POSIXt\" objects",
-#                      .Generic), domain = NA)
+Ops.units <- function(e1, e2) {
+    if (nargs() == 1)
+        stop(paste("unary", .Generic, "not defined for \"units\" objects"))
+
     boolean <- switch(.Generic, "<" = , ">" = , "==" = ,
                       "!=" = , "<=" = , ">=" = TRUE, FALSE)
 
@@ -101,7 +100,9 @@ Ops.units <- function(e1, e2)
 
     prd <- switch(.Generic, "*" = , "/" = TRUE, FALSE)
 
-	if (! eq && ! prd)
+	pw <- switch(.Generic, "**" = , "^" = TRUE, FALSE)
+
+	if (! eq && ! prd && !pw)
 		stop(paste("operation", .Generic, "not allowed"))
 
 #    if (!boolean)
@@ -110,14 +111,37 @@ Ops.units <- function(e1, e2)
 	if (eq)
 		units(e2) = units(e1) 
 
-	if (prd) {
+	if (prd && is(e1, "units") && is(e2, "units")) {
 		attr(e1, "units") = paste0("(", units(e1), ")", .Generic, "(", units(e2), ")")
 		attr(e2, "units") = paste0("(", units(e1), ")", .Generic, "(", units(e2), ")")
 	}
 
-	# NOT SURE THIS IS A GOOD IDEA:
-    #if(!inherits(e1, "units")) e1 <- as.units(e1)
-    #if(!inherits(e2, "units")) e2 <- as.units(e2)
+	if (pw) {
+		if (is(e2, "units") || length(e2) > 1L)
+			stop("power operation only allowed with length-one numeric power")
+		attr(e1, "units") = paste0("(", units(e1), ")", .Generic, e2)
+	}
+    NextMethod(.Generic)
+}
+
+#' Mathematical operations for units objects
+#' 
+#' @export
+#' 
+#' @examples
+#' a = sqrt(1:3)
+#' units(a) = "m/s"
+#' log(a)
+#' cumsum(a)
+#' signif(a, 2)
+Math.units = function(x,...) {
+    OK <- switch(.Generic, "abs" = , "sign" = , "floor" = , "ceiling" = , 
+		"trunc" = , "round" = , "signif" = , "cumsum" = , "cummax" = , "cummin" = TRUE, FALSE)
+	if (!OK) {
+		warning(paste("Operation", .Generic, "not meaningful for units"))
+		x = unclass(x)
+		attr(x, "units") = NULL
+	}
     NextMethod(.Generic)
 }
 
@@ -134,3 +158,10 @@ print.units <- function (x, digits = getOption("digits"), ...)
     invisible(x)
 }
 
+#' @export
+`[.units` <- function(x, i, j,..., drop = TRUE) {
+	ret = unclass(x)[i]
+	attr(ret, "units") = units(x)
+	class(ret) = "units"
+	ret
+}
