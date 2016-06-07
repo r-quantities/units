@@ -2,7 +2,7 @@
 % Please edit documentation in R/arith.R
 \name{plus}
 \alias{plus}
-\title{Title add two vectors with identical units}
+\title{Add two vectors with identical units}
 \usage{
 plus(x, y)
 }
@@ -15,7 +15,7 @@ plus(x, y)
 numeric vector of class \code{units}
 }
 \description{
-Title add two vectors with identical units
+Add two vectors with identical units
 }
 \examples{
 a = 1:3
