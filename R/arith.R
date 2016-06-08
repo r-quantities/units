@@ -130,9 +130,6 @@ Ops.units <- function(e1, e2) {
     if (nargs() == 1)
         stop(paste("unary", .Generic, "not defined for \"units\" objects"))
 
-    boolean <- switch(.Generic, "<" = , ">" = , "==" = ,
-                      "!=" = , "<=" = , ">=" = TRUE, FALSE)
-
     eq <- switch(.Generic, "+" = , "-" = , "==" = , "!=" = , 
 		"<" = , ">" = , "<=" = , ">=" = TRUE, FALSE)
 
@@ -143,9 +140,6 @@ Ops.units <- function(e1, e2) {
 	if (! eq && ! prd && !pw)
 		stop(paste("operation", .Generic, "not allowed"))
 
-#    if (!boolean)
-#        stop(gettextf("'%s' not defined for \"units\" objects", .Generic),
-#             domain = NA)
 	if (eq)
 		units(e2) = units(e1) 
 
@@ -187,6 +181,14 @@ Math.units = function(x,...) {
 }
 
 #' @export
+Summary.units = function(..., na.rm = FALSE) {
+	OK <- switch(.Generic, "sum" = , "min" = , "max" = , "range" = TRUE, FALSE)
+	if (!OK)
+		stop(paste("Summary operation", .Generic, "not allowed"))
+	NextMethod(.Generic)
+}
+
+#' @export
 print.units <- function (x, digits = getOption("digits"), ...) 
 {
     if (is.array(x) || length(x) > 1L) {
@@ -205,4 +207,53 @@ print.units <- function (x, digits = getOption("digits"), ...)
 	attr(ret, "units") = units(x)
 	class(ret) = "units"
 	ret
+}
+
+#' @export
+weighted.mean.units <- function (x, w, ...) 
+	structure(weighted.mean(unclass(x), w, ...), units = attr(x, 
+   		 "units"), class = "units")
+
+#' @export
+c.units <- function (..., recursive = FALSE) {
+    args <- list(...)
+	if (length(args) > 1)
+		for (i in 2:length(args))
+			units(args[[i]]) = units(args[[1]])
+	x = unlist(args)
+	as.units(x, units(args[[1]]))
+}
+
+#' @export
+as.data.frame.units = as.data.frame.numeric
+
+#' convert units object into difftime object
+#'
+#' @param x object of class \code{units}
+#'
+#' @export
+#' 
+#' @examples
+#' 
+#' t1 = Sys.time() 
+#' t2 = t1 + 3600 
+#' d = t2 - t1
+#' as.units(d)
+#' (du = as.units(d, "d"))
+#' dt = as.dt(du)
+#' class(dt)
+#' dt
+as.dt = function(x) {
+	stopifnot(is(x, "units"))
+	u = units(x)
+	if (u == "s")
+		as.difftime(x, units = "secs")
+	else if (u == "m")
+		as.difftime(x, units = "mins")
+	else if (u == "h")
+		as.difftime(x, units = "hours")
+	else if (u == "d")
+		as.difftime(x, units = "days")
+	else
+		stop(paste("cannot convert unit", u, "to difftime object"))
 }

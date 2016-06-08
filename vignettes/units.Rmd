@@ -1,0 +1,155 @@
+<!--
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{Spatial and spatio-temporal objects in Google charts}
+-->
+
+# Physical units in R
+
+R has little support for physical measurement units.  The exception
+is formed by time differences: time differences objects of class
+`difftime` have a `units` attribute that can be modified:
+```{r}
+t1 = Sys.time() 
+t2 = t1 + 3600 
+d = t2 - t1
+class(d)
+units(d)
+d
+units(d) = "secs"
+d
+```
+We see here that the `units` method is used to set and modify the
+unit of time difference. 
+
+This idea can be generalized to other physical units. The
+`units` package, presented here, does this, and builds upon the
+[udunits2](https://cran.r-project.org/web/packages/udunits2/index.html)
+R package, which in turn is build upon the
+[udunits2](https://www.unidata.ucar.edu/software/udunits/) C library.
+The `udunits2` library provides the following operations:
+
+* validating whether a string, such as `m/s` is a valid physical unit
+* verifying whether two strings such as `m/s` and `km/h` are convertable
+* converting values between two convertable units 
+* providing names and symbols for specific units
+* handle different character encodings (utf8, ascii, iso-8859-1 and latin1)
+
+This R package, called `units`, uses R package udunits2 to extend
+R with functionality for manipulating numeric vectors that have
+physical measurement units associated with them, in a similar way as
+`difftime` objects behave.
+
+## Setting units, unit conversion
+
+Numeric data with explicit physical units can be specified by `as.units`:
+```{r}
+library(units)
+(a = as.units(1:10, "m/s"))
+```
+and converted by setting a new physical unit:
+```{r}
+b = a
+units(b) = "km/h"
+b
+```
+Impossible conversions lead to an error:
+```{r}
+x = try(units(a) <- "secs")
+x
+```
+
+## Basic manipulations
+
+### Arithmetic operations
+
+Arithmetic operations verify units, and create new ones
+```{r}
+a + a
+a * a
+a ^ 2.5
+```
+and convert if necessary:
+```{r}
+a + b # m/s + km/h -> m/s
+```
+but units are not simplified:
+```{r}
+t = as.units(1, "s")
+a * t
+```
+Allowed operations that require convertable units are `+`, `-`, `==`,
+`!=`, `<`, `>`, `<=`, `>=`.  Operations that lead to new units are
+`*`, `/`, and the power operations `**` and `^`.
+
+
+### Mathematical functions
+
+Mathematical operations allowed are: `abs`, `sign`, `floor`,
+`ceiling`, `trunc`, `round`, `signif`, `cumsum`, `cummax`, `cummin`.
+```{r}
+signif(a^2.5, 3)
+cumsum(a)
+```
+(for reasons beyond my comprehension, here `cumsum` strips units,
+but `signif` does not)
+
+### Summary functions
+Summary functions `sum`, `min`, `max`, and `range` are allowed:
+```{r}
+sum(a)
+min(a)
+max(a)
+range(a)
+```
+(these all strip units, but shouldn't)
+
+### Printing
+Following `difftime`, printing behaves differently for length-one vectors:
+```{r}
+a
+a[1]
+```
+
+### Subsetting
+The usual subsetting rules work:
+```{r}
+a[2:5]
+a[-(1:9)]
+```
+
+### Concatenation
+```{r}
+c(a,a)
+```
+concatenation converts to the units of the first argument, if necessary:
+```{r}
+c(a,b) # m/s, km/h -> m/s
+c(b,a) # km/h, m/s -> km/h
+```
+
+## Conversion to/from `difftime`
+From `difftime` to `units`:
+```{r}
+t1 = Sys.time() 
+t2 = t1 + 3600 
+d = t2 - t1
+as.units(d)
+(du = as.units(d, "d"))
+```
+vice versa:
+```{r}
+dt = as.dt(du)
+class(dt)
+dt
+```
+## units objects in `data.frame`s
+
+```{r}
+set.seed(131)
+d = data.frame(x = runif(4), y = as.units(runif(4), "s"), z = as.units(1:4, "m/s"))
+d
+summary(d)
+d$yz = with(d, y * z)
+d
+d[1, "yz"]
+```
