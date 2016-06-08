@@ -1,23 +1,10 @@
 NULL
 #' @import utils
 #' @import stats
+#' @importFrom methods is
 #' @import udunits2
 NULL
 #Sys.setenv(UDUNITS2_XML_PATH = "/usr/local/share/udunits/udunits2.xml")
-
-#' Add two vectors with identical units
-#'
-#' @param x first vector, of class \code{units}
-#' @param y second vector, of class \code{units}
-#'
-#' @return numeric vector of class \code{units}
-#' @export 
-#'
-#' @examples
-#' a = 1:3
-#' b = 7:9
-#' plus(a,b)
-plus = function(x, y) { x + y }
 
 #' Set measurement units on a numeric vector
 #'
@@ -45,6 +32,9 @@ plus = function(x, y) { x + y }
 
 #' Convert units
 #' 
+#' @param x object of class \code{units}
+#' @param value length one character vector with target unit
+#' 
 #' @name units
 #' @export
 #' 
@@ -65,14 +55,62 @@ plus = function(x, y) { x + y }
 	x
 }
 
+#' retrieve measurement units from units object
+#'
+#' @param x object of class \code{units}
+#'
 #' @export
 units.units = function(x) {
 	attr(x, "units")
 }
 
+#' convert object to a units object
+#'
+#' @param x object of class units
+#' @param value target unit, defaults to '1'
+#'
 #' @export
 as.units = function(x, value = "1") {
+	UseMethod("as.units")
+}
+
+#' @export
+as.units.default = function(x, value = "1") {
 	units(x) = value
+	x
+}
+
+#' convert difftime objects to units
+#'
+#' @param x object of class units
+#' @param value target unit; if omitted, taken from \code{x}
+#'
+#' @export
+#' 
+#' @examples
+#' s = Sys.time()
+#' d  = s - (s+1)
+#' as.units(d)
+as.units.difftime = function(x, value) {
+	u = attr(x, "units")
+	x = unclass(x)
+	attr(x, "units") = NULL
+	# convert from difftime to udunits2:
+	if (u == "secs") # secs -> s
+		units(x) = "s"
+	else if (u == "mins") # mins -> min
+		units(x) = "min"
+	else if (u == "hours") # hours -> h
+		units(x) = "h"
+	else if (u == "days") # days -> d
+		units(x) = "d"
+	else if (u == "weeks") { # weeks -> 7 days
+		x = 7 * x
+		units(x) = "d"
+	} else 
+		stop(paste("unknown time units", u, "in difftime object"))
+	if (!missing(value)) # convert optionally:
+		units(x) = value
 	x
 }
 
@@ -125,6 +163,9 @@ Ops.units <- function(e1, e2) {
 }
 
 #' Mathematical operations for units objects
+#'
+#' @param x object of class units
+#' @param ... parameters passed on to the Math functions
 #' 
 #' @export
 #' 
