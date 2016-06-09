@@ -5,6 +5,10 @@ language: c
 sudo: required
 
 before_install:
+  - curl -OL https://raw.githubusercontent.com/metacran/r-builder/master/pkg-build.sh
+  - chmod 755 pkg-build.sh
+  - ./pkg-build.sh bootstrap
+  - cd
   - wget ftp://ftp.unidata.ucar.edu/pub/udunits/udunits-2.2.20.tar.gz
   - tar zxf udunits-2.2.20.tar.gz
   - cd udunits-*
@@ -13,7 +17,22 @@ before_install:
   - sudo make install
   - cd
 
+install:
+  - ./pkg-build.sh install_deps
+
+script:
+  - ./pkg-build.sh run_tests
+
+after_failure:
+  - ./pkg-build.sh dump_logs
+
 notifications:
   email:
     on_success: change
     on_failure: change
+
+env:
+  matrix:
+    - RVERSION=oldrel
+    - RVERSION=release
+    - RVERSION=devel
