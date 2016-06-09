@@ -1,0 +1,19 @@
+## Sample .travis.yml file for use with metacran/r-builder
+## See https://github.com/metacran/r-builder for details.
+
+language: c
+sudo: required
+
+before_install:
+  - wget ftp://ftp.unidata.ucar.edu/pub/udunits/udunits-2.2.20.tar.gz
+  - tar zxf udunits-2.2.20.tar.gz
+  - cd udunits-*
+  - ./configure --prefix=/usr
+  - make
+  - sudo make install
+  - cd
+
+notifications:
+  email:
+    on_success: change
+    on_failure: change
