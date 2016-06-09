@@ -1,10 +1,9 @@
 Package: units
-Version: 0.0-1
+Version: 0.1
 Title: Support for units of physical quantities in R vectors
 Authors@R: c(person("Edzer", "Pebesma", role = c("aut", "cre"),
 				email = "edzer.pebesma@uni-muenster.de"))
-Depends:
-    R (>= 3.0.0)
+Depends: R (>= 3.0.0)
 Imports: utils, stats, udunits2
 Suggests: knitr
 VignetteBuilder: knitr
