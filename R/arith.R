@@ -293,12 +293,7 @@ median.units = function(x, na.rm = FALSE) {
 	.as.units(median(unclass(x), na.rm = na.rm), units(x))
 }
 
-#' quantile method for object of class units
-#'
-#' @param x object of class \code{units}
-#' @param ... arguments passed on to quantile
-#'
 #' @export
-quantile = function(x, ...) {
+quantile.units = function(x, ...) {
 	.as.units(quantile(unclass(x), ...), units(x))
 }
