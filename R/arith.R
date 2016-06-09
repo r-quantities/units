@@ -79,6 +79,13 @@ as.units.default = function(x, value = "1") {
 	x
 }
 
+.as.units = function(x, value) {
+	x = unclass(x)
+	class(x) = "units"
+	attr(x, "units") = value
+	x
+}
+
 #' convert difftime objects to units
 #'
 #' @param x object of class units
@@ -168,15 +175,16 @@ Ops.units <- function(e1, e2) {
 #' log(a)
 #' cumsum(a)
 #' signif(a, 2)
-Math.units = function(x,...) {
+Math.units = function(x, ...) {
     OK <- switch(.Generic, "abs" = , "sign" = , "floor" = , "ceiling" = , 
 		"trunc" = , "round" = , "signif" = , "cumsum" = , "cummax" = , "cummin" = TRUE, FALSE)
 	if (!OK) {
 		warning(paste("Operation", .Generic, "not meaningful for units"))
 		x = unclass(x)
 		attr(x, "units") = NULL
-	}
-    NextMethod(.Generic)
+    	NextMethod(.Generic)
+	} else
+    	.as.units(NextMethod(.Generic), units(x))
 }
 
 #' @export

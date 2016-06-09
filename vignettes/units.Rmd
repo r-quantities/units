@@ -23,7 +23,7 @@ unit of time difference.
 
 This idea can be generalized to other physical units. The
 `units` package, presented here, does this, and builds upon the
-[udunits2](https://cran.r-project.org/web/packages/udunits2/index.html)
+[udunits2](https://cran.r-project.org/package=udunits2)
 R package, which in turn is build upon the
 [udunits2](https://www.unidata.ucar.edu/software/udunits/) C library.
 The `udunits2` library provides the following operations:
@@ -90,8 +90,6 @@ Mathematical operations allowed are: `abs`, `sign`, `floor`,
 signif(a^2.5, 3)
 cumsum(a)
 ```
-(for reasons beyond my comprehension, here `cumsum` strips units,
-but `signif` does not)
 
 ### Summary functions
 Summary functions `sum`, `min`, `max`, and `range` are allowed:
