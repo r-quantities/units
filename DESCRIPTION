@@ -5,7 +5,7 @@ Authors@R: c(person("Edzer", "Pebesma", role = c("aut", "cre"),
 				email = "edzer.pebesma@uni-muenster.de"))
 Depends:
     R (>= 3.0.0)
-Imports: utils, stats, methods, udunits2
+Imports: utils, stats, udunits2
 Suggests: knitr
 VignetteBuilder: knitr
 Description: Package that deals with units of physical quantities, or measurement units, in R.

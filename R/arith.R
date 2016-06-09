@@ -1,7 +1,6 @@
 NULL
 #' @import utils
 #' @import stats
-#' @importFrom methods is
 #' @import udunits2
 NULL
 #Sys.setenv(UDUNITS2_XML_PATH = "/usr/local/share/udunits/udunits2.xml")
@@ -143,13 +142,13 @@ Ops.units <- function(e1, e2) {
 	if (eq)
 		units(e2) = units(e1) 
 
-	if (prd && is(e1, "units") && is(e2, "units")) {
+	if (prd && inherits(e1, "units") && inherits(e2, "units")) {
 		attr(e1, "units") = paste0("(", units(e1), ")", .Generic, "(", units(e2), ")")
 		attr(e2, "units") = paste0("(", units(e1), ")", .Generic, "(", units(e2), ")")
 	}
 
 	if (pw) {
-		if (is(e2, "units") || length(e2) > 1L)
+		if (inherits(e2, "units") || length(e2) > 1L)
 			stop("power operation only allowed with length-one numeric power")
 		attr(e1, "units") = paste0("(", units(e1), ")", .Generic, e2)
 	}
@@ -185,7 +184,14 @@ Summary.units = function(..., na.rm = FALSE) {
 	OK <- switch(.Generic, "sum" = , "min" = , "max" = , "range" = TRUE, FALSE)
 	if (!OK)
 		stop(paste("Summary operation", .Generic, "not allowed"))
-	NextMethod(.Generic)
+	# NextMethod(.Generic)
+	args = list(...)
+	u = units(args[[1]])
+	if (length(args) > 1)
+		for (i in 2:length(args))
+			args[[i]] = as.units(args[[i]], u) # convert to first unit
+	args = lapply(args, unclass)
+	as.units(do.call(.Generic, args), u)
 }
 
 #' @export
@@ -244,7 +250,7 @@ as.data.frame.units = as.data.frame.numeric
 #' class(dt)
 #' dt
 as.dt = function(x) {
-	stopifnot(is(x, "units"))
+	stopifnot(inherits(x, "units"))
 	u = units(x)
 	if (u == "s")
 		as.difftime(x, units = "secs")

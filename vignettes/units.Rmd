@@ -100,8 +100,8 @@ sum(a)
 min(a)
 max(a)
 range(a)
+min(as.units(1, "m/s"), as.units(1, "km/h")) # converts to first unit:
 ```
-(these all strip units, but shouldn't)
 
 ### Printing
 Following `difftime`, printing behaves differently for length-one vectors:
@@ -142,6 +142,18 @@ dt = as.dt(du)
 class(dt)
 dt
 ```
+
+## units in `matrix` objects
+```{r}
+as.units(matrix(1:4,2,2), "m/s")
+as.units(matrix(1:4,2,2), "m/s") * as.units(4, "m/s")
+```
+but
+```{r}
+as.units(matrix(1:4,2,2), "m/s") %*% as.units(4:3, "m/s")
+```
+strips units.
+
 ## units objects in `data.frame`s
 
 ```{r}
