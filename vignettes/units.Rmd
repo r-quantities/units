@@ -1,9 +1,9 @@
 <!--
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Spatial and spatio-temporal objects in Google charts}
+%\VignetteIndexEntry{Measurement Units of Physical Quantities for R Vectors}
 -->
 
-# Physical units in R
+# Measurement Units of Physical Quantities for R Vectors
 
 R has little support for physical measurement units.  The exception
 is formed by time differences: time differences objects of class
