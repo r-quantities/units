@@ -15,7 +15,7 @@ before_install:
   - ./configure --prefix=/usr
   - make
   - sudo make install
-  - cd
+  - cd /home/travis/build/edzer/units
 
 install:
   - ./pkg-build.sh install_deps
