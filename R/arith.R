@@ -196,8 +196,13 @@ Summary.units = function(..., na.rm = FALSE) {
 	args = list(...)
 	u = units(args[[1]])
 	if (length(args) > 1)
-		for (i in 2:length(args))
+		for (i in 2:length(args)) {
+			if (!inherits(args[[i]], "units"))
+				stop(paste("argument", i, "is not of class units"))
+			if (!ud.are.convertible(units(args[[i]]), u))
+				stop(paste("argument", i, "has units that are not convertible to that of the first argument"))
 			args[[i]] = as.units(args[[i]], u) # convert to first unit
+		}
 	args = lapply(args, unclass)
 	as.units(do.call(.Generic, args), u)
 }
@@ -231,11 +236,17 @@ weighted.mean.units <- function (x, w, ...)
 #' @export
 c.units <- function (..., recursive = FALSE) {
     args <- list(...)
+	u = units(args[[1]])
 	if (length(args) > 1)
-		for (i in 2:length(args))
-			units(args[[i]]) = units(args[[1]])
+		for (i in 2:length(args)) {
+			if (!inherits(args[[i]], "units"))
+				stop(paste("argument", i, "is not of class units"))
+			if (!ud.are.convertible(units(args[[i]]), u))
+				stop(paste("argument", i, "has units that are not convertible to that of the first argument"))
+			units(args[[i]]) = u
+		}
 	x = unlist(args)
-	as.units(x, units(args[[1]]))
+	as.units(x, u)
 }
 
 #' @export
@@ -270,4 +281,24 @@ as.dt = function(x) {
 		as.difftime(x, units = "days")
 	else
 		stop(paste("cannot convert unit", u, "to difftime object"))
+}
+
+#' @export
+mean.units = function(x, ...) {
+	.as.units(mean(unclass(x), ...), units(x))
+}
+
+#' @export
+median.units = function(x, na.rm = FALSE) {
+	.as.units(median(unclass(x), na.rm = na.rm), units(x))
+}
+
+#' quantile method for object of class units
+#'
+#' @param x object of class \code{units}
+#' @param ... arguments passed on to quantile
+#'
+#' @export
+quantile = function(x, ...) {
+	.as.units(quantile(unclass(x), ...), units(x))
 }
