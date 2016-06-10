@@ -7,4 +7,4 @@ See:
 
 * [blog post](http://r-spatial.org/r/2016/06/10/units.html)
 * [package vignette](https://cran.r-project.org/web/packages/units/vignettes/units.html)
-* [udunits2](https://github.com/pacificclimate/Rudunits2) github page
+* the [udunits2 R package](https://github.com/pacificclimate/Rudunits2) github page
