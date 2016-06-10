@@ -297,3 +297,8 @@ median.units = function(x, na.rm = FALSE) {
 quantile.units = function(x, ...) {
 	.as.units(quantile(unclass(x), ...), units(x))
 }
+
+#' @export
+format.units = function (x, ...) {
+	paste(format(unclass(x), ...), units(x))
+}
