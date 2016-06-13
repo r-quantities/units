@@ -215,8 +215,12 @@ print.units <- function (x, digits = getOption("digits"), ...)
         y <- unclass(x)
         attr(y, "units") <- NULL
         print(y)
-    }
-    else cat(format(unclass(x), digits = digits), " ", attr(x, "units"), "\n", sep = "")
+    } else { 
+		u = attr(x, "units")
+		if (u == "1")
+			u = "(Units: 1)"
+		cat(format(unclass(x), digits = digits), " ", u, "\n", sep = "")
+	}
     invisible(x)
 }
 
