@@ -85,10 +85,13 @@ Allowed operations that require convertable units are `+`, `-`, `==`,
 ### Mathematical functions
 
 Mathematical operations allowed are: `abs`, `sign`, `floor`,
-`ceiling`, `trunc`, `round`, `signif`, `cumsum`, `cummax`, `cummin`.
+`ceiling`, `trunc`, `round`, `signif`, `log`, `cumsum`, `cummax`, `cummin`.
 ```{r}
 signif(a^2.5, 3)
 cumsum(a)
+log(a) # base defaults to exp(1)
+log(a, base = 10)
+log(a, base = 2)
 ```
 
 ### Summary functions
