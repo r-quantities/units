@@ -55,7 +55,7 @@ b
 Impossible conversions lead to an error:
 ```{r}
 x = try(units(a) <- "secs")
-x
+attr(x, "condition")[[1]]
 ```
 
 ## Basic manipulations
