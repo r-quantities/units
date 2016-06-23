@@ -187,7 +187,7 @@ Math.units = function(x, ...) {
 	} else {
 		if (.Generic == "log") {
 			dts = list(...)
-			if (length(dts) == 0 || dts$base == exp(1))
+			if (is.null(dts$base) || dts$base == exp(1)) # missing or equal to default:
 				u = paste0("ln(",units(x),")")
 			else if (dts$base == 10)
 				u = paste0("lg(",units(x),")")
