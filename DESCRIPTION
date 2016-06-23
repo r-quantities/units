@@ -1,5 +1,5 @@
 Package: units
-Version: 0.2
+Version: 0.3
 Title: Measurement Units of Physical Quantities for R Vectors
 Authors@R: c(person("Edzer", "Pebesma", role = c("aut", "cre"),
 				email = "edzer.pebesma@uni-muenster.de"))
