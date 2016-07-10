@@ -8,3 +8,11 @@ See:
 * [blog post](http://r-spatial.org/r/2016/06/10/units.html)
 * [package vignette](https://cran.r-project.org/web/packages/units/vignettes/units.html)
 * the [udunits2 R package](https://github.com/pacificclimate/Rudunits2) github page
+
+To cope with bug in udunits2 0.8.1 on Win & Mac, for getting udunits2
+to work you may have to set the following _before loading units or udunits2_:
+
+```
+units_file = system.file("share/udunits2.xml", package="udunits2")
+Sys.setenv(UDUNITS2_XML_PATH = units_file)
+```
