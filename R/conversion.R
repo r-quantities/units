@@ -113,6 +113,40 @@ as.units.difftime = function(x, value) {
   x
 }
 
+#' @export
+as.data.frame.units = as.data.frame.numeric
+
+#' convert units object into difftime object
+#'
+#' @param x object of class \code{units}
+#'
+#' @export
+#' 
+#' @examples
+#' 
+#' t1 = Sys.time() 
+#' t2 = t1 + 3600 
+#' d = t2 - t1
+#' as.units(d)
+#' (du = as.units(d, "d"))
+#' dt = as.dt(du)
+#' class(dt)
+#' dt
+as.dt = function(x) {
+  stopifnot(inherits(x, "units"))
+  u = units(x)
+  if (u == "s")
+    as.difftime(x, units = "secs")
+  else if (u == "m")
+    as.difftime(x, units = "mins")
+  else if (u == "h")
+    as.difftime(x, units = "hours")
+  else if (u == "d")
+    as.difftime(x, units = "days")
+  else
+    stop(paste("cannot convert unit", u, "to difftime object"))
+}
+
 
 #' @export
 `[.units` <- function(x, i, j,..., drop = TRUE) {
