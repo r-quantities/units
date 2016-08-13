@@ -145,7 +145,7 @@ Ops.units <- function(e1, e2) {
   
   pw <- switch(.Generic, "**" = , "^" = TRUE, FALSE)
   
-  if (! eq && ! prd && !pw)
+  if (! eq && !prd && !pw)
     stop(paste("operation", .Generic, "not allowed"))
   
   if (eq)
@@ -226,7 +226,7 @@ Summary.units = function(..., na.rm = FALSE) {
 }
 
 #' @export
-print.units <- function (x, digits = getOption("digits"), ...) 
+print.units <- function(x, digits = getOption("digits"), ...) 
 {
   if (is.array(x) || length(x) > 1L) {
     cat("Units: ", attr(x, "units"), "\n", sep = "")
@@ -256,7 +256,7 @@ weighted.mean.units <- function (x, w, ...)
                                                             "units"), class = "units")
 
 #' @export
-c.units <- function (..., recursive = FALSE) {
+c.units <- function(..., recursive = FALSE) {
   args <- list(...)
   u = units(args[[1]])
   if (length(args) > 1)
@@ -322,6 +322,6 @@ quantile.units = function(x, ...) {
 }
 
 #' @export
-format.units = function (x, ...) {
+format.units = function(x, ...) {
   paste(format(unclass(x), ...), units(x))
 }
