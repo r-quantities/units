@@ -112,3 +112,12 @@ as.units.difftime = function(x, value) {
     units(x) = value
   x
 }
+
+
+#' @export
+`[.units` <- function(x, i, j,..., drop = TRUE) {
+  ret = unclass(x)[i]
+  attr(ret, "units") = units(x)
+  class(ret) = "units"
+  ret
+}

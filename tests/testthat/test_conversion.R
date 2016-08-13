@@ -40,3 +40,10 @@ test_that("we can convert difftime objects to units", {
   expect_equal(units(units_week), "d")
   expect_equal(as.numeric(units_week), 7)
 })
+
+test_that("we can subscript units", {
+  x <- 1:4
+  y <- as.units(x, "m")
+  expect_equal(as.numeric(y[1]), x[1])
+  expect_equal(class(y[1]), class(y))
+})

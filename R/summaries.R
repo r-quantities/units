@@ -36,13 +36,6 @@ print.units <- function(x, digits = getOption("digits"), ...)
   invisible(x)
 }
 
-#' @export
-`[.units` <- function(x, i, j,..., drop = TRUE) {
-  ret = unclass(x)[i]
-  attr(ret, "units") = units(x)
-  class(ret) = "units"
-  ret
-}
 
 #' @export
 weighted.mean.units <- function(x, w, ...) 
