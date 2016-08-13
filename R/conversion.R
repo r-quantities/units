@@ -20,10 +20,8 @@ NULL
 #' class(x)
 #' y = 2:5
 #' try(units(y) <- "xxy") # error
-`units<-.numeric` = function(x, value) {
-  stopifnot(is.character(value))
-  if (!ud.is.parseable(value))
-    stop(paste(value, "not recognized as a udunits2 unit of measurement"))
+`units<-.numeric` <- function(x, value) {
+  stopifnot(inherits(value, "symbolic_units"))
   attr(x, "units") = value
   class(x) = "units"
   x
@@ -41,15 +39,17 @@ NULL
 #' a = as.units(1:3, "m/s")
 #' units(a) = "km/h"
 #' a
-`units<-.units` = function(x, value) {
-  stopifnot(is.character(value))
-  if (!ud.is.parseable(value))
-    stop(paste(value, "not recognized as a unit of measurement"))
+`units<-.units` <- function(x, value) {
+  stopifnot(inherits(value, "symbolic_units"))
+  
   if (units(x) == value) # do nothing:
     return(x)
-  if (!ud.are.convertible(units(x), value))
-    stop(paste("cannot convert", units(x), "into", value))
-  x = ud.convert(x, units(x), value)
+  
+  # We need to convert from one unit to another
+  conversion_constant <- get_conversion_constant(units(x), value)
+  if (is.na(conversion_constant)) stop(paste("cannot convert", units(x), "into", value))
+  
+  x <- conversion_constant * x
   attr(x, "units") = value
   x
 }
@@ -59,23 +59,24 @@ NULL
 #' @param x object of class \code{units}
 #'
 #' @export
-units.units = function(x) {
+units.units <- function(x) {
   attr(x, "units")
 }
 
 #' convert object to a units object
 #'
 #' @param x object of class units
-#' @param value target unit, defaults to '1'
+#' @param value target unit, defaults to `unitless`
 #'
 #' @export
-as.units = function(x, value = "1") {
+as.units <- function(x, value = unitless) {
   UseMethod("as.units")
 }
 
 #' @export
-as.units.default = function(x, value = "1") {
-  units(x) = value
+as.units.default <- function(x, value = unitless) {
+  stopifnot(inherits(value, "symbolic_units"))
+  units(x) <- value
   x
 }
 
@@ -90,22 +91,22 @@ as.units.default = function(x, value = "1") {
 #' s = Sys.time()
 #' d  = s - (s+1)
 #' as.units(d)
-as.units.difftime = function(x, value) {
+as.units.difftime <- function(x, value) {
   u = attr(x, "units")
   x = unclass(x)
   attr(x, "units") = NULL
   # convert from difftime to udunits2:
   if (u == "secs") # secs -> s
-    units(x) = "s"
+    units(x) <- units(ud_units$s)
   else if (u == "mins") # mins -> min
-    units(x) = "min"
+    units(x) <- units(ud_units$min)
   else if (u == "hours") # hours -> h
-    units(x) = "h"
+    units(x) <- units(ud_units$h)
   else if (u == "days") # days -> d
-    units(x) = "d"
+    units(x) <- units(ud_units$d)
   else if (u == "weeks") { # weeks -> 7 days
     x = 7 * x
-    units(x) = "d"
+    units(x) = units(ud_units$d)
   } else 
     stop(paste("unknown time units", u, "in difftime object"))
   if (!missing(value)) # convert optionally:
@@ -114,7 +115,7 @@ as.units.difftime = function(x, value) {
 }
 
 #' @export
-as.data.frame.units = as.data.frame.numeric
+as.data.frame.units <- as.data.frame.numeric
 
 #' convert units object into difftime object
 #'
@@ -132,9 +133,9 @@ as.data.frame.units = as.data.frame.numeric
 #' dt = as.dt(du)
 #' class(dt)
 #' dt
-as.dt = function(x) {
+as.dt <- function(x) {
   stopifnot(inherits(x, "units"))
-  u = units(x)
+  u = as.character(units(x))
   if (u == "s")
     as.difftime(x, units = "secs")
   else if (u == "m")

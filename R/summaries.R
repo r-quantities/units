@@ -27,13 +27,13 @@ Summary.units = function(..., na.rm = FALSE) {
 print.units <- function(x, digits = getOption("digits"), ...) # nocov start
 {
   if (is.array(x) || length(x) > 1L) {
-    cat("Units: ", attr(x, "units"), "\n", sep = "")
+    cat("Units: ", as.character(attr(x, "units")), "\n", sep = "")
     y <- unclass(x)
     attr(y, "units") <- NULL
     print(y)
   } else { 
-    u = attr(x, "units")
-    if (u == "1")
+    u = as.character(attr(x, "units"))
+    if (u == "")
       u = "(Units: 1)"
     cat(format(unclass(x), digits = digits), " ", u, "\n", sep = "")
   }

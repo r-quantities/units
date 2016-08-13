@@ -7,25 +7,28 @@ test_that("we can convert numbers to unit-less units", {
   expect_that(as.numeric(x), equals(1:4))
   
   y <- 1:4
-  units(y) <- "1"
+  units(y) <- unitless
   expect_equal(x, y)
 })
 
 test_that("we can convert numbers to physical units", {
-  x <- as.units(1:4, "m")
+  m <- make_symbolic_units("m")
+  x <- as.units(1:4, m)
   expect_that(length(x), equals(4))
   expect_that(class(x), equals("units"))
-  expect_that(units(x), equals("m"))
+  expect_that(as.character(units(x)), equals("m"))
   expect_equal(as.numeric(x), 1:4)
   
   y <- 1:4
-  units(y) <- "m"
+  units(y) <- m
   expect_equal(x, y)
 })
 
 test_that("we can convert between two units that can be converted", {
-  x <- y <- as.units(1:4, "m")
-  units(x) <- "km"
+  m <- make_symbolic_units("m")
+  km <- make_symbolic_units("km")
+  x <- y <- as.units(1:4, m)
+  units(x) <- km
   expect_equal(as.numeric(y), 1000 * as.numeric(x))
 })
 
@@ -37,7 +40,7 @@ test_that("we can convert difftime objects to units", {
   
   week <- as.difftime(1, units = "weeks")
   units_week <- as.units(week)
-  expect_equal(units(units_week), "d")
+  expect_equal(as.character(units(units_week)), "d")
   expect_equal(as.numeric(units_week), 7)
 })
 
@@ -52,7 +55,7 @@ test_that("we can convert units objects to difftime objects", {
 
 test_that("we can subscript units", {
   x <- 1:4
-  y <- as.units(x, "m")
+  y <- as.units(x, make_symbolic_units("m"))
   expect_equal(as.numeric(y[1]), x[1])
   expect_equal(class(y[1]), class(y))
 })

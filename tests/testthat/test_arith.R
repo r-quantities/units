@@ -1,8 +1,8 @@
 context("Arithmetic")
 
 test_that("we can compare vectors with equal units", {
-  x <- as.units(1:4, "m")
-  y <- as.units(1:4, "m")
+  x <- 1:4 * ud_units$m
+  y <- 1:4 * ud_units$m
   z <- 2 * y
   
   expect_true(all(x == y))
@@ -21,7 +21,7 @@ test_that("we can compare vectors with equal units", {
 
 test_that("we can scale units with scalars", {
   x <- 1:4
-  ux <- as.units(x, "m")
+  ux <- x * ud_units$m
   
   expect_equal(as.numeric(10 * ux), 10 * x)
   expect_equal(as.numeric(ux / 10), x / 10)
@@ -29,8 +29,8 @@ test_that("we can scale units with scalars", {
 
 test_that("we can multiply and divide units", {
   x <- 1:4 ; y <- 5:8
-  m <- as.units(x, "m")
-  s <- as.units(y, "s")
+  m <- x * ud_units$m
+  s <- y * ud_units$s
   
   expect_equal(as.numeric(m * s), x * y)
   expect_equal(as.numeric(m / s), x / y)
@@ -43,7 +43,7 @@ test_that("we can multiply and divide units", {
 
 test_that("we can take powers of units", {
   x <- 1:4
-  ux <- as.units(x, "m")
+  ux <- x * ud_units$m
   
   expect_equal(as.numeric(ux ** 2), x ** 2)
   expect_equal(as.numeric(ux ^ 2), x ^ 2)
