@@ -120,6 +120,10 @@ as.units.difftime = function(x, value) {
   x
 }
 
+# Inside the group generic functions we do have .Generic even if the diagnostics
+# think we do not.
+# !diagnostics suppress=.Generic
+
 #' Title
 #'
 #' @param e1 object of class \code{units}, 
@@ -145,7 +149,7 @@ Ops.units <- function(e1, e2) {
   
   pw <- switch(.Generic, "**" = , "^" = TRUE, FALSE)
   
-  if (! eq && !prd && !pw)
+  if (!eq && !prd && !pw)
     stop(paste("operation", .Generic, "not allowed"))
   
   if (eq)
@@ -179,7 +183,7 @@ Ops.units <- function(e1, e2) {
 #' cumsum(a)
 #' signif(a, 2)
 Math.units = function(x, ...) {
-  OK <- switch(.Generic, "abs" = , "sign" = , "floor" = , "ceiling" = , "log" =,
+  OK <- switch(.Generic, "abs" = , "sign" = , "floor" = , "ceiling" = , "log" = ,
                "trunc" = , "round" = , "signif" = , "cumsum" = , 
                "cummax" = , "cummin" = TRUE, FALSE)
   if (!OK) {
@@ -251,7 +255,7 @@ print.units <- function(x, digits = getOption("digits"), ...)
 }
 
 #' @export
-weighted.mean.units <- function (x, w, ...) 
+weighted.mean.units <- function(x, w, ...) 
   structure(weighted.mean(unclass(x), w, ...), units = attr(x, 
                                                             "units"), class = "units")
 
