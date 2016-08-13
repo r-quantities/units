@@ -5,7 +5,7 @@ Measurement Units for R Vectors
 [![Build Status](https://travis-ci.org/edzer/units.png?branch=master)](https://travis-ci.org/edzer/units) [![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html) [![CRAN](http://www.r-pkg.org/badges/version/units)](https://cran.rstudio.com/web/packages/units/index.html) [![Downloads](http://cranlogs.r-pkg.org/badges/units?color=brightgreen)](http://www.r-pkg.org/pkg/units)
 -->
 [![Build Status](https://travis-ci.org/mailund/units.png?branch=master)](https://travis-ci.org/mailund/units) 
-[![Coverage Status](https://img.shields.io/codecov/c/github/mailund/units/master.svg)](https://codecov.io/github/mailund/units?branch=master)
+[![Coverage Status](https://coveralls.io/repos/mailund/units/badge.png)](https://coveralls.io/r/mailund/units)
 [![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html)
 
 See:
