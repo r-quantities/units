@@ -122,8 +122,10 @@ as.units.difftime = function(x, value) {
 
 #' Title
 #'
-#' @param e1 object of class \code{units}, or something that can be coerced to it by \code{as.units(e1)}
-#' @param e2 object of class \code{units}, or something that can be coerced to it by \code{as.units(e2)}
+#' @param e1 object of class \code{units}, 
+#'        or something that can be coerced to it by \code{as.units(e1)}
+#' @param e2 object of class \code{units}, 
+#'        or something that can be coerced to it by \code{as.units(e2)}
 #'
 #' @return object of class \code{units}
 #' @export
@@ -178,7 +180,8 @@ Ops.units <- function(e1, e2) {
 #' signif(a, 2)
 Math.units = function(x, ...) {
   OK <- switch(.Generic, "abs" = , "sign" = , "floor" = , "ceiling" = , "log" =,
-               "trunc" = , "round" = , "signif" = , "cumsum" = , "cummax" = , "cummin" = TRUE, FALSE)
+               "trunc" = , "round" = , "signif" = , "cumsum" = , 
+               "cummax" = , "cummin" = TRUE, FALSE)
   if (!OK) {
     warning(paste("Operation", .Generic, "not meaningful for units"))
     x = unclass(x)
@@ -214,7 +217,8 @@ Summary.units = function(..., na.rm = FALSE) {
       if (!inherits(args[[i]], "units"))
         stop(paste("argument", i, "is not of class units"))
       if (!ud.are.convertible(units(args[[i]]), u))
-        stop(paste("argument", i, "has units that are not convertible to that of the first argument"))
+        stop(paste("argument", i, 
+                   "has units that are not convertible to that of the first argument"))
       args[[i]] = as.units(args[[i]], u) # convert to first unit
     }
   args = lapply(args, unclass)
@@ -260,7 +264,8 @@ c.units <- function (..., recursive = FALSE) {
       if (!inherits(args[[i]], "units"))
         stop(paste("argument", i, "is not of class units"))
       if (!ud.are.convertible(units(args[[i]]), u))
-        stop(paste("argument", i, "has units that are not convertible to that of the first argument"))
+        stop(paste("argument", i, 
+                   "has units that are not convertible to that of the first argument"))
       units(args[[i]]) = u
     }
   x = unlist(args)
