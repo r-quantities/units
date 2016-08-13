@@ -3,7 +3,8 @@ Version: 0.3-1
 Title: Measurement Units of Physical Quantities for R Vectors
 Authors@R: c(person("Edzer", "Pebesma", role = c("aut", "cre"),
 				            email = "edzer.pebesma@uni-muenster.de"),
-			c(person("Thomas", "Mailund", role = "ctb")))
+			     c(person("Thomas", "Mailund", role = "ctb",
+			              email = "mailund@birc.au.dk")))
 Depends: R (>= 3.0.0)
 Imports: utils, stats, udunits2
 Suggests: knitr, testthat, covr
