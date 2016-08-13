@@ -4,12 +4,12 @@
 \name{ud_units}
 \alias{ud_units}
 \title{List containing pre-defined units from the udunits2 package.}
-\format{An object of class \code{list} of length 2520.}
+\format{An object of class \code{NULL} of length 0.}
 \usage{
 ud_units
 }
 \description{
-List containing pre-defined units from the udunits2 package.
+Load it in using data(ud_units)
 }
 \keyword{datasets}
 

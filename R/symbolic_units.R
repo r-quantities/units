@@ -12,8 +12,7 @@
 .multiply_symbolic_units <- function(e1, e2) {
   nominator <- sort(c(e1$nominator, e2$nominator))
   denominator <- sort(c(e1$denominator, e2$denominator))
-  # fixme: reduce
-  .symbolic_units(nominator, denominator)
+  .simplify_units(.symbolic_units(nominator, denominator))
 }
 
 .same_units <- function(e1, e2) {
@@ -98,4 +97,39 @@ make_unit <- function(name) {
   
   if (!udunits2::ud.are.convertible(su1, su2)) return(NA)
   ud.convert(1, su1, su2)
+}
+
+.simplify_units <- function(sym_units) {
+  # invariant for nominator and denominator is that they are sorted
+  # so we can simplify them via a merge.
+  delete_nom <- c()
+  delete_denom <- c()
+  i <- j <- 1
+  while (i <= length(sym_units$nominator) && j <= length(sym_units$denominator)) {
+    n <- sym_units$nominator[i]
+    d <- sym_units$denominator[j]
+    # FIXME: we should also simplify if we can convert between the two!
+    if (n == d) { # there is a lot of copying here, so it is an O(n**2) algorithm
+                  # but I don't expect long lists of units to be removed.
+      delete_nom <- c(delete_nom, i)
+      delete_denom <- c(delete_denom, j)
+      i <- i + 1
+      j <- j + 1
+    } else if (n < d) {
+      i <- i + 1
+    } else {
+      j <- j + 1
+    }
+    
+    #cat("simplify ", i, " ", j, "\n")
+  }
+  
+  new_nominator <- sym_units$nominator
+  new_denominator <- sym_units$denominator
+  if (length(delete_nom) > 0)
+    new_nominator <- new_nominator[-delete_nom]
+  if (length(delete_denom) > 0)
+    new_denominator <- new_denominator[-delete_denom]
+  
+  .symbolic_units(new_nominator, new_denominator)
 }

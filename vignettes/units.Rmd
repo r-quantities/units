@@ -60,6 +60,7 @@ Units from `udunits2` are defined in a list, `ud_units` and can be used either b
 
 ```{r}
 rm(m) ; rm(s)
+data("ud_units")
 with(ud_units, 1:10 * m/s)
 ```
 
@@ -85,9 +86,15 @@ and convert if necessary:
 ```{r}
 a + b # m/s + km/h -> m/s
 ```
-but units are not simplified:
+
+There are some basic simplification of units:
 ```{r}
 t <- with(ud_units, s)
+a * t
+```
+but not yet when units need to be converted before they can be simplified:
+```{r}
+t <- with(ud_units, min)
 a * t
 ```
 

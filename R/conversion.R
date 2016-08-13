@@ -16,6 +16,7 @@ NULL
 #' @examples
 #' x = 1:3
 #' class(x)
+#' data(ud_units)
 #' units(x) <- with(ud_units, m/s) # valid
 #' class(x)
 #' y = 2:5
@@ -39,6 +40,7 @@ NULL
 #' @export
 #' 
 #' @examples
+#' data(ud_units)
 #' a <- with(ud_units, 1:3 * m/s)
 #' units(a) <- with(ud_units, km/h)
 #' a
@@ -100,25 +102,28 @@ as.units.default <- function(x, value = unitless) {
 #' d  = s - (s+1)
 #' as.units(d)
 as.units.difftime <- function(x, value) {
-  u = attr(x, "units")
-  x = unclass(x)
-  attr(x, "units") = NULL
+  u <- attr(x, "units")
+  x <- unclass(x)
+  attr(x, "units") <- NULL
+  
   # convert from difftime to udunits2:
   if (u == "secs") # secs -> s
-    units(x) <- units(ud_units$s)
+    x <- x * make_unit("s")
   else if (u == "mins") # mins -> min
-    units(x) <- units(ud_units$min)
+    x <- x * make_unit("min")
   else if (u == "hours") # hours -> h
-    units(x) <- units(ud_units$h)
+    x <- x * make_unit("h")
   else if (u == "days") # days -> d
-    units(x) <- units(ud_units$d)
+    x <- x * make_unit("d")
   else if (u == "weeks") { # weeks -> 7 days
     x = 7 * x
-    units(x) = units(ud_units$d)
+    x <- x * make_unit("d")
   } else 
     stop(paste("unknown time units", u, "in difftime object"))
+  
   if (!missing(value)) # convert optionally:
-    units(x) = value
+    units(x) <- value
+  
   x
 }
 

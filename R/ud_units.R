@@ -42,9 +42,16 @@
   ud_units
 }
 
+# Use this to generate the data -- to avoid Travis problems the result
+# is stored as package data
+#ud_units <- .construct_ud_units()
+#devtools::use_data(ud_units)
 
 #' List containing pre-defined units from the udunits2 package.
+#' 
+#' Load it in using data(ud_units)
+#' 
 #' @export
-ud_units <- .construct_ud_units()
+ud_units <- NULL
 
 # nocov end

@@ -2,7 +2,7 @@ context("Math functions")
 
 test_that("we can call math functions on units", {
   x <- 1:4 - 2.1
-  ux <- x * ud_units$m
+  ux <- x * make_unit("m")
   
   expect_equal(as.numeric(abs(ux)), abs(x))
   expect_equal(units(abs(ux)), units(ux))
@@ -45,7 +45,7 @@ test_that("we can call math functions on units", {
 
 test_that("we can take logarithms units", {
   x <- 1:4
-  ux <- x * ud_units$m
+  ux <- x * make_unit("m")
   
   #expect_equal(as.numeric(log(ux)), log(x))
   #expect_equal(units(log(ux)), "ln(m)")
