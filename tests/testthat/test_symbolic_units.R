@@ -13,3 +13,11 @@ test_that("we can multiply and divide symbolic units", {
   expect_equal(as.character(m/s), "m/s")
   expect_equal(as.character(m/s/s), "m/s/s")
 })
+
+test_that("we can simplify basic units", {
+  m <- units:::.make_symbolic_units("m")
+  s <- units:::.make_symbolic_units("s")
+  expect_equal(as.character(m/m), "1")
+  expect_equal(as.character(m/s/m), "1/s")
+  expect_equal(as.character(m*m/m), "m")
+})
