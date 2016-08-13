@@ -7,9 +7,11 @@
 \method{Ops}{units}(e1, e2)
 }
 \arguments{
-\item{e1}{object of class \code{units}, or something that can be coerced to it by \code{as.units(e1)}}
+\item{e1}{object of class \code{units}, 
+or something that can be coerced to it by \code{as.units(e1)}}
 
-\item{e2}{object of class \code{units}, or something that can be coerced to it by \code{as.units(e2)}}
+\item{e2}{object of class \code{units}, 
+or something that can be coerced to it by \code{as.units(e2)}}
 }
 \value{
 object of class \code{units}
