@@ -20,4 +20,5 @@ test_that("we can simplify basic units", {
   expect_equal(as.character(m/m), "1")
   expect_equal(as.character(m/s/m), "1/s")
   expect_equal(as.character(m*m/m), "m")
+  expect_equal(as.character(s/m/s), "1/m")
 })
