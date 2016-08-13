@@ -14,8 +14,8 @@
 #' @export
 #'
 #' @examples
-#' a = as.units(1:3, "m/s")
-#' b = as.units(1:3, "m/s")
+#' a <- with(ud_units, 1:3 * m/s)
+#' b <- with(ud_units, 1:3 * m/s)
 #' a + b
 Ops.units <- function(e1, e2) {
   if (nargs() == 1)
@@ -44,7 +44,7 @@ Ops.units <- function(e1, e2) {
         attr(e1, "units") <- units(e1) / units(e2)
         attr(e2, "units") <- units(e1) / units(e2)
       } else {
-        stop(paste("Unexpected operator", .Generic))
+        stop(paste("Unexpected operator", .Generic)) # nocov
       }
       
     } else if (inherits(e1, "units")) {
@@ -56,7 +56,7 @@ Ops.units <- function(e1, e2) {
       # only e2 has units
       if (.Generic == "*")      attr(e1, "units") <- units(e2)
       else if (.Generic == "/") attr(e1, "units") <- .invert_symbolic_units(units(e2))
-      else stop(paste("Unexpected operator", .Generic))
+      else stop(paste("Unexpected operator", .Generic)) # nocov
       class(e1) <- "units"
     }
   } 

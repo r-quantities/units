@@ -38,18 +38,19 @@ Ops.symbolic_units <- function(e1, e2) {
   if (!prd) stop(paste("operation", .Generic, "not allowed for symbolic operators"))
   
   if (!inherits(e1, "symbolic_units") || !inherits(e2, "symbolic_units")) {
-    stop(paste("Arithmetic operations on symbolic units only possible if both arguments",
-               "are symbolic units", sep = "\n"))
+    stop(paste("Arithmetic operations on symbolic units only possible ",  # nocov
+               "if both arguments are symbolic units", sep = "\n"))       # nocov
   }
   
   if (.Generic == "*") .multiply_symbolic_units(e1, e2)              # multiplication
   else .multiply_symbolic_units(e1, .invert_symbolic_units(e2)) # division
 }
 
-#' @export
-make_symbolic_units <- function(name) {
+.make_symbolic_units <- function(name) {
   .symbolic_units(name, vector("character"))
 }
+
+#' The "unit" type for vectors that are actually dimension-less.
 #' @export
 unitless <- .symbolic_units(vector("character"), vector("character"))
 
@@ -79,16 +80,22 @@ as.character.symbolic_units <- function(x, ...) {
   paste0(nom_str, sep, denom_str)
 }
 
+#' Create a new unit from a unit name.
+#' 
+#' @param name  Name of the new unit
+#' @return A new unit object that can be used in arithmetics
+#' 
 #' @export
-make_units <- function(name) {
-  as.units.default(1, make_symbolic_units(name))
+make_unit <- function(name) {
+  as.units.default(1, .make_symbolic_units(name))
 }
 
-get_conversion_constant <- function(u1, u2) {
-  # FIXME: Unit conversion only has very limited support right now
-  # I always just ask ud.
+.get_conversion_constant <- function(u1, u2) {
+  # FIXME: Unit conversion only has limited support right now
+  # I always just ask ud to convert units.
   su1 <- as.character(u1)
   su2 <- as.character(u2)
-  if (!ud.are.convertible(su1, su2)) return(NA)
+  
+  if (!udunits2::ud.are.convertible(su1, su2)) return(NA)
   ud.convert(1, su1, su2)
 }

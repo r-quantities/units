@@ -20,9 +20,8 @@ Set measurement units on a numeric vector
 \examples{
 x = 1:3
 class(x)
-units(x) = "m/s" # valid
+units(x) <- with(ud_units, m/s) # valid
 class(x)
 y = 2:5
-try(units(y) <- "xxy") # error
 }
 

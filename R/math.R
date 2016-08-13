@@ -11,7 +11,7 @@
 #' 
 #' @examples
 #' a = sqrt(1:10)
-#' units(a) = "m/s"
+#' a <- with(ud_units, a * m/s)
 #' log(a)
 #' log(a, base = 10)
 #' cumsum(a)
@@ -26,6 +26,9 @@ Math.units = function(x, ...) {
     attr(x, "units") = NULL
     NextMethod(.Generic)
   } else {
+    # nocov start
+    # I'm disabling coverage testing for this part because I am not sure
+    # how it should even be implemented...
     if (.Generic == "log") {
       dts = list(...)
       if (is.null(dts$base) || dts$base == exp(1)) # missing or equal to default:
@@ -37,6 +40,7 @@ Math.units = function(x, ...) {
       else
         stop(paste("log with base", dts$base, "not supported"))
       .as.units(NextMethod(.Generic), u)
+      # nocov end
     } else
       .as.units(NextMethod(.Generic), units(x))
   }

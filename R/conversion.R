@@ -16,12 +16,15 @@ NULL
 #' @examples
 #' x = 1:3
 #' class(x)
-#' units(x) = "m/s" # valid
+#' units(x) <- with(ud_units, m/s) # valid
 #' class(x)
 #' y = 2:5
-#' try(units(y) <- "xxy") # error
 `units<-.numeric` <- function(x, value) {
-  stopifnot(inherits(value, "symbolic_units"))
+  stopifnot(inherits(value, "units") || inherits(value, "symbolic_units"))
+  
+  if (inherits(value, "units"))
+    value <- units(value)
+  
   attr(x, "units") = value
   class(x) = "units"
   x
@@ -36,18 +39,23 @@ NULL
 #' @export
 #' 
 #' @examples
-#' a = as.units(1:3, "m/s")
-#' units(a) = "km/h"
+#' a <- with(ud_units, 1:3 * m/s)
+#' units(a) <- with(ud_units, km/h)
 #' a
 `units<-.units` <- function(x, value) {
-  stopifnot(inherits(value, "symbolic_units"))
+  stopifnot(inherits(value, "units") || inherits(value, "symbolic_units"))
+  
+  if (inherits(value, "units"))
+    value <- units(value)
   
   if (units(x) == value) # do nothing:
     return(x)
   
   # We need to convert from one unit to another
-  conversion_constant <- get_conversion_constant(units(x), value)
-  if (is.na(conversion_constant)) stop(paste("cannot convert", units(x), "into", value))
+  conversion_constant <- .get_conversion_constant(units(x), value)
+  if (is.na(conversion_constant)) {
+    stop(paste("cannot convert", units(x), "into", value))
+  }
   
   x <- conversion_constant * x
   attr(x, "units") = value
@@ -128,8 +136,7 @@ as.data.frame.units <- as.data.frame.numeric
 #' t1 = Sys.time() 
 #' t2 = t1 + 3600 
 #' d = t2 - t1
-#' as.units(d)
-#' (du = as.units(d, "d"))
+#' du <- as.units(d)
 #' dt = as.dt(du)
 #' class(dt)
 #' dt
