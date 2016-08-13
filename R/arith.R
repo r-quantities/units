@@ -14,8 +14,9 @@
 #' @export
 #'
 #' @examples
-#' a = as.units(1:3, "m/s")
-#' b = as.units(1:3, "m/s")
+#' data(ud_units)
+#' a <- with(ud_units, 1:3 * m/s)
+#' b <- with(ud_units, 1:3 * m/s)
 #' a + b
 Ops.units <- function(e1, e2) {
   if (nargs() == 1)
@@ -32,14 +33,36 @@ Ops.units <- function(e1, e2) {
     stop(paste("operation", .Generic, "not allowed"))
   
   if (eq)
-    units(e2) = units(e1) 
+    units(e2) <- units(e1) # convert before we can compare
   
-  if (prd && inherits(e1, "units") && inherits(e2, "units")) {
-    attr(e1, "units") = paste0("(", units(e1), ")", .Generic, "(", units(e2), ")")
-    attr(e2, "units") = paste0("(", units(e1), ")", .Generic, "(", units(e2), ")")
-  }
+  if (prd) {
+    if (inherits(e1, "units") && inherits(e2, "units")) {
+      # both vectors have units
+      if (.Generic == "*") {
+        attr(e1, "units") <- units(e1) * units(e2)
+        attr(e2, "units") <- units(e1) * units(e2)
+      } else if (.Generic == "/") {
+        attr(e1, "units") <- units(e1) / units(e2)
+        attr(e2, "units") <- units(e1) / units(e2)
+      } else {
+        stop(paste("Unexpected operator", .Generic)) # nocov
+      }
+      
+    } else if (inherits(e1, "units")) {
+      # only e1 has units
+      attr(e2, "units") <- units(e1)
+      class(e2) <- "units"
+      
+    } else if (inherits(e2, "units")) {
+      # only e2 has units
+      if (.Generic == "*")      attr(e1, "units") <- units(e2)
+      else if (.Generic == "/") attr(e1, "units") <- .invert_symbolic_units(units(e2))
+      else stop(paste("Unexpected operator", .Generic)) # nocov
+      class(e1) <- "units"
+    }
+  } 
   
-  if (pw) {
+  if (pw) { # FIXME: I am not sure how to take powers yet
     if (inherits(e2, "units") || length(e2) > 1L)
       stop("power operation only allowed with length-one numeric power")
     attr(e1, "units") = paste0("(", units(e1), ")", .Generic, e2)

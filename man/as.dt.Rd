@@ -17,8 +17,7 @@ convert units object into difftime object
 t1 = Sys.time() 
 t2 = t1 + 3600 
 d = t2 - t1
-as.units(d)
-(du = as.units(d, "d"))
+du <- as.units(d)
 dt = as.dt(du)
 class(dt)
 dt

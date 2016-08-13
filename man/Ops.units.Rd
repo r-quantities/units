@@ -20,8 +20,9 @@ object of class \code{units}
 Title
 }
 \examples{
-a = as.units(1:3, "m/s")
-b = as.units(1:3, "m/s")
+data(ud_units)
+a <- with(ud_units, 1:3 * m/s)
+b <- with(ud_units, 1:3 * m/s)
 a + b
 }
 

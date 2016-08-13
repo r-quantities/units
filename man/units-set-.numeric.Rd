@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{numeric vector}
 
-\item{value}{character; valid unit of measurement string}
+\item{value}{character; unit of measurement string}
 }
 \value{
 object of class \code{units}
@@ -20,9 +20,9 @@ Set measurement units on a numeric vector
 \examples{
 x = 1:3
 class(x)
-units(x) = "m/s" # valid
+data(ud_units)
+units(x) <- with(ud_units, m/s) # valid
 class(x)
 y = 2:5
-try(units(y) <- "xxy") # error
 }
 
