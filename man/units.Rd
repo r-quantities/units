@@ -5,7 +5,7 @@
 \alias{units<-.units}
 \title{Convert units}
 \usage{
-units.units(x) <- value
+\method{units}{units}(x) <- value
 }
 \arguments{
 \item{x}{object of class \code{units}}

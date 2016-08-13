@@ -20,7 +20,7 @@ NULL
 #' class(x)
 #' y = 2:5
 #' try(units(y) <- "xxy") # error
-`units<-.numeric` = function(x, strict.ud = FALSE, value) {
+`units<-.numeric` = function(x, value) {
   stopifnot(is.character(value))
   if (!ud.is.parseable(value))
     stop(paste(value, "not recognized as a udunits2 unit of measurement"))
