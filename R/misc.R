@@ -14,3 +14,11 @@ c.units <- function(..., recursive = FALSE) {
   x = unlist(args)
   as.units(x, u)
 }
+
+
+.as.units = function(x, value) {
+  x = unclass(x)
+  class(x) = "units"
+  attr(x, "units") = value
+  x
+}

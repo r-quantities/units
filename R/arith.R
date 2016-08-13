@@ -4,13 +4,6 @@
 # !diagnostics suppress=.Generic
 
 
-.as.units = function(x, value) {
-  x = unclass(x)
-  class(x) = "units"
-  attr(x, "units") = value
-  x
-}
-
 
 #' Title
 #'

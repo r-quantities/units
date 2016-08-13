@@ -7,7 +7,7 @@ Summary.units = function(..., na.rm = FALSE) {
   OK <- switch(.Generic, "sum" = , "min" = , "max" = , "range" = TRUE, FALSE)
   if (!OK)
     stop(paste("Summary operation", .Generic, "not allowed"))
-  # NextMethod(.Generic)
+  
   args = list(...)
   u = units(args[[1]])
   if (length(args) > 1)
@@ -24,7 +24,7 @@ Summary.units = function(..., na.rm = FALSE) {
 }
 
 #' @export
-print.units <- function(x, digits = getOption("digits"), ...) 
+print.units <- function(x, digits = getOption("digits"), ...) # nocov start
 {
   if (is.array(x) || length(x) > 1L) {
     cat("Units: ", attr(x, "units"), "\n", sep = "")
@@ -38,7 +38,7 @@ print.units <- function(x, digits = getOption("digits"), ...)
     cat(format(unclass(x), digits = digits), " ", u, "\n", sep = "")
   }
   invisible(x)
-}
+} # nocov end
 
 
 #' @export
