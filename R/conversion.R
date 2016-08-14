@@ -85,7 +85,6 @@ as.units <- function(x, value = unitless) {
 
 #' @export
 as.units.default <- function(x, value = unitless) {
-  stopifnot(inherits(value, "symbolic_units"))
   units(x) <- value
   x
 }

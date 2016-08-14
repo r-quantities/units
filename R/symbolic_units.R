@@ -113,21 +113,9 @@ make_unit <- function(name) {
   # each pair-wise operator in units() but it is necessary when conversion constants
   # must be taken into account.
   
-  # The nominator and denominator are first simplified independently, just to get
-  # units like `m*km` translated into the same unit, `1000*m*m`, which is not done
-  # when just scanning through and comparing nominator and denominator.
-  
-  .simplify_units_sequence <- function(x) {
-    conversion_constant <- 1
-    new_x <- x
-    as.units(conversion_constant, .symbolic_units(x))
-  }
-  
-  nom <- .simplify_units_sequence(sym_units$nominator)
-  denom <- .simplify_units_sequence(sym_units$denominator)
-  conversion_constant <- as.numeric(nom) / as.numeric(denom)
-  new_nominator <- units(nom)$nominator     # the results from the sequence simplification
-  new_denominator <- units(denom)$nominator # is always only stored in the nominator
+  conversion_constant <- 1
+  new_nominator <- sym_units$nominator
+  new_denominator <- sym_units$denominator
   
   delete_nom <- c()
   for (i in seq_along(new_nominator)) {
