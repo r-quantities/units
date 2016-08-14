@@ -50,7 +50,15 @@ test_that("we can take powers of units", {
   expect_equal(as.character(units(ux ** 2)), "m*m")
   expect_equal(as.character(units(ux ^ 2)), "m*m")
   
+  expect_error(ux ^ 1.3)
+  expect_error(ux ^ 0.3)
   expect_error(ux ^ ux)
   expect_error(ux ^ x)
+  
+  expect_equal(as.numeric(ux ** -2), x ** -2)
+  expect_equal(as.numeric(ux ^ -2), x ^ -2)
+  expect_equal(as.character(units(ux ** -2)), "1/m/m")
+  expect_equal(as.character(units(ux ^ -2)), "1/m/m")
+  
 })
 
