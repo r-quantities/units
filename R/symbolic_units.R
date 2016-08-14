@@ -1,5 +1,5 @@
 
-.symbolic_units <- function(nominator, denominator) {
+.symbolic_units <- function(nominator, denominator = vector("character")) {
   structure(list(nominator = nominator, 
                  denominator = denominator), 
             class = "symbolic_units")
@@ -41,12 +41,12 @@ Ops.symbolic_units <- function(e1, e2) {
                "if both arguments are symbolic units", sep = "\n"))       # nocov
   }
   
-  if (.Generic == "*") .multiply_symbolic_units(e1, e2)              # multiplication
+  if (.Generic == "*") .multiply_symbolic_units(e1, e2)         # multiplication
   else .multiply_symbolic_units(e1, .invert_symbolic_units(e2)) # division
 }
 
 .make_symbolic_units <- function(name) {
-  .symbolic_units(name, vector("character"))
+  .symbolic_units(name)
 }
 
 #' The "unit" type for vectors that are actually dimension-less.
@@ -100,36 +100,50 @@ make_unit <- function(name) {
 }
 
 .simplify_units <- function(sym_units) {
-  # invariant for nominator and denominator is that they are sorted
-  # so we can simplify them via a merge.
-  delete_nom <- c()
-  delete_denom <- c()
-  i <- j <- 1
-  while (i <= length(sym_units$nominator) && j <= length(sym_units$denominator)) {
-    n <- sym_units$nominator[i]
-    d <- sym_units$denominator[j]
-    # FIXME: we should also simplify if we can convert between the two!
-    if (n == d) { # there is a lot of copying here, so it is an O(n**2) algorithm
-                  # but I don't expect long lists of units to be removed.
-      delete_nom <- c(delete_nom, i)
-      delete_denom <- c(delete_denom, j)
-      i <- i + 1
-      j <- j + 1
-    } else if (n < d) {
-      i <- i + 1
-    } else {
-      j <- j + 1
-    }
-    
-    #cat("simplify ", i, " ", j, "\n")
+  
+  # This is just a brute force implementation that takes each element in the
+  # nominator and tries to find a value in the denominator that can be converted
+  # to the same unit. If so, we pull out the conversion constant, get rid of
+  # both terms, and move on. At the end we return a units object with the
+  # conversion constant and the new symbolic units type. Converting units can then
+  # be done as this `x <- as.numeric(x) * .simplify_units(units(x))`.
+  
+  # Returning a units instead of a symbolic_units object is not idea, it means that
+  # you cannot simply multiply or divide symbolic units together, you need to wrap
+  # each pair-wise operator in units() but it is necessary when conversion constants
+  # must be taken into account.
+  
+  # The nominator and denominator are first simplified independently, just to get
+  # units like `m*km` translated into the same unit, `1000*m*m`, which is not done
+  # when just scanning through and comparing nominator and denominator.
+  
+  .simplify_units_sequence <- function(x) {
+    conversion_constant <- 1
+    new_x <- x
+    as.units(conversion_constant, .symbolic_units(x))
   }
   
-  new_nominator <- sym_units$nominator
-  new_denominator <- sym_units$denominator
+  nom <- .simplify_units_sequence(sym_units$nominator)
+  denom <- .simplify_units_sequence(sym_units$denominator)
+  conversion_constant <- as.numeric(nom) / as.numeric(denom)
+  new_nominator <- units(nom)$nominator     # the results from the sequence simplification
+  new_denominator <- units(denom)$nominator # is always only stored in the nominator
+  
+  delete_nom <- c()
+  for (i in seq_along(new_nominator)) {
+    for (j in seq_along(new_denominator)) {
+      conversion <- .get_conversion_constant(new_nominator[i], new_denominator[j])
+      if (!is.na(conversion)) {
+        conversion_constant <- conversion_constant * conversion
+        delete_nom <- c(delete_nom, i)
+        new_denominator <- new_denominator[-j]
+        break
+      }
+    }
+  }
   if (length(delete_nom) > 0)
     new_nominator <- new_nominator[-delete_nom]
-  if (length(delete_denom) > 0)
-    new_denominator <- new_denominator[-delete_denom]
   
-  .symbolic_units(new_nominator, new_denominator)
+  as.units(conversion_constant, .symbolic_units(new_nominator, new_denominator))
 }
+
