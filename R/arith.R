@@ -62,11 +62,18 @@ Ops.units <- function(e1, e2) {
     }
   } 
   
-  if (pw) { # FIXME: I am not sure how to take powers yet
+  if (pw) { # FIXME: I am not sure how to take powers of non-integers yet
     if (inherits(e2, "units") || length(e2) > 1L)
       stop("power operation only allowed with length-one numeric power")
-    attr(e1, "units") = paste0("(", units(e1), ")", .Generic, e2)
+    if (round(e2) != e2)
+      stop("currently you can only take integer powers of units")
+    
+    # we repeat each unit the number of times given by e2. They are already
+    # sorted so they will remain sorted.
+    attr(e1, "units") <- .symbolic_units(rep(units(e1)$nominator, e2),
+                                         rep(units(e1)$denonminator, e2))
   }
+  
   NextMethod(.Generic)
 }
 

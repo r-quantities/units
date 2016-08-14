@@ -47,13 +47,10 @@ test_that("we can take powers of units", {
   
   expect_equal(as.numeric(ux ** 2), x ** 2)
   expect_equal(as.numeric(ux ^ 2), x ^ 2)
+  expect_equal(as.character(units(ux ** 2)), "m*m")
+  expect_equal(as.character(units(ux ^ 2)), "m*m")
   
   expect_error(ux ^ ux)
   expect_error(ux ^ x)
-  
-  # FIXME: There ought to be a test that the expressions get the right units
-  # but I am not entirely sure how that should be wrapped. Just checking string
-  # equality would give problems if units are equivalent but needs to be converted
-  # first...
 })
 
