@@ -80,12 +80,16 @@ Arithmetic operations verify units, and create new ones
 ```{r}
 a + a
 a * a
-a ^ 2.5
+a ^ 2
+a ** -2
+a ** 0
 ```
 and convert if necessary:
 ```{r}
 a + b # m/s + km/h -> m/s
 ```
+
+Currently powers are only supported for integer powers, so using `a ** 2.5` would result in an error.
 
 There are some basic simplification of units:
 ```{r}
