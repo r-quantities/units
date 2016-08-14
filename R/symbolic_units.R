@@ -100,11 +100,31 @@ make_unit <- function(name) {
 }
 
 .get_conversion_constant_sequence <- function(s1, s2) {
-  # test implementation
-  .get_unit_conversion_constant(.symbolic_units(s1), .symbolic_units(s2))
+  conversion_constant <- 1
+  remaining_s2 <- s2
+  for (i in seq_along(s1)) {
+    for (j in seq_along(remaining_s2)) {
+      convert <- .get_unit_conversion_constant(s1[i], remaining_s2[j])
+      if (!is.na(convert)) {
+        conversion_constant <- conversion_constant * convert
+        remaining_s2 <- remaining_s2[-j]
+        break
+      }
+    }
+  }
+  # if we make it through these loops and there are still units left in s2
+  # then there are some we couldn't convert, and then we return NA
+  if (length(remaining_s2) > 0) 
+    NA
+  else 
+    conversion_constant
 }
 
 .get_conversion_constant <- function(u1, u2) {
+  # if the expressions are well formed, and can be converted, we can convert
+  # nominator and denominator independently. If either cannot be converted
+  # then the function call returns NA which will also be returned (since NA and /)
+  # will convert to NA.
   .get_conversion_constant_sequence(u1$nominator, u2$nominator) /
     .get_conversion_constant_sequence(u1$denominator, u2$denominator)
 }

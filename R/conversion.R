@@ -27,7 +27,7 @@ NULL
     value <- units(value)
   
   attr(x, "units") = value
-  class(x) = "units"
+  class(x) <- "units"
   x
 }
 
@@ -60,7 +60,7 @@ NULL
   }
   
   x <- conversion_constant * x
-  attr(x, "units") = value
+  attr(x, "units") <- value
   x
 }
 
@@ -115,7 +115,7 @@ as.units.difftime <- function(x, value) {
   else if (u == "days") # days -> d
     x <- x * make_unit("d")
   else if (u == "weeks") { # weeks -> 7 days
-    x = 7 * x
+    x <- 7 * x
     x <- x * make_unit("d")
   } else 
     stop(paste("unknown time units", u, "in difftime object"))
@@ -146,7 +146,7 @@ as.data.frame.units <- as.data.frame.numeric
 #' dt
 as.dt <- function(x) {
   stopifnot(inherits(x, "units"))
-  u = as.character(units(x))
+  u <- as.character(units(x))
   if (u == "s")
     as.difftime(x, units = "secs")
   else if (u == "m")
@@ -162,8 +162,8 @@ as.dt <- function(x) {
 
 #' @export
 `[.units` <- function(x, i, j,..., drop = TRUE) {
-  ret = unclass(x)[i]
-  attr(ret, "units") = units(x)
-  class(ret) = "units"
+  ret <- unclass(x)[i]
+  attr(ret, "units") <- units(x)
+  class(ret) <- "units"
   ret
 }
