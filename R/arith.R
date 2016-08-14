@@ -39,11 +39,11 @@ Ops.units <- function(e1, e2) {
     if (inherits(e1, "units") && inherits(e2, "units")) {
       # both vectors have units
       if (.Generic == "*") {
-        attr(e1, "units") <- units(e1) * units(e2)
-        attr(e2, "units") <- units(e1) * units(e2)
+        e1 <- unclass(e1) * (units(e1) * units(e2))
+        e2 <- unclass(e2) * (units(e1) * units(e2))
       } else if (.Generic == "/") {
-        attr(e1, "units") <- units(e1) / units(e2)
-        attr(e2, "units") <- units(e1) / units(e2)
+        e1 <- unclass(e1) * (units(e1) / units(e2))
+        e2 <- unclass(e2) * (units(e1) / units(e2))
       } else {
         stop(paste("Unexpected operator", .Generic)) # nocov
       }
