@@ -89,7 +89,7 @@ make_unit <- function(name) {
   as.units.default(1, .make_symbolic_units(name))
 }
 
-.get_conversion_constant <- function(u1, u2) {
+.get_unit_conversion_constant <- function(u1, u2) {
   # FIXME: Unit conversion only has limited support right now
   # I always just ask ud to convert units.
   su1 <- as.character(u1)
@@ -97,6 +97,16 @@ make_unit <- function(name) {
   
   if (!udunits2::ud.are.convertible(su1, su2)) return(NA)
   ud.convert(1, su1, su2)
+}
+
+.get_conversion_constant_sequence <- function(s1, s2) {
+  # test implementation
+  .get_unit_conversion_constant(.symbolic_units(s1), .symbolic_units(s2))
+}
+
+.get_conversion_constant <- function(u1, u2) {
+  .get_conversion_constant_sequence(u1$nominator, u2$nominator) /
+    .get_conversion_constant_sequence(u1$denominator, u2$denominator)
 }
 
 .simplify_units <- function(sym_units) {
@@ -120,7 +130,7 @@ make_unit <- function(name) {
   delete_nom <- c()
   for (i in seq_along(new_nominator)) {
     for (j in seq_along(new_denominator)) {
-      conversion <- .get_conversion_constant(new_nominator[i], new_denominator[j])
+      conversion <- .get_unit_conversion_constant(new_nominator[i], new_denominator[j])
       if (!is.na(conversion)) {
         conversion_constant <- conversion_constant * conversion
         delete_nom <- c(delete_nom, i)
