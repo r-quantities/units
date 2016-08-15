@@ -30,8 +30,8 @@ R package, which in turn is build upon the
 The `udunits2` library provides the following operations:
 
 * validating whether a string, such as `m/s` is a valid physical unit
-* verifying whether two strings such as `m/s` and `km/h` are convertable
-* converting values between two convertable units 
+* verifying whether two strings such as `m/s` and `km/h` are convertible
+* converting values between two convertible units 
 * providing names and symbols for specific units
 * handle different character encodings (utf8, ascii, iso-8859-1 and latin1)
 
@@ -96,13 +96,13 @@ There are some basic simplification of units:
 t <- with(ud_units, s)
 a * t
 ```
-but not yet when units need to be converted before they can be simplified:
+which also work when units need to be converted before they can be simplified:
 ```{r}
 t <- with(ud_units, min)
 a * t
 ```
 
-Allowed operations that require convertable units are `+`, `-`, `==`,
+Allowed operations that require convertible units are `+`, `-`, `==`,
 `!=`, `<`, `>`, `<=`, `>=`.  Operations that lead to new units are
 `*`, `/`, and the power operations `**` and `^`.
 
