@@ -1,13 +1,14 @@
 <!--
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Measurement Units of Physical Quantities for R Vectors}
+%\VignetteIndexEntry{Measurement Units of  Quantities for R Vectors}
 -->
 
-# Measurement Units of Physical Quantities for R Vectors
+# Measurement Units of Quantities for R Vectors
 
 R has little support for physical measurement units.  The exception
 is formed by time differences: time differences objects of class
 `difftime` have a `units` attribute that can be modified:
+
 ```{r}
 t1 = Sys.time() 
 t2 = t1 + 3600 
@@ -41,22 +42,35 @@ physical measurement units associated with them, in a similar way as
 
 ## Setting units, unit conversion
 
-Numeric data with explicit physical units can be specified by `as.units`:
+Units must be defined before they are used. Units are defined from a string but by explicitly defining units before they are used we avoid having new units in use due to misspellings. A unit is defined using the `make_units` function
+
 ```{r}
 library(units)
-(a = as.units(1:10, "m/s"))
+m <- make_unit("m")
+s <- make_unit("s")
 ```
-and converted by setting a new physical unit:
+
+and can then be used in expressions
+
+```{r}
+(a <- 1:10 * m/s)
+```
+
+Units from `udunits2` are defined in a list, `ud_units` and can be used either by attaching the list or using `with`. The latter is preferable since some unit names will conflict with function names, e.g. `min` for minuts and minimum.
+
+```{r}
+rm(m) ; rm(s)
+data("ud_units")
+with(ud_units, 1:10 * m/s)
+```
+
+When conversion is meaningful, such as hours to seconds or meters to kilometers, conversion can be done explicitly by setting the units of a vector
 ```{r}
 b = a
-units(b) = "km/h"
+units(b) <- with(ud_units, km/h)
 b
 ```
-Impossible conversions lead to an error:
-```{r}
-x = try(units(a) <- "secs")
-attr(x, "condition")[[1]]
-```
+
 
 ## Basic manipulations
 
@@ -66,17 +80,28 @@ Arithmetic operations verify units, and create new ones
 ```{r}
 a + a
 a * a
-a ^ 2.5
+a ^ 2
+a ** -2
+a ** 0
 ```
 and convert if necessary:
 ```{r}
 a + b # m/s + km/h -> m/s
 ```
-but units are not simplified:
+
+Currently powers are only supported for integer powers, so using `a ** 2.5` would result in an error.
+
+There are some basic simplification of units:
 ```{r}
-t = as.units(1, "s")
+t <- with(ud_units, s)
 a * t
 ```
+but not yet when units need to be converted before they can be simplified:
+```{r}
+t <- with(ud_units, min)
+a * t
+```
+
 Allowed operations that require convertable units are `+`, `-`, `==`,
 `!=`, `<`, `>`, `<=`, `>=`.  Operations that lead to new units are
 `*`, `/`, and the power operations `**` and `^`.
@@ -87,7 +112,7 @@ Allowed operations that require convertable units are `+`, `-`, `==`,
 Mathematical operations allowed are: `abs`, `sign`, `floor`,
 `ceiling`, `trunc`, `round`, `signif`, `log`, `cumsum`, `cummax`, `cummin`.
 ```{r}
-signif(a^2.5, 3)
+signif(a ** 2, 3)
 cumsum(a)
 log(a) # base defaults to exp(1)
 log(a, base = 10)
@@ -101,7 +126,7 @@ sum(a)
 min(a)
 max(a)
 range(a)
-min(as.units(1, "m/s"), as.units(1, "km/h")) # converts to first unit:
+with(ud_units, min(m/s, km/h)) # converts to first unit:
 ```
 
 ### Printing
@@ -134,8 +159,7 @@ From `difftime` to `units`:
 t1 = Sys.time() 
 t2 = t1 + 3600 
 d = t2 - t1
-as.units(d)
-(du = as.units(d, "d"))
+du <- as.units(d)
 ```
 vice versa:
 ```{r}
@@ -146,12 +170,12 @@ dt
 
 ## units in `matrix` objects
 ```{r}
-as.units(matrix(1:4,2,2), "m/s")
-as.units(matrix(1:4,2,2), "m/s") * as.units(4, "m/s")
+with(ud_units, matrix(1:4,2,2) * m/s)
+with(ud_units, matrix(1:4,2,2) * m/s * 4 * m/s)
 ```
 but
 ```{r}
-as.units(matrix(1:4,2,2), "m/s") %*% as.units(4:3, "m/s")
+with(ud_units, (matrix(1:4,2,2) * m/s) %*% (4:3 * m/s))
 ```
 strips units.
 
@@ -159,7 +183,10 @@ strips units.
 
 ```{r}
 set.seed(131)
-d = data.frame(x = runif(4), y = as.units(runif(4), "s"), z = as.units(1:4, "m/s"))
+d <- with(ud_units,
+         data.frame(x = runif(4), 
+                    y = runif(4) * s, 
+                    z = 1:4 * m/s))
 d
 summary(d)
 d$yz = with(d, y * z)

@@ -4,12 +4,12 @@
 \alias{as.units}
 \title{convert object to a units object}
 \usage{
-as.units(x, value = "1")
+as.units(x, value = unitless)
 }
 \arguments{
 \item{x}{object of class units}
 
-\item{value}{target unit, defaults to '1'}
+\item{value}{target unit, defaults to `unitless`}
 }
 \description{
 convert object to a units object

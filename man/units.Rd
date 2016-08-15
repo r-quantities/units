@@ -16,8 +16,9 @@
 Convert units
 }
 \examples{
-a = as.units(1:3, "m/s")
-units(a) = "km/h"
+data(ud_units)
+a <- with(ud_units, 1:3 * m/s)
+units(a) <- with(ud_units, km/h)
 a
 }
 
