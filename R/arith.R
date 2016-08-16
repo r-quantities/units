@@ -76,9 +76,9 @@ Ops.units <- function(e1, e2) {
       attr(e1, "units") <- unitless
     } else if (e2 > 0) {
       attr(e1, "units") <- .symbolic_units(rep(units(e1)$nominator, e2),
-                                           rep(units(e1)$denonminator, e2))
+                                           rep(units(e1)$denominator, e2))
     } else {
-      attr(e1, "units") <- .symbolic_units(rep(units(e1)$denonminator, abs(e2)),
+      attr(e1, "units") <- .symbolic_units(rep(units(e1)$denominator, abs(e2)),
                                            rep(units(e1)$nominator, abs(e2)))
     }
         
