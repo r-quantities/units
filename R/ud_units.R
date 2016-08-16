@@ -4,12 +4,16 @@
 # in the list, so there are no explicit tests for this, thus the nocov
 
 .read_ud_db_symbols <- function(dir, filename) {
+  if (! requireNamespace("xml2", quietly = TRUE))
+    stop("package xml2 required to create ud_units database")
   database <- xml2::read_xml(file(paste(dir, filename, sep = "/")))
   symbols <- xml2::xml_find_all(database, ".//symbol[not(@*)]")
   unlist(Map(function(node) as.character(xml2::xml_contents(node)), symbols))
 }
 
 .read_ud_db_scales <- function(dir, filename) {
+  if (! requireNamespace("xml2", quietly = TRUE))
+    stop("package xml2 required to create ud_units database")
   database <- xml2::read_xml(file(paste(dir, filename, sep = "/")))
   symbols <- xml2::xml_find_all(database, ".//value")
   symbols
