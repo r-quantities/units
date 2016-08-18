@@ -18,6 +18,8 @@
 #' a <- with(ud_units, 1:3 * m/s)
 #' b <- with(ud_units, 1:3 * m/s)
 #' a + b
+#' a * b
+#' a / b
 Ops.units <- function(e1, e2) {
   if (nargs() == 1)
     stop(paste("unary", .Generic, "not defined for \"units\" objects"))
@@ -32,8 +34,11 @@ Ops.units <- function(e1, e2) {
   if (!eq && !prd && !pw)
     stop(paste("operation", .Generic, "not allowed"))
   
-  if (eq)
+  if (eq) {
+  	if (!(inherits(e1, "units") && inherits(e2, "units")))
+      stop("both operands of the expression should be \"units\" objects") # nocov
     units(e2) <- units(e1) # convert before we can compare
+  }
   
   if (prd) {
     if (inherits(e1, "units") && inherits(e2, "units")) {

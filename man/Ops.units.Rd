@@ -24,5 +24,7 @@ data(ud_units)
 a <- with(ud_units, 1:3 * m/s)
 b <- with(ud_units, 1:3 * m/s)
 a + b
+a * b
+a / b
 }
 
