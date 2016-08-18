@@ -22,3 +22,10 @@ c.units <- function(..., recursive = FALSE) {
   attr(x, "units") = value
   x
 }
+
+#' @export
+diff.units = function(x, ...) { 
+  u = units(x)
+  # units(x) = u will not work here, as units(x) is NULL!
+  .as.units(NextMethod(), u)
+}
