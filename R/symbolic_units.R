@@ -97,7 +97,7 @@ make_unit <- function(name) {
   
   if (su1 == su2) return(1.)
   if (!udunits2::ud.are.convertible(su1, su2)) return(NA)
-  ud.convert(1, su1, su2)
+  udunits2::ud.convert(1, su1, su2)
 }
 
 .get_conversion_constant_sequence <- function(s1, s2) {
@@ -114,10 +114,10 @@ make_unit <- function(name) {
     }
   }
   # if we make it through these loops and there are still units left in s2
-  # then there are some we couldn't convert, and then we return NA
-  if (length(remaining_s2) > 0) 
-    NA
-  else 
+  # then there are some we couldn't convert return NA
+  if (length(remaining_s2) > 0) {
+      NA_real_
+  } else 
     conversion_constant
 }
 
@@ -126,8 +126,15 @@ make_unit <- function(name) {
   # nominator and denominator independently. If either cannot be converted
   # then the function call returns NA which will also be returned (since NA and /)
   # will convert to NA.
-  .get_conversion_constant_sequence(u1$nominator, u2$nominator) /
+  const = .get_conversion_constant_sequence(u1$nominator, u2$nominator) /
     .get_conversion_constant_sequence(u1$denominator, u2$denominator)
+  if (is.na(const)) { # try brute force, through udunits2:
+	str1 = as.character(u1)
+	str2 = as.character(u2)
+  	if (udunits2::ud.are.convertible(str1, str2))
+      const = udunits2::ud.convert(1, str1, str2)
+  } 
+  const
 }
 
 .simplify_units <- function(sym_units) {

@@ -26,8 +26,9 @@
                .read_ud_db_symbols(udunits2_dir, "udunits2-derived.xml"),
                .read_ud_db_symbols(udunits2_dir, "udunits2-accepted.xml"),
                .read_ud_db_symbols(udunits2_dir, "udunits2-common.xml"))
+  # symbols = symbols[symbols == make.names(symbols)]
+  ## (this would drop "'"  "\"" "%"  "in")
   symbols
-  symbols[symbols == make.names(symbols)]
 }
 
 .get_ud_prefixes <- function() {
@@ -53,7 +54,7 @@
 
 #' List containing pre-defined units from the udunits2 package.
 #' 
-#' Load it in using data(ud_units)
+#' Lazy loaded when used
 #' 
 #' @export
 ud_units <- NULL

@@ -9,7 +9,7 @@
 ud_units
 }
 \description{
-Load it in using data(ud_units)
+Lazy loaded when used
 }
 \keyword{datasets}
 

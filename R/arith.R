@@ -14,12 +14,14 @@
 #' @export
 #'
 #' @examples
-#' data(ud_units)
 #' a <- with(ud_units, 1:3 * m/s)
 #' b <- with(ud_units, 1:3 * m/s)
 #' a + b
 #' a * b
 #' a / b
+#' a <- make_unit("kg m-3") # not understood by R as a division, but understood by udunits2
+#' b <- with(ud_units, 1 * kg/m/m/m)
+#' a + b
 Ops.units <- function(e1, e2) {
   if (nargs() == 1)
     stop(paste("unary", .Generic, "not defined for \"units\" objects"))
