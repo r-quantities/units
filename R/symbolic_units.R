@@ -61,19 +61,19 @@ as.character.symbolic_units <- function(x, ...) {
   
   if (length(x$nominator) == 0) {
     nom_str <- "1"
-  } else if (length(x$nominator) == 1) {
-    nom_str <- x$nominator
   } else {
     nom_str <- paste0(x$nominator, collapse = "*")
   }
   
   if (length(x$denominator) > 0) {
     sep = "/"
-    if (length(x$denominator) == 1) {
-      denom_str = x$denominator
-    } else {
-      denom_str <- paste0(x$denominator, collapse = "/")
-    }
+	fix = function(den) {
+		if (length(grep("/", den)) || length(grep("-", den)))
+			paste0("(", den, ")")
+		else
+			den
+	}
+    denom_str <- paste0(sapply(x$denominator, fix), collapse = "/")
   }
 
   paste0(nom_str, sep, denom_str)
