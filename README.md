@@ -8,7 +8,7 @@ Measurement Units for R Vectors
 
 See:
 
-* [blog post](http://r-spatial.org/r/2016/06/10/units.html)
+* blog posts: [first](http://r-spatial.org/r/2016/06/10/units.html), [second](http://r-spatial.org/r/2016/08/16/units2.html)
 * [package vignette](https://cran.r-project.org/web/packages/units/vignettes/units.html)
 * the [udunits2 R package](https://github.com/pacificclimate/Rudunits2) github page
 
