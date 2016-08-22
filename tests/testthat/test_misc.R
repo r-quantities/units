@@ -29,5 +29,6 @@ test_that("We can concatenate units if their units can be converted", {
 
 test_that("We can use diff on a units object", {
   x = 1:10 * make_unit("m")
-  expect_equal(diff(x), rep(1, 9))
+  y = rep(1,9) * make_unit("m")
+  expect_equal(diff(x), y)
 })
