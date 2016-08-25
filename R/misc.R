@@ -15,7 +15,6 @@ c.units <- function(..., recursive = FALSE) {
   as.units(x, u)
 }
 
-
 .as.units = function(x, value) {
   x = unclass(x)
   class(x) = "units"
@@ -28,4 +27,14 @@ diff.units = function(x, ...) {
   u = units(x)
   # units(x) = u will not work here, as units(x) is NULL!
   .as.units(NextMethod(), u)
+}
+
+#' type_sum for tidy tibble printing
+#' 
+#' type_sum for tidy tibble printing
+#' @param x object of class units
+#' @param ... ignored
+#' @export
+type_sum.units <- function(x, ...) {
+  "units"
 }
