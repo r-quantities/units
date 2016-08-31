@@ -32,3 +32,8 @@ test_that("We can use diff on a units object", {
   y = rep(1,9) * make_unit("m")
   expect_equal(diff(x), y)
 })
+
+test_that("type_sum is available for units objects", {
+  library(tibble)
+  expect_equal(type_sum(make_unit("m")), "units")
+})
