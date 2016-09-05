@@ -95,6 +95,8 @@ make_unit <- function(name) {
   su1 <- as.character(u1)
   su2 <- as.character(u2)
   
+  if (su1 == su2) return(1)
+  
   if (!udunits2::ud.are.convertible(su1, su2)) return(NA)
   ud.convert(1, su1, su2)
 }
