@@ -27,3 +27,13 @@ test_that("We can concatenate units if their units can be converted", {
   expect_equal(as.units(y, units(make_unit("m"))), z[1:4 + 4])
 })
 
+test_that("We can use diff on a units object", {
+  x = 1:10 * make_unit("m")
+  y = rep(1,9) * make_unit("m")
+  expect_equal(diff(x), y)
+})
+
+test_that("type_sum is available for units objects", {
+  library(tibble)
+  expect_equal(type_sum(make_unit("m")), "units")
+})

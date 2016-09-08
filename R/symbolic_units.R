@@ -59,21 +59,21 @@ as.character.symbolic_units <- function(x, ...) {
   sep <- ""
   denom_str <- ""
   
+  fix = function(term) {
+    if (length(grep("/", term)) || length(grep("-", term)))
+      paste0("(", term, ")")
+    else
+      term
+  }
   if (length(x$nominator) == 0) {
     nom_str <- "1"
-  } else if (length(x$nominator) == 1) {
-    nom_str <- x$nominator
   } else {
-    nom_str <- paste0(x$nominator, collapse = "*")
+    nom_str <- paste0(sapply(x$nominator, fix), collapse = "*")
   }
   
   if (length(x$denominator) > 0) {
     sep = "/"
-    if (length(x$denominator) == 1) {
-      denom_str = x$denominator
-    } else {
-      denom_str <- paste0(x$denominator, collapse = "/")
-    }
+    denom_str <- paste0(sapply(x$denominator, fix), collapse = "/")
   }
 
   paste0(nom_str, sep, denom_str)
@@ -95,10 +95,10 @@ make_unit <- function(name) {
   su1 <- as.character(u1)
   su2 <- as.character(u2)
   
-  if (su1 == su2) return(1)
-  
+  if (su1 == su2) return(1.)
+
   if (!udunits2::ud.are.convertible(su1, su2)) return(NA)
-  ud.convert(1, su1, su2)
+  udunits2::ud.convert(1, su1, su2)
 }
 
 .get_conversion_constant_sequence <- function(s1, s2) {
@@ -115,10 +115,10 @@ make_unit <- function(name) {
     }
   }
   # if we make it through these loops and there are still units left in s2
-  # then there are some we couldn't convert, and then we return NA
-  if (length(remaining_s2) > 0) 
-    NA
-  else 
+  # then there are some we couldn't convert return NA
+  if (length(remaining_s2) > 0) {
+      NA_real_
+  } else 
     conversion_constant
 }
 
@@ -127,8 +127,15 @@ make_unit <- function(name) {
   # nominator and denominator independently. If either cannot be converted
   # then the function call returns NA which will also be returned (since NA and /)
   # will convert to NA.
-  .get_conversion_constant_sequence(u1$nominator, u2$nominator) /
+  const = .get_conversion_constant_sequence(u1$nominator, u2$nominator) /
     .get_conversion_constant_sequence(u1$denominator, u2$denominator)
+  if (is.na(const)) { # try brute force, through udunits2:
+	str1 = as.character(u1)
+	str2 = as.character(u2)
+  	if (udunits2::ud.are.convertible(str1, str2))
+      const = udunits2::ud.convert(1, str1, str2)
+  } 
+  const
 }
 
 .simplify_units <- function(sym_units) {

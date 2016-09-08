@@ -41,3 +41,18 @@ test_that("we can simplify basic units with conversion", {
   expect_equal(as.character(units(units(m/s)/km)), "1/s")
   expect_equal(as.character(units(units(m*m)/km)), "m")
 })
+
+test_that("we can compare units", {
+  g <- make_unit("g")
+  m <- make_unit("m")
+  s <- make_unit("s")
+  q <- make_unit("q")
+  e1 <- 1:10 * g * m / s / q
+  e2 <- 1:10 * m / s
+  expect_equal(units:::.same_units(units(e1),units(e1)), TRUE)
+  expect_equal(units:::.same_units(units(e1),units(e2)), FALSE)
+  expect_equal(units(e1) == units(e1), TRUE)
+  expect_equal(units(e1) != units(e1), FALSE)
+  expect_equal(units(e1) == units(e2), FALSE)
+  expect_equal(units(e1) != units(e2), TRUE)
+})

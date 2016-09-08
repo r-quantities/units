@@ -16,7 +16,6 @@ NULL
 #' @examples
 #' x = 1:3
 #' class(x)
-#' data(ud_units)
 #' units(x) <- with(ud_units, m/s) # valid
 #' class(x)
 #' y = 2:5
@@ -40,7 +39,6 @@ NULL
 #' @export
 #' 
 #' @examples
-#' data(ud_units)
 #' a <- with(ud_units, 1:3 * m/s)
 #' units(a) <- with(ud_units, km/h)
 #' a
@@ -50,7 +48,7 @@ NULL
   if (inherits(value, "units"))
     value <- units(value)
   
-  if (units(x) == value) # do nothing:
+  if (identical(units(x), value)) # do nothing:
     return(x)
   
   # We need to convert from one unit to another

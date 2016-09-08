@@ -14,9 +14,13 @@
 #' @export
 #'
 #' @examples
-#' data(ud_units)
 #' a <- with(ud_units, 1:3 * m/s)
 #' b <- with(ud_units, 1:3 * m/s)
+#' a + b
+#' a * b
+#' a / b
+#' a <- make_unit("kg m-3") # not understood by R as a division, but understood by udunits2
+#' b <- with(ud_units, 1 * kg/m/m/m)
 #' a + b
 Ops.units <- function(e1, e2) {
   if (nargs() == 1)
@@ -32,8 +36,11 @@ Ops.units <- function(e1, e2) {
   if (!eq && !prd && !pw)
     stop(paste("operation", .Generic, "not allowed"))
   
-  if (eq)
+  if (eq) {
+  	if (!(inherits(e1, "units") && inherits(e2, "units")))
+      stop("both operands of the expression should be \"units\" objects") # nocov
     units(e2) <- units(e1) # convert before we can compare
+  }
   
   if (prd) {
     if (inherits(e1, "units") && inherits(e2, "units")) {
@@ -76,9 +83,9 @@ Ops.units <- function(e1, e2) {
       attr(e1, "units") <- unitless
     } else if (e2 > 0) {
       attr(e1, "units") <- .symbolic_units(rep(units(e1)$nominator, e2),
-                                           rep(units(e1)$denonminator, e2))
+                                           rep(units(e1)$denominator, e2))
     } else {
-      attr(e1, "units") <- .symbolic_units(rep(units(e1)$denonminator, abs(e2)),
+      attr(e1, "units") <- .symbolic_units(rep(units(e1)$denominator, abs(e2)),
                                            rep(units(e1)$nominator, abs(e2)))
     }
         
