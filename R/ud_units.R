@@ -14,7 +14,7 @@
   if (! requireNamespace("xml2", quietly = TRUE))
     stop("package xml2 required to create ud_units database")
   database <- xml2::read_xml(file(paste(dir, filename, sep = "/")))
-  symbols <- xml2::xml_find_all(database, ".//symbol[not(@*)]")
+  symbols <- xml2::xml_find_all(database, ".//symbol")
   unlist(Map(function(node) as.character(xml2::xml_contents(node)), symbols))
 }
 
