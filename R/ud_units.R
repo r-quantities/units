@@ -47,8 +47,8 @@
   ud_prefixes <- .get_ud_prefixes()
   ud_symbols <- .get_ud_symbols()
   expand_with_prefixes <- function(symbol) paste(ud_prefixes, symbol, sep = "")
-  symbols <- c(ud_symbols, 
-               unlist(Map(expand_with_prefixes, ud_symbols), use.names = FALSE))
+  symbols <- unique(c(ud_symbols,
+               unlist(Map(expand_with_prefixes, ud_symbols), use.names = FALSE)))
   ud_units <- Map(make_unit, symbols)
   names(ud_units) <- symbols
   ud_units
