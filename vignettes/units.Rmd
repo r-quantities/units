@@ -1,6 +1,6 @@
 <!--
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Measurement Units of  Quantities for R Vectors}
+%\VignetteIndexEntry{Measurement Units of Quantities for R Vectors}
 -->
 
 # Measurement Units of Quantities for R Vectors

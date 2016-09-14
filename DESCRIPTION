@@ -6,7 +6,7 @@ Authors@R: c(person("Edzer", "Pebesma", role = c("aut", "cre"),
 		person("Thomas", "Mailund", role = "aut", email = "mailund@birc.au.dk"))
 Depends: R (>= 3.0.0)
 Imports: udunits2
-Suggests: xml2, knitr, tibble, testthat, covr
+Suggests: xml2, hms, tibble, knitr, testthat, covr
 VignetteBuilder: knitr
 Description: Support for measurement units in R vectors, based on the udunits library from unidata.
 LazyData: yes

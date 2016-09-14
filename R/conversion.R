@@ -132,7 +132,7 @@ as.data.frame.units <- as.data.frame.numeric
 #' @param x object of class \code{units}
 #'
 #' @export
-#' 
+#' @details \link{as.difftime} is not a generic, hence this strange name.
 #' @examples
 #' 
 #' t1 = Sys.time() 
@@ -147,7 +147,7 @@ as.dt <- function(x) {
   u <- as.character(units(x))
   if (u == "s")
     as.difftime(x, units = "secs")
-  else if (u == "m")
+  else if (u == "min")
     as.difftime(x, units = "mins")
   else if (u == "h")
     as.difftime(x, units = "hours")
@@ -155,6 +155,26 @@ as.dt <- function(x) {
     as.difftime(x, units = "days")
   else
     stop(paste("cannot convert unit", u, "to difftime object"))
+}
+
+#' Convert units to hms
+#'
+#' Convert units to hms
+#' @param x object of class units
+#' @param ... passed on to as.hms.difftime
+#' @return object of class hms
+#' @examples
+#' if (require(hms)) {
+#'  as.hms(1:10 * with(ud_units, s))
+#'  as.hms(1:10 * with(ud_units, min))
+#'  as.hms(1:10 * with(ud_units, h))
+#'  as.hms(1:10 * with(ud_units, d))
+#' }
+#' @export
+as.hms.units = function(x, ...) {
+	if (! requireNamespace("hms", quietly = TRUE))
+		stop("package hms required for converting units to hms")
+	hms::as.hms(as.dt(x), ...)
 }
 
 

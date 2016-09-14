@@ -12,6 +12,9 @@ as.dt(x)
 \description{
 convert units object into difftime object
 }
+\details{
+\link{as.difftime} is not a generic, hence this strange name.
+}
 \examples{
 
 t1 = Sys.time() 
