@@ -4,7 +4,7 @@
 \alias{as.hms.units}
 \title{Convert units to hms}
 \usage{
-as.hms.units(x, ...)
+\method{as.hms}{units}(x, ...)
 }
 \arguments{
 \item{x}{object of class units}

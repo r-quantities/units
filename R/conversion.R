@@ -2,6 +2,7 @@ NULL
 #' @import utils
 #' @import stats
 #' @import udunits2
+#' @importFrom hms as.hms
 NULL
 #Sys.setenv(UDUNITS2_XML_PATH = "/usr/local/share/udunits/udunits2.xml")
 
@@ -172,8 +173,6 @@ as.dt <- function(x) {
 #' }
 #' @export
 as.hms.units = function(x, ...) {
-	if (! requireNamespace("hms", quietly = TRUE))
-		stop("package hms required for converting units to hms")
 	hms::as.hms(as.dt(x), ...)
 }
 
