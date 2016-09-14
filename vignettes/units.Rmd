@@ -19,8 +19,8 @@ d
 units(d) = "secs"
 d
 ```
-We see here that the `units` method is used to set and modify the
-unit of time difference. 
+We see here that the `units` method is used to retrieve and modify the
+unit of time differences. 
 
 This idea can be generalized to other physical units. The
 `units` package, presented here, does this, and builds upon the
@@ -35,7 +35,7 @@ The `udunits2` library provides the following operations:
 * providing names and symbols for specific units
 * handle different character encodings (utf8, ascii, iso-8859-1 and latin1)
 
-This R package, called `units`, uses R package udunits2 to extend
+Th `units` R package uses R package udunits2 to extend
 R with functionality for manipulating numeric vectors that have
 physical measurement units associated with them, in a similar way as
 `difftime` objects behave.
@@ -49,15 +49,30 @@ library(units)
 m <- make_unit("m")
 s <- make_unit("s")
 ```
-
-and can then be used in expressions
-
+The objects created, 
+```{r}
+m
+```
+represent a single value of the named quantity (``m'').  To obtain
+different quantities of named units, we use them in expressions
+such as 
 ```{r}
 (a <- 1:10 * m/s)
 ```
+the result, e.g. 
+```{r}
+a[10]
+```
+literally means "10 times 1 m divided by 1 s". In writing, the "1"
+values are omitted, and the multiplication is implicit.
 
-Units from `udunits2` are defined in a list, `ud_units` and can be used either by attaching the list or using `with`. The latter is preferable since some unit names will conflict with function names, e.g. `min` for minutes and minimum.
+The `units` package comes with a list of over 3000 predefined units, which
+can be used without calling `make_unit`. 
+One way of making this list available would be to attach it, but
+this leads to a number of name conflicts: `T` (for tesla) wound
+mask the value that otherwise refers to `TRUE`, .
 
+A cleaner approach is to use `with`, as in
 ```{r}
 rm(m) ; rm(s)
 with(ud_units, 1:10 * m/s)
@@ -70,7 +85,6 @@ units(b) <- with(ud_units, km/h)
 b
 ```
 
-
 ## Basic manipulations
 
 ### Arithmetic operations
@@ -81,14 +95,13 @@ a + a
 a * a
 a ^ 2
 a ** -2
-a ** 0
 ```
-and convert if necessary:
+and convert to the units of the first argument if necessary:
 ```{r}
 a + b # m/s + km/h -> m/s
 ```
 
-Currently powers are only supported for integer powers, so using `a ** 2.5` would result in an error.
+Currently, powers are only supported for integer powers, so using `a ** 2.5` would result in an error.
 
 There are some basic simplification of units:
 ```{r}
@@ -99,6 +112,11 @@ which also work when units need to be converted before they can be simplified:
 ```{r}
 t <- with(ud_units, min)
 a * t
+```
+Simplification to unit-less values gives the "1" as unit:
+```{r}
+m <- with(ud_units, m)
+a * t / m
 ```
 
 Allowed operations that require convertible units are `+`, `-`, `==`,
@@ -111,7 +129,7 @@ Allowed operations that require convertible units are `+`, `-`, `==`,
 Mathematical operations allowed are: `abs`, `sign`, `floor`,
 `ceiling`, `trunc`, `round`, `signif`, `log`, `cumsum`, `cummax`, `cummin`.
 ```{r}
-signif(a ** 2, 3)
+signif(a ** 2 / 3, 3)
 cumsum(a)
 log(a) # base defaults to exp(1)
 log(a, base = 10)
@@ -179,7 +197,7 @@ with(ud_units, (matrix(1:4,2,2) * m/s) %*% (4:3 * m/s))
 strips units.
 
 ## units objects in `data.frame`s
-
+units in `data.frame` objects are printed, but do not appear in `summary`:.
 ```{r}
 set.seed(131)
 d <- with(ud_units,
