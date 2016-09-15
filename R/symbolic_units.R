@@ -100,6 +100,7 @@ make_unit <- function(name) {
   udunits2::ud.convert(1, su1, su2)
 }
 
+# nocov start
 .get_conversion_constant_sequence <- function(s1, s2) {
   conversion_constant <- 1
   remaining_s2 <- s2
@@ -120,6 +121,7 @@ make_unit <- function(name) {
   } else 
     conversion_constant
 }
+# nocov end
 
 .get_conversion_constant <- function(u1, u2) {
   # if the expressions are well formed, and can be converted, we can convert
