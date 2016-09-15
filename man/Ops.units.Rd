@@ -2,7 +2,7 @@
 % Please edit documentation in R/arith.R
 \name{Ops.units}
 \alias{Ops.units}
-\title{Title}
+\title{S3 Ops Group Generic Functions for units objects}
 \usage{
 \method{Ops}{units}(e1, e2)
 }
@@ -17,7 +17,7 @@ or something that can be coerced to it by \code{as.units(e2)}}
 object of class \code{units}
 }
 \description{
-Title
+Ops functions for units objects, including comparison, product and divide, add, subtract
 }
 \examples{
 a <- with(ud_units, 1:3 * m/s)

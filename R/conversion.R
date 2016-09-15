@@ -58,9 +58,7 @@ NULL
     stop(paste("cannot convert", units(x), "into", value))
   }
   
-  x <- conversion_constant * x
-  attr(x, "units") <- value
-  x
+  structure(conversion_constant * x, units = value)
 }
 
 #' retrieve measurement units from units object

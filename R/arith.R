@@ -3,7 +3,9 @@
 # think we do not.
 # !diagnostics suppress=.Generic
 
-#' Title
+#' S3 Ops Group Generic Functions for units objects
+#'
+#' Ops functions for units objects, including comparison, product and divide, add, subtract
 #'
 #' @param e1 object of class \code{units}, 
 #'        or something that can be coerced to it by \code{as.units(e1)}

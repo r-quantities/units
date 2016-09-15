@@ -37,3 +37,23 @@ test_that("type_sum is available for units objects", {
   library(tibble)
   expect_equal(type_sum(make_unit("m")), "units")
 })
+
+test_that("parse_unit works", {
+  kg = make_unit("kg")
+  m = make_unit("m")
+  s = make_unit("s")
+  u0 = kg/m/m/s
+  u = parse_unit("kg m-2 s-1")
+  expect_equal(u, u0)
+  J = make_unit("J")
+  u0 = with(ud_units, kg*kg*kg*m*m*J/s/s/s/s/s)
+  u = parse_unit("kg3 m2 s-5 J")
+  expect_equal(u, u0)
+})
+
+test_that("as_cf works", {
+  str = "kg m-2 s-1"
+  u = parse_unit(str)
+  str0 = as_cf(u)
+  expect_equal(str, str0)
+})

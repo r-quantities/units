@@ -126,8 +126,11 @@ make_unit <- function(name) {
   # nominator and denominator independently. If either cannot be converted
   # then the function call returns NA which will also be returned (since NA and /)
   # will convert to NA.
-  const = .get_conversion_constant_sequence(u1$nominator, u2$nominator) /
-    .get_conversion_constant_sequence(u1$denominator, u2$denominator)
+
+  const = NA_real_
+  # FIXME:
+  #const = .get_conversion_constant_sequence(u1$nominator, u2$nominator) /
+  #  .get_conversion_constant_sequence(u1$denominator, u2$denominator)
   if (is.na(const)) { # try brute force, through udunits2:
 	str1 = as.character(u1)
 	str2 = as.character(u2)
