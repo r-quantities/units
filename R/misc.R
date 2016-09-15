@@ -80,7 +80,7 @@ parse_unit = function(str) {
 as_cf = function(x) {
 	stopifnot(inherits(x, "units"))
 	u = units(x)
-	tn = table(u$nominator)
+	tn = table(u$numerator)
 	nm1 = names(tn)
 	vals1 = as.character(tn)
 	vals1[vals1 == "1"] = ""

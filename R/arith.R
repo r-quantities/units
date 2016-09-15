@@ -78,17 +78,17 @@ Ops.units <- function(e1, e2) {
       stop("currently you can only take integer powers of units")
     
     # we repeat each unit the number of times given by e2. They are already
-    # sorted so they will remain sorted. We need to flip nominator and denominator
+    # sorted so they will remain sorted. We need to flip numerator and denominator
     # when the power is negative and we have a special case when it is zero where
     # units should be removed.
     if (e2 == 0) {
       attr(e1, "units") <- unitless
     } else if (e2 > 0) {
-      attr(e1, "units") <- .symbolic_units(rep(units(e1)$nominator, e2),
+      attr(e1, "units") <- .symbolic_units(rep(units(e1)$numerator, e2),
                                            rep(units(e1)$denominator, e2))
     } else {
       attr(e1, "units") <- .symbolic_units(rep(units(e1)$denominator, abs(e2)),
-                                           rep(units(e1)$nominator, abs(e2)))
+                                           rep(units(e1)$numerator, abs(e2)))
     }
         
   }
