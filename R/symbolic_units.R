@@ -105,14 +105,17 @@ make_unit <- function(name) {
   conversion_constant <- 1
   remaining_s2 <- s2
   for (i in seq_along(s1)) {
+    converted <- FALSE
     for (j in seq_along(remaining_s2)) {
       convert <- .get_unit_conversion_constant(s1[i], remaining_s2[j])
       if (!is.na(convert)) {
         conversion_constant <- conversion_constant * convert
         remaining_s2 <- remaining_s2[-j]
+        converted <- TRUE
         break
       }
     }
+    if (!converted) return(NA_real_)
   }
   # if we make it through these loops and there are still units left in s2
   # then there are some we couldn't convert return NA
@@ -130,8 +133,8 @@ make_unit <- function(name) {
   const = .get_conversion_constant_sequence(u1$nominator, u2$nominator) /
     .get_conversion_constant_sequence(u1$denominator, u2$denominator)
   if (is.na(const)) { # try brute force, through udunits2:
-	str1 = as.character(u1)
-	str2 = as.character(u2)
+    str1 <- as.character(u1)
+	  str2 <- as.character(u2)
   	if (udunits2::ud.are.convertible(str1, str2))
       const = udunits2::ud.convert(1, str1, str2)
   } 

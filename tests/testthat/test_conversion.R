@@ -71,3 +71,9 @@ test_that("we can subscript units", {
   expect_equal(as.numeric(y[1]), x[1])
   expect_equal(class(y[1]), class(y))
 })
+
+test_that("m + m*s is an error", {
+  m <- make_unit("m")
+  s <- make_unit("s")
+  expect_error(m + m * s)
+})
