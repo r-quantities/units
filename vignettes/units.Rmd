@@ -1,9 +1,9 @@
 <!--
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Measurement Units of Quantities for R Vectors}
+%\VignetteIndexEntry{Units of Measurement for R Vectors: an Introduction}
 -->
 
-# Measurement Units of Quantities for R Vectors
+# Units of Measurement for R Vectors: an Introduction
 
 R has little support for physical measurement units.  The exception
 is formed by time differences: time differences objects of class
@@ -209,4 +209,30 @@ summary(d)
 d$yz = with(d, y * z)
 d
 d[1, "yz"]
+```
+## formatting
+
+Units are often written in the form `m2 s-1`, for square meter per second. This
+can be defined as unit, but is not interpreted by R:
+```{r}
+(x = 1:10 * make_unit("m2 s-1"))
+```
+udunits understands such string, and can convert them
+```{r}
+y = 1:10 * with(ud_units, m^2/s)
+x + y
+```
+but R cannot simplify them:
+```{r}
+x/y
+```
+Instead, we can tell R to parse such a string, which then allows simplification:
+```{r}
+(z = 1:10 * parse_unit("m2 s-1"))
+z + y
+z / y
+```
+Printing units in this form is done by
+```{r}
+as_cf(z)
 ```
