@@ -12,6 +12,9 @@ parse_unit(str)
 \description{
 parse unit in product power form (e.g. km m-2 s-1)
 }
+\details{
+see also \code{demo(cf)} for parsing units in the CF standard name table.
+}
 \examples{
 parse_unit("kg m-2 s-1")
 }

@@ -65,15 +65,15 @@ test_that("we can convert units objects to difftime objects", {
   expect_equal(d, y)
 })
 
-test_that("we can convert units objects to and from hms objects", {
-  s <- Sys.time()
-  library(hms)
-  d <- as.hms(s - (s + 1))
-  x <- as.units(d)
-  y <- as.hms(x)
-  
-  expect_equal(d, y)
-})
+#test_that("we can convert units objects to and from hms objects", {
+#  s <- Sys.time()
+#  library(hms)
+#  d <- as.hms(s - (s + 1))
+#  x <- as.units(d)
+#  y <- as.hms(x)
+#  
+#  expect_equal(d, y)
+#})
 
 test_that("we can subscript units", {
   x <- 1:4

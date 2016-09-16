@@ -2,7 +2,6 @@ NULL
 #' @import utils
 #' @import stats
 #' @import udunits2
-#' @importFrom hms as.hms
 NULL
 #Sys.setenv(UDUNITS2_XML_PATH = "/usr/local/share/udunits/udunits2.xml")
 
@@ -156,23 +155,23 @@ as.dt <- function(x) {
     stop(paste("cannot convert unit", u, "to difftime object"))
 }
 
-#' Convert units to hms
-#'
-#' Convert units to hms
-#' @param x object of class units
-#' @param ... passed on to as.hms.difftime
-#' @return object of class hms
-#' @examples
-#' if (require(hms)) {
-#'  as.hms(1:10 * with(ud_units, s))
-#'  as.hms(1:10 * with(ud_units, min))
-#'  as.hms(1:10 * with(ud_units, h))
-#'  as.hms(1:10 * with(ud_units, d))
-#' }
-#' @export
-as.hms.units = function(x, ...) {
-	hms::as.hms(as.dt(x), ...)
-}
+# #' Convert units to hms
+# #'
+# #' Convert units to hms
+# #' @param x object of class units
+# #' @param ... passed on to as.hms.difftime
+# #' @return object of class hms
+# #' @examples
+# #' if (require(hms)) {
+# #'  as.hms(1:10 * with(ud_units, s))
+# #'  as.hms(1:10 * with(ud_units, min))
+# #'  as.hms(1:10 * with(ud_units, h))
+# #'  as.hms(1:10 * with(ud_units, d))
+# #' }
+# #' @export
+# as.hms.units = function(x, ...) {
+# 	hms::as.hms(as.dt(x), ...)
+# }
 
 
 #' @export

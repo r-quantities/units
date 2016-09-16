@@ -35,6 +35,7 @@ diff.units = function(x, ...) {
 #' @param str lenght-one character vector containing the unit string
 #' @examples 
 #' parse_unit("kg m-2 s-1")
+#' @details see also \code{demo(cf)} for parsing units in the CF standard name table.
 #' @export
 parse_unit = function(str) {
 	parse_one = function(str) {
@@ -65,7 +66,10 @@ parse_unit = function(str) {
 			u * parse_one(this)
 		str = substr(str, r+1, nchar(str))
 	}
-	u * parse_one(str)
+	if (first) # single unit
+		parse_one(str)
+	else
+		u * parse_one(str)
 }
 
 #' deparse unit to string in product power form (e.g. km m-2 s-1)
