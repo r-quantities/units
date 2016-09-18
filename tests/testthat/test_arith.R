@@ -47,8 +47,8 @@ test_that("we can take powers of units", {
   
   expect_equal(as.numeric(ux ** 2), x ** 2)
   expect_equal(as.numeric(ux ^ 2), x ^ 2)
-  expect_equal(as.character(units(ux ** 2)), "m*m")
-  expect_equal(as.character(units(ux ^ 2)), "m*m")
+  expect_equal(as.character(units(ux ** 2)), "m^2")
+  expect_equal(as.character(units(ux ^ 2)), "m^2")
   
   expect_error(ux ^ 1.3)
   expect_error(ux ^ 0.3)
@@ -57,8 +57,8 @@ test_that("we can take powers of units", {
   
   expect_equal(as.numeric(ux ** -2), x ** -2)
   expect_equal(as.numeric(ux ^ -2), x ^ -2)
-  expect_equal(as.character(units(ux ** -2)), "1/m/m")
-  expect_equal(as.character(units(ux ^ -2)), "1/m/m")
+  expect_equal(as.character(units(ux ** -2)), "1/m^2")
+  expect_equal(as.character(units(ux ^ -2)), "1/m^2")
   
   expect_equal(as.numeric(ux ** 0), x ** 0)
   expect_equal(as.numeric(ux ^ 0), x ^ 0)
@@ -85,7 +85,7 @@ test_that("we can convert units and simplify after multiplication", {
   expect_equal(as.numeric(ux*uz), x*z)
   expect_equal(as.character(units(ux*uz)), "km*m")
   expect_equal(as.numeric(as.units(ux*uz, km * km)), (x/1000)*z)
-  expect_equal(as.character(units(as.units(ux*uz, km * km))), "km*km")
+  expect_equal(as.character(units(as.units(ux*uz, km * km))), "km^2")
   
   expect_equal(as.numeric(ux/ux), x/x)
   expect_equal(as.character(units(ux/ux)), "1")

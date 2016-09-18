@@ -53,27 +53,49 @@ Ops.symbolic_units <- function(e1, e2) {
 #' @export
 unitless <- .symbolic_units(vector("character"), vector("character"))
 
+.pretty_print_sequence <- function(terms, op) {
+  # `fix` handles cases where a unit is actually an expression. We would have to
+  # deparse these to really do a pretty printing, but for now we leave them alone...
+  fix <- function(term) {
+    if (length(grep("/", term)) || length(grep("-", term)))
+      paste0("(", term, ")")
+    else
+      term
+  }
+  fixed <- vapply(terms, fix, "")
+  fixed_tbl <- table(fixed)
+  
+  names <- names(fixed_tbl)
+  result <- vector("character", length(fixed_tbl))
+  for (i in seq_along(fixed_tbl)) {
+    name <- names[i]
+    value <- fixed_tbl[i]
+    if (value > 1) {
+      result[i] <- paste0(name, "^", value)
+    } else {
+      result[i] <- name
+    }
+  }
+  
+  paste0(result, collapse = op)
+}
+
 #' @export
 as.character.symbolic_units <- function(x, ...) {
   nom_str <- ""
   sep <- ""
   denom_str <- ""
   
-  fix = function(term) {
-    if (length(grep("/", term)) || length(grep("-", term)))
-      paste0("(", term, ")")
-    else
-      term
-  }
+
   if (length(x$numerator) == 0) {
     nom_str <- "1"
   } else {
-    nom_str <- paste0(sapply(x$numerator, fix), collapse = "*")
+    nom_str <- .pretty_print_sequence(x$numerator, "*")
   }
   
   if (length(x$denominator) > 0) {
     sep = "/"
-    denom_str <- paste0(sapply(x$denominator, fix), collapse = "/")
+    denom_str <- .pretty_print_sequence(x$denominator, "/")
   }
 
   paste0(nom_str, sep, denom_str)
