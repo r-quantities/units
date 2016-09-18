@@ -9,9 +9,9 @@ test_that("we can make symbolic units", {
 test_that("we can multiply and divide symbolic units", {
   m <- units:::.make_symbolic_units("m")
   s <- units:::.make_symbolic_units("s")
-  expect_equal(as.character(units(m*m)), "m*m")
+  expect_equal(as.character(units(m*m)), "m^2")
   expect_equal(as.character(units(m/s)), "m/s")
-  expect_equal(as.character(units(units(m/s)/s)), "m/s/s")
+  expect_equal(as.character(units(units(m/s)/s)), "m/s^2")
 })
 
 test_that("we can simplify basic units", {
