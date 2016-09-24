@@ -23,9 +23,8 @@ Sys.setenv(UDUNITS2_XML_PATH = units_file)
 
 When installing `udunits2` breaks due to a missing udunits
 system library, download `udunits-2.2.20.tar.gz` from
-[here](ftp://ftp.unidata.ucar.edu/pub/udunits), and carry out the
+ftp://ftp.unidata.ucar.edu/pub/udunits/, and carry out the
 following commands:
-
 ```
 tar zxf udunits-2.2.20.tar.gz
 cd ./udunits-2.2.20/
@@ -34,5 +33,4 @@ make
 sudo make install
 sudo ldconfig
 ```
-
-after that, try installing R package `udunits2` again; it should now work.
+after that, try installing R package `udunits2` again.
