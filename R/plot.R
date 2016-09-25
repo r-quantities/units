@@ -1,4 +1,12 @@
-mk_unit_label = function(lab, u, sep) paste0(lab, sep[1], as.character(units(u)), sep[2])
+make_unit_label = function(lab, u) {
+  sep = get(".units.sep", envir=.units_options)
+  group = get(".units.group", envir=.units_options)
+  if (get(".units.parse", envir = .units_options)) {
+    parse(text = paste0(lab, "*", sep[1], 
+      "group('", group[1], "',", as.character(units(u), plot_sep = sep[2]), ",'", group[2], "')"))
+  } else
+    paste0(lab, " ", group[1], as.character(units(u)), group[2])
+}
 
 #' plot unit objects
 #' 
@@ -8,30 +16,47 @@ mk_unit_label = function(lab, u, sep) paste0(lab, sep[1], as.character(units(u))
 #' @param xlab character; x axis label
 #' @param ylab character; y axis label
 #' @param ... other parameters, passed on to \link{plot.default}
-#' @param sep length two character vector; symbols to put before and after the measurement unit
 #' @export
 #' @examples
-#' u = rnorm(1:10) * make_unit("°C")
-#' v = rnorm(1:10) * make_unit("s")
-#' plot(u,v)
-#' plot(u, type = 'l')
-plot.units <- function(x, y, xlab = NULL, ylab = NULL, ..., sep = c(" [", "]")) {
+#' oldpar = par(mar = par("mar") + c(0, .3, 0, 0))
+#' displacement = mtcars$disp * ud_units[["in"]]^3
+#' units(displacement) = with(ud_units, cm^3)
+#' weight = mtcars$wt * 1000 * with(ud_units, lb)
+#' units(weight) = with(ud_units, kg)
+#' plot(weight, displacement)
+#' units_options(group = c("(", ")") )  # parenthesis instead of square brackets
+#' plot(weight, displacement)
+#' units_options(sep = c("~~~", "~"), group = c("", ""))  # no brackets; extra space
+#' plot(weight, displacement)
+#' units_options(sep = c("~", "~~"), group = c("[", "]"))
+#' gallon = make_unit("gallon")
+#' consumption = mtcars$mpg * with(ud_units, mi/gallon)
+#' units(consumption) = with(ud_units, km/l)
+#' plot(displacement, consumption) # division in consumption
+#' units_options(negative_power = TRUE) # division becomes ^-1
+#' plot(displacement, consumption)
+#' plot(1/displacement, 1/consumption)
+#' par(oldpar)
+plot.units <- function(x, y, xlab = NULL, ylab = NULL, ...) {
   # We define the axis labels if they are not already provided and then let
   # the default plotting function take over...
-  if (is.null(xlab)) {
-    xlab <- mk_unit_label(deparse(substitute(x)), x, sep)
-  }
   if (missing(y)) { # from xy.coords:
-    ylab = xlab
-	xlab = "Index"
-	y = x
-	x = seq_along(x)
+    if (is.null(ylab))
+      ylab <- make_unit_label(deparse(substitute(x)), x)
+	if (is.null(xlab))
+      xlab <- "Index"
+	y <- x
+	x <- seq_along(x)
     return(NextMethod("plot", x, y, xlab = xlab, ylab = ylab))
-  } else if (is.null(ylab) && inherits(y, "units")) {
-    ylab <- mk_unit_label(deparse(substitute(y)), y, sep)
+  } 
+  if (is.null(xlab)) {
+    xlab <- make_unit_label(deparse(substitute(x)), x)
   }
-  x = unclass(x)
-  y = unclass(y)
+  if (is.null(ylab) && inherits(y, "units")) {
+    ylab <- make_unit_label(deparse(substitute(y)), y)
+  }
+  x <- unclass(x)
+  y <- unclass(y)
   NextMethod("plot", xlab = xlab, ylab = ylab)
 }
 
@@ -41,16 +66,16 @@ plot.units <- function(x, y, xlab = NULL, ylab = NULL, ..., sep = c(" [", "]")) 
 #' @param x object of class units, for which we want to plot the histogram
 #' @param xlab x axis label
 #' @param ... parameters passed on to \link{hist.default}
-#' @param sep length two character vector; symbols to put before and after the measurement unit
 #' @export
 #' @examples
+#' units_options(parse = FALSE) # otherwise we break on the funny symbol!
 #' u = rnorm(100) * make_unit("°C")
 #' hist(u)
-hist.units <- function(x, xlab = NULL, ..., sep = c(" [", "]")) {
+hist.units <- function(x, xlab = NULL, ...) {
   # We define the axis labels if they are not already provided and then let
   # the default plotting function take over...
   if (is.null(xlab)) {
-    xlab <- mk_unit_label(deparse(substitute(x)), x, sep)
+    xlab <- make_unit_label(deparse(substitute(x)), x)
   }
   NextMethod("hist", xlab = xlab)
 }

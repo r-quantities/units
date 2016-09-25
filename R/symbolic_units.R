@@ -53,7 +53,7 @@ Ops.symbolic_units <- function(e1, e2) {
 #' @export
 unitless <- .symbolic_units(vector("character"), vector("character"))
 
-.pretty_print_sequence <- function(terms, op) {
+.pretty_print_sequence <- function(terms, op, neg_power = FALSE, sep = "") {
   # `fix` handles cases where a unit is actually an expression. We would have to
   # deparse these to really do a pretty printing, but for now we leave them alone...
   fix <- function(term) {
@@ -70,35 +70,51 @@ unitless <- .symbolic_units(vector("character"), vector("character"))
   for (i in seq_along(fixed_tbl)) {
     name <- names[i]
     value <- fixed_tbl[i]
-    if (value > 1) {
+    if (value > 1 || (value == 1 && neg_power)) {
+	  if (neg_power)
+	  	value <- value * -1
       result[i] <- paste0(name, "^", value)
     } else {
       result[i] <- name
     }
   }
   
-  paste0(result, collapse = op)
+  paste0(result, collapse = paste0(op, sep))
 }
 
 #' @export
-as.character.symbolic_units <- function(x, ...) {
-  nom_str <- ""
-  sep <- ""
-  denom_str <- ""
-  
+as.character.symbolic_units <- function(x, ..., 
+		neg_power = get(".units.negative_power", envir=.units_options), plot_sep = "") {
+  num_str <- character(0)
+  denom_str <- character(0)
+  sep <- plot_sep
 
   if (length(x$numerator) == 0) {
-    nom_str <- "1"
+    if (! neg_power)
+	  num_str <- "1" # 1/cm^2/h
   } else {
-    nom_str <- .pretty_print_sequence(x$numerator, "*")
+    num_str <- .pretty_print_sequence(x$numerator, "*", FALSE, plot_sep)
   }
   
   if (length(x$denominator) > 0) {
-    sep = "/"
-    denom_str <- .pretty_print_sequence(x$denominator, "/")
+    sep <- if (neg_power)
+	    paste0("*", plot_sep)
+	  else
+        "/"
+    denom_str <- .pretty_print_sequence(x$denominator, sep, neg_power, plot_sep)
   }
 
-  paste0(nom_str, sep, denom_str)
+  if (length(num_str) == 0) {
+    if (length(denom_str) == 0)
+	  return("")
+    else
+	  return(denom_str)
+  }
+
+  if (length(denom_str) == 0)
+    return(num_str)
+
+  paste(num_str, denom_str, sep = sep)
 }
 
 #' Create a new unit from a unit name.

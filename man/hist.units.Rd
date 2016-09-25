@@ -4,7 +4,7 @@
 \alias{hist.units}
 \title{histogram for unit objects}
 \usage{
-\method{hist}{units}(x, xlab = NULL, ..., sep = c(" [", "]"))
+\method{hist}{units}(x, xlab = NULL, ...)
 }
 \arguments{
 \item{x}{object of class units, for which we want to plot the histogram}
@@ -12,13 +12,12 @@
 \item{xlab}{x axis label}
 
 \item{...}{parameters passed on to \link{hist.default}}
-
-\item{sep}{length two character vector; symbols to put before and after the measurement unit}
 }
 \description{
 histogram for unit objects
 }
 \examples{
+units_options(parse = FALSE) # otherwise we break on the funny symbol!
 u = rnorm(100) * make_unit("°C")
 hist(u)
 }

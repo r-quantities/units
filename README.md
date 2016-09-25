@@ -46,4 +46,4 @@ make
 sudo make install
 sudo ldconfig
 ```
-then, try installing R package `udunits2` again.
+if that went well, try installing R package `udunits2` once more.

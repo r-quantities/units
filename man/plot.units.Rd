@@ -4,8 +4,7 @@
 \alias{plot.units}
 \title{plot unit objects}
 \usage{
-\method{plot}{units}(x, y, xlab = NULL, ylab = NULL, ..., sep = c(" [",
-  "]"))
+\method{plot}{units}(x, y, xlab = NULL, ylab = NULL, ...)
 }
 \arguments{
 \item{x}{object of class units, to plot along the x axis, or, if y is missing, along the y axis}
@@ -17,16 +16,29 @@
 \item{ylab}{character; y axis label}
 
 \item{...}{other parameters, passed on to \link{plot.default}}
-
-\item{sep}{length two character vector; symbols to put before and after the measurement unit}
 }
 \description{
 plot unit objects
 }
 \examples{
-u = rnorm(1:10) * make_unit("°C")
-v = rnorm(1:10) * make_unit("s")
-plot(u,v)
-plot(u, type = 'l')
+oldpar = par(mar = par("mar") + c(0, .3, 0, 0))
+displacement = mtcars$disp * ud_units[["in"]]^3
+units(displacement) = with(ud_units, cm^3)
+weight = mtcars$wt * 1000 * with(ud_units, lb)
+units(weight) = with(ud_units, kg)
+plot(weight, displacement)
+units_options(group = c("(", ")") )  # parenthesis instead of square brackets
+plot(weight, displacement)
+units_options(sep = c("~~~", "~"), group = c("", ""))  # no brackets; extra space
+plot(weight, displacement)
+units_options(sep = c("~", "~~"), group = c("[", "]"))
+gallon = make_unit("gallon")
+consumption = mtcars$mpg * with(ud_units, mi/gallon)
+units(consumption) = with(ud_units, km/l)
+plot(displacement, consumption) # division in consumption
+units_options(negative_power = TRUE) # division becomes ^-1
+plot(displacement, consumption)
+plot(1/displacement, 1/consumption)
+par(oldpar)
 }
 
