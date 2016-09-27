@@ -46,4 +46,17 @@ make
 sudo make install
 sudo ldconfig
 ```
+
+The following commands can download the development version from GitHub:
+
+```bash
+wget https://github.com/Unidata/UDUNITS-2/archive/master.zip
+unzip master.zip
+cd UDUNITS-2-master
+autoreconf -fi
+./configure
+make
+sudo make install
+udunits2 # test it works
+```
 if that went well, try installing R package `udunits2` once more.
