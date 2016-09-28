@@ -1,9 +1,19 @@
+#' create axis label with appropriate labels
+#' 
+#' create axis label with appropriate labels
+#' @param lab length one character; name of the variable to plot
+#' @param u vector of class \code{units}
+#' @export
+#' @name plot.units
 make_unit_label = function(lab, u) {
   sep = get(".units.sep", envir=.units_options)
   group = get(".units.group", envir=.units_options)
   if (get(".units.parse", envir = .units_options)) {
-    parse(text = paste0(lab, "*", sep[1], 
-      "group('", group[1], "',", as.character(units(u), plot_sep = sep[2]), ",'", group[2], "')"))
+    str = paste0("group('", group[1], "',", 
+      as.character(units(u), plot_sep = sep[2]), ",'", group[2], "')")
+	if (length(grep("[^\t ]", lab)) > 0)
+	  str = paste0(lab, "*", sep[1], str)
+	parse(text = str)
   } else
     paste0(lab, " ", group[1], as.character(units(u)), group[2])
 }
