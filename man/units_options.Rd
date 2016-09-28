@@ -2,7 +2,7 @@
 % Please edit documentation in R/options.R
 \name{units_options}
 \alias{units_options}
-\title{set units global options}
+\title{set one or more units global options}
 \usage{
 units_options(..., sep, group, negative_power, parse)
 }
@@ -13,12 +13,12 @@ units_options(..., sep, group, negative_power, parse)
 
 \item{group}{character length two; start and end group, may be two empty strings, a parenthesis pair, or square brackets.}
 
-\item{negative_power}{logical, default FALSE; should denominators have negative power, or be in a division?}
+\item{negative_power}{logical, default FALSE; should denominators have negative power, or follow a division symbol?}
 
 \item{parse}{logical, default \code{TRUE}; should the units be made into an expression (so we get subscripts)? Setting to \code{FALSE} may be useful if \link{parse} fails, e.g. if the unit contains symbols that assume a particular encoding}
 }
 \description{
-set units global options, mostly related how units appear in plots
+set units global options, mostly related how units are printed and plotted
 }
 \examples{
 units_options(sep = c("~~~", "~"), group = c("", "")) # more space, parenthesis

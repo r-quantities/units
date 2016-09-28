@@ -239,29 +239,45 @@ as_cf(z)
 
 ## plotting
 
-Base plots support automatic unit placement in axis labels. In
-the following example we first convert to SI units. (Unit `in`
-needs special treatment, because `in` is a reserved word in R.)
+Base scatter plots and histograms support automatic unit placement
+in axis labels. In the following example we first convert to
+SI units. (Unit `in` needs a bit special treatment, because `in` is a
+reserved word in R.)
 
 ```{r fig=TRUE}
-par(mar = par("mar") + c(0, .3, 0, 0))
+mar = par("mar") + c(0, .3, 0, 0)
 displacement = mtcars$disp * ud_units[["in"]]^3
 units(displacement) = with(ud_units, cm^3)
 weight = mtcars$wt * 1000 * with(ud_units, lb)
 units(weight) = with(ud_units, kg)
+par(mar = mar)
+plot(weight, displacement)
+```
+
+We can change grouping symbols from `[ ]` into `( )`:
+```{r}
+units_options(group = c("(", ")") )  # parenthesis instead of square brackets
+par(mar = mar)
+plot(weight, displacement)
+```
+
+We can also remove grouping symbols, increase space between variable name and unit by:
+```{r}
+units_options(sep = c("~~~", "~"), group = c("", ""))  # no brackets; extra space
+par(mar = mar)
 plot(weight, displacement)
 ```
 
 More complex units can be plotted either with negative powers, or as divisions,
-by modifying one of `units`'s global options:
+by modifying one of `units`'s global options using `units_options`:
 
 ```{r}
 gallon = make_unit("gallon")
 consumption = mtcars$mpg * with(ud_units, mi/gallon)
 units(consumption) = with(ud_units, km/l)
+par(mar = mar)
 plot(displacement, consumption) # division in consumption
 units_options(negative_power = TRUE) # division becomes ^-1
-par(mar = par("mar") + c(0, .3, 0, 0))
 plot(displacement, consumption) # division in consumption
 ```
 
@@ -269,7 +285,7 @@ As usual, units modify automatically in expressions:
 
 ```{r}
 units_options(negative_power = TRUE) # division becomes ^-1
-par(mar = par("mar") + c(0, .3, 0, 0))
+par(mar = mar)
 plot(displacement, consumption)
 plot(1/displacement, 1/consumption)
 ```

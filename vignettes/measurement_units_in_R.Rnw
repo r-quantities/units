@@ -263,7 +263,7 @@ intermediate objects can have units that are arbitrarily complex,
 and that can potentially be simplified later on. It also means that
 the package practically supports an unlimited amount of derived units.
 
-\section{ Udunits versus the Unified Code for Units of Measure (UCUM) }
+\section{Udunits versus the Unified Code for Units of Measure (UCUM)}
 
 Another set of encodings for measurement units is the Unified Code for
 Units of Measure (UCUM, \cite{ucum}). A dedicated web

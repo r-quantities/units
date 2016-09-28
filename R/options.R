@@ -13,7 +13,7 @@
 #' ## set defaults:
 #' units_options(sep = c("~", "~"), group = c("[", "]"), negative_power = FALSE, parse = TRUE)
 #' @export
-units_option = function(..., sep, group, negative_power, parse) {
+units_options = function(..., sep, group, negative_power, parse) {
 	if (!missing(sep)) {
 	    stopifnot(is.character(sep) && length(sep) == 2)
 		assign(".units.sep", sep, envir=.units_options)
@@ -27,5 +27,5 @@ units_option = function(..., sep, group, negative_power, parse) {
 	if (!missing(parse))
 		assign(".units.parse", parse, envir=.units_options)
 }
-units_option(sep = c("~", "~"), group = c("[", "]"), 
+units_options(sep = c("~", "~"), group = c("[", "]"), 
 	negative_power = FALSE, parse = TRUE) # set defaults
