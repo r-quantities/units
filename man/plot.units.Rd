@@ -32,6 +32,10 @@ plot unit objects
 \examples{
 oldpar = par(mar = par("mar") + c(0, .3, 0, 0))
 displacement = mtcars$disp * ud_units[["in"]]^3
+# an example that would break if parse were (default) TRUE, since 'in' is a reserved word:
+units_options(parse=FALSE)
+make_unit_label("displacement", displacement)
+units_options(parse=TRUE)
 units(displacement) = with(ud_units, cm^3)
 weight = mtcars$wt * 1000 * with(ud_units, lb)
 units(weight) = with(ud_units, kg)
