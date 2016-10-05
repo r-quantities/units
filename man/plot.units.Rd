@@ -5,7 +5,9 @@
 \alias{plot.units}
 \title{create axis label with appropriate labels}
 \usage{
-make_unit_label(lab, u)
+make_unit_label(lab, u, sep = get(".units.sep", envir = .units_options),
+  group = get(".units.group", envir = .units_options),
+  parse = get(".units.parse", envir = .units_options))
 
 \method{plot}{units}(x, y, xlab = NULL, ylab = NULL, ...)
 }
@@ -13,6 +15,12 @@ make_unit_label(lab, u)
 \item{lab}{length one character; name of the variable to plot}
 
 \item{u}{vector of class \code{units}}
+
+\item{sep}{length two character vector, defaulting to \code{c("~","~")}, with the white space between unit name and unit symbols, and between subsequent symbols.}
+
+\item{group}{length two character vector with grouping symbols, e.g. \code{c("(",")")} for parenthesis, or \code{c("","")} for no group symbols}
+
+\item{parse}{logical; indicates whether a parseable expression should be returned (typically needed for super scripts), or a simple character string without special formatting.}
 
 \item{x}{object of class units, to plot along the x axis, or, if y is missing, along the y axis}
 
@@ -28,6 +36,9 @@ make_unit_label(lab, u)
 create axis label with appropriate labels
 
 plot unit objects
+}
+\details{
+\link{units_options} can be used to set and change the defaults for \code{sep}, \code{group} and \code{doParse}.
 }
 \examples{
 oldpar = par(mar = par("mar") + c(0, .3, 0, 0))

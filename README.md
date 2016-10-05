@@ -32,6 +32,7 @@ Error in `units<-.units`(`*tmp*`, value = list(numerator = "m", denominator = "s
 * blog posts: [first](http://r-spatial.org/r/2016/06/10/units.html), [second](http://r-spatial.org/r/2016/08/16/units2.html)
 * [package vignette](https://cran.r-project.org/web/packages/units/vignettes/units.html)
 * [R Journal manuscript](https://cran.r-project.org/web/packages/units/vignettes/measurement_units_in_R.pdf) under review
+* automatic units in [axis labels](http://r-spatial.org/r/2016/09/29/plot_units.html)
 * the [udunits2 R package](https://github.com/pacificclimate/Rudunits2) github page
 
 When installing the `udunits2` R package fails due to a missing udunits
@@ -50,4 +51,4 @@ if that went well, assuming you installed by default in `/usr/local/`, add
 ```
 export UDUNITS2_XML_PATH="/usr/local/share/udunits/udunits2.xml"
 ```
-to your `~/.bashrc` file, start a new shell to activate this environment variable, and try installing R package `udunits2` once more.
+to your `~/.bashrc` file, start a new shell to activate this environment variable, and try installing R package `udunits2` once more. When launching rstudio from unity, you may have to load `udunits2` explicitly before using `units`.
