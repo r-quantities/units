@@ -43,8 +43,6 @@
 
     
     
-<div id="units-of-measurement-for-r-vectors-an-introduction" class="section level1">
-<h1>Units of Measurement for R Vectors: an Introduction</h1>
 <p>R has little support for physical measurement units. The exception is formed by time differences: time differences objects of class <code>difftime</code> have a <code>units</code> attribute that can be modified:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">t1 =<span class="st"> </span><span class="kw">Sys.time</span>() 
 t2 =<span class="st"> </span>t1 +<span class="st"> </span><span class="dv">3600</span> 
@@ -339,20 +337,18 @@ consumption =<span class="st"> </span>mtcars$mpg *<span class="st"> </span><span
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="dv">1</span>/displacement, <span class="dv">1</span>/consumption)</code></pre></div>
 <p><img src="units_files/figure-html/unnamed-chunk-34-2.png" width="672"></p>
 </div>
-</div>
   </div>
 
   <div class="col-md-3 hidden-xs">
         <div id="tocnav">
       <h2>Contents</h2>
-      <ul class="nav nav-pills nav-stacked"><li><a href="#units-of-measurement-for-r-vectors-an-introduction">Units of Measurement for R Vectors: an Introduction</a><ul class="nav nav-pills nav-stacked"><li><a href="#setting-units-unit-conversion">Setting units, unit conversion</a></li>
+      <ul class="nav nav-pills nav-stacked"><li><a href="#setting-units-unit-conversion">Setting units, unit conversion</a></li>
       <li><a href="#basic-manipulations">Basic manipulations</a></li>
       <li><a href="#conversion-tofrom-difftime">Conversion to/from <code>difftime</code></a></li>
       <li><a href="#units-in-matrix-objects">units in <code>matrix</code> objects</a></li>
       <li><a href="#units-objects-in-data.frames">units objects in <code>data.frame</code>s</a></li>
       <li><a href="#formatting">formatting</a></li>
       <li><a href="#plotting">plotting</a></li>
-      </ul></li>
       </ul></div>
       </div>
 
