@@ -4,7 +4,12 @@ cache: packages
 apt_packages:
   - libudunits2-dev
 
+r_packages:
+  - roxygen2
+  - rmarkdown
+
 r_github_packages:
   - jimhester/covr
+
 after_success:
   - Rscript -e 'covr::codecov()'

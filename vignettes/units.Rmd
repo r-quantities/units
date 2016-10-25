@@ -14,8 +14,6 @@ vignette: >
 knitr::opts_chunk$set(collapse = TRUE)
 ```
 
-# Units of Measurement for R Vectors: an Introduction
-
 R has little support for physical measurement units.  The exception
 is formed by time differences: time differences objects of class
 `difftime` have a `units` attribute that can be modified:
