@@ -1,0 +1,8 @@
+\BOOKMARK [0][-]{section*.1}{Measurement units in R}{}% 1
+\BOOKMARK [1][-]{section.2.1}{Introduction}{section*.1}% 2
+\BOOKMARK [1][-]{section.2.2}{SI}{section*.1}% 3
+\BOOKMARK [1][-]{section.2.3}{Related work in R}{section*.1}% 4
+\BOOKMARK [1][-]{section.2.4}{UNIDATA's udunits library and the ```\140\140udunits2 R package}{section*.1}% 5
+\BOOKMARK [1][-]{section.2.5}{Udunits versus the Unified Code for Units of Measure \(UCUM\)}{section*.1}% 6
+\BOOKMARK [1][-]{section.2.6}{Handling data with units in R: the units package}{section*.1}% 7
+\BOOKMARK [1][-]{section.2.7}{Discussion and conclusions}{section*.1}% 8
