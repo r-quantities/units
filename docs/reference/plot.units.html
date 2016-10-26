@@ -34,10 +34,9 @@
   </head>
 
   <body>
-    <div class="container">
+    <div class="container template-reference-topic">
       <header>
-      
-<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -50,15 +49,13 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">Home</a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li>
   <a href="../articles/index.html">Articles</a>
 </li>
       </ul>
+      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/edzer/units/">
@@ -70,15 +67,16 @@
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
+
       
       </header>
 
-      <div class="page-header">
-  <h1>create axis label with appropriate labels</h1>
-</div>
+      <div class="row">
+  <div class="col-md-9 contents">
+    <div class="page-header">
+    <h1>create axis label with appropriate labels</h1>
+    </div>
 
-<div class="row">
-  <div class="col-md-9">
     
     <p>create axis label with appropriate labels</p>
 
@@ -92,7 +90,7 @@
 <span class='co'># S3 method for units</span>
 <span class='fu'>plot</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
-    <h2>Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>lab</dt>
       <dd>length one character; name of the variable to plot</dd>
@@ -116,13 +114,15 @@
       <dd>other parameters, passed on to plot.default</dd>
     </dl>
     
-    <div class="Details">
-      <h2>Details</h2>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-      <p><a href='units_options.html'>units_options</a> can be used to set and change the defaults for <code>sep</code>, <code>group</code> and <code>doParse</code>.</p>
-    </div>
+    <p><a href='units_options.html'>units_options</a> can be used to set and change the defaults for <code>sep</code>, <code>group</code> and <code>doParse</code>.</p>
     
-    <h2 id="examples">Examples</h2>
+
+    <h2 class="hasAnchor" id="examples">
+      <a class="anchor" href="#examples"></a>
+      Examples
+    </h2>
     <pre class="examples"><div class='input'><span class='no'>oldpar</span> <span class='kw'>=</span> <span class='fu'>par</span>(<span class='kw'>mar</span> <span class='kw'>=</span> <span class='fu'>par</span>(<span class='st'>"mar"</span>) + <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>.3</span>, <span class='fl'>0</span>, <span class='fl'>0</span>))
 <span class='no'>displacement</span> <span class='kw'>=</span> <span class='no'>mtcars</span>$<span class='no'>disp</span> * <span class='no'>ud_units</span><span class='kw'>[[</span><span class='st'>"in"</span>]]^<span class='fl'>3</span>
 <span class='co'># an example that would break if parse were (default) TRUE, since 'in' is a reserved word:</span>
@@ -141,12 +141,30 @@
 <span class='fu'>plot</span>(<span class='no'>displacement</span>, <span class='no'>consumption</span>) <span class='co'># division in consumption</span></div><img src='plot.units-10.png' alt='' width='540' height='400' /><div class='input'><span class='fu'><a href='units_options.html'>units_options</a></span>(<span class='kw'>negative_power</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='co'># division becomes ^-1</span>
 <span class='fu'>plot</span>(<span class='no'>displacement</span>, <span class='no'>consumption</span>)</div><img src='plot.units-12.png' alt='' width='540' height='400' /><div class='input'><span class='fu'>plot</span>(<span class='fl'>1</span>/<span class='no'>displacement</span>, <span class='fl'>1</span>/<span class='no'>consumption</span>)</div><img src='plot.units-14.png' alt='' width='540' height='400' /><div class='input'><span class='fu'>par</span>(<span class='no'>oldpar</span>)</div></pre>
   </div>
-  <div class="col-md-3">
+  <div class="col-md-3 hidden-xs hidden-sm">
+    <div id="sidebar">
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#details">Details</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
+
+    </div>
   </div>
 </div>
 
       <footer>
-      <p>Built by <a href="http://hadley.github.io/pkgdown/">pkgdown</a>. Styled with <a href="http://getbootstrap.com">Bootstrap 3</a>.</p>
+      <div class="copyright">
+  <p>Developed by Edzer Pebesma, Thomas Mailund.</p>
+</div>
+
+<div class="pkgdown">
+  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+</div>
+
       </footer>
    </div>
 

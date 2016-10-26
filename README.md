@@ -1,5 +1,4 @@
-# units 
-Measurement Units for R Vectors: conversion, derivation, simplification and error checking
+# Measurement Units for R
 
 [![Build Status](https://travis-ci.org/edzer/units.svg?branch=master)](https://travis-ci.org/edzer/units) 
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/edzer/units?branch=master&svg=true)](https://ci.appveyor.com/project/edzer/units)
@@ -7,6 +6,7 @@ Measurement Units for R Vectors: conversion, derivation, simplification and erro
 [![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html) [![CRAN](http://www.r-pkg.org/badges/version/units)](https://cran.rstudio.com/web/packages/units/index.html) 
 [![Downloads](http://cranlogs.r-pkg.org/badges/units?color=brightgreen)](http://www.r-pkg.org/pkg/units)
 
+Measurement Units for R Vectors: conversion, derivation, simplification and error checking:
 ```
 > library(units)
 > (spd1 = 1:5 * with(ud_units, m/s))
