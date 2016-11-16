@@ -82,14 +82,17 @@
     
 
     <pre><span class='co'># S3 method for units</span>
-<span class='fu'>hist</span>(<span class='no'>x</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>hist</span>(<span class='no'>x</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='fu'>paste</span>(<span class='st'>"Histogram of"</span>, <span class='no'>xname</span>),
+  <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>x</dt>
       <dd>object of class units, for which we want to plot the histogram</dd>
       <dt>xlab</dt>
-      <dd>x axis label</dd>
+      <dd>character; x axis label</dd>
+      <dt>main</dt>
+      <dd>character; title of histogram</dd>
       <dt>...</dt>
       <dd>parameters passed on to hist.default</dd>
     </dl>

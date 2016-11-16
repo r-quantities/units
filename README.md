@@ -29,10 +29,9 @@ Error in `units<-.units`(`*tmp*`, value = list(numerator = "m", denominator = "s
   cannot convert s into m/s
 ```
 
-* blog posts: [first](http://r-spatial.org/r/2016/06/10/units.html), [second](http://r-spatial.org/r/2016/08/16/units2.html)
+* blog posts: [first](http://r-spatial.org/r/2016/06/10/units.html), [second](http://r-spatial.org/r/2016/08/16/units2.html), [third](http://r-spatial.org/r/2016/09/29/plot_units.html)
 * [package vignette](https://cran.r-project.org/web/packages/units/vignettes/units.html)
 * [R Journal manuscript](https://cran.r-project.org/web/packages/units/vignettes/measurement_units_in_R.pdf) under review
-* automatic units in [axis labels](http://r-spatial.org/r/2016/09/29/plot_units.html)
 * the [udunits2 R package](https://github.com/pacificclimate/Rudunits2) github page
 
 When installing the `udunits2` R package fails due to a missing udunits
