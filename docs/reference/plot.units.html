@@ -10,7 +10,6 @@
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
-
 <!-- Bootstrap -->
 
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -22,6 +21,7 @@
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
+<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
@@ -119,16 +119,12 @@
     <p><a href='units_options.html'>units_options</a> can be used to set and change the defaults for <code>sep</code>, <code>group</code> and <code>doParse</code>.</p>
     
 
-    <h2 class="hasAnchor" id="examples">
-      <a class="anchor" href="#examples"></a>
-      Examples
-    </h2>
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>oldpar</span> <span class='kw'>=</span> <span class='fu'>par</span>(<span class='kw'>mar</span> <span class='kw'>=</span> <span class='fu'>par</span>(<span class='st'>"mar"</span>) + <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>.3</span>, <span class='fl'>0</span>, <span class='fl'>0</span>))
 <span class='no'>displacement</span> <span class='kw'>=</span> <span class='no'>mtcars</span>$<span class='no'>disp</span> * <span class='no'>ud_units</span><span class='kw'>[[</span><span class='st'>"in"</span>]]^<span class='fl'>3</span>
 <span class='co'># an example that would break if parse were (default) TRUE, since 'in' is a reserved word:</span>
 <span class='fu'><a href='units_options.html'>units_options</a></span>(<span class='kw'>parse</span><span class='kw'>=</span><span class='fl'>FALSE</span>)
-<span class='fu'>make_unit_label</span>(<span class='st'>"displacement"</span>, <span class='no'>displacement</span>)</div><div class='output co'>#&gt; [1] &quot;displacement [in^3]&quot;
-#&gt; </div><div class='input'><span class='fu'><a href='units_options.html'>units_options</a></span>(<span class='kw'>parse</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
+<span class='fu'>make_unit_label</span>(<span class='st'>"displacement"</span>, <span class='no'>displacement</span>)</div><div class='output co'>#&gt; [1] &quot;displacement [in^3]&quot;</div><div class='input'><span class='fu'><a href='units_options.html'>units_options</a></span>(<span class='kw'>parse</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
 <span class='fu'><a href='units.html'>units</a></span>(<span class='no'>displacement</span>) <span class='kw'>=</span> <span class='fu'>with</span>(<span class='no'>ud_units</span>, <span class='no'>cm</span>^<span class='fl'>3</span>)
 <span class='no'>weight</span> <span class='kw'>=</span> <span class='no'>mtcars</span>$<span class='no'>wt</span> * <span class='fl'>1000</span> * <span class='fu'>with</span>(<span class='no'>ud_units</span>, <span class='no'>lb</span>)
 <span class='fu'><a href='units.html'>units</a></span>(<span class='no'>weight</span>) <span class='kw'>=</span> <span class='fu'>with</span>(<span class='no'>ud_units</span>, <span class='no'>kg</span>)
@@ -141,8 +137,7 @@
 <span class='fu'>plot</span>(<span class='no'>displacement</span>, <span class='no'>consumption</span>) <span class='co'># division in consumption</span></div><img src='plot.units-10.png' alt='' width='540' height='400' /><div class='input'><span class='fu'><a href='units_options.html'>units_options</a></span>(<span class='kw'>negative_power</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='co'># division becomes ^-1</span>
 <span class='fu'>plot</span>(<span class='no'>displacement</span>, <span class='no'>consumption</span>)</div><img src='plot.units-12.png' alt='' width='540' height='400' /><div class='input'><span class='fu'>plot</span>(<span class='fl'>1</span>/<span class='no'>displacement</span>, <span class='fl'>1</span>/<span class='no'>consumption</span>)</div><img src='plot.units-14.png' alt='' width='540' height='400' /><div class='input'><span class='fu'>par</span>(<span class='no'>oldpar</span>)</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm">
-    <div id="sidebar">
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
@@ -152,7 +147,6 @@
       <li><a href="#examples">Examples</a></li>
     </ul>
 
-    </div>
   </div>
 </div>
 

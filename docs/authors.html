@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>convert units object into difftime object — as.dt • units</title>
+<title>Authors • units</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -20,9 +20,9 @@
 
 
 <!-- pkgdown -->
-<link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
-<script src="../pkgdown.js"></script>
+<link href="pkgdown.css" rel="stylesheet">
+<script src="jquery.sticky-kit.min.js"></script>
+<script src="pkgdown.js"></script>
 
 <!-- mathjax -->
 <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
@@ -34,7 +34,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-topic">
+    <div class="container template-authors">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -44,15 +44,15 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">units</a>
+      <a class="navbar-brand" href="index.html">units</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
+  <a href="articles/index.html">Articles</a>
 </li>
       </ul>
       
@@ -72,49 +72,26 @@
       </header>
 
       <div class="row">
-  <div class="col-md-9 contents">
+  <div class="contents col-md-12">
     <div class="page-header">
-    <h1>convert units object into difftime object</h1>
+      <h1>Authors</h1>
     </div>
 
-    
-    <p>convert units object into difftime object</p>
-    
-
-    <pre><span class='fu'>as.dt</span>(<span class='no'>x</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>object of class <code>units</code></dd>
-    </dl>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>as.difftime is not a generic, hence this strange name.</p>
-    
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='no'>t1</span> <span class='kw'>=</span> <span class='fu'>Sys.time</span>()
-<span class='no'>t2</span> <span class='kw'>=</span> <span class='no'>t1</span> + <span class='fl'>3600</span>
-<span class='no'>d</span> <span class='kw'>=</span> <span class='no'>t2</span> - <span class='no'>t1</span>
-<span class='no'>du</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as.units.html'>as.units</a></span>(<span class='no'>d</span>)
-<span class='no'>dt</span> <span class='kw'>=</span> <span class='fu'>as.dt</span>(<span class='no'>du</span>)
-<span class='fu'>class</span>(<span class='no'>dt</span>)</div><div class='output co'>#&gt; [1] &quot;difftime&quot;</div><div class='input'><span class='no'>dt</span></div><div class='output co'>#&gt; Time difference of 1 hours</div></pre>
-  </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#details">Details</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
+    <ul class="list-unstyled">
+      <li>
+        <p><strong>Edzer Pebesma</strong>. Author, maintainer.
+        </p>
+      </li>
+      <li>
+        <p><strong>Thomas Mailund</strong>. Author.
+        </p>
+      </li>
     </ul>
 
   </div>
+
 </div>
+
 
       <footer>
       <div class="copyright">

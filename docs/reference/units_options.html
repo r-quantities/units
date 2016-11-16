@@ -10,7 +10,6 @@
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
-
 <!-- Bootstrap -->
 
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -22,6 +21,7 @@
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
+<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
@@ -98,16 +98,12 @@
     </dl>
     
 
-    <h2 class="hasAnchor" id="examples">
-      <a class="anchor" href="#examples"></a>
-      Examples
-    </h2>
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>units_options</span>(<span class='kw'>sep</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"~~~"</span>, <span class='st'>"~"</span>), <span class='kw'>group</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>""</span>, <span class='st'>""</span>)) <span class='co'># more space, parenthesis</span>
 <span class='co'>## set defaults:</span>
 <span class='fu'>units_options</span>(<span class='kw'>sep</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"~"</span>, <span class='st'>"~"</span>), <span class='kw'>group</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"["</span>, <span class='st'>"]"</span>), <span class='kw'>negative_power</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>parse</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm">
-    <div id="sidebar">
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
@@ -115,7 +111,6 @@
       <li><a href="#examples">Examples</a></li>
     </ul>
 
-    </div>
   </div>
 </div>
 
