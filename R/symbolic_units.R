@@ -84,24 +84,32 @@ unitless <- .symbolic_units(vector("character"), vector("character"))
 
 #' @export
 as.character.symbolic_units <- function(x, ..., 
-		neg_power = get(".units.negative_power", envir=.units_options), plot_sep = "") {
+		neg_power = get(".units.negative_power", envir = .units_options), 
+		escape_units = FALSE, plot_sep = "") {
   num_str <- character(0)
   denom_str <- character(0)
   sep <- plot_sep
 
-  if (length(x$numerator) == 0) {
+  numerator <- x$numerator
+  denominator <- x$denominator
+  if (escape_units) {
+    numerator <- unlist(Map(function(name) paste0("`", name, "`", sep = ""), numerator))
+    denoinator <- unlist(Map(function(name) paste0("`", name, "`", sep = ""), denominator))
+  }
+  
+  if (length(numerator) == 0) {
     if (! neg_power)
 	  num_str <- "1" # 1/cm^2/h
   } else {
-    num_str <- .pretty_print_sequence(x$numerator, "*", FALSE, plot_sep)
+    num_str <- .pretty_print_sequence(numerator, "*", FALSE, plot_sep)
   }
   
-  if (length(x$denominator) > 0) {
+  if (length(denominator) > 0) {
     sep <- if (neg_power)
 	    paste0("*", plot_sep)
 	  else
         "/"
-    denom_str <- .pretty_print_sequence(x$denominator, sep, neg_power, plot_sep)
+    denom_str <- .pretty_print_sequence(denominator, sep, neg_power, plot_sep)
   }
 
   if (length(num_str) == 0) {

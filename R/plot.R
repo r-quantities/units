@@ -3,12 +3,18 @@
 #' create axis label with appropriate labels
 #' @param lab length one character; name of the variable to plot
 #' @param u vector of class \code{units}
-#' @param sep length two character vector, defaulting to \code{c("~","~")}, with the white space between unit name and unit symbols, and between subsequent symbols. 
-#' @param group length two character vector with grouping symbols, e.g. \code{c("(",")")} for parenthesis, or \code{c("","")} for no group symbols
-#' @param parse logical; indicates whether a parseable expression should be returned (typically needed for super scripts), or a simple character string without special formatting.
+#' @param sep length two character vector, defaulting to \code{c("~","~")}, with
+#'   the white space between unit name and unit symbols, and between subsequent
+#'   symbols.
+#' @param group length two character vector with grouping symbols, e.g.
+#'   \code{c("(",")")} for parenthesis, or \code{c("","")} for no group symbols
+#' @param parse logical; indicates whether a parseable expression should be
+#'   returned (typically needed for super scripts), or a simple character string
+#'   without special formatting.
 #' @export
 #' @name plot.units
-#' @details \link{units_options} can be used to set and change the defaults for \code{sep}, \code{group} and \code{doParse}.
+#' @details \link{units_options} can be used to set and change the defaults for
+#'   \code{sep}, \code{group} and \code{doParse}.
 make_unit_label = function(lab, u,
   		sep = get(".units.sep", envir=.units_options),
   		group = get(".units.group", envir=.units_options),
@@ -16,12 +22,18 @@ make_unit_label = function(lab, u,
 
   if (parse) {
     str = paste0("group('", group[1], "',", 
-      as.character(units(u), plot_sep = sep[2]), ",'", group[2], "')")
-	if (length(grep("[^\t ]", lab)) > 0)
-	  str = paste0(lab, "*", sep[1], str)
-	parse(text = str)
-  } else
+                 as.character(units(u), escape_units = TRUE, plot_sep = sep[2]),
+                 ",'", group[2], "')")
+    
+	  if (length(grep("[^\t ]", lab)) > 0) {
+	    str = paste0(lab, "*", sep[1], str)
+	  }
+    
+    parse(text = str)
+    
+  } else {
     paste0(lab, " ", group[1], as.character(units(u)), group[2])
+  }
 }
 
 #' plot unit objects
