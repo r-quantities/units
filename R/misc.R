@@ -35,9 +35,11 @@ diff.units = function(x, ...) {
 #' @param str lenght-one character vector containing the unit string
 #' @examples 
 #' parse_unit("kg m-2 s-1")
-#' @details see also \code{demo(cf)} for parsing units in the CF standard name table.
+#' @details see also \code{demo(cf)} for parsing units in the CF standard name table. Note that \code{parse_unit} currently fails on expressions containing a \code{/}, such as \code{m/s-1}.
 #' @export
 parse_unit = function(str) {
+	if (length(grep("/", str)) > 0)
+		stop("parse_unit does not parse unit strings containing `/'")
 	parse_one = function(str) {
 		r <- regexpr("[-0-9]+", str)
 		if (r == -1)

@@ -13,7 +13,7 @@ parse_unit(str)
 parse unit in product power form (e.g. km m-2 s-1)
 }
 \details{
-see also \code{demo(cf)} for parsing units in the CF standard name table.
+see also \code{demo(cf)} for parsing units in the CF standard name table. Note that \code{parse_unit} currently fails on expressions containing a \code{/}, such as \code{m/s-1}.
 }
 \examples{
 parse_unit("kg m-2 s-1")
