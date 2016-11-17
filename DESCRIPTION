@@ -12,5 +12,6 @@ Description: Support for measurement units in R vectors; automatic propagation, 
 LazyData: yes
 License: GPL-2
 URL: https://github.com/edzer/units/
+BugReports: https://github.com/edzer/units/issues/
 RoxygenNote: 5.0.1
 Encoding: UTF-8

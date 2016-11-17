@@ -1,5 +1,4 @@
-# units 
-Measurement Units for R Vectors: conversion, derivation, simplification and error checking
+# Measurement Units for R
 
 [![Build Status](https://travis-ci.org/edzer/units.svg?branch=master)](https://travis-ci.org/edzer/units) 
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/edzer/units?branch=master&svg=true)](https://ci.appveyor.com/project/edzer/units)
@@ -7,6 +6,7 @@ Measurement Units for R Vectors: conversion, derivation, simplification and erro
 [![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html) [![CRAN](http://www.r-pkg.org/badges/version/units)](https://cran.rstudio.com/web/packages/units/index.html) 
 [![Downloads](http://cranlogs.r-pkg.org/badges/units?color=brightgreen)](http://www.r-pkg.org/pkg/units)
 
+Measurement Units for R Vectors: conversion, derivation, simplification and error checking:
 ```
 > library(units)
 > (spd1 = 1:5 * with(ud_units, m/s))
@@ -29,10 +29,9 @@ Error in `units<-.units`(`*tmp*`, value = list(numerator = "m", denominator = "s
   cannot convert s into m/s
 ```
 
-* blog posts: [first](http://r-spatial.org/r/2016/06/10/units.html), [second](http://r-spatial.org/r/2016/08/16/units2.html)
+* blog posts: [first](http://r-spatial.org/r/2016/06/10/units.html), [second](http://r-spatial.org/r/2016/08/16/units2.html), [third](http://r-spatial.org/r/2016/09/29/plot_units.html)
 * [package vignette](https://cran.r-project.org/web/packages/units/vignettes/units.html)
 * [R Journal manuscript](https://cran.r-project.org/web/packages/units/vignettes/measurement_units_in_R.pdf) under review
-* automatic units in [axis labels](http://r-spatial.org/r/2016/09/29/plot_units.html)
 * the [udunits2 R package](https://github.com/pacificclimate/Rudunits2) github page
 
 When installing the `udunits2` R package fails due to a missing udunits

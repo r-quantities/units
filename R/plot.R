@@ -96,18 +96,20 @@ plot.units <- function(x, y, xlab = NULL, ylab = NULL, ...) {
 #' 
 #' histogram for unit objects
 #' @param x object of class units, for which we want to plot the histogram
-#' @param xlab x axis label
+#' @param xlab character; x axis label
+#' @param main character; title of histogram 
 #' @param ... parameters passed on to \link{hist.default}
 #' @export
 #' @examples
 #' units_options(parse = FALSE) # otherwise we break on the funny symbol!
 #' u = rnorm(100) * make_unit("°C")
 #' hist(u)
-hist.units <- function(x, xlab = NULL, ...) {
+hist.units <- function(x, xlab = NULL, main = paste("Histogram of", xname), ...) {
   # We define the axis labels if they are not already provided and then let
   # the default plotting function take over...
+  xname <- paste(deparse(substitute(x), 500), collapse = "\n")
   if (is.null(xlab)) {
     xlab <- make_unit_label(deparse(substitute(x)), x)
   }
-  NextMethod("hist", xlab = xlab)
+  NextMethod("hist", xlab = xlab, main = main)
 }

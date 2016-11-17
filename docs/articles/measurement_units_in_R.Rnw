@@ -366,7 +366,6 @@ new units (\code{*}, \code{/}, \code{\^{}} and \code{**}),
 \item \code{Summary} include \code{sum}, \code{min}, \code{max} and \code{range},
 and all convert to the unit of the first argument.
 \end{itemize}
-
 When possible, new units are simplified:
 <<>>=
 a = 1:10 * m/s
@@ -394,26 +393,6 @@ However, \samp{parse\_unit} parses such units, and \samp{as\_cf} returns such un
 parse_unit("m2 s-1")
 as_cf(m^2*s^-1)
 @
-The \code{plot} and \code{hist} methods add units to default axis labels, an
-example is shown in Figure \ref{fig}.
-\begin{figure}
-\begin{center}
-<<echo=FALSE,fig=TRUE,height=3.8,width=7,eval=FALSE>>=
-pdf("fig1.pdf", width = 7, height = 4)
-units_options(negative_power = TRUE)
-gallon = make_unit("gallon")
-consumption = mtcars$mpg * with(ud_units, mi/gallon)
-displacement = mtcars$disp * ud_units[["in"]]^3
-units(displacement) = with(ud_units, cm^3)
-units(consumption) = with(ud_units, km/l)
-par(mar = par("mar") + c(0, .3, 0, 0))
-plot(1/displacement, 1/consumption)
-@
-\includegraphics[scale=.5]{fig1}
-\end{center}
-\caption{Plot of 1/consumption against 1/displacement of dataset {\tt mtcars}, illustrating automatic placement of units in axis labels (after conversion to SI)}
-\label{fig}
-\end{figure}
 
 Automatic conversion between \code{"units"} and \code{"difftime"} is provided: 
 <<<>>=
@@ -470,12 +449,11 @@ as.units(make_unit("Gregorian_year"), with(ud_units, d))
 as.units(make_unit("Julian_year"), with(ud_units, d))
 as.units(with(ud_units, yr), with(ud_units, d))
 @
-where the first answer refers to a common year, and the last to the
-interval between 2 successive passages of the sun through vernal
-equinox. This illustrates that those who apply unit conversion
-should be aware of possible pitfalls. Support for calendars in
-udunits seems less developed than in R: the length of a month is
-for instance taken as $1/12$ of a year.
+where the first answer refers to a typical year (the mode), and
+the last to the interval between 2 successive passages of the
+sun through vernal equinox. Udunits was not designed to handle
+calendars. This illustrates that those who apply unit conversion
+should be aware of possible pitfalls.
 
 Future work includes extending packages that read external
 data from formats, databases or interfaces with support for
@@ -484,8 +462,7 @@ unit information. Examples would be interfaces to HDF5 (e.g.,
 \CRANpkg{h5}, \cite{h5}), \CRANpkg{RNetCDF} \citep{RNetCDF} or
 \CRANpkg{sos4R} \citep{sos4R}.  It would be nice to see units
 of measurements propagate into units of regression coefficient
-estimates and appear in axis labels on lattice plots (\cite{lattice})
-or ggplots (\cite{ggplot2}).
+estimates and appear, properly formatted, on axis labels in plots.
 
 %\begin{figure}[htbp]
 %  \centering
@@ -515,6 +492,19 @@ University of Victoria, Canada \\}
 
 \end{document}
 
+\begin{figure}
+\begin{center}
+<<echo=FALSE,fig=TRUE,height=3.8,width=5,eval=FALSE>>=
+#library(units)
+#temp_data$Annual_Mean = temp_data$Annual_Mean * with(ud_units, `°C`)
+#plot(Annual_Mean~date, temp_data, cex = .8)
+#abline(lm(Annual_Mean~date, temp_data))
+@
+\includegraphics[scale=.5]{fig1}
+\end{center}
+\caption{Annual global land-ocean temperature index (\textdegree C), per year}
+\label{fig}
+\end{figure}
 
 <<>>=
 #temperature = temp_data$Annual_Mean * with(ud_units, `°C`)

@@ -4,12 +4,15 @@
 \alias{hist.units}
 \title{histogram for unit objects}
 \usage{
-\method{hist}{units}(x, xlab = NULL, ...)
+\method{hist}{units}(x, xlab = NULL, main = paste("Histogram of", xname),
+  ...)
 }
 \arguments{
 \item{x}{object of class units, for which we want to plot the histogram}
 
-\item{xlab}{x axis label}
+\item{xlab}{character; x axis label}
+
+\item{main}{character; title of histogram}
 
 \item{...}{parameters passed on to \link{hist.default}}
 }

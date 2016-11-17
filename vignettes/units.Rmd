@@ -1,9 +1,18 @@
-<!--
-%\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Units of Measurement for R Vectors: an Introduction}
--->
+---
+title: "Units of Measurement for R Vectors: an Introduction"
+output:
+  html_document:
+    toc: true
+    theme: united
+vignette: >
+  %\VignetteIndexEntry{Units of Measurement for R Vectors: an Introduction}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
 
-# Units of Measurement for R Vectors: an Introduction
+```{r echo=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+```
 
 R has little support for physical measurement units.  The exception
 is formed by time differences: time differences objects of class
