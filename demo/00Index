@@ -1,1 +1,3 @@
-cf		check that the NetCDF-CF units are all udunits compatible
+cf		checks that the NetCDF-CF units are all udunits compatible
+ggforce	demonstrates automatic units in default axis labels in ggplot2
+year	illustrate the year lenghts, for different definitions of year
