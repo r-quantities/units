@@ -486,7 +486,7 @@ estimates.
 \section*{Acknowledgements}
 
 We acknowledge three anonymous reviewers and the handling editor for
-their constructive comments, and Thomas Lin Pederson for implementing
+their constructive comments, and Thomas Lin Pedersen for implementing
 the ggplot extensions in package {\bf ggforce} that automatically
 add units to default ggplot axis labels (Fig 1).
 
