@@ -395,23 +395,29 @@ parse_unit("m2 s-1")
 as_cf(m^2*s^-1)
 @
 The \code{plot} and \code{hist} methods add units to default axis labels, an
-example is shown in Figure \ref{fig}.
+example is shown in Figure \ref{fig}. For \CRANpkg{ggplot2} plots
+\citep{ggplot2}, automatic unit placement in default axis label is provided by package {\bf ggforce} \citep{ggforce}; \code{demo(ggforce)} gives an example.
 \begin{figure}
 \begin{center}
 <<echo=FALSE,fig=TRUE,height=3.8,width=7,eval=FALSE>>=
-pdf("fig1.pdf", width = 7, height = 4)
+pdf("fig1.pdf", width = 4, height = 4)
+library(units)
 units_options(negative_power = TRUE)
 gallon = make_unit("gallon")
-consumption = mtcars$mpg * with(ud_units, mi/gallon)
-displacement = mtcars$disp * ud_units[["in"]]^3
-units(displacement) = with(ud_units, cm^3)
-units(consumption) = with(ud_units, km/l)
+mtcars$consumption = mtcars$mpg * with(ud_units, mi/gallon)
+mtcars$displacement = mtcars$disp * ud_units[["in"]]^3
+units(mtcars$displacement) = with(ud_units, cm^3)
+units(mtcars$consumption) = with(ud_units, km/l)
 par(mar = par("mar") + c(0, .3, 0, 0))
-plot(1/displacement, 1/consumption)
+with(mtcars, plot(1/displacement, 1/consumption))
+pdf("fig2.pdf", width = 4, height = 4)
+library(ggforce)
+ggplot(mtcars) + geom_point(aes(1/displacement, 1/consumption))
 @
-\includegraphics[scale=.5]{fig1}
+\includegraphics[width=0.45\columnwidth]{fig1}
+\includegraphics[width=0.45\columnwidth]{fig2}
 \end{center}
-\caption{Plot of 1/consumption against 1/displacement of dataset {\tt mtcars}, illustrating automatic placement of units in axis labels (after conversion to SI)}
+\caption{Plot of 1/consumption against 1/displacement of dataset {\tt mtcars}, illustrating automatic units in default axis labels (after conversion to SI) for base plot (left) and ggplot (right); \code{demo(ggforce)} illustrates how these plots are generated. }
 \label{fig}
 \end{figure}
 
@@ -459,23 +465,14 @@ data in \code{"data.frame"} slots, but for instance not in \code{"zoo"}
 \citep{zoo} or \code{"xts"} \citep{xts} objects, as these latter two
 set the class attribute of a vector or matrix.
 
-Despite all standardization efforts, units may still be ambiguous, or subject
-to interpretation. For instance the question how many days one year has, is
-answered differently by \CRANpkg{NISTunits} and \CRANpkg{udunits2}:
-<<>>=
-NISTyearTOsec(1)/(24*3600)
-as.units(make_unit("common_year"), with(ud_units, d))
-as.units(make_unit("leap_year"), with(ud_units, d))
-as.units(make_unit("Gregorian_year"), with(ud_units, d))
-as.units(make_unit("Julian_year"), with(ud_units, d))
-as.units(with(ud_units, yr), with(ud_units, d))
-@
-where the first answer refers to a common year, and the last to the
-interval between 2 successive passages of the sun through vernal
-equinox. This illustrates that those who apply unit conversion
-should be aware of possible pitfalls. Support for calendars in
-udunits seems less developed than in R: the length of a month is
-for instance taken as $1/12$ of a year.
+Despite all standardization efforts, units may still be ambiguous,
+or subject to interpretation. For instance for the duration of one
+year \CRANpkg{NISTunits} or \CRANpkg{udunits2} give us an answer
+that depends on whether we want a common, leap, Gregorian, Julian,
+tropical or siderial year (\cite{lang}, see also \code{demo(year)}).
+This illustrates that those who apply unit conversion should be
+aware of possible pitfalls. Support for calendars in udunits seems
+not as well developed as in R.
 
 Future work includes extending packages that read external
 data from formats, databases or interfaces with support for
@@ -484,8 +481,14 @@ unit information. Examples would be interfaces to HDF5 (e.g.,
 \CRANpkg{h5}, \cite{h5}), \CRANpkg{RNetCDF} \citep{RNetCDF} or
 \CRANpkg{sos4R} \citep{sos4R}.  It would be nice to see units
 of measurements propagate into units of regression coefficient
-estimates and appear in axis labels on lattice plots (\cite{lattice})
-or ggplots (\cite{ggplot2}).
+estimates. 
+
+\section*{Acknowledgements}
+
+We acknowledge three anonymous reviewers and the handling editor for
+their constructive comments, and Thomas Lin Pedersen for implementing
+the ggplot extensions in package {\bf ggforce} that automatically
+add units to default ggplot axis labels (Fig 1).
 
 %\begin{figure}[htbp]
 %  \centering
