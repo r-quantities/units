@@ -175,9 +175,5 @@ as.dt <- function(x) {
 
 
 #' @export
-`[.units` <- function(x, i, j,..., drop = TRUE) {
-  ret <- unclass(x)[i]
-  attr(ret, "units") <- units(x)
-  class(ret) <- "units"
-  ret
-}
+`[.units` <- function(x, i, j,..., drop = TRUE)
+  structure(NextMethod(), "units" = units(x), class = "units")
