@@ -6,6 +6,9 @@
 [![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html) [![CRAN](http://www.r-pkg.org/badges/version/units)](https://cran.r-project.org/package=units) 
 [![Downloads](http://cranlogs.r-pkg.org/badges/units?color=brightgreen)](http://www.r-pkg.org/pkg/units)
 
+### News
+The `units` vignette has been [accepted](https://journal.r-project.org/archive/accepted/) for publication in the [R Journal](https://journal.r-project.org/), where it appeared [online](https://journal.r-project.org/archive/accepted/pebesma-mailund-hiebert.pdf)
+
 Measurement Units for R Vectors: conversion, derivation, simplification and error checking:
 ```
 > library(units)
@@ -31,7 +34,7 @@ Error in `units<-.units`(`*tmp*`, value = list(numerator = "m", denominator = "s
 
 * blog posts: [first](http://r-spatial.org/r/2016/06/10/units.html), [second](http://r-spatial.org/r/2016/08/16/units2.html), [third](http://r-spatial.org/r/2016/09/29/plot_units.html)
 * [package vignette](https://cran.r-project.org/web/packages/units/vignettes/units.html)
-* [R Journal manuscript](https://cran.r-project.org/web/packages/units/vignettes/measurement_units_in_R.pdf) under review
+* [R Journal manuscript](https://cran.r-project.org/web/packages/units/vignettes/measurement_units_in_R.pdf), [accepted](https://journal.r-project.org/archive/accepted/)
 * the [udunits2 R package](https://github.com/pacificclimate/Rudunits2) github page
 
 When installing the `udunits2` R package fails due to a missing udunits
