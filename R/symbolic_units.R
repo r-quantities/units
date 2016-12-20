@@ -72,7 +72,7 @@ unitless <- .symbolic_units(vector("character"), vector("character"))
     value <- fixed_tbl[i]
     if (value > 1 || (value == 1 && neg_power)) {
 	  if (neg_power)
-	  	value <- value * -1
+	  	value <- value * -1.
       result[i] <- paste0(name, "^", value)
     } else {
       result[i] <- name
@@ -114,15 +114,15 @@ as.character.symbolic_units <- function(x, ...,
 
   if (length(num_str) == 0) {
     if (length(denom_str) == 0)
-	  return("")
+	  ""
     else
-	  return(denom_str)
+	  denom_str
+  } else {
+    if (length(denom_str) == 0)
+      num_str
+    else
+      paste(num_str, denom_str, sep = sep)
   }
-
-  if (length(denom_str) == 0)
-    return(num_str)
-
-  paste(num_str, denom_str, sep = sep)
 }
 
 #' Create a new unit from a unit name.
@@ -143,8 +143,10 @@ make_unit <- function(name) {
   
   if (su1 == su2) return(1.)
 
-  if (!udunits2::ud.are.convertible(su1, su2)) return(NA)
-  udunits2::ud.convert(1, su1, su2)
+  if (!udunits2::ud.are.convertible(su1, su2)) 
+  	NA_real_
+  else
+  	udunits2::ud.convert(1, su1, su2)
 }
 
 .get_conversion_constant_sequence <- function(s1, s2) {
@@ -165,9 +167,9 @@ make_unit <- function(name) {
   }
   # if we make it through these loops and there are still units left in s2
   # then there are some we couldn't convert return NA
-  if (length(remaining_s2) > 0) {
-      NA_real_
-  } else 
+  if (length(remaining_s2) > 0)
+    NA_real_
+  else 
     conversion_constant
 }
 
@@ -183,7 +185,7 @@ make_unit <- function(name) {
     .get_conversion_constant_sequence(u1$denominator, u2$denominator)
   if (is.na(const)) { # try brute force, through udunits2:
     str1 <- as.character(u1)
-	  str2 <- as.character(u2)
+    str2 <- as.character(u2)
   	if (udunits2::ud.are.convertible(str1, str2))
       const = udunits2::ud.convert(1, str1, str2)
   } 
