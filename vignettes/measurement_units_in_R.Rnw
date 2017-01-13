@@ -71,8 +71,8 @@ can be transformed to other datums, or converted to various flat
 
 In many cases however, R drops contextual information. As an example, we
 look at annual global land-ocean temperature index\footnote{data from
-\url{http://climate.nasa.gov/vital-signs/global-temperature/}} since 1960
-(Fig \ref{fig}):
+\url{http://climate.nasa.gov/vital-signs/global-temperature/}} since 1960:
+% (Fig \ref{fig}):
 <<>>=
 temp_data = subset(read.table("647_Global_Temperature_Data_File.txt", 
 	header=TRUE)[1:2], Year >= 1960)
@@ -83,17 +83,6 @@ head(temp_data, 3)
 year_duration = diff(temp_data$date)
 mean(year_duration)
 @
-\begin{figure}
-\begin{center}
-<<echo=FALSE,fig=TRUE,height=3.8,width=5,eval=FALSE>>=
-plot(Annual_Mean~date,temp_data,ylab = "temperature index, °C", cex = .8)
-abline(lm(Annual_Mean~date,temp_data))
-@
-\includegraphics[scale=.5]{fig1}
-\end{center}
-\caption{Annual global land-ocean temperature index (\textdegree C), per year}
-\label{fig}
-\end{figure}
 Here, the time difference units are reported for the \code{difftime} 
 object \code{year\_duration}, but
 if we would use it in a linear algebra operation
@@ -105,10 +94,11 @@ the unit is dropped. Similarly, for linear regression coefficients we see
 coef(lm(Annual_Mean ~ date, temp_data))
 coef(lm(Annual_Mean ~ time, temp_data))
 @
-where the unit of change is in degrees Celcius but either per day
-(date) or per second (time). For purely mathematical manipulations,
-R often strips context from numbers when it is carried in attributes,
-the linear algebra routines being a prime example.
+where the unit of change is in degrees Celcius but either {\em per
+day} ({\tt date}) or {\em per second} ({\tt time}). For purely
+mathematical manipulations, R often strips context from numbers
+when it is carried in attributes, the linear algebra routines being
+a prime example.
 
 Most variables are somehow attributed with information about
 their {\em units}, which specify what the value 1 of this variable
@@ -179,7 +169,7 @@ but uses for instance \code{kph} instead of \samp{km\_per\_hour}, and then
 \samp{m3\_per\_hr} for flow -- unit names seem to come from convention rather
 than systematic composition.  Object
 \code{conv\_unit\_options} contains all 173 supported units, categorized by
-(derived) unit:
+the physical dimension they describe:
 <<>>=
 names(conv_unit_options)
 conv_unit_options$volume
@@ -263,7 +253,7 @@ intermediate objects can have units that are arbitrarily complex,
 and that can potentially be simplified later on. It also means that
 the package practically supports an unlimited amount of derived units.
 
-\section{ Udunits versus the Unified Code for Units of Measure (UCUM) }
+\section{Udunits versus the Unified Code for Units of Measure (UCUM)}
 
 Another set of encodings for measurement units is the Unified Code for
 Units of Measure (UCUM, \cite{ucum}). A dedicated web
@@ -376,6 +366,7 @@ new units (\code{*}, \code{/}, \code{\^{}} and \code{**}),
 \item \code{Summary} include \code{sum}, \code{min}, \code{max} and \code{range},
 and all convert to the unit of the first argument.
 \end{itemize}
+
 When possible, new units are simplified:
 <<>>=
 a = 1:10 * m/s
@@ -403,6 +394,32 @@ However, \samp{parse\_unit} parses such units, and \samp{as\_cf} returns such un
 parse_unit("m2 s-1")
 as_cf(m^2*s^-1)
 @
+The \code{plot} and \code{hist} methods add units to default axis labels, an
+example is shown in Figure \ref{fig}. For \CRANpkg{ggplot2} plots
+\citep{ggplot2}, automatic unit placement in default axis label is provided by package {\bf ggforce} \citep{ggforce}; \code{demo(ggforce)} gives an example.
+\begin{figure}
+\begin{center}
+<<echo=FALSE,fig=TRUE,height=3.8,width=7,eval=FALSE>>=
+pdf("fig1.pdf", width = 4, height = 4)
+library(units)
+units_options(negative_power = TRUE)
+gallon = make_unit("gallon")
+mtcars$consumption = mtcars$mpg * with(ud_units, mi/gallon)
+mtcars$displacement = mtcars$disp * ud_units[["in"]]^3
+units(mtcars$displacement) = with(ud_units, cm^3)
+units(mtcars$consumption) = with(ud_units, km/l)
+par(mar = par("mar") + c(0, .3, 0, 0))
+with(mtcars, plot(1/displacement, 1/consumption))
+pdf("fig2.pdf", width = 4, height = 4)
+library(ggforce)
+ggplot(mtcars) + geom_point(aes(1/displacement, 1/consumption))
+@
+\includegraphics[width=0.45\columnwidth]{fig1}
+\includegraphics[width=0.45\columnwidth]{fig2}
+\end{center}
+\caption{Plot of 1/consumption against 1/displacement of dataset {\tt mtcars}, illustrating automatic units in default axis labels (after conversion to SI) for base plot (left) and ggplot (right); \code{demo(ggforce)} illustrates how these plots are generated. }
+\label{fig}
+\end{figure}
 
 Automatic conversion between \code{"units"} and \code{"difftime"} is provided: 
 <<<>>=
@@ -448,16 +465,14 @@ data in \code{"data.frame"} slots, but for instance not in \code{"zoo"}
 \citep{zoo} or \code{"xts"} \citep{xts} objects, as these latter two
 set the class attribute of a vector or matrix.
 
-Despite all standardization efforts, units may still be ambiguous, or subject
-to interpretation. For instance the question how many days one year has, is
-answered differently by \CRANpkg{NISTunits} and \CRANpkg{udunits2}:
-<<>>=
-NISTyearTOsec(1)/(24*3600)
-ud.convert(1, "year", "days")
-@
-where the first answer refers to a typical year (the mode), the
-second to a mean year. This illustrates that those who apply unit
-conversion should be aware of possible pitfalls.
+Despite all standardization efforts, units may still be ambiguous,
+or subject to interpretation. For instance for the duration of one
+year \CRANpkg{NISTunits} or \CRANpkg{udunits2} give us an answer
+that depends on whether we want a common, leap, Gregorian, Julian,
+tropical or siderial year (\cite{lang}, see also \code{demo(year)}).
+This illustrates that those who apply unit conversion should be
+aware of possible pitfalls. Support for calendars in udunits seems
+not as well developed as in R.
 
 Future work includes extending packages that read external
 data from formats, databases or interfaces with support for
@@ -466,7 +481,14 @@ unit information. Examples would be interfaces to HDF5 (e.g.,
 \CRANpkg{h5}, \cite{h5}), \CRANpkg{RNetCDF} \citep{RNetCDF} or
 \CRANpkg{sos4R} \citep{sos4R}.  It would be nice to see units
 of measurements propagate into units of regression coefficient
-estimates and appear, properly formatted, on axis labels in plots.
+estimates. 
+
+\section*{Acknowledgements}
+
+We acknowledge three anonymous reviewers and the handling editor for
+their constructive comments, and Thomas Lin Pedersen for implementing
+the ggplot extensions in package {\bf ggforce} that automatically
+add units to default ggplot axis labels (Fig 1).
 
 %\begin{figure}[htbp]
 %  \centering
@@ -495,3 +517,9 @@ University of Victoria, Canada \\}
 \end{article}
 
 \end{document}
+
+
+<<>>=
+#temperature = temp_data$Annual_Mean * with(ud_units, `°C`)
+#hist(temperature, main = "temperature")
+@

@@ -51,13 +51,20 @@ NULL
   if (identical(units(x), value)) # do nothing:
     return(x)
   
-  # We need to convert from one unit to another
-  conversion_constant <- .get_conversion_constant(units(x), value)
-  if (is.na(conversion_constant)) {
+  str1 <- as.character(units(x))
+  str2 <- as.character(value)
+  if (udunits2::ud.are.convertible(str1, str2)) 
+    structure(udunits2::ud.convert(x, str1, str2), units = value)
+  else
     stop(paste("cannot convert", units(x), "into", value))
-  }
-  
-  structure(conversion_constant * x, units = value)
+
+#  # We need to convert from one unit to another
+#  conversion_constant <- .get_conversion_constant(units(x), value)
+#  if (is.na(conversion_constant)) {
+#    stop(paste("cannot convert", units(x), "into", value))
+#  }
+#  
+#  structure(conversion_constant * x, units = value)
 }
 
 #' retrieve measurement units from units object
@@ -81,6 +88,14 @@ as.units <- function(x, value = unitless) {
 
 #' @export
 as.units.default <- function(x, value = unitless) {
+#  value.name = as.character(substitute(value))
+#  tr = try(ret <- get(value.name), silent = TRUE)
+#  if (inherits(tr, "try-error"))
+#  	value = with(ud_units, value)
+#  else
+#  	value = ret
+#  if (is.null(value))
+#  	stop(paste("unit", value.name, "not found: define with make_unit?"))
   units(x) <- value
   x
 }
@@ -175,9 +190,5 @@ as.dt <- function(x) {
 
 
 #' @export
-`[.units` <- function(x, i, j,..., drop = TRUE) {
-  ret <- unclass(x)[i]
-  attr(ret, "units") <- units(x)
-  class(ret) <- "units"
-  ret
-}
+`[.units` <- function(x, i, j,..., drop = TRUE)
+  structure(NextMethod(), "units" = units(x), class = "units")

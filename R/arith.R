@@ -65,8 +65,12 @@ Ops.units <- function(e1, e2) {
     } else if (inherits(e2, "units")) {
       # only e2 has units
       if (.Generic == "*")      attr(e1, "units") <- units(e2)
-      else if (.Generic == "/") attr(e1, "units") <- .invert_symbolic_units(units(e2))
-      else stop(paste("Unexpected operator", .Generic)) # nocov
+      else if (.Generic == "/") { 
+	    if (length(e1) == 1) # I wish I understood why this is needed
+		  attr(e2, "units") <- .invert_symbolic_units(units(e2))
+		else
+		  attr(e1, "units") <- .invert_symbolic_units(units(e2))
+      } else stop(paste("Unexpected operator", .Generic)) # nocov
       class(e1) <- "units"
     }
   } 

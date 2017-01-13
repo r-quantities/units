@@ -6,10 +6,10 @@ c.units <- function(..., recursive = FALSE) {
     for (i in 2:length(args)) {
       if (!inherits(args[[i]], "units"))
         stop(paste("argument", i, "is not of class units"))
-      if (!ud.are.convertible(units(args[[i]]), u))
+      tr = try(units(args[[i]]) <- u)
+	  if (class(tr) == "try-error")
         stop(paste("argument", i, 
                    "has units that are not convertible to that of the first argument"))
-      units(args[[i]]) = u
     }
   x = unlist(args)
   as.units(x, u)
@@ -35,9 +35,11 @@ diff.units = function(x, ...) {
 #' @param str lenght-one character vector containing the unit string
 #' @examples 
 #' parse_unit("kg m-2 s-1")
-#' @details see also \code{demo(cf)} for parsing units in the CF standard name table.
+#' @details see also \code{demo(cf)} for parsing units in the CF standard name table. Note that \code{parse_unit} currently fails on expressions containing a \code{/}, such as \code{m/s-1}.
 #' @export
 parse_unit = function(str) {
+	if (length(grep("/", str)) > 0)
+		stop("parse_unit does not parse unit strings containing `/'")
 	parse_one = function(str) {
 		r <- regexpr("[-0-9]+", str)
 		if (r == -1)

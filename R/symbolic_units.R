@@ -53,7 +53,7 @@ Ops.symbolic_units <- function(e1, e2) {
 #' @export
 unitless <- .symbolic_units(vector("character"), vector("character"))
 
-.pretty_print_sequence <- function(terms, op) {
+.pretty_print_sequence <- function(terms, op, neg_power = FALSE, sep = "") {
   # `fix` handles cases where a unit is actually an expression. We would have to
   # deparse these to really do a pretty printing, but for now we leave them alone...
   fix <- function(term) {
@@ -70,35 +70,59 @@ unitless <- .symbolic_units(vector("character"), vector("character"))
   for (i in seq_along(fixed_tbl)) {
     name <- names[i]
     value <- fixed_tbl[i]
-    if (value > 1) {
+    if (value > 1 || (value == 1 && neg_power)) {
+	  if (neg_power)
+	  	value <- value * -1.
       result[i] <- paste0(name, "^", value)
     } else {
       result[i] <- name
     }
   }
   
-  paste0(result, collapse = op)
+  paste0(result, collapse = paste0(op, sep))
 }
 
 #' @export
-as.character.symbolic_units <- function(x, ...) {
-  nom_str <- ""
-  sep <- ""
-  denom_str <- ""
-  
+as.character.symbolic_units <- function(x, ..., 
+		neg_power = get(".units.negative_power", envir = .units_options), 
+		escape_units = FALSE, plot_sep = "") {
+  num_str <- character(0)
+  denom_str <- character(0)
+  sep <- plot_sep
 
-  if (length(x$numerator) == 0) {
-    nom_str <- "1"
+  numerator <- x$numerator
+  denominator <- x$denominator
+  if (escape_units) {
+    numerator <- unlist(Map(function(name) paste0("`", name, "`", sep = ""), numerator))
+    denoinator <- unlist(Map(function(name) paste0("`", name, "`", sep = ""), denominator))
+  }
+  
+  if (length(numerator) == 0) {
+    if (! neg_power)
+	  num_str <- "1" # 1/cm^2/h
   } else {
-    nom_str <- .pretty_print_sequence(x$numerator, "*")
+    num_str <- .pretty_print_sequence(numerator, "*", FALSE, plot_sep)
   }
   
-  if (length(x$denominator) > 0) {
-    sep = "/"
-    denom_str <- .pretty_print_sequence(x$denominator, "/")
+  if (length(denominator) > 0) {
+    sep <- if (neg_power)
+	    paste0("*", plot_sep)
+	  else
+        "/"
+    denom_str <- .pretty_print_sequence(denominator, sep, neg_power, plot_sep)
   }
 
-  paste0(nom_str, sep, denom_str)
+  if (length(num_str) == 0) {
+    if (length(denom_str) == 0)
+	  ""
+    else
+	  denom_str
+  } else {
+    if (length(denom_str) == 0)
+      num_str
+    else
+      paste(num_str, denom_str, sep = sep)
+  }
 }
 
 #' Create a new unit from a unit name.
@@ -119,8 +143,10 @@ make_unit <- function(name) {
   
   if (su1 == su2) return(1.)
 
-  if (!udunits2::ud.are.convertible(su1, su2)) return(NA)
-  udunits2::ud.convert(1, su1, su2)
+  if (!udunits2::ud.are.convertible(su1, su2)) 
+  	NA_real_
+  else
+  	udunits2::ud.convert(1, su1, su2)
 }
 
 .get_conversion_constant_sequence <- function(s1, s2) {
@@ -141,9 +167,9 @@ make_unit <- function(name) {
   }
   # if we make it through these loops and there are still units left in s2
   # then there are some we couldn't convert return NA
-  if (length(remaining_s2) > 0) {
-      NA_real_
-  } else 
+  if (length(remaining_s2) > 0)
+    NA_real_
+  else 
     conversion_constant
 }
 
@@ -159,7 +185,7 @@ make_unit <- function(name) {
     .get_conversion_constant_sequence(u1$denominator, u2$denominator)
   if (is.na(const)) { # try brute force, through udunits2:
     str1 <- as.character(u1)
-	  str2 <- as.character(u2)
+    str2 <- as.character(u2)
   	if (udunits2::ud.are.convertible(str1, str2))
       const = udunits2::ud.convert(1, str1, str2)
   } 
