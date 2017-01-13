@@ -149,47 +149,18 @@ make_unit <- function(name) {
   	udunits2::ud.convert(1, su1, su2)
 }
 
-.get_conversion_constant_sequence <- function(s1, s2) {
-  conversion_constant <- 1
-  remaining_s2 <- s2
-  for (i in seq_along(s1)) {
-    converted <- FALSE
-    for (j in seq_along(remaining_s2)) {
-      convert <- .get_unit_conversion_constant(s1[i], remaining_s2[j])
-      if (!is.na(convert)) {
-        conversion_constant <- conversion_constant * convert
-        remaining_s2 <- remaining_s2[-j]
-        converted <- TRUE
-        break
-      }
-    }
-    if (!converted) return(NA_real_)
-  }
-  # if we make it through these loops and there are still units left in s2
-  # then there are some we couldn't convert return NA
-  if (length(remaining_s2) > 0)
-    NA_real_
-  else 
-    conversion_constant
-}
-
 .get_conversion_constant <- function(u1, u2) {
   # if the expressions are well formed, and can be converted, we can convert
   # numerator and denominator independently. If either cannot be converted
   # then the function call returns NA which will also be returned (since NA and /)
   # will convert to NA.
 
-  const = NA_real_
-  # FIXME:
-  const = .get_conversion_constant_sequence(u1$numerator, u2$numerator) /
-    .get_conversion_constant_sequence(u1$denominator, u2$denominator)
-  if (is.na(const)) { # try brute force, through udunits2:
-    str1 <- as.character(u1)
-    str2 <- as.character(u2)
-  	if (udunits2::ud.are.convertible(str1, str2))
-      const = udunits2::ud.convert(1, str1, str2)
-  } 
-  const
+  str1 <- as.character(u1)
+  str2 <- as.character(u2)
+  if (udunits2::ud.are.convertible(str1, str2))
+    const = udunits2::ud.convert(1, str1, str2)
+  else
+    NA_real_
 }
 
 .simplify_units <- function(sym_units) {
