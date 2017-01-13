@@ -130,21 +130,6 @@ make_unit <- function(name) {
   as.units.default(1, .make_symbolic_units(name))
 }
 
-.get_unit_conversion_constant <- function(u1, u2) {
-  # FIXME: Unit conversion only has limited support right now
-  # I always just ask ud to convert units.
-  su1 <- as.character(u1)
-  su2 <- as.character(u2)
-  
-  if (su1 == su2) return(1.)
-
-  if (udunits2::ud.are.convertible(su1, su2) &&
-    	udunits2::ud.convert(2, su1, su2) / udunits2::ud.convert(1, su1, su2) == 2.0)
-    udunits2::ud.convert(1, su1, su2)
-  else
-    NA_real_
-}
-
 .simplify_units <- function(value, sym_units) {
   
   # This is just a brute force implementation that takes each element in the
