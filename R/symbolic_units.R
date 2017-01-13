@@ -143,22 +143,9 @@ make_unit <- function(name) {
   
   if (su1 == su2) return(1.)
 
-  if (!udunits2::ud.are.convertible(su1, su2)) 
-  	NA_real_
-  else
-  	udunits2::ud.convert(1, su1, su2)
-}
-
-.get_conversion_constant <- function(u1, u2) {
-  # if the expressions are well formed, and can be converted, we can convert
-  # numerator and denominator independently. If either cannot be converted
-  # then the function call returns NA which will also be returned (since NA and /)
-  # will convert to NA.
-
-  str1 <- as.character(u1)
-  str2 <- as.character(u2)
-  if (udunits2::ud.are.convertible(str1, str2))
-    const = udunits2::ud.convert(1, str1, str2)
+  if (udunits2::ud.are.convertible(su1, su2) &&
+    	udunits2::ud.convert(2, su1, su2) / udunits2::ud.convert(1, su1, su2) == 2.0)
+    udunits2::ud.convert(1, su1, su2)
   else
     NA_real_
 }
@@ -198,4 +185,3 @@ make_unit <- function(name) {
   
   as.units(conversion_constant, .symbolic_units(new_numerator, new_denominator))
 }
-
