@@ -87,3 +87,17 @@ test_that("m + m*s is an error", {
   s <- make_unit("s")
   expect_error(m + m * s)
 })
+
+test_that("we can convert between units that are not simply a scalar from each other", {
+  m <- 0 * parse_unit("degC")
+  units(m) <- parse_unit("degK")
+  expect_equal(as.numeric(m), udunits2::ud.convert(0, "degC", "degK"))  
+  expect_equal(as.character(units(m)), "degK")
+  
+  temp <- 75 * parse_unit('degF')
+  units(temp) <- parse_unit('degK')
+  result <- temp / parse_unit('degF')
+  expect_equal(as.numeric(result), 75)
+  expect_equal(units(result), unitless)
+})
+

@@ -5,14 +5,18 @@
             class = "symbolic_units")
 }
 
+.multiply_symbolic_units <- function(value, e1, e2) {
+  numerator <- sort(c(e1$numerator, e2$numerator))
+  denominator <- sort(c(e1$denominator, e2$denominator))
+  .simplify_units(value, .symbolic_units(numerator, denominator))
+}
+
 .invert_symbolic_units <- function(e) {
   .symbolic_units(e$denominator, e$numerator)
 }
 
-.multiply_symbolic_units <- function(e1, e2) {
-  numerator <- sort(c(e1$numerator, e2$numerator))
-  denominator <- sort(c(e1$denominator, e2$denominator))
-  .simplify_units(.symbolic_units(numerator, denominator))
+.divide_symbolic_units <- function(value, e1, e2) {
+  .multiply_symbolic_units(value, e1, .invert_symbolic_units(e2))
 }
 
 .same_units <- function(e1, e2) {
@@ -33,16 +37,7 @@ Ops.symbolic_units <- function(e1, e2) {
     else return(!.same_units(e1, e2))
   }
   
-  prd <- switch(.Generic, "*" = , "/" = TRUE, FALSE)
-  if (!prd) stop(paste("operation", .Generic, "not allowed for symbolic operators"))
-  
-  if (!inherits(e1, "symbolic_units") || !inherits(e2, "symbolic_units")) {
-    stop(paste("Arithmetic operations on symbolic units only possible ",  # nocov
-               "if both arguments are symbolic units", sep = "\n"))       # nocov
-  }
-  
-  if (.Generic == "*") .multiply_symbolic_units(e1, e2)         # multiplication
-  else .multiply_symbolic_units(e1, .invert_symbolic_units(e2)) # division
+  stop(paste("operation", .Generic, "not allowed for symbolic operators")) # nocov
 }
 
 .make_symbolic_units <- function(name) {
@@ -135,45 +130,25 @@ make_unit <- function(name) {
   as.units.default(1, .make_symbolic_units(name))
 }
 
-.get_unit_conversion_constant <- function(u1, u2) {
-  # FIXME: Unit conversion only has limited support right now
-  # I always just ask ud to convert units.
-  su1 <- as.character(u1)
-  su2 <- as.character(u2)
-  
-  if (su1 == su2) return(1.)
-
-  if (udunits2::ud.are.convertible(su1, su2) &&
-    	udunits2::ud.convert(2, su1, su2) / udunits2::ud.convert(1, su1, su2) == 2.0)
-    udunits2::ud.convert(1, su1, su2)
-  else
-    NA_real_
-}
-
-.simplify_units <- function(sym_units) {
+.simplify_units <- function(value, sym_units) {
   
   # This is just a brute force implementation that takes each element in the
   # numerator and tries to find a value in the denominator that can be converted
-  # to the same unit. If so, we pull out the conversion constant, get rid of
-  # both terms, and move on. At the end we return a units object with the
-  # conversion constant and the new symbolic units type. Converting units can then
-  # be done as this `x <- as.numeric(x) * .simplify_units(units(x))`.
+  # to the same unit. It modifies "value" to rescale the nominator to the denomiator
+  # before removing matching units.
   
-  # Returning a units instead of a symbolic_units object is not idea, it means that
-  # you cannot simply multiply or divide symbolic units together, you need to wrap
-  # each pair-wise operator in units() but it is necessary when conversion constants
-  # must be taken into account.
-  
-  conversion_constant <- 1
   new_numerator <- sym_units$numerator
   new_denominator <- sym_units$denominator
   
   delete_num <- c()
   for (i in seq_along(new_numerator)) {
+    str1 <- new_numerator[i]
+    
     for (j in seq_along(new_denominator)) {
-      conversion <- .get_unit_conversion_constant(new_numerator[i], new_denominator[j])
-      if (!is.na(conversion)) {
-        conversion_constant <- conversion_constant * conversion
+      str2 <- new_denominator[j]
+    
+      if (udunits2::ud.are.convertible(str1, str2)) {
+        value <- udunits2::ud.convert(value, str1, str2)
         delete_num <- c(delete_num, i)
         new_denominator <- new_denominator[-j]
         break
@@ -183,5 +158,5 @@ make_unit <- function(name) {
   if (length(delete_num) > 0)
     new_numerator <- new_numerator[-delete_num]
   
-  as.units(conversion_constant, .symbolic_units(new_numerator, new_denominator))
+  as.units(value, .symbolic_units(new_numerator, new_denominator))
 }
