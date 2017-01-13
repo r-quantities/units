@@ -37,7 +37,7 @@ Ops.symbolic_units <- function(e1, e2) {
     else return(!.same_units(e1, e2))
   }
   
-  stop(paste("operation", .Generic, "not allowed for symbolic operators"))
+  stop(paste("operation", .Generic, "not allowed for symbolic operators")) # nocov
 }
 
 .make_symbolic_units <- function(name) {
