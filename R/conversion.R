@@ -7,11 +7,12 @@ NULL
 
 #' Set measurement units on a numeric vector
 #'
-#' @param x numeric vector
-#' @param value character; unit of measurement string
+#' @param x numeric vector, or object of class \code{units}
+#' @param value object of class \code{units} or \code{symbolic_units}
 #'
 #' @return object of class \code{units}
 #' @export
+#' @name units
 #'
 #' @examples
 #' x = 1:3
@@ -31,9 +32,6 @@ NULL
 }
 
 #' Convert units
-#' 
-#' @param x object of class \code{units}
-#' @param value length one character vector with target unit
 #' 
 #' @name units
 #' @export
@@ -60,11 +58,23 @@ NULL
     stop(paste("cannot convert", units(x), "into", value))
 }
 
-#' retrieve measurement units from units object
-#'
-#' @param x object of class \code{units}
+#' @name units
+#' @export
+#' @details \code{set_units} is a pipe-friendly version of \code{units<-}.
+#' @examples
+#' if (require(magrittr)) {
+#'  1:10 %>% set_units(with(ud_units, m)) %>% set_units(with(ud_units, km))
+#' }
+set_units = function(x, value) {
+  units(x) = value
+  x
+}
+
+#' retrieve measurement units from \code{units} object
 #'
 #' @export
+#' @name units
+#' @return the units method retrieves the units attribute, which is of class \code{symbolic_units}
 units.units <- function(x) {
   attr(x, "units")
 }
@@ -80,6 +90,7 @@ as.units <- function(x, value = unitless) {
 }
 
 #' @export
+#' @name as.units
 as.units.default <- function(x, value = unitless) {
 #  value.name = as.character(substitute(value))
 #  tr = try(ret <- get(value.name), silent = TRUE)
@@ -95,10 +106,8 @@ as.units.default <- function(x, value = unitless) {
 
 #' convert difftime objects to units
 #'
-#' @param x object of class units
-#' @param value target unit; if omitted, taken from \code{x}
-#'
 #' @export
+#' @name as.units
 #' 
 #' @examples
 #' s = Sys.time()

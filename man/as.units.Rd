@@ -2,9 +2,15 @@
 % Please edit documentation in R/conversion.R
 \name{as.units}
 \alias{as.units}
+\alias{as.units.default}
+\alias{as.units.difftime}
 \title{convert object to a units object}
 \usage{
 as.units(x, value = unitless)
+
+\method{as.units}{default}(x, value = unitless)
+
+\method{as.units}{difftime}(x, value)
 }
 \arguments{
 \item{x}{object of class units}
@@ -13,5 +19,12 @@ as.units(x, value = unitless)
 }
 \description{
 convert object to a units object
+
+convert difftime objects to units
+}
+\examples{
+s = Sys.time()
+d  = s - (s+1)
+as.units(d)
 }
 
