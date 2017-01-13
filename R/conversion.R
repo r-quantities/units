@@ -48,23 +48,16 @@ NULL
   if (inherits(value, "units"))
     value <- units(value)
   
-  if (identical(units(x), value)) # do nothing:
+  if (identical(units(x), value)) # do nothing; possibly user-defined units:
     return(x)
   
   str1 <- as.character(units(x))
   str2 <- as.character(value)
+
   if (udunits2::ud.are.convertible(str1, str2)) 
     structure(udunits2::ud.convert(x, str1, str2), units = value)
   else
     stop(paste("cannot convert", units(x), "into", value))
-
-#  # We need to convert from one unit to another
-#  conversion_constant <- .get_conversion_constant(units(x), value)
-#  if (is.na(conversion_constant)) {
-#    stop(paste("cannot convert", units(x), "into", value))
-#  }
-#  
-#  structure(conversion_constant * x, units = value)
 }
 
 #' retrieve measurement units from units object
