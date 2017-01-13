@@ -48,11 +48,11 @@ Ops.units <- function(e1, e2) {
     if (inherits(e1, "units") && inherits(e2, "units")) {
       # both vectors have units
       if (.Generic == "*") {
-        e1 <- unclass(e1) * (units(e1) * units(e2))
-        e2 <- unclass(e2) * (units(e1) * units(e2))
+        e1 <- .multiply_symbolic_units(unclass(e1), units(e1), units(e2))
+        e2 <- .multiply_symbolic_units(unclass(e2), units(e1), units(e2))
       } else if (.Generic == "/") {
-        e1 <- unclass(e1) * (units(e1) / units(e2))
-        e2 <- unclass(e2) * (units(e1) / units(e2))
+        e1 <- .divide_symbolic_units(unclass(e1), units(e1), units(e2))
+        e2 <- .divide_symbolic_units(unclass(e2), units(e1), units(e2))
       } else {
         stop(paste("Unexpected operator", .Generic)) # nocov
       }
