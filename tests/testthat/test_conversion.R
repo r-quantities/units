@@ -36,6 +36,9 @@ test_that("we can convert between two units that can be converted", {
   x <- y <- 1:4 * m
   units(x) <- km
   expect_equal(as.numeric(y), 1000 * as.numeric(x))
+  library(magrittr)
+  y %>% set_units(km) -> z
+  expect_equal(x, z)
 })
 
 test_that("we can't convert between two units that can't be converted", {
