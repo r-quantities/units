@@ -66,3 +66,8 @@ quantile.units = function(x, ...) {
 format.units = function(x, ...) {
   paste(format(unclass(x), ...), units(x))
 }
+
+#' @export
+summary.units = function(object, ...) { 
+  summary(unclass(object), ...)
+}
