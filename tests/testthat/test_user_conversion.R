@@ -8,10 +8,13 @@ test_that("we can convert between units with a user-defined function", {
   install_conversion_constant("orange", "apple", 2) # one orange is worth two apples
   expect_equal(apples + oranges, (2 + 2*3) * make_unit("apple"))
   expect_equal(oranges + apples, (3 + 2/2) * make_unit("orange"))
-
-  install_conversion_constant("orange", "apple", 2, 1) # but you always have to add one
-  expect_equal(apples + oranges, (2 + 2*3 + 1) * make_unit("apple"))
-  expect_equal(oranges + apples, (3 + (2 - 1)/2) * make_unit("orange"))
+  expect_equal(oranges + apples, set_units(apples + oranges, oranges))
+  expect_equal(apples + oranges, set_units(apples + oranges, apples))
+  
+  #install_conversion_constant("orange", "apple", 2, 1) # but you always have to add one
+  #expect_equal(apples + oranges, (2 + 2*3 + 1) * make_unit("apple"))
+  #expect_equal(oranges + apples, (3 + (2 - 1)/2) * make_unit("orange"))
+  #expect_equal(oranges + apples, set_units(apples + oranges, oranges))
   
   # now just checking that we get different results with a different fruit
   bananas <- 6 * make_unit("banana")

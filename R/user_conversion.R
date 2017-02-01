@@ -74,20 +74,19 @@ install_conversion_function <- function(from, to, f) {
 #' 
 #' @description Tells the \code{units} package how to convert between units that
 #'   have a linear relationship, i.e. can be related on the form \eqn{y = \alpha
-#'   x + \beta}.
+#'   x}.
 #'   
 #' @param from    String for the symbol of the unit being converted from.
 #' @param to      String for the symbol of the unit being converted to.
 #' @param const   The constant \eqn{\alpha} in the conversion.
-#' @param offset  The offset \eqn{\beta} in the conversion.
 #'   
 #' @details This function handles the very common case where units are related 
 #'   through a linear function, that is, you can convert from one to the other 
-#'   as \eqn{y = \alpha x + \beta}. Using this function, you specify that you
+#'   as \eqn{y = \alpha x}. Using this function, you specify that you
 #'   can go from values of type \code{from} to values of type \code{to} by first
 #'   multiplying a constant and then adding an offset. The function then
 #'   automatically installs that conversion and the invers \eqn{x =
-#'   (y-\beta)/\alpha}.
+#'   y/\alpha}.
 #'   
 #'   For a more general conversion mechanism, see
 #'   \code{\link{install_conversion_function}}.
@@ -95,7 +94,7 @@ install_conversion_function <- function(from, to, f) {
 #' @examples 
 #' 
 #' apples <- 2 * make_unit("apple")
-#' oranges <- 3 * make_unit("orange")
+#' oranges <- 1 * make_unit("orange")
 #' # one orange is worth two apples
 #' install_conversion_constant("orange", "apple", 2)
 #' apples + oranges
@@ -104,8 +103,8 @@ install_conversion_function <- function(from, to, f) {
 #' @seealso \code{\link{install_conversion_function}}
 #'   
 #' @export
-install_conversion_constant <- function(from, to, const, offset = 0) {
-  install_conversion_function(from, to, function(x) const * x + offset)
-  install_conversion_function(to, from, function(x) (x - offset) / const)
+install_conversion_constant <- function(from, to, const) {
+  install_conversion_function(from, to, function(x) const * x)
+  install_conversion_function(to, from, function(x) x / const)
 }
 

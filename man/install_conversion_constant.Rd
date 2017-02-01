@@ -4,7 +4,7 @@
 \alias{install_conversion_constant}
 \title{Install a function for conversion between user-defined units.}
 \usage{
-install_conversion_constant(from, to, const, offset = 0)
+install_conversion_constant(from, to, const)
 }
 \arguments{
 \item{from}{String for the symbol of the unit being converted from.}
@@ -12,22 +12,20 @@ install_conversion_constant(from, to, const, offset = 0)
 \item{to}{String for the symbol of the unit being converted to.}
 
 \item{const}{The constant \eqn{\alpha} in the conversion.}
-
-\item{offset}{The offset \eqn{\beta} in the conversion.}
 }
 \description{
 Tells the \code{units} package how to convert between units that
   have a linear relationship, i.e. can be related on the form \eqn{y = \alpha
-  x + \beta}.
+  x}.
 }
 \details{
 This function handles the very common case where units are related 
   through a linear function, that is, you can convert from one to the other 
-  as \eqn{y = \alpha x + \beta}. Using this function, you specify that you
+  as \eqn{y = \alpha x}. Using this function, you specify that you
   can go from values of type \code{from} to values of type \code{to} by first
   multiplying a constant and then adding an offset. The function then
   automatically installs that conversion and the invers \eqn{x =
-  (y-\beta)/\alpha}.
+  y/\alpha}.
   
   For a more general conversion mechanism, see
   \code{\link{install_conversion_function}}.
@@ -35,7 +33,7 @@ This function handles the very common case where units are related
 \examples{
 
 apples <- 2 * make_unit("apple")
-oranges <- 3 * make_unit("orange")
+oranges <- 1 * make_unit("orange")
 # one orange is worth two apples
 install_conversion_constant("orange", "apple", 2)
 apples + oranges
