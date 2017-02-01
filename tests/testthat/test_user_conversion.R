@@ -21,3 +21,12 @@ test_that("we can convert between units with a user-defined function", {
   install_conversion_constant("apple", "banana", 1/3) # one apple only gives you a third banana
   expect_equal(bananas + 3 * apples, (6 + 3 * 2 / 3) * make_unit("banana"))
 })
+
+test_that("we can simplify via user-defined units", {
+  apples <- 4 * make_unit("apple")
+  oranges <- 2 * make_unit("orange")
+  install_conversion_constant("orange", "apple", 2) # one orange is worth two apples
+  
+  expect_equal(apples / oranges, set_units(1, unitless))
+  expect_equal(oranges / apples, set_units(1, unitless))
+})
