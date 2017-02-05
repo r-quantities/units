@@ -97,7 +97,7 @@ as.units.default <- function(x, value = unitless) {
   if (is.symbol(unit_name)) {
     unit_name <- as.character(unit_name)
     if (!exists(unit_name, envir = parent.frame())) {
-      value <- ud_units[[unit_name]]
+      value <- units::ud_units[[unit_name]]
       if (is.null(value))
         stop(paste("unit", unit_name, "not found: define with make_unit?"))
     }
