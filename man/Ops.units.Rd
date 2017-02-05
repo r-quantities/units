@@ -29,4 +29,3 @@ a <- make_unit("kg m-3") # not understood by R as a division, but understood by 
 b <- with(ud_units, 1 * kg/m/m/m)
 a + b
 }
-

@@ -4,14 +4,28 @@ Title: Measurement Units for R Vectors
 Authors@R: c(person("Edzer", "Pebesma", role = c("aut", "cre"),
 		email = "edzer.pebesma@uni-muenster.de"),
 		person("Thomas", "Mailund", role = "aut", email = "mailund@birc.au.dk"))
-Depends: R (>= 3.0.0)
-Imports: udunits2 (>= 0.13)
-Suggests: NISTunits, measurements, xml2, tibble, knitr, testthat, covr, magrittr
+Depends:
+    R (>= 3.0.0)
+Imports:
+    udunits2 (>= 0.13)
+Suggests:
+    NISTunits,
+    measurements,
+    xml2,
+    tibble,
+    knitr,
+    testthat,
+    covr,
+    magrittr
 VignetteBuilder: knitr
-Description: Support for measurement units in R vectors; automatic propagation, conversion, derivation and simplification of units; raising errors in case of unit incompatibility. Compatible with the difftime class. Uses the UNIDATA udunits library and unit database for unit conversion and compatibility checking.
+Description: Support for measurement units in R vectors; automatic propagation,
+    conversion, derivation and simplification of units; raising errors in case
+    of unit incompatibility. Compatible with the difftime class. Uses the UNIDATA
+    udunits library and unit database for unit conversion and compatibility
+    checking.
 LazyData: yes
 License: GPL-2
 URL: https://github.com/edzer/units/
 BugReports: https://github.com/edzer/units/issues/
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.0
 Encoding: UTF-8

@@ -15,4 +15,3 @@ A new unit object that can be used in arithmetics
 \description{
 Create a new unit from a unit name.
 }
-
