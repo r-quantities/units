@@ -25,4 +25,3 @@ units_options(sep = c("~~~", "~"), group = c("", "")) # more space, parenthesis
 ## set defaults:
 units_options(sep = c("~", "~"), group = c("[", "]"), negative_power = FALSE, parse = TRUE)
 }
-

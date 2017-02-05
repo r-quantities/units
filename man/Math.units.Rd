@@ -22,4 +22,3 @@ log(a, base = 10)
 cumsum(a)
 signif(a, 2)
 }
-

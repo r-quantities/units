@@ -17,4 +17,3 @@ u = parse_unit("kg m-2 s-1")
 u
 as_cf(u)
 }
-
