@@ -14,4 +14,3 @@ type_sum.units(x, ...)
 \description{
 type_sum for tidy tibble printing
 }
-

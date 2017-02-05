@@ -18,4 +18,3 @@ see also \code{demo(cf)} for parsing units in the CF standard name table. Note t
 \examples{
 parse_unit("kg m-2 s-1")
 }
-

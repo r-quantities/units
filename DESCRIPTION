@@ -13,5 +13,5 @@ LazyData: yes
 License: GPL-2
 URL: https://github.com/edzer/units/
 BugReports: https://github.com/edzer/units/issues/
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.0
 Encoding: UTF-8
