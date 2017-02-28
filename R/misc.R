@@ -105,3 +105,16 @@ as_cf = function(x) {
 type_sum.units <- function(x, ...) {
   "units"
 }
+
+#' convenience function to set units
+#' 
+#' convenience function to set units
+#' @param x numeric vector
+#' @param unit expression, representing units, e.g. m/s; will be evaluated in \link{ud_units}
+#' @examples
+#' unit(1:10, m/s)
+#' unit(1:10, m^3)
+#' @export
+unit = function(x, unit) { 
+	x * eval(substitute(unit), ud_units) 
+}
