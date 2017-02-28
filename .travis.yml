@@ -1,6 +1,5 @@
 language: r
 sudo: true
-warnings_are_errors: false
 cache: packages
 apt_packages:
   - libudunits2-dev
