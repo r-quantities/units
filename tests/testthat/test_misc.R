@@ -69,3 +69,7 @@ test_that("we can provide a symbol to as.units and make it look in ud_units", {
   expect_equal(units(five_ha), units(ud_units$m))
   
 })
+
+test_that("unit(x,u) is a short form for x * with(ud_units, u)", {
+  expect_identical(unit(1:10, m/s), 1:10 * with(ud_units, m/s))
+})
