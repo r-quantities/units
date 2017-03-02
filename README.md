@@ -7,15 +7,23 @@
 [![Downloads](http://cranlogs.r-pkg.org/badges/units?color=brightgreen)](http://www.r-pkg.org/pkg/units)
 
 ### News
-The `units` vignette has been [accepted](https://journal.r-project.org/archive/accepted/) for publication in the [R Journal](https://journal.r-project.org/), where it appeared [online](https://journal.r-project.org/archive/accepted/pebesma-mailund-hiebert.pdf)
+Cite this package as _Edzer Pebesma, Thomas Mailund
+and James Hiebert, 2016.  Measurement Units in R.
+The R Journal, 8 (2), 486--494._ The citation is found
+[here](http://journal.r-project.org/archive/2016-2/pebesma-mailund-hiebert.pdf).
+The units vignette is derived from this manuscript, and is kept up
+to date with the package.
 
-Measurement Units for R Vectors: conversion, derivation, simplification and error checking:
+### What it does
+
+Package `units` provides
+measurement units for R vectors: conversion, derivation, simplification and error checking:
 ```
 > library(units)
-> (spd1 = 1:5 * with(ud_units, m/s))
+> spd1 = unit(1:5, m/s)
 Units: m/s
 [1] 1 2 3 4 5
-> (spd2 = 1:5 * with(ud_units, km/h))
+> spd2 = unit(1:5, km/h)
 Units: km/h
 [1] 1 2 3 4 5
 > spd1 + spd2                   # automatic conversion
@@ -24,10 +32,10 @@ Units: m/s
 > spd1 * spd2                   # unit derivation
 Units: km*m/h/s
 [1]  1  4  9 16 25
-> spd1 * 10 * with(ud_units, s) # unit simplification
+> spd1 * unit(10, s) # unit simplification
 Units: m
 [1] 10 20 30 40 50
-> spd1 + 10 * with(ud_units, s) # error checking
+> spd1 + unit(10, s) # error checking
 Error in `units<-.units`(`*tmp*`, value = list(numerator = "m", denominator = "s")) : 
   cannot convert s into m/s
 ```
@@ -37,8 +45,12 @@ Error in `units<-.units`(`*tmp*`, value = list(numerator = "m", denominator = "s
 * [R Journal manuscript](https://cran.r-project.org/web/packages/units/vignettes/measurement_units_in_R.pdf), [accepted](https://journal.r-project.org/archive/accepted/)
 * the [udunits2 R package](https://github.com/pacificclimate/Rudunits2) github page
 
-When installing the `udunits2` R package fails due to a missing udunits
-system library, download `udunits-2.2.20.tar.gz` from
+When installing the `udunits2` R package fails due to a missing
+udunits2 system library, either install it binary e.g. by
+
+* `sudo apt-get install libudunits2-dev`, or
+
+download `udunits-2.2.20.tar.gz` from
 ftp://ftp.unidata.ucar.edu/pub/udunits/, and execute the
 following commands in the download directory:
 ```

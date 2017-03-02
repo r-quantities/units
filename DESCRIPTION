@@ -16,6 +16,7 @@ Suggests:
     knitr,
     testthat,
     covr,
+	ggforce,
     magrittr
 VignetteBuilder: knitr
 Description: Support for measurement units in R vectors; automatic propagation,
