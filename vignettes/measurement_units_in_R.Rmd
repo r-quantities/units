@@ -1,5 +1,6 @@
 ---
 title: "Measurement units in R"
+author: "Edzer Pebesma, Thomas Mailund, and James Hiebert"
 output:
   html_document:
     toc: true
@@ -10,9 +11,15 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
-Edzer Pebesma, Thomas Mailund, and James Hiebert
+```{r echo=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+```
+This vignette is identical to @rj, except for two changes:
 
-## abstract
+* it has been synchronized with updates to the [units](https://cran.r-project.org/package=units) package
+* it has been converted to R-markdown
+
+## Abstract
 We briefly review SI units, and discuss R packages that deal
 with measurement units, their compatibility and conversion.
 Built upon [udunits2](https://cran.r-project.org/package=udunits2)
@@ -34,7 +41,7 @@ they are numbers with a context_ and  _in data analysis,
 context provides meaning_ -- illustrate that for a data analysis
 to be meaningful, knowledge of the data's context is needed.
 Pragmatic aspects of this context include who collected or generated
-the data, how this was done, and for which purpose @scheider;
+the data, how this was done, and for which purpose [@scheider];
 semantic aspects concern what the data represents: which aspect
 of the world do the data refer to, when and where were they measured,
 and what a value of `1` means.
@@ -99,14 +106,15 @@ of measurement is the International System of Units (Syst\`{e}me
 International d'Unit\'{e}s, with the international abbreviation SI)_
 (http://www.bipm.org/en/measurement-units/)". 
 
-@si describe the SI units, where, briefly, {\em SI units}
+@si describe the SI units, where, briefly, _SI units_
 
-* consist of seven base units (length, mass, time \& duration, electric current, thermodynamic temperature, amount of substance, and luminous intensity), each with a name and abbreviation
-(Table \ref{tab:si}) 
-* consist of {\em derived units} that are formed by products of powers of base units, such as \samp{$m/s^2$}, many of which have special names and symbols (e.g.~angle: 1 rad = 1 m/m; force: 1 N = 1 m kg s$^{-2}$) 
-* consist of _coherent derived units_ when derived units include no numerical factors other than one (with the exception of \samp{kg}\footnote{as a base unit, kg can be part of coherent derived units}); an example of a coherent derived unit is 1 watt = 1 joule per 1 second, 
+* consist of seven base units (length, mass, time \& duration, electric current, thermodynamic temperature, amount of substance, and luminous intensity), each with a name and abbreviation (see table below)
+* consist of _derived units_ that are formed by products of powers of base units, such as m/s$^2$, many of which have special names and symbols (e.g. angle: 1 rad = 1 m/m; force: 1 N = 1 m kg s$^{-2}$) 
+* consist of _coherent derived units_ when derived units include no numerical factors other than one (with the exception of `kg`; as a base unit, kg can be part of coherent derived units); an example of a coherent derived unit is 1 watt = 1 joule per 1 second, 
 * may contain SI prefixes (k = kilo for $10^3$, m = milli for $10^{-3}$, etc.) 
-* contain special quantities where units disappear (e.g., m/m) or have the nature of a count, in which cases the unit is \samp{1}.
+* contain special quantities where units disappear (e.g., m/m) or have the nature of a count, in which cases the unit is 1.
+
+base quantities, SI units and their symbols (from @si, p. 23):
 
 | Base quantity |    | SI base unit |   |
 | -----------|--------|----------|------|
@@ -119,8 +127,6 @@ International d'Unit\'{e}s, with the international abbreviation SI)_
 | amount of substance | $n$ | mole | mol |
 | luminous intensity |  $I_v$ | candela | cd |
 
-base quantities, SI units and their symbols (from @si, p. 23)
-
 ## Related work in R
 
 Several R packages provide unit conversions. 
@@ -128,23 +134,23 @@ For instance, [measurements](https://cran.r-project.org/package=measurements) [@
 a collection of tools to make working with physical measurements
 easier. It converts between metric and imperial units, or calculates
 a dimension's unknown value from other dimensions' measurements. It
-does this by the \code{conv\_unit} function:
+does this by the `conv_unit` function:
 ```{r}
 library(measurements)
 conv_unit(2.54, "cm", "inch")
 conv_unit(c("101 44.32","3 19.453"), "deg_dec_min", "deg_min_sec")
 conv_unit(10, "cm_per_sec", "km_per_day")
 ```
-but uses for instance \code{kph} instead of \samp{km\_per\_hour}, and then
-\samp{m3\_per\_hr} for flow -- unit names seem to come from convention rather
+but uses for instance `kph` instead of `km_per_hour`, and then
+`m3_per_hr` for flow -- unit names seem to come from convention rather
 than systematic composition.  Object
-\code{conv\_unit\_options} contains all 173 supported units, categorized by
+`conv_unit_options` contains all 173 supported units, categorized by
 the physical dimension they describe:
 ```{r}
 names(conv_unit_options)
 conv_unit_options$volume
 ```
-Function \code{conv\_dim} allows for the conversion of units in products or ratios,
+Function `conv_dim` allows for the conversion of units in products or ratios,
 e.g.
 ```{r}
 conv_dim(x = 100, x_unit = "m", trans = 3, trans_unit = "ft_per_sec", y_unit = "min")
@@ -157,8 +163,8 @@ non-SI units, plus unit conversions, based on the data from NIST
 (National Institute of Standards and Technology). The package
 provides a single function for every
 unit conversion; all but 5 from its 896 functions are of the form
-\samp{NISTxxxTOyyy} where \samp{xxx} and \samp{yyy} refer to two
-different units. For instance, converting from W m$^{-2}$ to W {\em inch}$^{-2}$
+`NISTxxxTOyyy` where `xxx` and `yyy` refer to two
+different units. For instance, converting from W m$^{-2}$ to W inch$^{-2}$
 is done by
 ```{r}
 library(NISTunits)
@@ -186,22 +192,22 @@ The functions provided by [udunits2](https://cran.r-project.org/package=udunits2
 library(udunits2)
 ls(2)
 ```
-Dropping the \code{ud} prefix,
-\code{is.parseable} verifies whether a unit is parseable
+Dropping the `ud` prefix,
+`is.parseable` verifies whether a unit is parseable
 ```{r}
 ud.is.parseable("m/s")
 ud.is.parseable("q")
 ```
-\code{are.convertible} specifies whether two units are convertible
+`are.convertible` specifies whether two units are convertible
 ```{r}
 ud.are.convertible("m/s", "km/h")
 ud.are.convertible("m/s", "s")
 ```
-\code{convert} converts units that are convertible, and throws an error otherwise
+`convert` converts units that are convertible, and throws an error otherwise
 ```{r}
 ud.convert(1:3, "m/s", "km/h")
 ```
-and \code{get.name}, \code{get.symbol} and \code{set.encoding} get name, get symbol
+and `get.name`, `get.symbol` and `set.encoding` get name, get symbol
 or modify encoding of the character unit arguments.
 ```{r}
 ud.get.name("kg")
@@ -217,10 +223,10 @@ units as expressions, and bases its logic upon the convertibility
 of expressions, rather than the comparison of fixed strings:
 ```{r}
 m100_a = paste(rep("m", 100), collapse = "*")
-m100_b = "dm^100"
+dm100_b = "dm^100"
 ud.is.parseable(m100_a)
-ud.is.parseable(m100_b)
-ud.are.convertible(m100_a, m100_b)
+ud.is.parseable(dm100_b)
+ud.are.convertible(m100_a, dm100_b)
 ```
 This has the advantage that through complex computations,
 intermediate objects can have units that are arbitrarily complex,
@@ -247,22 +253,22 @@ The udunits library is a C library that has strong support from
 UNIDATA, and we decided to build our developments on this, rather
 than on Java implementations of UCUM with a less clear provenance.
 
-## Handling data with units in R: the [units](https://cran.r-project.org/package=units) package
+## Handling data with units in R: the units package
 
-The [units](https://cran.r-project.org/package=units) package builds \code{"units"} objects from scratch,
-where \code{m}, created by
+The [units](https://cran.r-project.org/package=units) package builds `units` objects from scratch,
+where `m`, created by
 ```{r}
 library(units)
 m = make_unit("m")
 str(m)
 ```
-represents \samp{1 m}, one meter. Other length values are obtained by using this
+represents `1 m`, one meter. Other length values are obtained by using this
 unit in an expression:
 ```{r}
 x1 = 1:5 * m
 ```
-As an alternative to using \code{make\_unit}, we can retrieve units directly
-from the \code{ud\_units} database, which is part of [units](https://cran.r-project.org/package=units), and was
+As an alternative to using `make_unit`, we can retrieve units directly
+from the `ud_units` database, which is part of [units](https://cran.r-project.org/package=units), and was
 derived from the xml units database that is part of udunits. Two ways of doing
 this are
 ```{r}
@@ -271,50 +277,49 @@ identical(x1, x2)
 x3 = 1:5 * with(ud_units, m)
 identical(x1, x3)
 ```
-Although one could attach \code{ud\_units} to use the units directly,
+Although one could attach `ud_units` to use the units directly,
 there are over 3000 and this would not only clobber the namespace
-but also lead to conflicts, e.g. for \code{T} (Tesla, \code{TRUE})
-or \code{in} (inch, reserved R language element). The last form using
-\code{with} has the advantage that it can take direct expressions:
+but also lead to conflicts, e.g. for `T` (Tesla, `TRUE`)
+or `in` (inch, reserved R language element). The last form using
+`with` has the advantage that it can take direct expressions:
 ```{r}
 with(ud_units, m/s^2)
 ```
-Several manipulations with \code{"units"} objects will now be illustrated.
-
+A convenience function that directly evaluates a units expression in the
+environment `ud_units`, thus avoiding `with`, is `set_units`:
 ```{r}
-m =  with(ud_units,  m)
-km = with(ud_units, km)
-cm = with(ud_units, cm)
-s =  with(ud_units,  s)
-h =  with(ud_units,  h)
+set_units(1:5, cm)
+library(magrittr)
+1:5 %>% set_units(N/s)
 ```
+
+Several manipulations with `units` objects will now be illustrated.
 
 Manipulations that do not involve unit conversion are for instance addition:
 ```{r}
-x = 1:3 * m/s
+x = set_units(1:3, m/s)
 x + 2 * x
 ```
 Explicit unit conversion is done by assigning new units:
 ```{r}
-units(x) = cm/s
-x
+(x = set_units(x, cm/s))
 as.numeric(x)
 ```
-similar to the behaviour of \code{"difftime"} objects, this modifies
+similar to the behaviour of `difftime` objects, this modifies
 the numeric values without modifying their meaning (what the numbers
 refer to).
 
 When mixing units in sums, comparisons or concatenation, units are 
 automatically converted to those of the first argument:
 ```{r}
-y = 1:3 * km/h
+y = set_units(1:3, km/h)
 x + y
 y + x
-x < y
+x == y
 c(y, x)
 ```
-where \code{c(y, x)} concatenates \code{y} and \code{x} after converting \code{x} to the
-units of \code{y}. Derived units are created where appropriate:
+where `c(y, x)` concatenates `y` and `x` after converting `x` to the
+units of `y`. Derived units are created where appropriate:
 ```{r}
 x * y
 x^3
@@ -324,7 +329,7 @@ and meaningful error messages appear when units are not compatible:
 e = try(z <- x + x * y)
 attr(e, "condition")[[1]]
 ```
-The full set of methods and method groups for \code{units} objects is shown by
+The full set of methods and method groups for `units` objects is shown by
 ```{r}
 methods(class = "units")
 ```
@@ -336,60 +341,54 @@ where the method groups
 
 When possible, new units are simplified:
 ```{r}
-a = 1:10 * m/s
-b = 1:10 * h
+a = set_units(1:10, m/s)
+b = set_units(1:10, h)
 a * b
-make_unit(m100_a) / make_unit(m100_b)
+make_unit(m100_a) / make_unit(dm100_b)
 ```
 
 Units are printed as simple R expressions, e.g.
 ```{r}
-m^5/s^4
+set_units(1, m^5/s^4)
 ```
-Another way to print units commonly seen in Climate and Forecast Conventions\footnote{CF, \url{http://cfconventions.org/Data/cf-standard-names/34/build/cf-standard-name-table.html}} is \samp{m2 s-1} for $m^2/s$. These are not R expressions, but as they are understood by udunits,
+Another way to print units commonly seen in Climate and Forecast Conventions\footnote{CF, \url{http://cfconventions.org/Data/cf-standard-names/34/build/cf-standard-name-table.html}} is `m2 s-1` for m$^2$/s. These are not R expressions, but as they are understood by udunits,
 they can be converted (by udunits) but not simplified (by R):
 ```{r}
 x = make_unit("m2 s-1")
-y = km^2/h
-z = m^2/s
+y = set_units(1, km^2/h)
+z = set_units(1, m^2/s)
 x + y
 x/y
 z/y
 ```
-However, \code{parse\_unit} parses such units, and \code{as\_cf} returns such unit strings from \code{"units"} objects:
+However, `parse_unit` parses such units, and `as_cf` returns such unit strings from `units` objects:
 ```{r}
 parse_unit("m2 s-1")
-as_cf(m^2*s^-1)
+as_cf(set_units(1, m^2*s^-1))
 ```
 The `plot` and `hist` methods add units to default axis labels, an
 example is shown in the following figures. For [ggplot2](https://cran.r-project.org/package=ggplot2) plots
-[@ggplot2], automatic unit placement in default axis label is provided by package [ggforce](https://cran.r-project.org/package=ggforce) [@ggforce]; \code{demo(ggforce)} gives an example.
+[@ggplot2], automatic unit placement in default axis label is provided by package [ggforce](https://cran.r-project.org/package=ggforce) [@ggforce]; `demo(ggforce)` gives an example.
 
-```{r fig=TRUE,echo=FALSE,height=3.8,width=7}
+```{r fig=TRUE, height=3.8, width=7}
 library(units)
 units_options(negative_power = TRUE)
 gallon = make_unit("gallon")
-mtcars$consumption = mtcars$mpg * with(ud_units, mi/gallon)
-mtcars$displacement = mtcars$disp * ud_units[["in"]]^3
-units(mtcars$displacement) = with(ud_units, cm^3)
-units(mtcars$consumption) = with(ud_units, km/l)
+# initialize units:
+mtcars$consumption = set_units(mtcars$mpg, mi/gallon)
+# "in" is also a reserved R keyword, and needs special treatment:
+mtcars$displacement = set_units(mtcars$disp, ud_units[["in"]]^3)
+# convert to SI:
+mtcars$consumption = set_units(mtcars$consumption, km/l)
+mtcars$displacement = set_units(mtcars$displacement, cm^3)
 par(mar = par("mar") + c(0, .3, 0, 0))
 with(mtcars, plot(1/displacement, 1/consumption))
 ```
 
-```{r fig=TRUE,echo=FALSE,height=3.8,width=7}
+```{r fig=TRUE, height=3.8, width=7}
 library(ggforce)
 ggplot(mtcars) + geom_point(aes(1/displacement, 1/consumption))
 ```
-
-Plot of `1/consumption` against `1/displacement` for dataset
-`mtcars`, illustrating automatic units in default axis labels
-(after conversion to SI) for base plot (top) and ggplot (bottom);
-
-```r
-demo(ggforce)
-```
-illustrates how these plots are generated.
 
 Automatic conversion between `units` and `difftime` is provided: 
 ```{r}
@@ -402,7 +401,7 @@ objects, as well as in `tbl_df` [@tibble].
 
 ## Discussion and conclusions
 
-The [units](https://cran.r-project.org/package=units) R package provides a new class, \code{"units"},
+The [units](https://cran.r-project.org/package=units) R package provides a new class, `units`,
 for numeric data with associated measurement units. Operations
 on objects of this class retain the unit metadata and provide
 automated dimensional analysis: dimensions are taken into consideration
@@ -436,7 +435,7 @@ they could be stored in spatial or spatio-temporal objects
 provided by [sp](https://cran.r-project.org/package=sp) or
 [spacetime](https://cran.r-project.org/package=spacetime)
 [@spacetime] as these store attribute data in
-\code{"data.frame"} slots, but for instance not in `zoo`
+`data.frame` slots, but for instance not in `zoo`
 [@zoo] or `xts` [@xts] objects, as these latter
 two set the class attribute of a vector or matrix.
 
@@ -446,7 +445,7 @@ year [NISTunits](https://cran.r-project.org/package=NISTunits)
 or [udunits2](https://cran.r-project.org/package=udunits2) give
 us an answer that depends on whether we want a common, leap,
 Gregorian, Julian, tropical or siderial year (@lang, see
-also \code{demo(year)}).  This illustrates that those who apply
+also `demo(year)`).  This illustrates that those who apply
 unit conversion should be aware of possible pitfalls. Support for
 calendars in udunits seems not as well developed as in R.
 
@@ -460,11 +459,11 @@ or [sos4R](https://cran.r-project.org/package=sos4R) [@sos4R].
 It would be nice to see units of measurements propagate into units
 of regression coefficient estimates.
 
-### Acknowledgements
+# Acknowledgements
 
 We acknowledge three anonymous reviewers and the handling editor for
 their constructive comments, and Thomas Lin Pedersen for implementing
 the ggplot extensions in package `ggforce` that automatically add
 units to default ggplot axis labels.
 
-### References
+# References

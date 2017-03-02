@@ -3,12 +3,11 @@ NULL
 #' @import stats
 #' @import udunits2
 NULL
-#Sys.setenv(UDUNITS2_XML_PATH = "/usr/local/share/udunits/udunits2.xml")
 
 #' Set measurement units on a numeric vector
 #'
 #' @param x numeric vector, or object of class \code{units}
-#' @param value object of class \code{units} or \code{symbolic_units}
+#' @param value object of class \code{units} or \code{symbolic_units}, or in the case of \code{set_units} expression with symbols that can be resolved in \link{ud_units} (see examples).
 #'
 #' @return object of class \code{units}
 #' @export
@@ -62,12 +61,20 @@ NULL
 #' @export
 #' @details \code{set_units} is a pipe-friendly version of \code{units<-}.
 #' @examples
+#' # note that these units have NOT been defined or declared before:
+#' set_units(1:5, N/m^2)
 #' if (require(magrittr)) {
-#'  1:10 %>% set_units(with(ud_units, m)) %>% set_units(with(ud_units, km))
+#'  1:5 %>% set_units(N/m^2)
+#'  1:10 %>% set_units(m) %>% set_units(km))
 #' }
 set_units = function(x, value) {
-  units(x) = value
-  x
+  #units(x) = eval(substitute(value), ud_units) 
+  u = eval(substitute(value), ud_units) 
+  if (inherits(x, "units")) {
+  	units(x) = u
+	x
+  } else
+    x * u
 }
 
 #' retrieve measurement units from \code{units} object
