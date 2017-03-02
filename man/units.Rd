@@ -52,6 +52,6 @@ a
 set_units(1:5, N/m^2)
 if (require(magrittr)) {
  1:5 \%>\% set_units(N/m^2)
- 1:10 \%>\% set_units(m) \%>\% set_units(km))
+ 1:10 \%>\% set_units(m) \%>\% set_units(km)
 }
 }
