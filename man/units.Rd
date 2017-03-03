@@ -15,7 +15,7 @@
 
 \method{units}{units}(x) <- value
 
-set_units(x, value)
+set_units(x, value, ...)
 
 \method{units}{units}(x)
 }
@@ -23,6 +23,8 @@ set_units(x, value)
 \item{x}{numeric vector, or object of class \code{units}}
 
 \item{value}{object of class \code{units} or \code{symbolic_units}, or in the case of \code{set_units} expression with symbols that can be resolved in \link{ud_units} (see examples).}
+
+\item{...}{ignored}
 }
 \value{
 object of class \code{units}
