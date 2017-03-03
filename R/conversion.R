@@ -60,7 +60,7 @@ NULL
 #' @name units
 #' @export
 #' @param ... ignored
-#' @details \code{set_units} is a pipe-friendly version of \code{units<-}.
+#' @details \code{set_units} is a pipe-friendly version of \code{units<-} that evaluates \code{value} first in the environment of \link{ud_units}.
 #' @examples
 #' # note that these units have NOT been defined or declared before:
 #' set_units(1:5, N/m^2)
@@ -70,6 +70,7 @@ NULL
 #' }
 set_units = function(x, value, ...) UseMethod("set_units")
 
+#' @name units
 #' @export
 set_units.units = function(x, value, ...) {
   u = eval(substitute(value), ud_units) 
@@ -78,6 +79,7 @@ set_units.units = function(x, value, ...) {
   x
 }
 
+#' @name units
 #' @export
 set_units.numeric = function(x, value, ...) {
   u = eval(substitute(value), ud_units) 

@@ -8,6 +8,10 @@
 \alias{units}
 \alias{set_units}
 \alias{units}
+\alias{set_units.units}
+\alias{units}
+\alias{set_units.numeric}
+\alias{units}
 \alias{units.units}
 \title{Set measurement units on a numeric vector}
 \usage{
@@ -16,6 +20,10 @@
 \method{units}{units}(x) <- value
 
 set_units(x, value, ...)
+
+\method{set_units}{units}(x, value, ...)
+
+\method{set_units}{numeric}(x, value, ...)
 
 \method{units}{units}(x)
 }
@@ -39,7 +47,7 @@ Convert units
 retrieve measurement units from \code{units} object
 }
 \details{
-\code{set_units} is a pipe-friendly version of \code{units<-}.
+\code{set_units} is a pipe-friendly version of \code{units<-} that evaluates \code{value} first in the environment of \link{ud_units}.
 }
 \examples{
 x = 1:3
