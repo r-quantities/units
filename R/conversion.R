@@ -73,7 +73,7 @@ set_units = function(x, value, ...) UseMethod("set_units")
 #' @name units
 #' @export
 set_units.units = function(x, value, ...) {
-  u = eval(substitute(value), ud_units) 
+  u = eval(substitute(value), ud_units)
   stopifnot(inherits(u, "units"))
   units(x) = u
   x
@@ -82,7 +82,7 @@ set_units.units = function(x, value, ...) {
 #' @name units
 #' @export
 set_units.numeric = function(x, value, ...) {
-  u = eval(substitute(value), ud_units) 
+  u = eval(substitute(value), ud_units, parent.frame()) 
   stopifnot(inherits(u, "units"))
   x * u
 }
