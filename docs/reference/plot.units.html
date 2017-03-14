@@ -79,8 +79,7 @@
 
     
     <p>create axis label with appropriate labels</p>
-
-    <p>plot unit objects</p>
+<p>plot unit objects</p>
     
 
     <pre><span class='fu'>make_unit_label</span>(<span class='no'>lab</span>, <span class='no'>u</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='fu'>get</span>(<span class='st'>".units.sep"</span>, <span class='kw'>envir</span> <span class='kw'>=</span> <span class='no'>.units_options</span>),
@@ -93,30 +92,30 @@
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>lab</dt>
-      <dd>length one character; name of the variable to plot</dd>
+      <dd><p>length one character; name of the variable to plot</p></dd>
       <dt>u</dt>
-      <dd>vector of class <code>units</code></dd>
+      <dd><p>vector of class <code>units</code></p></dd>
       <dt>sep</dt>
-      <dd>length two character vector, defaulting to <code>c(&quot;~&quot;,&quot;~&quot;)</code>, with
+      <dd><p>length two character vector, defaulting to <code>c("~","~")</code>, with
 the white space between unit name and unit symbols, and between subsequent
-symbols.</dd>
+symbols.</p></dd>
       <dt>group</dt>
-      <dd>length two character vector with grouping symbols, e.g.
-<code>c(&quot;(&quot;,&quot;)&quot;)</code> for parenthesis, or <code>c(&quot;&quot;,&quot;&quot;)</code> for no group symbols</dd>
+      <dd><p>length two character vector with grouping symbols, e.g.
+<code>c("(",")")</code> for parenthesis, or <code>c("","")</code> for no group symbols</p></dd>
       <dt>parse</dt>
-      <dd>logical; indicates whether a parseable expression should be
+      <dd><p>logical; indicates whether a parseable expression should be
 returned (typically needed for super scripts), or a simple character string
-without special formatting.</dd>
+without special formatting.</p></dd>
       <dt>x</dt>
-      <dd>object of class units, to plot along the x axis, or, if y is missing, along the y axis</dd>
+      <dd><p>object of class units, to plot along the x axis, or, if y is missing, along the y axis</p></dd>
       <dt>y</dt>
-      <dd>object to plot along the y axis, or missing</dd>
+      <dd><p>object to plot along the y axis, or missing</p></dd>
       <dt>xlab</dt>
-      <dd>character; x axis label</dd>
+      <dd><p>character; x axis label</p></dd>
       <dt>ylab</dt>
-      <dd>character; y axis label</dd>
+      <dd><p>character; y axis label</p></dd>
       <dt>...</dt>
-      <dd>other parameters, passed on to plot.default</dd>
+      <dd><p>other parameters, passed on to plot.default</p></dd>
     </dl>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
@@ -130,18 +129,13 @@ without special formatting.</dd>
 <span class='no'>displacement</span> <span class='kw'>=</span> <span class='no'>mtcars</span>$<span class='no'>disp</span> * <span class='no'>ud_units</span><span class='kw'>[[</span><span class='st'>"in"</span>]]^<span class='fl'>3</span>
 <span class='co'># an example that would break if parse were (default) TRUE, since 'in' is a reserved word:</span>
 <span class='fu'><a href='units_options.html'>units_options</a></span>(<span class='kw'>parse</span><span class='kw'>=</span><span class='fl'>FALSE</span>)
-<span class='fu'>make_unit_label</span>(<span class='st'>"displacement"</span>, <span class='no'>displacement</span>)</div><div class='output co'>#&gt; [1] &quot;displacement [in^3]&quot;</div><div class='input'><span class='fu'><a href='units_options.html'>units_options</a></span>(<span class='kw'>parse</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
-<span class='fu'><a href='units.html'>units</a></span>(<span class='no'>displacement</span>) <span class='kw'>=</span> <span class='fu'>with</span>(<span class='no'>ud_units</span>, <span class='no'>cm</span>^<span class='fl'>3</span>)
-<span class='no'>weight</span> <span class='kw'>=</span> <span class='no'>mtcars</span>$<span class='no'>wt</span> * <span class='fl'>1000</span> * <span class='fu'>with</span>(<span class='no'>ud_units</span>, <span class='no'>lb</span>)
-<span class='fu'><a href='units.html'>units</a></span>(<span class='no'>weight</span>) <span class='kw'>=</span> <span class='fu'>with</span>(<span class='no'>ud_units</span>, <span class='no'>kg</span>)
-<span class='fu'>plot</span>(<span class='no'>weight</span>, <span class='no'>displacement</span>)</div><img src='plot.units-4.png' alt='' width='540' height='400' /><div class='input'><span class='fu'><a href='units_options.html'>units_options</a></span>(<span class='kw'>group</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"("</span>, <span class='st'>")"</span>) )  <span class='co'># parenthesis instead of square brackets</span>
-<span class='fu'>plot</span>(<span class='no'>weight</span>, <span class='no'>displacement</span>)</div><img src='plot.units-6.png' alt='' width='540' height='400' /><div class='input'><span class='fu'><a href='units_options.html'>units_options</a></span>(<span class='kw'>sep</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"~~~"</span>, <span class='st'>"~"</span>), <span class='kw'>group</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>""</span>, <span class='st'>""</span>))  <span class='co'># no brackets; extra space</span>
-<span class='fu'>plot</span>(<span class='no'>weight</span>, <span class='no'>displacement</span>)</div><img src='plot.units-8.png' alt='' width='540' height='400' /><div class='input'><span class='fu'><a href='units_options.html'>units_options</a></span>(<span class='kw'>sep</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"~"</span>, <span class='st'>"~~"</span>), <span class='kw'>group</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"["</span>, <span class='st'>"]"</span>))
+<span class='fu'>make_unit_label</span>(<span class='st'>"displacement"</span>, <span class='no'>displacement</span>)</div><div class='output co'>#&gt; <span class='error'>Error in UseMethod("units"): no applicable method for 'units' applied to an object of class "c('double', 'numeric')"</span></div><div class='input'><span class='fu'><a href='units_options.html'>units_options</a></span>(<span class='kw'>parse</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
+<span class='fu'><a href='units.html'>units</a></span>(<span class='no'>displacement</span>) <span class='kw'>=</span> <span class='fu'>with</span>(<span class='no'>ud_units</span>, <span class='no'>cm</span>^<span class='fl'>3</span>)</div><div class='output co'>#&gt; <span class='error'>Error in cm^3: non-numeric argument to binary operator</span></div><div class='input'><span class='no'>weight</span> <span class='kw'>=</span> <span class='no'>mtcars</span>$<span class='no'>wt</span> * <span class='fl'>1000</span> * <span class='fu'>with</span>(<span class='no'>ud_units</span>, <span class='no'>lb</span>)</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'lb' not found</span></div><div class='input'><span class='fu'><a href='units.html'>units</a></span>(<span class='no'>weight</span>) <span class='kw'>=</span> <span class='fu'>with</span>(<span class='no'>ud_units</span>, <span class='no'>kg</span>)</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'kg' not found</span></div><div class='input'><span class='fu'>plot</span>(<span class='no'>weight</span>, <span class='no'>displacement</span>)</div><div class='output co'>#&gt; <span class='error'>Error in plot(weight, displacement): object 'weight' not found</span></div><div class='input'><span class='fu'><a href='units_options.html'>units_options</a></span>(<span class='kw'>group</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"("</span>, <span class='st'>")"</span>) )  <span class='co'># parenthesis instead of square brackets</span>
+<span class='fu'>plot</span>(<span class='no'>weight</span>, <span class='no'>displacement</span>)</div><div class='output co'>#&gt; <span class='error'>Error in plot(weight, displacement): object 'weight' not found</span></div><div class='input'><span class='fu'><a href='units_options.html'>units_options</a></span>(<span class='kw'>sep</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"~~~"</span>, <span class='st'>"~"</span>), <span class='kw'>group</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>""</span>, <span class='st'>""</span>))  <span class='co'># no brackets; extra space</span>
+<span class='fu'>plot</span>(<span class='no'>weight</span>, <span class='no'>displacement</span>)</div><div class='output co'>#&gt; <span class='error'>Error in plot(weight, displacement): object 'weight' not found</span></div><div class='input'><span class='fu'><a href='units_options.html'>units_options</a></span>(<span class='kw'>sep</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"~"</span>, <span class='st'>"~~"</span>), <span class='kw'>group</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"["</span>, <span class='st'>"]"</span>))
 <span class='no'>gallon</span> <span class='kw'>=</span> <span class='fu'><a href='make_unit.html'>make_unit</a></span>(<span class='st'>"gallon"</span>)
-<span class='no'>consumption</span> <span class='kw'>=</span> <span class='no'>mtcars</span>$<span class='no'>mpg</span> * <span class='fu'>with</span>(<span class='no'>ud_units</span>, <span class='no'>mi</span>/<span class='no'>gallon</span>)
-<span class='fu'><a href='units.html'>units</a></span>(<span class='no'>consumption</span>) <span class='kw'>=</span> <span class='fu'>with</span>(<span class='no'>ud_units</span>, <span class='no'>km</span>/<span class='no'>l</span>)
-<span class='fu'>plot</span>(<span class='no'>displacement</span>, <span class='no'>consumption</span>) <span class='co'># division in consumption</span></div><img src='plot.units-10.png' alt='' width='540' height='400' /><div class='input'><span class='fu'><a href='units_options.html'>units_options</a></span>(<span class='kw'>negative_power</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='co'># division becomes ^-1</span>
-<span class='fu'>plot</span>(<span class='no'>displacement</span>, <span class='no'>consumption</span>)</div><img src='plot.units-12.png' alt='' width='540' height='400' /><div class='input'><span class='fu'>plot</span>(<span class='fl'>1</span>/<span class='no'>displacement</span>, <span class='fl'>1</span>/<span class='no'>consumption</span>)</div><img src='plot.units-14.png' alt='' width='540' height='400' /><div class='input'><span class='fu'>par</span>(<span class='no'>oldpar</span>)</div></pre>
+<span class='no'>consumption</span> <span class='kw'>=</span> <span class='no'>mtcars</span>$<span class='no'>mpg</span> * <span class='fu'>with</span>(<span class='no'>ud_units</span>, <span class='no'>mi</span>/<span class='no'>gallon</span>)</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'mi' not found</span></div><div class='input'><span class='fu'><a href='units.html'>units</a></span>(<span class='no'>consumption</span>) <span class='kw'>=</span> <span class='fu'>with</span>(<span class='no'>ud_units</span>, <span class='no'>km</span>/<span class='no'>l</span>)</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'km' not found</span></div><div class='input'><span class='fu'>plot</span>(<span class='no'>displacement</span>, <span class='no'>consumption</span>) <span class='co'># division in consumption</span></div><div class='output co'>#&gt; <span class='error'>Error in xy.coords(x, y, xlabel, ylabel, log): object 'consumption' not found</span></div><div class='input'><span class='fu'><a href='units_options.html'>units_options</a></span>(<span class='kw'>negative_power</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='co'># division becomes ^-1</span>
+<span class='fu'>plot</span>(<span class='no'>displacement</span>, <span class='no'>consumption</span>)</div><div class='output co'>#&gt; <span class='error'>Error in xy.coords(x, y, xlabel, ylabel, log): object 'consumption' not found</span></div><div class='input'><span class='fu'>plot</span>(<span class='fl'>1</span>/<span class='no'>displacement</span>, <span class='fl'>1</span>/<span class='no'>consumption</span>)</div><div class='output co'>#&gt; <span class='error'>Error in xy.coords(x, y, xlabel, ylabel, log): object 'consumption' not found</span></div><div class='input'><span class='fu'>par</span>(<span class='no'>oldpar</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

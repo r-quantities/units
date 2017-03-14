@@ -87,11 +87,11 @@
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>e1</dt>
-      <dd>object of class <code>units</code>, 
-or something that can be coerced to it by <code>as.units(e1)</code></dd>
+      <dd><p>object of class <code>units</code>, 
+or something that can be coerced to it by <code>as.units(e1)</code></p></dd>
       <dt>e2</dt>
-      <dd>object of class <code>units</code>, 
-or something that can be coerced to it by <code>as.units(e2)</code></dd>
+      <dd><p>object of class <code>units</code>, 
+or something that can be coerced to it by <code>as.units(e2)</code></p></dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -100,14 +100,8 @@ or something that can be coerced to it by <code>as.units(e2)</code></dd>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>a</span> <span class='kw'>&lt;-</span> <span class='fu'>with</span>(<span class='no'>ud_units</span>, <span class='fl'>1</span>:<span class='fl'>3</span> * <span class='no'>m</span>/<span class='no'>s</span>)
-<span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='fu'>with</span>(<span class='no'>ud_units</span>, <span class='fl'>1</span>:<span class='fl'>3</span> * <span class='no'>m</span>/<span class='no'>s</span>)
-<span class='no'>a</span> + <span class='no'>b</span></div><div class='output co'>#&gt; Units: m/s
-#&gt; [1] 2 4 6</div><div class='input'><span class='no'>a</span> * <span class='no'>b</span></div><div class='output co'>#&gt; Units: m^2/s^2
-#&gt; [1] 1 4 9</div><div class='input'><span class='no'>a</span> / <span class='no'>b</span></div><div class='output co'>#&gt; Units: 1
-#&gt; [1] 1 1 1</div><div class='input'><span class='no'>a</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_unit.html'>make_unit</a></span>(<span class='st'>"kg m-3"</span>) <span class='co'># not understood by R as a division, but understood by udunits2</span>
-<span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='fu'>with</span>(<span class='no'>ud_units</span>, <span class='fl'>1</span> * <span class='no'>kg</span>/<span class='no'>m</span>/<span class='no'>m</span>/<span class='no'>m</span>)
-<span class='no'>a</span> + <span class='no'>b</span></div><div class='output co'>#&gt; 2 (kg m-3)</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>a</span> <span class='kw'>&lt;-</span> <span class='fu'>with</span>(<span class='no'>ud_units</span>, <span class='fl'>1</span>:<span class='fl'>3</span> * <span class='no'>m</span>/<span class='no'>s</span>)</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'm' not found</span></div><div class='input'><span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='fu'>with</span>(<span class='no'>ud_units</span>, <span class='fl'>1</span>:<span class='fl'>3</span> * <span class='no'>m</span>/<span class='no'>s</span>)</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'm' not found</span></div><div class='input'><span class='no'>a</span> + <span class='no'>b</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'a' not found</span></div><div class='input'><span class='no'>a</span> * <span class='no'>b</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'a' not found</span></div><div class='input'><span class='no'>a</span> / <span class='no'>b</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'a' not found</span></div><div class='input'><span class='no'>a</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_unit.html'>make_unit</a></span>(<span class='st'>"kg m-3"</span>) <span class='co'># not understood by R as a division, but understood by udunits2</span>
+<span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='fu'>with</span>(<span class='no'>ud_units</span>, <span class='fl'>1</span> * <span class='no'>kg</span>/<span class='no'>m</span>/<span class='no'>m</span>/<span class='no'>m</span>)</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'kg' not found</span></div><div class='input'><span class='no'>a</span> + <span class='no'>b</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'b' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
