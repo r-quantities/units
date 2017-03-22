@@ -48,10 +48,12 @@ Error in `units<-.units`(`*tmp*`, value = list(numerator = "m", denominator = "s
 When installing the `udunits2` R package fails due to a missing
 udunits2 system library, either install it binary e.g. by
 
-* `sudo apt-get install libudunits2-dev`, or
+```
+sudo apt-get install libudunits2-dev
+```
 
-download `udunits-2.2.20.tar.gz` from
-ftp://ftp.unidata.ucar.edu/pub/udunits/, and execute the
+or install from source by downloading `udunits-2.2.20.tar.gz` from
+ftp://ftp.unidata.ucar.edu/pub/udunits/, and executing the
 following commands in the download directory:
 ```
 tar zxf udunits-2.2.20.tar.gz
@@ -65,4 +67,4 @@ if that went well, assuming you installed by default in `/usr/local/`, add
 ```
 export UDUNITS2_XML_PATH="/usr/local/share/udunits/udunits2.xml"
 ```
-to your `~/.bashrc` file, start a new shell to activate this environment variable, and try installing R package `udunits2` once more. When launching rstudio from unity, you may have to load `udunits2` explicitly before using `units`.
+to your `~/.bashrc` file, start a new shell to activate this environment variable, and try installing R package `udunits2` once more. When launching rstudio from unity, you may have to load `udunits2` explicitly before using `units`, or set `UDUNITS2_XML_PATH` in a different way such that rstudio finds it.
