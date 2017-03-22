@@ -66,25 +66,24 @@
 <h3 class="hasAnchor">
 <a href="#what-it-does" class="anchor"> </a>What it does</h3>
 <p>Package <code>units</code> provides measurement units for R vectors: conversion, derivation, simplification and error checking:</p>
-<pre><code>&gt; library(units)
-&gt; spd1 = unit(1:5, m/s)
-Units: m/s
-[1] 1 2 3 4 5
-&gt; spd2 = unit(1:5, km/h)
-Units: km/h
-[1] 1 2 3 4 5
-&gt; spd1 + spd2                   # automatic conversion
-Units: m/s
-[1] 1.277778 2.555556 3.833333 5.111111 6.388889
-&gt; spd1 * spd2                   # unit derivation
-Units: km*m/h/s
-[1]  1  4  9 16 25
-&gt; spd1 * unit(10, s) # unit simplification
-Units: m
-[1] 10 20 30 40 50
-&gt; spd1 + unit(10, s) # error checking
-Error in `units&lt;-.units`(`*tmp*`, value = list(numerator = "m", denominator = "s")) : 
-  cannot convert s into m/s</code></pre>
+<pre><code>library(units)
+(spd1 = set_units(1:5, m/s))
+# Units: m/s
+# [1] 1 2 3 4 5
+(spd2 = set_units(1:5, km/h))
+# Units: km/h
+# [1] 1 2 3 4 5
+spd1 + spd2                   # automatic conversion
+# Units: m/s
+# [1] 1.277778 2.555556 3.833333 5.111111 6.388889
+spd1 * spd2                   # unit derivation
+# Units: km*m/h/s
+# [1]  1  4  9 16 25
+spd1 * set_units(10, s) # unit simplification
+# Units: m
+# [1] 10 20 30 40 50
+spd1 + set_units(10, s) # error checking
+#   cannot convert s into m/s</code></pre>
 <ul>
 <li>blog posts: <a href="http://r-spatial.org/r/2016/06/10/units.html">first</a>, <a href="http://r-spatial.org/r/2016/08/16/units2.html">second</a>, <a href="http://r-spatial.org/r/2016/09/29/plot_units.html">third</a>
 </li>
@@ -95,11 +94,8 @@ Error in `units&lt;-.units`(`*tmp*`, value = list(numerator = "m", denominator =
 <li>the <a href="https://github.com/pacificclimate/Rudunits2">udunits2 R package</a> github page</li>
 </ul>
 <p>When installing the <code>udunits2</code> R package fails due to a missing udunits2 system library, either install it binary e.g. by</p>
-<ul>
-<li>
-<code>sudo apt-get install libudunits2-dev</code>, or</li>
-</ul>
-<p>download <code>udunits-2.2.20.tar.gz</code> from <a href="ftp://ftp.unidata.ucar.edu/pub/udunits/" class="uri">ftp://ftp.unidata.ucar.edu/pub/udunits/</a>, and execute the following commands in the download directory:</p>
+<pre><code>sudo apt-get install libudunits2-dev</code></pre>
+<p>or install from source by downloading <code>udunits-2.2.20.tar.gz</code> from <a href="ftp://ftp.unidata.ucar.edu/pub/udunits/" class="uri">ftp://ftp.unidata.ucar.edu/pub/udunits/</a>, and executing the following commands in the download directory:</p>
 <pre><code>tar zxf udunits-2.2.20.tar.gz
 cd ./udunits-2.2.20/
 ./configure
@@ -108,7 +104,7 @@ sudo make install
 sudo ldconfig</code></pre>
 <p>if that went well, assuming you installed by default in <code>/usr/local/</code>, add</p>
 <pre><code>export UDUNITS2_XML_PATH="/usr/local/share/udunits/udunits2.xml"</code></pre>
-<p>to your <code>~/.bashrc</code> file, start a new shell to activate this environment variable, and try installing R package <code>udunits2</code> once more. When launching rstudio from unity, you may have to load <code>udunits2</code> explicitly before using <code>units</code>.</p>
+<p>to your <code>~/.bashrc</code> file, start a new shell to activate this environment variable, and try installing R package <code>udunits2</code> once more. When launching rstudio from unity, you may have to load <code>udunits2</code> explicitly before using <code>units</code>, or set <code>UDUNITS2_XML_PATH</code> in a different way such that rstudio finds it.</p>
 </div>
 </div>
   </div>

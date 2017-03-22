@@ -54,7 +54,7 @@ NULL
   if (udunits2::ud.are.convertible(str1, str2)) 
     structure(udunits2::ud.convert(x, str1, str2), units = value)
   else
-    stop(paste("cannot convert", units(x), "into", value))
+    stop(paste("cannot convert", units(x), "into", value), call. = FALSE)
 }
 
 #' @name units

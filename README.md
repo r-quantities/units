@@ -19,25 +19,24 @@ to date with the package.
 Package `units` provides
 measurement units for R vectors: conversion, derivation, simplification and error checking:
 ```
-> library(units)
-> spd1 = unit(1:5, m/s)
-Units: m/s
-[1] 1 2 3 4 5
-> spd2 = unit(1:5, km/h)
-Units: km/h
-[1] 1 2 3 4 5
-> spd1 + spd2                   # automatic conversion
-Units: m/s
-[1] 1.277778 2.555556 3.833333 5.111111 6.388889
-> spd1 * spd2                   # unit derivation
-Units: km*m/h/s
-[1]  1  4  9 16 25
-> spd1 * unit(10, s) # unit simplification
-Units: m
-[1] 10 20 30 40 50
-> spd1 + unit(10, s) # error checking
-Error in `units<-.units`(`*tmp*`, value = list(numerator = "m", denominator = "s")) : 
-  cannot convert s into m/s
+library(units)
+(spd1 = set_units(1:5, m/s))
+# Units: m/s
+# [1] 1 2 3 4 5
+(spd2 = set_units(1:5, km/h))
+# Units: km/h
+# [1] 1 2 3 4 5
+spd1 + spd2                   # automatic conversion
+# Units: m/s
+# [1] 1.277778 2.555556 3.833333 5.111111 6.388889
+spd1 * spd2                   # unit derivation
+# Units: km*m/h/s
+# [1]  1  4  9 16 25
+spd1 * set_units(10, s) # unit simplification
+# Units: m
+# [1] 10 20 30 40 50
+spd1 + set_units(10, s) # error checking
+#   cannot convert s into m/s
 ```
 
 * blog posts: [first](http://r-spatial.org/r/2016/06/10/units.html), [second](http://r-spatial.org/r/2016/08/16/units2.html), [third](http://r-spatial.org/r/2016/09/29/plot_units.html)
