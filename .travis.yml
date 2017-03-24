@@ -1,8 +1,16 @@
 language: r
+
 sudo: true
+
 cache: packages
+
 apt_packages:
   - libudunits2-dev
+
+r:
+  - oldrel
+  - release
+  - devel
 
 r_packages:
   - roxygen2

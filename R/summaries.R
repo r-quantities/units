@@ -55,9 +55,19 @@ mean.units = function(x, ...) {
 }
 
 #' @export
-median.units = function(x, na.rm = FALSE) {
-  .as.units(median(unclass(x), na.rm = na.rm), units(x))
+median.units = function(x, na.rm = FALSE, ...) {
 }
+
+median.units <- if (is.na(match("...", names(formals(median))))) {
+    function(x, na.rm = FALSE) {
+  		.as.units(median(unclass(x), na.rm = na.rm), units(x))
+    }
+} else {
+    function(x, na.rm = FALSE, ...) {
+  		.as.units(median(unclass(x), na.rm = na.rm, ...), units(x))
+    }
+}
+
 
 #' @export
 quantile.units = function(x, ...) {
