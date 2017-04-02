@@ -41,7 +41,7 @@ spd1 + set_units(10, s) # error checking
 
 * blog posts: [first](http://r-spatial.org/r/2016/06/10/units.html), [second](http://r-spatial.org/r/2016/08/16/units2.html), [third](http://r-spatial.org/r/2016/09/29/plot_units.html)
 * [package vignette](https://cran.r-project.org/web/packages/units/vignettes/units.html)
-* [R Journal manuscript](https://cran.r-project.org/web/packages/units/vignettes/measurement_units_in_R.pdf), [accepted](https://journal.r-project.org/archive/accepted/)
+* The [R Journal publication](https://journal.r-project.org/archive/2016-2/pebesma-mailund-hiebert.pdf), which has been [updated to recent package developments](https://edzer.github.io/units/articles/measurement_units_in_R.html)
 * the [udunits2 R package](https://github.com/pacificclimate/Rudunits2) github page
 
 When installing the `udunits2` R package fails due to a missing
