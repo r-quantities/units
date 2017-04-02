@@ -34,6 +34,9 @@
 <li>
   <a href="../articles/index.html">Articles</a>
 </li>
+<li>
+  <a href="../news/index.html">News</a>
+</li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
@@ -69,12 +72,12 @@
 </ul>
 <div id="abstract" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#abstract" class="anchor"> </a></body></html>Abstract</h2>
+<a href="#abstract" class="anchor"></a>Abstract</h2>
 <p>We briefly review SI units, and discuss R packages that deal with measurement units, their compatibility and conversion. Built upon <a href="https://cran.r-project.org/package=udunits2">udunits2</a> and the UNIDATA udunits library, we introduce the package <a href="https://cran.r-project.org/package=units">units</a> that provides a class for maintaining unit metadata. When used in expression, it automatically converts units, and simplifies units of results when possible; in case of incompatible units, errors are raised. The class flexibly allows expansion beyond predefined units. Using <a href="https://cran.r-project.org/package=units">units</a> may eliminate a whole class of potential scientific programming mistakes. We discuss the potential and limitations of computing with explicit units.</p>
 </div>
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#introduction" class="anchor"> </a></body></html>Introduction</h2>
+<a href="#introduction" class="anchor"></a>Introduction</h2>
 <p>Two quotes from <span class="citation">Cobb and Moore (1997)</span> – <em>Data are not just numbers, they are numbers with a context</em> and <em>in data analysis, context provides meaning</em> – illustrate that for a data analysis to be meaningful, knowledge of the data’s context is needed. Pragmatic aspects of this context include who collected or generated the data, how this was done, and for which purpose <span class="citation">(Scheider et al. 2016)</span>; semantic aspects concern what the data represents: which aspect of the world do the data refer to, when and where were they measured, and what a value of <code>1</code> means.</p>
 <p>R does allow for keeping some context with data, for instance</p>
 <ul>
@@ -120,7 +123,7 @@ year_duration =<span class="st"> </span><span class="kw">diff</span>(temp_data$d
 </div>
 <div id="si" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#si" class="anchor"> </a></body></html>SI</h2>
+<a href="#si" class="anchor"></a>SI</h2>
 <p>The <a href="http://www.bipm.org/">BIPM</a> (Bureau International des Poids et Mesures) is the “<em>the intergovernmental organization through which Member States act together on matters related to measurement science and measurement standards. Its recommended practical system of units of measurement is the International System of Units (Syst`{e}me International d’Unit'{e}s, with the international abbreviation SI)</em> (<a href="http://www.bipm.org/en/measurement-units/" class="uri">http://www.bipm.org/en/measurement-units/</a>)”.</p>
 <p><span class="citation">International Bureau of Weights and Measures, Taylor, and Thompson (2001)</span> describe the SI units, where, briefly, <em>SI units</em></p>
 <ul>
@@ -193,7 +196,7 @@ year_duration =<span class="st"> </span><span class="kw">diff</span>(temp_data$d
 </div>
 <div id="related-work-in-r" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#related-work-in-r" class="anchor"> </a></body></html>Related work in R</h2>
+<a href="#related-work-in-r" class="anchor"></a>Related work in R</h2>
 <p>Several R packages provide unit conversions. For instance, <a href="https://cran.r-project.org/package=measurements">measurements</a> <span class="citation">(Birk 2016)</span> provides a collection of tools to make working with physical measurements easier. It converts between metric and imperial units, or calculates a dimension’s unknown value from other dimensions’ measurements. It does this by the <code>conv_unit</code> function:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(measurements)
 <span class="kw">conv_unit</span>(<span class="fl">2.54</span>, <span class="st">"cm"</span>, <span class="st">"inch"</span>)
@@ -226,7 +229,7 @@ conv_unit_options$volume
 </div>
 <div id="unidatas-udunits-library-and-the-udunits2-r-package" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#unidatas-udunits-library-and-the-udunits2-r-package" class="anchor"> </a></body></html>UNIDATA’s udunits library and the <code>udunits2</code> R package</h2>
+<a href="#unidatas-udunits-library-and-the-udunits2-r-package" class="anchor"></a>UNIDATA’s udunits library and the <code>udunits2</code> R package</h2>
 <p>Udunits, developed by UCAR/UNIDATA, advertises itself on <a href="https://www.unidata.ucar.edu/software/udunits/">its web page</a> as: “<em>The udunits package supports units of physical quantities. Its C library provides for arithmetic manipulation of units and for conversion of numeric values between compatible units. The package contains an extensive unit database, which is in XML format and user-extendable.</em>”</p>
 <p>The R package <a href="https://cran.r-project.org/package=udunits2">udunits2</a> <span class="citation">(Hiebert 2015)</span> provides an R level interface to the most important functions in the C library.</p>
 <p>The functions provided by <a href="https://cran.r-project.org/package=udunits2">udunits2</a> are</p>
@@ -269,14 +272,14 @@ dm100_b =<span class="st"> "dm^100"</span>
 </div>
 <div id="udunits-versus-the-unified-code-for-units-of-measure-ucum" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#udunits-versus-the-unified-code-for-units-of-measure-ucum" class="anchor"> </a></body></html>Udunits versus the Unified Code for Units of Measure (UCUM)</h2>
+<a href="#udunits-versus-the-unified-code-for-units-of-measure-ucum" class="anchor"></a>Udunits versus the Unified Code for Units of Measure (UCUM)</h2>
 <p>Another set of encodings for measurement units is the Unified Code for Units of Measure (UCUM, <span class="citation">Schadow and McDonald (2009)</span>). A dedicated web site describes the details of the differences between udunits and UCUM, and provides a conversion service between the two encoding sets.</p>
 <p>The UCUM website refers to some Java implementations, but some of the links seem to be dead. UCUM is the preferred encoding for standards from the Open Geospatial Consortium. udunits on the other hand is the units standard of choice by the climate science community, and is adopted by the CF (Climate and Forecast) conventions, which mostly uses NetCDF. NetCDF <span class="citation">(Rew and Davis 1990)</span> is a binary data format that is widely used for atmospheric and climate model predictions.</p>
 <p>The udunits library is a C library that has strong support from UNIDATA, and we decided to build our developments on this, rather than on Java implementations of UCUM with a less clear provenance.</p>
 </div>
 <div id="handling-data-with-units-in-r-the-units-package" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#handling-data-with-units-in-r-the-units-package" class="anchor"> </a></body></html>Handling data with units in R: the units package</h2>
+<a href="#handling-data-with-units-in-r-the-units-package" class="anchor"></a>Handling data with units in R: the units package</h2>
 <p>The <a href="https://cran.r-project.org/package=units">units</a> package builds <code>units</code> objects from scratch, where <code>m</code>, created by</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(units)
 m =<span class="st"> </span><span class="kw"><a href="../reference/make_unit.html">make_unit</a></span>(<span class="st">"m"</span>)
@@ -416,7 +419,7 @@ mtcars$displacement =<span class="st"> </span><span class="kw"><a href="../refer
 </div>
 <div id="discussion-and-conclusions" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#discussion-and-conclusions" class="anchor"> </a></body></html>Discussion and conclusions</h2>
+<a href="#discussion-and-conclusions" class="anchor"></a>Discussion and conclusions</h2>
 <p>The <a href="https://cran.r-project.org/package=units">units</a> R package provides a new class, <code>units</code>, for numeric data with associated measurement units. Operations on objects of this class retain the unit metadata and provide automated dimensional analysis: dimensions are taken into consideration in computations and comparisons. Combining different units that are compatible triggers automatic unit conversion, derived units are automatically generated and simplified where possible, and meaningful error messages are given when a user tries to add objects with incompatible units. This verifies that computations are not only syntactically and numerically allowed, but also semantically, and in the case of physical units, physically allowed, which may support code verification and provenance tracking. Using this package may eliminate a whole class of potential scientific programming mistakes.</p>
 <p>Where the R packages <a href="https://cran.r-project.org/package=measurements">measurements</a> and <a href="https://cran.r-project.org/package=NISTunits">NISTunits</a> provide conversion between a fixed number of units, with the help of the udunits library and unit database R package <a href="https://cran.r-project.org/package=units">units</a> allows for arbitrarily complex derived units. By treating units as expressions it can derive, convert and simplify units. In addition, beyond the SI units packaged, <a href="https://cran.r-project.org/package=units">units</a> handles user-defined units not supported by udunits.</p>
 <p>Data in <code>units</code> vectors can be stored as columns in <code>data.frame</code> or <code>tbl_df</code> objects, and can be converted to and from <code>difftime</code>. When <code>units</code> objects have associated time and location information, they could be stored in spatial or spatio-temporal objects provided by <a href="https://cran.r-project.org/package=sp">sp</a> or <a href="https://cran.r-project.org/package=spacetime">spacetime</a> <span class="citation">(E. Pebesma 2012)</span> as these store attribute data in <code>data.frame</code> slots, but for instance not in <code>zoo</code> <span class="citation">(Zeileis and Grothendieck 2005)</span> or <code>xts</code> <span class="citation">(Ryan and Ulrich 2014)</span> objects, as these latter two set the class attribute of a vector or matrix.</p>
@@ -425,12 +428,12 @@ mtcars$displacement =<span class="st"> </span><span class="kw"><a href="../refer
 </div>
 <div id="acknowledgements" class="section level1">
 <h1 class="hasAnchor">
-<html><body><a href="#acknowledgements" class="anchor"> </a></body></html>Acknowledgements</h1>
+<a href="#acknowledgements" class="anchor"></a>Acknowledgements</h1>
 <p>We acknowledge three anonymous reviewers and the handling editor for their constructive comments, and Thomas Lin Pedersen for implementing the ggplot extensions in package <code>ggforce</code> that automatically add units to default ggplot axis labels.</p>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1 class="hasAnchor">
-<html><body><a href="#references" class="anchor"> </a></body></html>References</h1>
+<a href="#references" class="anchor"></a>References</h1>
 <div id="refs" class="references">
 <div id="ref-h5">
 <p>Annau, Mario. 2016. <em>H5: Interface to the ’HDF5’ Library</em>. <a href="https://CRAN.R-project.org/package=h5" class="uri">https://CRAN.R-project.org/package=h5</a>.</p>
@@ -469,10 +472,10 @@ mtcars$displacement =<span class="st"> </span><span class="kw"><a href="../refer
 <p>Pebesma, Edzer. 2012. “Spacetime: Spatio-Temporal Data in R.” <em>Journal of Statistical Software</em> 51 (1): 1–30. doi:<a href="https://doi.org/10.18637/jss.v051.i07">10.18637/jss.v051.i07</a>.</p>
 </div>
 <div id="ref-sp">
-<p>Pebesma, Edzer, and Roger Bivand. 2005. “Classes and Methods for Spatial Data in R.” <em>R News</em> 5 (2): 9–13. <a href="http://cran.r-project.org/doc/Rnews/">http://cran.r-project.org/doc/Rnews/</a>.</p>
+<p>Pebesma, Edzer, and Roger Bivand. 2005. “Classes and Methods for Spatial Data in R.” <em>R News</em> 5 (2): 9–13. <a href="https://cran.r-project.org/doc/Rnews/">https://cran.r-project.org/doc/Rnews/</a>.</p>
 </div>
 <div id="ref-rj">
-<p>Pebesma, Edzer, Thomas Mailund, and James Hiebert. 2016. “Measurement Units in R.” <em>The R Journal</em> 8 (2): 486–94. <a href="http://journal.r-project.org/archive/2016-2/pebesma-mailund-hiebert.pdf" class="uri">http://journal.r-project.org/archive/2016-2/pebesma-mailund-hiebert.pdf</a>.</p>
+<p>Pebesma, Edzer, Thomas Mailund, and James Hiebert. 2016. “Measurement Units in R.” <em>The R Journal</em> 8 (2): 486–94. <a href="https://journal.r-project.org/archive/2016-2/pebesma-mailund-hiebert.pdf" class="uri">https://journal.r-project.org/archive/2016-2/pebesma-mailund-hiebert.pdf</a>.</p>
 </div>
 <div id="ref-ggforce">
 <p>Pedersen, Thomas Lin. 2016. <em>Ggforce: Accelerating ’Ggplot2’</em>. <a href="https://CRAN.R-project.org/package=ggforce" class="uri">https://CRAN.R-project.org/package=ggforce</a>.</p>

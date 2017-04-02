@@ -34,6 +34,9 @@
 <li>
   <a href="../articles/index.html">Articles</a>
 </li>
+<li>
+  <a href="../news/index.html">News</a>
+</li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
@@ -86,7 +89,7 @@ d
 <p>The <code>units</code> R package uses R package <a href="https://cran.r-project.org/package=udunits2"><code>udunits2</code></a> to extend R with functionality for manipulating numeric vectors that have physical measurement units associated with them, in a similar way as <code>difftime</code> objects behave.</p>
 <div id="setting-units-unit-conversion" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#setting-units-unit-conversion" class="anchor"> </a></body></html>Setting units, unit conversion</h2>
+<a href="#setting-units-unit-conversion" class="anchor"></a>Setting units, unit conversion</h2>
 <p>Existing units are resolved from a database in the <code>units</code> package, called <code>ud_units</code>. We can see the first three elements of it by</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(units)
 ud_units[<span class="dv">1</span>:<span class="dv">3</span>]
@@ -101,8 +104,8 @@ ud_units[<span class="dv">1</span>:<span class="dv">3</span>]
 <p>We can set units to numerical values by <code>set_units</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(a &lt;-<span class="st"> </span><span class="kw"><a href="../reference/units.html">set_units</a></span>(<span class="kw">runif</span>(<span class="dv">10</span>),  m/s))
 ## Units: m/s
-##  [1] 0.583688307 0.692081019 0.637080560 0.072943293 0.917716950
-##  [6] 0.598368059 0.782546313 0.005338839 0.537956888 0.608208905</code></pre></div>
+##  [1] 0.58024802 0.09688759 0.16370772 0.86348420 0.32716659 0.78576996
+##  [7] 0.72955780 0.10339972 0.17414348 0.69924590</code></pre></div>
 <p>the result, e.g.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/units.html">set_units</a></span>(<span class="dv">10</span>, m/s)
 ## 10 m/s</code></pre></div>
@@ -115,158 +118,157 @@ ud_units[<span class="dv">1</span>:<span class="dv">3</span>]
 ## 1 km/h</code></pre></div>
 <div id="unit-conversion" class="section level3">
 <h3 class="hasAnchor">
-<html><body><a href="#unit-conversion" class="anchor"> </a></body></html>Unit conversion</h3>
+<a href="#unit-conversion" class="anchor"></a>Unit conversion</h3>
 <p>When conversion is meaningful, such as hours to seconds or meters to kilometers, conversion can be done explicitly by setting the units of a vector</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">b =<span class="st"> </span>a
 <span class="kw"><a href="../reference/units.html">units</a></span>(b) &lt;-<span class="st"> </span><span class="kw">with</span>(ud_units, km/h)
 b
 ## Units: km/h
-##  [1] 2.10127790 2.49149167 2.29349002 0.26259585 3.30378102 2.15412501
-##  [7] 2.81716673 0.01921982 1.93664480 2.18955206</code></pre></div>
+##  [1] 2.0888929 0.3487953 0.5893478 3.1085431 1.1777997 2.8287719 2.6264081
+##  [8] 0.3722390 0.6269165 2.5172853</code></pre></div>
 </div>
 </div>
 <div id="basic-manipulations" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#basic-manipulations" class="anchor"> </a></body></html>Basic manipulations</h2>
+<a href="#basic-manipulations" class="anchor"></a>Basic manipulations</h2>
 <div id="arithmetic-operations" class="section level3">
 <h3 class="hasAnchor">
-<html><body><a href="#arithmetic-operations" class="anchor"> </a></body></html>Arithmetic operations</h3>
+<a href="#arithmetic-operations" class="anchor"></a>Arithmetic operations</h3>
 <p>Arithmetic operations verify units, and create new ones</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">a +<span class="st"> </span>a
 ## Units: m/s
-##  [1] 1.16737661 1.38416204 1.27416112 0.14588659 1.83543390 1.19673612
-##  [7] 1.56509263 0.01067768 1.07591378 1.21641781
+##  [1] 1.1604960 0.1937752 0.3274154 1.7269684 0.6543332 1.5715399 1.4591156
+##  [8] 0.2067994 0.3482870 1.3984918
 a *<span class="st"> </span>a
 ## Units: m^2/s^2
-##  [1] 0.3406920393 0.4789761366 0.4058716399 0.0053207240 0.8422044006
-##  [6] 0.3580443336 0.6123787327 0.0000285032 0.2893976134 0.3699180724
+##  [1] 0.336687765 0.009387204 0.026800217 0.745604971 0.107037976
+##  [6] 0.617434436 0.532254583 0.010691501 0.030325952 0.488944833
 a ^<span class="st"> </span><span class="dv">2</span>
 ## Units: m^2/s^2
-##  [1] 0.3406920393 0.4789761366 0.4058716399 0.0053207240 0.8422044006
-##  [6] 0.3580443336 0.6123787327 0.0000285032 0.2893976134 0.3699180724
+##  [1] 0.336687765 0.009387204 0.026800217 0.745604971 0.107037976
+##  [6] 0.617434436 0.532254583 0.010691501 0.030325952 0.488944833
 a **<span class="st"> </span>-<span class="dv">2</span>
 ## Units: s^2/m^2
-##  [1]     2.935202     2.087787     2.463833   187.944348     1.187360
-##  [6]     2.792950     1.632976 35083.774413     3.455454     2.703301</code></pre></div>
+##  [1]   2.970111 106.527989  37.313130   1.341193   9.342479   1.619605
+##  [7]   1.878800  93.532233  32.975057   2.045221</code></pre></div>
 <p>and convert to the units of the first argument if necessary:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">a +<span class="st"> </span>b <span class="co"># m/s + km/h -&gt; m/s</span>
 ## Units: m/s
-##  [1] 1.16737661 1.38416204 1.27416112 0.14588659 1.83543390 1.19673612
-##  [7] 1.56509263 0.01067768 1.07591378 1.21641781</code></pre></div>
+##  [1] 1.1604960 0.1937752 0.3274154 1.7269684 0.6543332 1.5715399 1.4591156
+##  [8] 0.2067994 0.3482870 1.3984918</code></pre></div>
 <p>Currently, powers are only supported for integer powers, so using <code>a ** 2.5</code> would result in an error.</p>
 </div>
 <div id="unit-simplification" class="section level3">
 <h3 class="hasAnchor">
-<html><body><a href="#unit-simplification" class="anchor"> </a></body></html>Unit simplification</h3>
+<a href="#unit-simplification" class="anchor"></a>Unit simplification</h3>
 <p>There are some basic simplification of units:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">t &lt;-<span class="st"> </span><span class="kw">with</span>(ud_units, s)
 a *<span class="st"> </span>t
 ## Units: m
-##  [1] 0.583688307 0.692081019 0.637080560 0.072943293 0.917716950
-##  [6] 0.598368059 0.782546313 0.005338839 0.537956888 0.608208905</code></pre></div>
+##  [1] 0.58024802 0.09688759 0.16370772 0.86348420 0.32716659 0.78576996
+##  [7] 0.72955780 0.10339972 0.17414348 0.69924590</code></pre></div>
 <p>which also work when units need to be converted before they can be simplified:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">t &lt;-<span class="st"> </span><span class="kw">with</span>(ud_units, min)
 a *<span class="st"> </span>t
 ## Units: m
-##  [1] 35.0212984 41.5248611 38.2248336  4.3765976 55.0630170 35.9020835
-##  [7] 46.9527788  0.3203304 32.2774133 36.4925343</code></pre></div>
+##  [1] 34.814881  5.813255  9.822463 51.809052 19.629995 47.146198 43.773468
+##  [8]  6.203983 10.448609 41.954754</code></pre></div>
 <p>Simplification to unit-less values gives the “1” as unit:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">with</span>(ud_units, m)
 a *<span class="st"> </span>t /<span class="st"> </span>m
 ## Units: 1
-##  [1] 35.0212984 41.5248611 38.2248336  4.3765976 55.0630170 35.9020835
-##  [7] 46.9527788  0.3203304 32.2774133 36.4925343</code></pre></div>
+##  [1] 34.814881  5.813255  9.822463 51.809052 19.629995 47.146198 43.773468
+##  [8]  6.203983 10.448609 41.954754</code></pre></div>
 <p>Allowed operations that require convertible units are <code>+</code>, <code>-</code>, <code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>. Operations that lead to new units are <code>*</code>, <code>/</code>, and the power operations <code>**</code> and <code>^</code>.</p>
 </div>
 <div id="mathematical-functions" class="section level3">
 <h3 class="hasAnchor">
-<html><body><a href="#mathematical-functions" class="anchor"> </a></body></html>Mathematical functions</h3>
+<a href="#mathematical-functions" class="anchor"></a>Mathematical functions</h3>
 <p>Mathematical operations allowed are: <code>abs</code>, <code>sign</code>, <code>floor</code>, <code>ceiling</code>, <code>trunc</code>, <code>round</code>, <code>signif</code>, <code>log</code>, <code>cumsum</code>, <code>cummax</code>, <code>cummin</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">signif</span>(a **<span class="st"> </span><span class="dv">2</span> /<span class="st"> </span><span class="dv">3</span>, <span class="dv">3</span>)
 ## Units: m^2/s^2
-##  [1] 1.14e-01 1.60e-01 1.35e-01 1.77e-03 2.81e-01 1.19e-01 2.04e-01
-##  [8] 9.50e-06 9.65e-02 1.23e-01
+##  [1] 0.11200 0.00313 0.00893 0.24900 0.03570 0.20600 0.17700 0.00356
+##  [9] 0.01010 0.16300
 <span class="kw">cumsum</span>(a)
 ## Units: m/s
-##  [1] 0.5836883 1.2757693 1.9128499 1.9857932 2.9035101 3.5018782 4.2844245
-##  [8] 4.2897633 4.8277202 5.4359291
+##  [1] 0.5802480 0.6771356 0.8408433 1.7043275 2.0314941 2.8172641 3.5468219
+##  [8] 3.6502216 3.8243651 4.5236110
 <span class="kw">log</span>(a) <span class="co"># base defaults to exp(1)</span>
 ## Units: ln(m/s)
-##  [1] -0.53838816 -0.36805225 -0.45085916 -2.61807295 -0.08586627
-##  [6] -0.51354923 -0.24520217 -5.23274702 -0.61997686 -0.49723686
+##  [1] -0.5442996 -2.3342039 -1.8096726 -0.1467797 -1.1172858 -0.2410912
+##  [7] -0.3153167 -2.2691531 -1.7478757 -0.3577528
 <span class="kw">log</span>(a, <span class="dt">base =</span> <span class="dv">10</span>)
 ## Units: lg(m/s)
-##  [1] -0.23381901 -0.15984306 -0.19580565 -1.13701463 -0.03729125
-##  [6] -0.22303160 -0.10648995 -2.27255315 -0.26925253 -0.21594723
+##  [1] -0.2363863 -1.0137319 -0.7859308 -0.0637456 -0.4852311 -0.1047046
+##  [7] -0.1369403 -0.9854807 -0.7590928 -0.1553701
 <span class="kw">log</span>(a, <span class="dt">base =</span> <span class="dv">2</span>)
 ## Units: lb(m/s)
-##  [1] -0.7767299 -0.5309872 -0.6504523 -3.7770809 -0.1238788 -0.7408949
-##  [7] -0.3537520 -7.5492582 -0.8944375 -0.7173612</code></pre></div>
+##  [1] -0.7852584 -3.3675444 -2.6108057 -0.2117583 -1.6119027 -0.3478211
+##  [7] -0.4549058 -3.2736959 -2.5216516 -0.5161282</code></pre></div>
 </div>
 <div id="summary-functions" class="section level3">
 <h3 class="hasAnchor">
-<html><body><a href="#summary-functions" class="anchor"> </a></body></html>Summary functions</h3>
+<a href="#summary-functions" class="anchor"></a>Summary functions</h3>
 <p>Summary functions <code>sum</code>, <code>min</code>, <code>max</code>, and <code>range</code> are allowed:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(a)
-## 5.435929 m/s
+## 4.523611 m/s
 <span class="kw">min</span>(a)
-## 0.005338839 m/s
+## 0.09688759 m/s
 <span class="kw">max</span>(a)
-## 0.917717 m/s
+## 0.8634842 m/s
 <span class="kw">range</span>(a)
 ## Units: m/s
-## [1] 0.005338839 0.917716950
+## [1] 0.09688759 0.86348420
 <span class="kw">with</span>(ud_units, <span class="kw">min</span>(m/s, km/h)) <span class="co"># converts to first unit:</span>
 ## 0.2777778 m/s</code></pre></div>
 </div>
 <div id="printing" class="section level3">
 <h3 class="hasAnchor">
-<html><body><a href="#printing" class="anchor"> </a></body></html>Printing</h3>
+<a href="#printing" class="anchor"></a>Printing</h3>
 <p>Following <code>difftime</code>, printing behaves differently for length-one vectors:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">a
 ## Units: m/s
-##  [1] 0.583688307 0.692081019 0.637080560 0.072943293 0.917716950
-##  [6] 0.598368059 0.782546313 0.005338839 0.537956888 0.608208905
+##  [1] 0.58024802 0.09688759 0.16370772 0.86348420 0.32716659 0.78576996
+##  [7] 0.72955780 0.10339972 0.17414348 0.69924590
 a[<span class="dv">1</span>]
-## 0.5836883 m/s</code></pre></div>
+## 0.580248 m/s</code></pre></div>
 </div>
 <div id="subsetting" class="section level3">
 <h3 class="hasAnchor">
-<html><body><a href="#subsetting" class="anchor"> </a></body></html>Subsetting</h3>
+<a href="#subsetting" class="anchor"></a>Subsetting</h3>
 <p>The usual subsetting rules work:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">a[<span class="dv">2</span>:<span class="dv">5</span>]
 ## Units: m/s
-## [1] 0.69208102 0.63708056 0.07294329 0.91771695
+## [1] 0.09688759 0.16370772 0.86348420 0.32716659
 a[-(<span class="dv">1</span>:<span class="dv">9</span>)]
-## 0.6082089 m/s</code></pre></div>
+## 0.6992459 m/s</code></pre></div>
 </div>
 <div id="concatenation" class="section level3">
 <h3 class="hasAnchor">
-<html><body><a href="#concatenation" class="anchor"> </a></body></html>Concatenation</h3>
+<a href="#concatenation" class="anchor"></a>Concatenation</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(a,a)
 ## Units: m/s
-##  [1] 0.583688307 0.692081019 0.637080560 0.072943293 0.917716950
-##  [6] 0.598368059 0.782546313 0.005338839 0.537956888 0.608208905
-## [11] 0.583688307 0.692081019 0.637080560 0.072943293 0.917716950
-## [16] 0.598368059 0.782546313 0.005338839 0.537956888 0.608208905</code></pre></div>
+##  [1] 0.58024802 0.09688759 0.16370772 0.86348420 0.32716659 0.78576996
+##  [7] 0.72955780 0.10339972 0.17414348 0.69924590 0.58024802 0.09688759
+## [13] 0.16370772 0.86348420 0.32716659 0.78576996 0.72955780 0.10339972
+## [19] 0.17414348 0.69924590</code></pre></div>
 <p>concatenation converts to the units of the first argument, if necessary:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(a,b) <span class="co"># m/s, km/h -&gt; m/s</span>
 ## Units: m/s
-##  [1] 0.583688307 0.692081019 0.637080560 0.072943293 0.917716950
-##  [6] 0.598368059 0.782546313 0.005338839 0.537956888 0.608208905
-## [11] 0.583688307 0.692081019 0.637080560 0.072943293 0.917716950
-## [16] 0.598368059 0.782546313 0.005338839 0.537956888 0.608208905
+##  [1] 0.58024802 0.09688759 0.16370772 0.86348420 0.32716659 0.78576996
+##  [7] 0.72955780 0.10339972 0.17414348 0.69924590 0.58024802 0.09688759
+## [13] 0.16370772 0.86348420 0.32716659 0.78576996 0.72955780 0.10339972
+## [19] 0.17414348 0.69924590
 <span class="kw">c</span>(b,a) <span class="co"># km/h, m/s -&gt; km/h</span>
 ## Units: km/h
-##  [1] 2.10127790 2.49149167 2.29349002 0.26259585 3.30378102 2.15412501
-##  [7] 2.81716673 0.01921982 1.93664480 2.18955206 2.10127790 2.49149167
-## [13] 2.29349002 0.26259585 3.30378102 2.15412501 2.81716673 0.01921982
-## [19] 1.93664480 2.18955206</code></pre></div>
+##  [1] 2.0888929 0.3487953 0.5893478 3.1085431 1.1777997 2.8287719 2.6264081
+##  [8] 0.3722390 0.6269165 2.5172853 2.0888929 0.3487953 0.5893478 3.1085431
+## [15] 1.1777997 2.8287719 2.6264081 0.3722390 0.6269165 2.5172853</code></pre></div>
 </div>
 </div>
 <div id="conversion-tofrom-difftime" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#conversion-tofrom-difftime" class="anchor"> </a></body></html>Conversion to/from <code>difftime</code>
+<a href="#conversion-tofrom-difftime" class="anchor"></a>Conversion to/from <code>difftime</code>
 </h2>
 <p>From <code>difftime</code> to <code>units</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">t1 =<span class="st"> </span><span class="kw">Sys.time</span>() 
@@ -282,7 +284,7 @@ d =<span class="st"> </span>t2 -<span class="st"> </span>t1
 </div>
 <div id="units-in-matrix-objects" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#units-in-matrix-objects" class="anchor"> </a></body></html>units in <code>matrix</code> objects</h2>
+<a href="#units-in-matrix-objects" class="anchor"></a>units in <code>matrix</code> objects</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/units.html">set_units</a></span>(<span class="kw">matrix</span>(<span class="dv">1</span>:<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">2</span>), m/s)
 ## Units: m/s
 ##      [,1] [,2]
@@ -302,7 +304,7 @@ d =<span class="st"> </span>t2 -<span class="st"> </span>t1
 </div>
 <div id="units-objects-in-data-frames" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#units-objects-in-data-frames" class="anchor"> </a></body></html>units objects in <code>data.frame</code>s</h2>
+<a href="#units-objects-in-data-frames" class="anchor"></a>units objects in <code>data.frame</code>s</h2>
 <p>units in <code>data.frame</code> objects are printed, but do not appear in <code>summary</code>:.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">131</span>)
 d &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x =</span> <span class="kw">runif</span>(<span class="dv">4</span>), 
@@ -334,7 +336,7 @@ d[<span class="dv">1</span>, <span class="st">"yz"</span>]
 </div>
 <div id="formatting" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#formatting" class="anchor"> </a></body></html>formatting</h2>
+<a href="#formatting" class="anchor"></a>formatting</h2>
 <p>Units are often written in the form <code>m2 s-1</code>, for square meter per second. This can be defined as unit, but is not interpreted by R:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(<span class="dt">x =</span> <span class="dv">1</span>:<span class="dv">10</span> *<span class="st"> </span><span class="kw"><a href="../reference/make_unit.html">make_unit</a></span>(<span class="st">"m2 s-1"</span>))
 ## Units: (m2 s-1)
@@ -364,7 +366,7 @@ z /<span class="st"> </span>y
 </div>
 <div id="plotting" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#plotting" class="anchor"> </a></body></html>plotting</h2>
+<a href="#plotting" class="anchor"></a>plotting</h2>
 <p>Base scatter plots and histograms support automatic unit placement in axis labels. In the following example we first convert to SI units. (Unit <code>in</code> needs a bit special treatment, because <code>in</code> is a reserved word in R.)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mar =<span class="st"> </span><span class="kw">par</span>(<span class="st">"mar"</span>) +<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, .<span class="dv">3</span>, <span class="dv">0</span>, <span class="dv">0</span>)
 displacement =<span class="st"> </span>mtcars$disp *<span class="st"> </span>ud_units[[<span class="st">"in"</span>]]^<span class="dv">3</span>
