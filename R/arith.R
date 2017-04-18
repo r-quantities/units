@@ -47,12 +47,13 @@ Ops.units <- function(e1, e2) {
   if (prd) {
     if (inherits(e1, "units") && inherits(e2, "units")) {
       # both vectors have units
+	  e1or = e1
       if (.Generic == "*") {
         e1 <- .multiply_symbolic_units(unclass(e1), units(e1), units(e2))
-        e2 <- .multiply_symbolic_units(unclass(e2), units(e1), units(e2))
+        e2 <- .multiply_symbolic_units(unclass(e2), units(e1or), units(e2))
       } else if (.Generic == "/") {
         e1 <- .divide_symbolic_units(unclass(e1), units(e1), units(e2))
-        e2 <- .divide_symbolic_units(unclass(e2), units(e1), units(e2))
+        e2 <- .divide_symbolic_units(unclass(e2), units(e1or), units(e2))
       } else {
         stop(paste("Unexpected operator", .Generic)) # nocov
       }
@@ -64,7 +65,8 @@ Ops.units <- function(e1, e2) {
       
     } else if (inherits(e2, "units")) {
       # only e2 has units
-      if (.Generic == "*")      attr(e1, "units") <- units(e2)
+      if (.Generic == "*")
+        attr(e1, "units") <- units(e2)
       else if (.Generic == "/") { 
 	    if (length(e1) == 1) # I wish I understood why this is needed
 		  attr(e2, "units") <- .invert_symbolic_units(units(e2))
