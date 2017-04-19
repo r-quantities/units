@@ -44,16 +44,22 @@ Ops.units <- function(e1, e2) {
     units(e2) <- units(e1) # convert before we can compare
   }
   
+  if (!pw && length(e1) != length(e2)) {
+  	if (length(e1) < length(e2))
+		e1 = rep(e1, length.out = length(e2))
+	else
+  		e2 = rep(e2, length.out = length(e1))
+  }
+
   if (prd) {
     if (inherits(e1, "units") && inherits(e2, "units")) {
       # both vectors have units
-	  e1or = e1
       if (.Generic == "*") {
         e1 <- .multiply_symbolic_units(unclass(e1), units(e1), units(e2))
-        e2 <- .multiply_symbolic_units(unclass(e2), units(e1or), units(e2))
+        e2 <- .multiply_symbolic_units(unclass(e2), units(e1), units(e2))
       } else if (.Generic == "/") {
         e1 <- .divide_symbolic_units(unclass(e1), units(e1), units(e2))
-        e2 <- .divide_symbolic_units(unclass(e2), units(e1or), units(e2))
+        e2 <- .divide_symbolic_units(unclass(e2), units(e1), units(e2))
       } else {
         stop(paste("Unexpected operator", .Generic)) # nocov
       }
@@ -98,7 +104,6 @@ Ops.units <- function(e1, e2) {
     }
         
   }
-  
   NextMethod(.Generic)
 }
 

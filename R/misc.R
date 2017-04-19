@@ -29,6 +29,12 @@ diff.units = function(x, ...) {
   .as.units(NextMethod(), u)
 }
 
+#' @export
+rep.units = function(x, ...) {
+	u = units(x)
+	.as.units(NextMethod(), u)
+}
+
 #' parse unit in product power form (e.g. km m-2 s-1)
 #' 
 #' parse unit in product power form (e.g. km m-2 s-1)
