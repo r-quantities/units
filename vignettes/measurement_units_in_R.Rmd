@@ -62,7 +62,7 @@ of the Earth [@iliffe].
 
 In many cases however, R drops contextual information. As an example, we
 look at annual global land-ocean temperature index (from
-http://climate.nasa.gov/vital-signs/global-temperature/ ) since 1960:
+`http://climate.nasa.gov/vital-signs/global-temperature/`) since 1960:
 ```{r}
 temp_data = subset(read.table("647_Global_Temperature_Data_File.txt", 
 	header=TRUE)[1:2], Year >= 1960)
