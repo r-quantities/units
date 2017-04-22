@@ -73,18 +73,15 @@ set_units = function(x, value, ...) UseMethod("set_units")
 #' @name units
 #' @export
 set_units.units = function(x, value, ...) {
-  u = eval(substitute(value), ud_units)
-  stopifnot(inherits(u, "units"))
-  units(x) = u
+  units(x) = eval(substitute(value), ud_units, parent.frame())
   x
 }
 
 #' @name units
 #' @export
 set_units.numeric = function(x, value, ...) {
-  u = eval(substitute(value), ud_units, parent.frame()) 
-  stopifnot(inherits(u, "units"))
-  x * u
+  units(x) = eval(substitute(value), ud_units, parent.frame()) 
+  x
 }
 
 #' retrieve measurement units from \code{units} object
