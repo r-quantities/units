@@ -64,6 +64,7 @@ NULL
 #' @examples
 #' # note that these units have NOT been defined or declared before:
 #' set_units(1:5, N/m^2)
+#' set_units(1:5, unitless) # unit "1", unitless
 #' if (require(magrittr)) {
 #'  1:5 %>% set_units(N/m^2)
 #'  1:10 %>% set_units(m) %>% set_units(km)

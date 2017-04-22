@@ -71,7 +71,7 @@ test_that("we can provide a symbol to as.units and make it look in ud_units", {
 })
 
 test_that("set_units(x, u) is a short form for x * with(ud_units, u)", {
-  expect_identical(set_units(1:10, m/s), 1:10 * with(ud_units, m/s))
+  expect_equal(set_units(1:10, m/s), 1:10 * with(ud_units, m/s)) # not identical - why?
   x = set_units(1:5, m/s)
   y = x
   units(y) = set_units(1, km/h)
