@@ -28,62 +28,37 @@ Ops.units <- function(e1, e2) {
   if (nargs() == 1)
     stop(paste("unary", .Generic, "not defined for \"units\" objects"))
   
-  eq <- switch(.Generic, "+" = , "-" = , "==" = , "!=" = , 
-               "<" = , ">" = , "<=" = , ">=" = TRUE, FALSE)
+  eq  <- .Generic %in% c("+", "-", "==", "!=", "<", ">", "<=", ">=") # pm/equality-type
+  prd <- .Generic %in% c("*", "/")                                   # product-type
+  pw  <- .Generic %in% c( "**", "^")                                 # power-type
+  pm  <- .Generic %in% c("+", "-")                                   # addition-type
   
-  prd <- switch(.Generic, "*" = , "/" = TRUE, FALSE)
-  
-  pw <- switch(.Generic, "**" = , "^" = TRUE, FALSE)
-  
-  if (!eq && !prd && !pw)
+  if (! any(eq, prd, pw))
     stop(paste("operation", .Generic, "not allowed"))
   
   if (eq) {
-  	if (!(inherits(e1, "units") && inherits(e2, "units")))
+    if (!(inherits(e1, "units") && inherits(e2, "units")))
       stop("both operands of the expression should be \"units\" objects") # nocov
-    units(e2) <- units(e1) # convert before we can compare
+    units(e2) <- units(e1) # convert before we can compare; errors if unconvertible
   }
   
-  if (!pw && length(e1) != length(e2)) {
-  	if (length(e1) < length(e2))
-		e1 = rep(e1, length.out = length(e2))
-	else
-  		e2 = rep(e2, length.out = length(e1))
-  }
-
   if (prd) {
-    if (inherits(e1, "units") && inherits(e2, "units")) {
-      # both vectors have units
-      if (.Generic == "*") {
-        e1 <- .multiply_symbolic_units(unclass(e1), units(e1), units(e2))
-        e2 <- .multiply_symbolic_units(unclass(e2), units(e1), units(e2))
-      } else if (.Generic == "/") {
-        e1 <- .divide_symbolic_units(unclass(e1), units(e1), units(e2))
-        e2 <- .divide_symbolic_units(unclass(e2), units(e1), units(e2))
-      } else {
-        stop(paste("Unexpected operator", .Generic)) # nocov
-      }
-      
-    } else if (inherits(e1, "units")) {
-      # only e1 has units
-      attr(e2, "units") <- units(e1)
-      class(e2) <- "units"
-      
-    } else if (inherits(e2, "units")) {
-      # only e2 has units
-      if (.Generic == "*")
-        attr(e1, "units") <- units(e2)
-      else if (.Generic == "/") { 
-	    if (length(e1) == 1) # I wish I understood why this is needed
-		  attr(e2, "units") <- .invert_symbolic_units(units(e2))
-		else
-		  attr(e1, "units") <- .invert_symbolic_units(units(e2))
-      } else stop(paste("Unexpected operator", .Generic)) # nocov
-      class(e1) <- "units"
+    if (! inherits(e1, "units"))
+      units(e1) = unitless
+
+    if (! inherits(e2, "units"))
+      units(e2) = unitless
+
+    if (.Generic == "*") {
+      e1 <- .multiply_symbolic_units(unclass(e1), units(e1), units(e2))
+      e2 <- .multiply_symbolic_units(unclass(e2), units(e1), units(e2))
+    } else {
+      e1 <- .divide_symbolic_units(unclass(e1), units(e1), units(e2))
+      e2 <- .divide_symbolic_units(unclass(e2), units(e1), units(e2))
     }
-  } 
-  
-  if (pw) { # FIXME: I am not sure how to take powers of non-integers yet
+    u <- units(e1)
+
+  } else if (pw) { # FIXME: I am not sure how to take powers of non-integers yet
     if (inherits(e2, "units") || length(e2) > 1L)
       stop("power operation only allowed with length-one numeric power")
     if (round(e2) != e2)
@@ -93,17 +68,19 @@ Ops.units <- function(e1, e2) {
     # sorted so they will remain sorted. We need to flip numerator and denominator
     # when the power is negative and we have a special case when it is zero where
     # units should be removed.
-    if (e2 == 0) {
-      attr(e1, "units") <- unitless
-    } else if (e2 > 0) {
-      attr(e1, "units") <- .symbolic_units(rep(units(e1)$numerator, e2),
+    if (e2 == 0)
+      u <- unitless
+    else if (e2 > 0)
+      u <- .symbolic_units(rep(units(e1)$numerator, e2),
                                            rep(units(e1)$denominator, e2))
-    } else {
-      attr(e1, "units") <- .symbolic_units(rep(units(e1)$denominator, abs(e2)),
+    else
+      u <- .symbolic_units(rep(units(e1)$denominator, abs(e2)),
                                            rep(units(e1)$numerator, abs(e2)))
-    }
-        
-  }
-  NextMethod(.Generic)
-}
+  } else # eq, plus/minus:
+    u <- units(e1)
 
+  if (eq && !pm)
+    as.logical(NextMethod())
+  else
+    .as.units(NextMethod(), u)
+}
