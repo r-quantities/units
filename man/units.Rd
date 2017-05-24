@@ -23,7 +23,7 @@ set_units(x, value, ...)
 
 \method{set_units}{units}(x, value, ...)
 
-\method{set_units}{numeric}(x, value, ...)
+\method{set_units}{numeric}(x, value = unitless, ...)
 
 \method{units}{units}(x)
 }

@@ -77,3 +77,7 @@ test_that("set_units(x, u) is a short form for x * with(ud_units, u)", {
   units(y) = set_units(1, km/h)
   expect_identical(y, set_units(x, km/h))
 })
+
+test_that("rep.units works", {
+  expect_equal(rep(set_units(1:2, m/s), 2), set_units(c(1,2,1,2), m/s))
+})

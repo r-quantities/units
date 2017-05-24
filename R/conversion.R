@@ -80,7 +80,7 @@ set_units.units = function(x, value, ...) {
 
 #' @name units
 #' @export
-set_units.numeric = function(x, value, ...) {
+set_units.numeric = function(x, value = unitless, ...) {
   units(x) = eval(substitute(value), ud_units, parent.frame()) 
   x
 }
