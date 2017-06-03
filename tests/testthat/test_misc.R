@@ -83,6 +83,8 @@ test_that("rep.units works", {
 })
 
 test_that("set_units works with character data, and resolves names", {
-  expect_equal(set_units(1:2, "°C"), set_units(1:2, "degree_C"))
-  expect_equal(set_units(1:2, "°C"), set_units(1:2, "degree_Celsius"))
+  deg = "°C"
+  Encoding(deg) = "UTF-8"
+  expect_equal(set_units(1:2, deg), set_units(1:2, "degree_C"))
+  expect_equal(set_units(1:2, deg), set_units(1:2, "degree_Celsius"))
 })

@@ -8,7 +8,9 @@
 \alias{units}
 \alias{set_units}
 \alias{units}
-\alias{set_units.default}
+\alias{set_units.units}
+\alias{units}
+\alias{set_units.numeric}
 \alias{units}
 \alias{units.units}
 \title{Set measurement units on a numeric vector}
@@ -19,7 +21,9 @@
 
 set_units(x, value, ...)
 
-\method{set_units}{default}(x, value, ...)
+\method{set_units}{units}(x, value, ...)
+
+\method{set_units}{numeric}(x, value = unitless, ...)
 
 \method{units}{units}(x)
 }

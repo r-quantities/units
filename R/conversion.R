@@ -73,7 +73,7 @@ set_units = function(x, value, ...) UseMethod("set_units")
 
 #' @name units
 #' @export
-set_units.default = function(x, value, ...) {
+set_units.units = function(x, value, ...) {
   e = try(u <- eval(substitute(value), ud_units, parent.frame()))
   if (inherits(e, "try-error") || ! (inherits(u, "units") || inherits(u, "symbolic_units"))) {
 	stopifnot(is.character(value))
@@ -85,13 +85,19 @@ set_units.default = function(x, value, ...) {
   x
 }
 
-# #' @name units
-# #' @export
-# set_units.numeric = function(x, value = unitless, ...) {
-#   u = eval(substitute(value), ud_units, parent.frame()) 
-#   units(x) = u
-#   x
-# }
+#' @name units
+#' @export
+set_units.numeric = function(x, value = unitless, ...) {
+  e = try(u <- eval(substitute(value), ud_units, parent.frame()))
+  if (inherits(e, "try-error") || ! (inherits(u, "units") || inherits(u, "symbolic_units"))) {
+	stopifnot(is.character(value))
+	if (! value %in% names(ud_units))
+		value = ud.get.symbol(value)
+  	u = ud_units[[ value ]]
+  }
+  units(x) = u
+  x
+}
 
 #' retrieve measurement units from \code{units} object
 #'
