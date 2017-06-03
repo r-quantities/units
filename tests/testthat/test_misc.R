@@ -87,4 +87,9 @@ test_that("set_units works with character data, and resolves names", {
   Encoding(deg) = "UTF-8"
   expect_equal(set_units(1:2, deg), set_units(1:2, "degree_C"))
   expect_equal(set_units(1:2, deg), set_units(1:2, "degree_Celsius"))
+  # expect_error(set_units(1, TRUE), "is.character(value) is not TRUE")
+  x = set_units(1:3, km)
+  y <- set_units(x, "meter")
+  expect_equal(y, set_units(c(1000,2000,3000), m))
 })
+
