@@ -82,18 +82,15 @@ test_that("rep.units works", {
   expect_equal(rep(set_units(1:2, m/s), 2), set_units(c(1,2,1,2), m/s))
 })
 
-test_that("set_units works with character data, and resolves names", {
-  expect_equal(set_units(1:2, "degree_C"), set_units(1:2, "degree_Celsius"))
-  x = set_units(1:3, km)
-  y <- set_units(x, "meter")
-  expect_equal(y, set_units(c(1000,2000,3000), m))
-})
-
 test_that("set_units works with symbols in character data, and resolves names", {
   skip_on_os("windows") # encoding issue with degree:
 
   deg = "°C"
   expect_equal(set_units(1:2, deg), set_units(1:2, "degree_C"))
   expect_equal(set_units(1:2, deg), set_units(1:2, "degree_Celsius"))
+  expect_equal(set_units(1:2, "degree_C"), set_units(1:2, "degree_Celsius"))
+  x = set_units(1:3, km)
+  y <- set_units(x, "meter")
+  expect_equal(y, set_units(c(1000,2000,3000), m))
 })
 
