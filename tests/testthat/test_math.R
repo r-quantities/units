@@ -32,6 +32,7 @@ test_that("we can call math functions on units", {
   expect_equal(y, cos(x))
   expect_equal(class(y), "numeric")
   
+  expect_equal(sin(set_units(1, rad)), set_units(sin(1), unitless))
 })
 
 # FIXME: I am not too sure about this one... the log(unit) is not a format
