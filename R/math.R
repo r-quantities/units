@@ -47,7 +47,7 @@ Math.units = function(x, ...) {
         u = paste0("lb(",units(x),")")
       else
         stop(paste("log with base", dts$base, "not supported"))
-      .as.units(NextMethod(.Generic), u)
+      .as.units(NextMethod(.Generic), units(make_unit(u)))
       # nocov end
     } else
       .as.units(NextMethod(.Generic), units(x))
