@@ -105,4 +105,5 @@ test_that("we can compute powers +/- 1/n for integer n", {
   expect_equal(as.numeric(set_units(1:10, m^-2) ^ (-1/2)), (1:10) ^ (-1/2))
   expect_equal(as.numeric(set_units(1:10, m^-2) ^ (1/2)),  (1:10) ^ (1/2))
   expect_error(set_units(1:10, m^2) ^ (1/pi), "not a integer divisor")
+  expect_error(set_units(1:10, m^3) ^ -1.5, "currently you can only take integer powers of units below -1")
 })
