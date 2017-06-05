@@ -10,13 +10,7 @@ apt_packages:
 r:
   - release
   - devel
-
-r_packages:
-  - roxygen2
-  - rmarkdown
-
-r_github_packages:
-  - jimhester/covr
+  - oldrel
 
 after_success:
   - Rscript -e 'covr::codecov()'
