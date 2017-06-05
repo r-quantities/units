@@ -1,5 +1,7 @@
 # version 0.4-5
 
+* allow for 1/n integer powers, as in `set_units(1:10, m^-2) ^ 0.5`; #29
+
 * properly set log units after log transform; #33
 
 * `sin`, `cos` and `tan` no longer complain when units is `rad`, and return `unitless`; #40 

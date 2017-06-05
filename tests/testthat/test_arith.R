@@ -96,3 +96,12 @@ test_that("we can convert units and simplify after multiplication", {
   expect_equal(as.numeric(ux/uy/uz), x/y/(1000*z))
   expect_equal(as.character(units(ux/uy/uz)), "1/s")
 })
+
+test_that("we can compute powers +/- 1/n for integer n", {
+  expect_equal(as.numeric(set_units(1:10, m^2) ^ 0.5), (1:10) ^ .5)
+  expect_error(as.numeric(set_units(1:10, m^3) ^ 0.5), "units not divisible")
+  expect_error(as.numeric(set_units(1:10, m^3) ^ 1.5))
+  expect_equal(as.numeric(set_units(1:10, m^-3) ^ (-1/3)), (1:10) ^ (-1/3))
+  expect_equal(as.numeric(set_units(1:10, m^-2) ^ (-1/2)), (1:10) ^ (-1/2))
+  expect_equal(as.numeric(set_units(1:10, m^-2) ^ (1/2)),  (1:10) ^ (1/2))
+})

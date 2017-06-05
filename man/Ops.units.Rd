@@ -11,7 +11,8 @@
 or something that can be coerced to it by \code{as.units(e1)}}
 
 \item{e2}{object of class \code{units}, 
-or something that can be coerced to it by \code{as.units(e2)}}
+or something that can be coerced to it by \code{as.units(e2)},
+or in case of power a number (integer n or 1/n)}
 }
 \value{
 object of class \code{units}
@@ -20,12 +21,12 @@ object of class \code{units}
 Ops functions for units objects, including comparison, product and divide, add, subtract
 }
 \examples{
-a <- with(ud_units, 1:3 * m/s)
-b <- with(ud_units, 1:3 * m/s)
+a <- set_units(1:3, m/s)
+b <- set_units(1:3, m/s)
 a + b
 a * b
 a / b
 a <- make_unit("kg m-3") # not understood by R as a division, but understood by udunits2
-b <- with(ud_units, 1 * kg/m/m/m)
+b <- set_units(1, kg/m/m/m)
 a + b
 }

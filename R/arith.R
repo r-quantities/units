@@ -10,19 +10,20 @@
 #' @param e1 object of class \code{units}, 
 #'        or something that can be coerced to it by \code{as.units(e1)}
 #' @param e2 object of class \code{units}, 
-#'        or something that can be coerced to it by \code{as.units(e2)}
+#'        or something that can be coerced to it by \code{as.units(e2)},
+#'        or in case of power a number (integer n or 1/n)
 #'
 #' @return object of class \code{units}
 #' @export
 #'
 #' @examples
-#' a <- with(ud_units, 1:3 * m/s)
-#' b <- with(ud_units, 1:3 * m/s)
+#' a <- set_units(1:3, m/s)
+#' b <- set_units(1:3, m/s)
 #' a + b
 #' a * b
 #' a / b
 #' a <- make_unit("kg m-3") # not understood by R as a division, but understood by udunits2
-#' b <- with(ud_units, 1 * kg/m/m/m)
+#' b <- set_units(1, kg/m/m/m)
 #' a + b
 Ops.units <- function(e1, e2) {
   if (nargs() == 1)
@@ -61,8 +62,8 @@ Ops.units <- function(e1, e2) {
   } else if (pw) { # FIXME: I am not sure how to take powers of non-integers yet
     if (inherits(e2, "units") || length(e2) > 1L)
       stop("power operation only allowed with length-one numeric power")
-    if (round(e2) != e2)
-      stop("currently you can only take integer powers of units")
+    # if (round(e2) != e2)
+    #   stop("currently you can only take integer powers of units")
     
     # we repeat each unit the number of times given by e2. They are already
     # sorted so they will remain sorted. We need to flip numerator and denominator
@@ -70,12 +71,37 @@ Ops.units <- function(e1, e2) {
     # units should be removed.
     if (e2 == 0)
       u <- unitless
-    else if (e2 > 0)
+    # else if (e2 > 0)
+    #   u <- .symbolic_units(rep(units(e1)$numerator, e2),
+    #                                        rep(units(e1)$denominator, e2))
+    # else
+    #   u <- .symbolic_units(rep(units(e1)$denominator, abs(e2)),
+    #                                        rep(units(e1)$numerator, abs(e2)))
+    else if (e2 >= 1) {
+      if (round(e2) != e2) {
+        stop("currently you can only take integer powers of units above 1")}
       u <- .symbolic_units(rep(units(e1)$numerator, e2),
                                            rep(units(e1)$denominator, e2))
-    else
+    } else if (e2 <= -1) {
+      if (round(e2) != e2) {
+        stop("currently you can only take integer powers of units below -1")}
       u <- .symbolic_units(rep(units(e1)$denominator, abs(e2)),
                                            rep(units(e1)$numerator, abs(e2)))
+    } else { # -1 < e2 < 0 || 0 < e2 < 1
+      if ((1/e2) %% 1 != 0) {
+        stop("not a integer divisor")} # work on wording
+      if (any((table(units(e1)$denominator)*e2) %% 1 != 0) | 
+          any((table(units(e1)$numerator)*e2) %% 1 != 0)) {
+            stop("units not divisible")} # work on wording
+      if (e2 > 0) # 0 < e2 < 1
+        u <- .symbolic_units(
+          rep(unique(units(e1)$numerator),table(units(e1)$numerator)*e2),
+          rep(unique(units(e1)$denominator),table(units(e1)$denominator)*e2))
+      else # -1 < e2 < 0
+        u <- .symbolic_units(
+          rep(unique(units(e1)$denominator),table(units(e1)$denominator)*abs(e2)),
+          rep(unique(units(e1)$numerator),table(units(e1)$numerator)*abs(e2)))
+    }
   } else # eq, plus/minus:
     u <- units(e1)
 
