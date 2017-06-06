@@ -4,6 +4,19 @@ NULL
 #' @import udunits2
 NULL
 
+# Helper functions for testing if we can convert and how using either
+# user-defined conversion functions or udunits.
+are_convertible <- function(from, to) {
+  user_are_convertible(from, to) || udunits2::ud.are.convertible(from, to)
+}
+
+convert <- function(value, from, to) {
+  value <- unclass(value)
+  if (user_are_convertible(from, to)) user_convert(value, from, to)
+  else if (udunits2::ud.are.convertible(from, to)) udunits2::ud.convert(value, from, to)
+  else NA
+}
+
 #' Set measurement units on a numeric vector
 #'
 #' @param x numeric vector, or object of class \code{units}
@@ -51,8 +64,8 @@ NULL
   str1 <- as.character(units(x))
   str2 <- as.character(value)
 
-  if (udunits2::ud.are.convertible(str1, str2)) 
-    structure(udunits2::ud.convert(x, str1, str2), units = value)
+  if (are_convertible(str1, str2)) 
+    structure(convert(x, str1, str2), units = value, class = "units")
   else
     stop(paste("cannot convert", units(x), "into", value), call. = FALSE)
 }

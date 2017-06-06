@@ -146,13 +146,14 @@ make_unit <- function(name) {
     
     for (j in seq_along(new_denominator)) {
       str2 <- new_denominator[j]
-    
-      if (udunits2::ud.are.convertible(str1, str2)) {
-        value <- udunits2::ud.convert(value, str1, str2)
+
+      if (are_convertible(str1, str2)) {
+        value <- convert(value, str1, str2)
         delete_num <- c(delete_num, i)
         new_denominator <- new_denominator[-j]
         break
       }
+      
     }
   }
   if (length(delete_num) > 0)
