@@ -1,5 +1,7 @@
 # version 0.4-5
 
+* add support for user-defined unit conversion; #31
+
 * allow for 1/n integer powers, as in `set_units(1:10, m^-2) ^ 0.5`; #29
 
 * properly set log units after log transform; #33

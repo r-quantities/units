@@ -43,4 +43,3 @@ oranges + apples
 \seealso{
 \code{\link{install_conversion_function}}
 }
-
