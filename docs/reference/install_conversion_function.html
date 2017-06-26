@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>histogram for unit objects — hist.units • units</title>
+<title>Install a function for conversion between user-defined units. — install_conversion_function • units</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -98,49 +98,78 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>histogram for unit objects</h1>
+    <h1>Install a function for conversion between user-defined units.</h1>
     </div>
 
     
-    <p>histogram for unit objects</p>
+    <p>Tells the <code>units</code> package how to convert one-way from one 
+  unit to another.</p>
     
 
-    <pre class="usage"><span class='co'># S3 method for units</span>
-<span class='fu'>hist</span>(<span class='no'>x</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='fu'>paste</span>(<span class='st'>"Histogram of"</span>, <span class='no'>xname</span>),
-  <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>install_conversion_function</span>(<span class='no'>from</span>, <span class='no'>to</span>, <span class='no'>f</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>object of class units, for which we want to plot the histogram</p></td>
+      <th>from</th>
+      <td><p>String for the symbol of the unit being converted from.</p></td>
     </tr>
     <tr>
-      <th>xlab</th>
-      <td><p>character; x axis label</p></td>
+      <th>to</th>
+      <td><p>String for the symbol of the unit being converted to.</p></td>
     </tr>
     <tr>
-      <th>main</th>
-      <td><p>character; title of histogram</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>parameters passed on to hist.default</p></td>
+      <th>f</th>
+      <td><p>A function responsible for conversion.</p></td>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>This is the most general way of specifying conversion between 
+  user-defined units. The function installes a one-way conversion from one
+  unit to another through a general function, <code>f</code>, that must take one
+  numeric argument and return one numeric argument. When the <code>units</code>
+  package tries to convert between units, it will look up <code>from</code> and
+  <code>to</code> to see if it can find a conversion function. If it can, it will
+  call <code>f</code> and consider the value converted from unit <code>from</code> to
+  unit <code>to</code>.</p>  
+<p>It is the user's responsibility to install a conversion from <code>to</code> back
+  to <code>from</code> as well. One-way conversion does not work well with the 
+  <code>units</code> package, since conversion is done in several places for unit 
+  expression simplification and if a unit can only be converted in one 
+  direction, this simplification will not work correctly.</p>  
+<p>For conversion that can be done as a linear function, \(y = \alpha x +
+  \beta\), you should instead use the
+  <code><a href='install_conversion_constant.html'>install_conversion_constant</a></code> function. This function will
+  automatically install conversion functions for both directions of unit
+  conversion.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p><code><a href='install_conversion_constant.html'>install_conversion_constant</a></code></p>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='units_options.html'>units_options</a></span>(<span class='kw'>parse</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='co'># otherwise we break on the funny symbol!</span>
-<span class='no'>u</span> <span class='kw'>=</span> <span class='fu'>rnorm</span>(<span class='fl'>100</span>) * <span class='fu'><a href='make_unit.html'>make_unit</a></span>(<span class='st'>"°C"</span>)
-<span class='fu'>hist</span>(<span class='no'>u</span>)</div><div class='img'><img src='hist.units-1.png' alt='' width='700' height='432.632880098887' /></div></pre>
+    <pre class="examples"><div class='input'>
+<span class='no'>apples</span> <span class='kw'>&lt;-</span> <span class='fl'>2</span> * <span class='fu'><a href='make_unit.html'>make_unit</a></span>(<span class='st'>"apple"</span>)
+<span class='no'>oranges</span> <span class='kw'>&lt;-</span> <span class='fl'>3</span> * <span class='fu'><a href='make_unit.html'>make_unit</a></span>(<span class='st'>"orange"</span>)
+<span class='co'># one orange is worth two apples</span>
+<span class='fu'>install_conversion_function</span>(<span class='st'>"orange"</span>, <span class='st'>"apple"</span>, <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fl'>2</span> * <span class='no'>x</span>)
+<span class='fu'>install_conversion_function</span>(<span class='st'>"apple"</span>, <span class='st'>"orange"</span>, <span class='kw'>function</span>(<span class='no'>x</span>) <span class='no'>x</span> / <span class='fl'>2</span>)
+<span class='no'>apples</span> + <span class='no'>oranges</span></div><div class='output co'>#&gt; 8 apple</div><div class='input'><span class='no'>oranges</span> + <span class='no'>apples</span></div><div class='output co'>#&gt; 4 orange</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
+      
+      <li><a href="#details">Details</a></li>
+
+      <li><a href="#see-also">See also</a></li>
+      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
