@@ -100,16 +100,20 @@ set_units.units = function(x, value, ...) {
 
 #' @name units
 #' @export
-set_units.numeric = function(x, value = unitless, ...) {
+set_units.numeric = function(x, value = units::unitless, ...) {
   e = try(u <- eval(substitute(value), ud_units, parent.frame()))
   if (inherits(e, "try-error") || ! (inherits(u, "units") || inherits(u, "symbolic_units"))) {
 	stopifnot(is.character(value))
 	if (! value %in% names(ud_units))
 		value = ud.get.symbol(value)
   	u = ud_units[[ value ]]
+  } 
+  if (inherits(u, "units"))
+    x * u
+  else {
+    units(x) = u
+    x
   }
-  units(x) = u
-  x
 }
 
 #' retrieve measurement units from \code{units} object
