@@ -87,12 +87,18 @@ set_units = function(x, value, ...) UseMethod("set_units")
 #' @name units
 #' @export
 set_units.units = function(x, value, ...) {
-  e = try(u <- eval(substitute(value), ud_units, parent.frame()))
-  if (inherits(e, "try-error") || ! (inherits(u, "units") || inherits(u, "symbolic_units"))) {
-	stopifnot(is.character(value))
-	if (! value %in% names(ud_units))
-		value = ud.get.symbol(value)
-  	u = ud_units[[ value ]]
+  e = try(u <- eval(substitute(value), ud_units, parent.frame()), silent = TRUE)
+  if (inherits(e, "try-error") || ! (inherits(u, "units") 
+        || inherits(u, "symbolic_units"))) {
+	val_char = gsub("\"", "", deparse(substitute(value)))
+	u = if (val_char %in% names(ud_units))
+  	  ud_units[[ val_char ]]
+	else if (ud.is.parseable(val_char)) {
+      if(ud.get.symbol(val_char) != "")
+        val_char = ud.get.symbol(val_char)
+      make_unit(val_char)
+	} else if (ud.is.parseable(eval(value)))
+	  make_unit(eval(value))
   }
   units(x) = u
   x
@@ -101,13 +107,19 @@ set_units.units = function(x, value, ...) {
 #' @name units
 #' @export
 set_units.numeric = function(x, value = units::unitless, ...) {
-  e = try(u <- eval(substitute(value), ud_units, parent.frame()))
-  if (inherits(e, "try-error") || ! (inherits(u, "units") || inherits(u, "symbolic_units"))) {
-	stopifnot(is.character(value))
-	if (! value %in% names(ud_units))
-		value = ud.get.symbol(value)
-  	u = ud_units[[ value ]]
-  } 
+  e = try(u <- eval(substitute(value), ud_units, parent.frame()), silent = TRUE)
+  if (inherits(e, "try-error") || ! (inherits(u, "units") 
+          || inherits(u, "symbolic_units"))) {
+	val_char = gsub("\"", "", deparse(substitute(value)))
+	u = if (val_char %in% names(ud_units))
+  	  ud_units[[ val_char ]]
+	else if (ud.is.parseable(val_char)) {
+      if(ud.get.symbol(val_char) != "")
+        val_char = ud.get.symbol(val_char)
+      make_unit(val_char)
+	} else if (ud.is.parseable(eval(value)))
+	  make_unit(eval(value))
+  }
   if (inherits(u, "units"))
     x * u
   else {

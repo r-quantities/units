@@ -422,8 +422,6 @@ mtcars$displacement =<span class="st"> </span><span class="kw"><a href="../refer
 <p><img src="measurement_units_in_R_files/figure-html/unnamed-chunk-30-1.png" width="672"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggforce)
 ## Loading required package: ggplot2
-## Warning: Installed Rcpp (0.12.11.3) different from Rcpp used to build dplyr (0.12.11.2).
-## Please reinstall dplyr to avoid random crashes or undefined behavior.
 <span class="kw">ggplot</span>(mtcars) +<span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dv">1</span>/displacement, <span class="dv">1</span>/consumption))</code></pre></div>
 <p><img src="measurement_units_in_R_files/figure-html/unnamed-chunk-31-1.png" width="672"></p>
 <p>Automatic conversion between <code>units</code> and <code>difftime</code> is provided:</p>
