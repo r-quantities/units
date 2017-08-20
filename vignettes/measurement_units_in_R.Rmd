@@ -396,8 +396,18 @@ Automatic conversion between `units` and `difftime` is provided:
 (dt.u = as_units(dt))
 identical(as_difftime(dt.u), dt)
 ```
+as well as to and from `POSIXct` or `Date`:
+```{r}
+(t1 <- as_units(as.POSIXct("2017-08-20 17:03:00")))
+(t2 <- as_units(as.POSIXct("2017-08-20 17:03:00"), "hours since 2017-08-20"))
+(d1 <- as_units(as.Date("2017-08-20")))
+as.POSIXct(t1)
+as.Date(d1)
+```
 Objects of class `units` can be used as columns in `data.frame`
-objects, as well as in `tbl_df` [@tibble].
+objects, as well as in `tbl_df` [@tibble]. They can also be `matrix`
+or `array`, with the constraint that a single unit holds for all
+elements.
 
 ## Discussion and conclusions
 
