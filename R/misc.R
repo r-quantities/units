@@ -107,8 +107,8 @@ deparse_unit = function(x) {
 #' @name deparse_unit
 #' @details \code{as_cf} is deprecated; use \code{deparse_unit}.
 as_cf = function(x) {
-	.Deprecated("deparse_unit")
-	deparse_unit(x)
+	.Deprecated("deparse_unit") # nocov
+	deparse_unit(x)             # nocov
 }
 
 #' type_sum for tidy tibble printing
