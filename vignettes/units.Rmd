@@ -237,9 +237,9 @@ Instead, we can tell R to parse such a string, which then allows simplification:
 z + y
 z / y
 ```
-Printing units in this form is done by
+Printing units in character form is done by
 ```{r}
-as_cf(z)
+deparse_unit(z)
 ```
 
 ## plotting

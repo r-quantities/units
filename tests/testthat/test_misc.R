@@ -51,10 +51,10 @@ test_that("parse_unit works", {
   expect_equal(u, u0)
 })
 
-test_that("as_cf works", {
+test_that("deparse_unit works", {
   str = "kg m-2 s-1"
   u = parse_unit(str)
-  str0 = as_cf(u)
+  str0 = deparse_unit(u)
   expect_equal(str, str0)
 })
 

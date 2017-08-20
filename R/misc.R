@@ -84,12 +84,13 @@ parse_unit = function(str) {
 #' 
 #' deparse unit to string in product power form (e.g. km m-2 s-1)
 #' @param x object of class units
+#' @return length one character vector
 #' @examples 
 #' u = parse_unit("kg m-2 s-1")
 #' u
-#' as_cf(u)
+#' deparse_unit(u)
 #' @export
-as_cf = function(x) {
+deparse_unit = function(x) {
 	stopifnot(inherits(x, "units"))
 	u = units(x)
 	tn = table(u$numerator)
@@ -100,6 +101,14 @@ as_cf = function(x) {
 	nm2 = names(td)
 	vals2 = as.character(td)
 	paste(c(paste0(nm1, vals1), paste0(nm2, vals2)), collapse=" ")
+}
+
+#' @export
+#' @name deparse_unit
+#' @details \code{as_cf} is deprecated; use \code{deparse_unit}.
+as_cf = function(x) {
+	.Deprecated("deparse_unit")
+	deparse_unit(x)
 }
 
 #' type_sum for tidy tibble printing

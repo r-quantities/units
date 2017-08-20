@@ -361,10 +361,10 @@ x + y
 x/y
 z/y
 ```
-However, `parse_unit` parses such units, and `as_cf` returns such unit strings from `units` objects:
+However, `parse_unit` parses such units, and `deparse_unit` returns such unit strings from `units` objects:
 ```{r}
 parse_unit("m2 s-1")
-as_cf(set_units(1, m^2*s^-1))
+deparse_unit(set_units(1, m^2*s^-1))
 ```
 The `plot` and `hist` methods add units to default axis labels, an
 example is shown in the following figures. For [ggplot2](https://cran.r-project.org/package=ggplot2) plots
