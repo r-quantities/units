@@ -12,7 +12,7 @@ c.units <- function(..., recursive = FALSE) {
                    "has units that are not convertible to that of the first argument"))
     }
   x = unlist(args)
-  as.units(x, u)
+  as_units(x, u)
 }
 
 .as.units = function(x, value) {

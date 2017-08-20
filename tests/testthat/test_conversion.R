@@ -1,7 +1,7 @@
 context("Unit conversion")
 
 test_that("we can convert numbers to unit-less units", {
-  x <- as.units(1:4)
+  x <- as_units(1:4)
   expect_that(length(x), equals(4))
   expect_that(class(x), equals("units"))
   expect_that(as.numeric(x), equals(1:4))
@@ -50,11 +50,11 @@ test_that("we can't convert between two units that can't be converted", {
 test_that("we can convert difftime objects to units", {
   s <- Sys.time()
   d <- s - (s + 1)
-  x <- as.units(d)
+  x <- as_units(d)
   expect_equal(as.numeric(x), as.numeric(d))
   
   week <- as.difftime(1, units = "weeks")
-  units_week <- as.units(week)
+  units_week <- as_units(week)
   expect_equal(as.character(units(units_week)), "d")
   expect_equal(as.numeric(units_week), 7)
 })
@@ -62,8 +62,8 @@ test_that("we can convert difftime objects to units", {
 test_that("we can convert units objects to difftime objects", {
   s <- Sys.time()
   d <- s - (s + 1)
-  x <- as.units(d)
-  y <- as.dt(x)
+  x <- as_units(d)
+  y <- as_difftime(x)
   
   expect_equal(d, y)
 })
@@ -72,7 +72,7 @@ test_that("we can convert units objects to difftime objects", {
 #  s <- Sys.time()
 #  library(hms)
 #  d <- as.hms(s - (s + 1))
-#  x <- as.units(d)
+#  x <- as_units(d)
 #  y <- as.hms(x)
 #  
 #  expect_equal(d, y)

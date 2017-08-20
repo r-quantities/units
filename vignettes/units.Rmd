@@ -183,11 +183,11 @@ From `difftime` to `units`:
 t1 = Sys.time() 
 t2 = t1 + 3600 
 d = t2 - t1
-(du = as.units(d))
+(du = as_units(d))
 ```
 vice versa:
 ```{r}
-(dt = as.dt(du))
+(dt = as_difftime(du))
 class(dt)
 ```
 

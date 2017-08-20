@@ -8,9 +8,9 @@
 #' Ops functions for units objects, including comparison, product and divide, add, subtract
 #'
 #' @param e1 object of class \code{units}, 
-#'        or something that can be coerced to it by \code{as.units(e1)}
+#'        or something that can be coerced to it by \code{as_units(e1)}
 #' @param e2 object of class \code{units}, 
-#'        or something that can be coerced to it by \code{as.units(e2)},
+#'        or something that can be coerced to it by \code{as_units(e2)},
 #'        or in case of power a number (integer n or 1/n)
 #'
 #' @return object of class \code{units}

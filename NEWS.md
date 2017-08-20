@@ -1,3 +1,11 @@
+# version 0.4-6
+
+* add calender/time conversions between `udunits` time units like `minutes from 1900-0-0`, and R's `POSIXct` and `Date`
+
+* deprecate `as.units` in favor of `as_units`
+
+* rename `as.dt` to `as_difftime`
+
 # version 0.4-5
 
 * add support for user-defined unit conversion; #31

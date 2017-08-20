@@ -393,8 +393,8 @@ ggplot(mtcars) + geom_point(aes(1/displacement, 1/consumption))
 Automatic conversion between `units` and `difftime` is provided: 
 ```{r}
 (dt = diff(Sys.time() + c(0, 1, 1+60, 1+60+3600))) # class difftime
-(dt.u = as.units(dt))
-identical(as.dt(dt.u), dt) # as.difftime is not a generic
+(dt.u = as_units(dt))
+identical(as_difftime(dt.u), dt)
 ```
 Objects of class `units` can be used as columns in `data.frame`
 objects, as well as in `tbl_df` [@tibble].

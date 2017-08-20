@@ -127,7 +127,7 @@ as.character.symbolic_units <- function(x, ...,
 #' 
 #' @export
 make_unit <- function(name) {
-  as.units.default(1, .make_symbolic_units(name))
+  as_units.default(1, .make_symbolic_units(name))
 }
 
 .simplify_units <- function(value, sym_units) {
@@ -159,5 +159,5 @@ make_unit <- function(name) {
   if (length(delete_num) > 0)
     new_numerator <- new_numerator[-delete_num]
   
-  as.units(value, .symbolic_units(new_numerator, new_denominator))
+  as_units(value, .symbolic_units(new_numerator, new_denominator))
 }

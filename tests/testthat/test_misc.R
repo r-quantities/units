@@ -24,7 +24,7 @@ test_that("We can concatenate units if their units can be converted", {
   expect_equal(length(z), length(x) + length(y))
   expect_equal(as.character(units(z)), "m")
   expect_equal(x, z[1:4])
-  expect_equal(as.units(y, units(make_unit("m"))), z[1:4 + 4])
+  expect_equal(as_units(y, units(make_unit("m"))), z[1:4 + 4])
 })
 
 test_that("We can use diff on a units object", {
@@ -58,13 +58,13 @@ test_that("as_cf works", {
   expect_equal(str, str0)
 })
 
-test_that("we can provide a symbol to as.units and make it look in ud_units", {
-  five_ha <- as.units(5, ha) # ha pulled from ud_units
+test_that("we can provide a symbol to as_units and make it look in ud_units", {
+  five_ha <- as_units(5, ha) # ha pulled from ud_units
   expect_equal(as.numeric(five_ha), 5)
   expect_equal(units(five_ha), units(ud_units$ha))
   
   ha <- make_unit("m") # make sure that user-defined units overrule
-  five_ha <- as.units(5, ha) # ha pulled from ud_units
+  five_ha <- as_units(5, ha) # ha pulled from ud_units
   expect_equal(as.numeric(five_ha), 5)
   expect_equal(units(five_ha), units(ud_units$m))
   

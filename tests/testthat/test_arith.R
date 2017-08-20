@@ -84,8 +84,8 @@ test_that("we can convert units and simplify after multiplication", {
   expect_equal(as.character(units(ux*uy)), "m*s")
   expect_equal(as.numeric(ux*uz), x*z)
   expect_equal(as.character(units(ux*uz)), "km*m")
-  expect_equal(as.numeric(as.units(ux*uz, km * km)), (x/1000)*z)
-  expect_equal(as.character(units(as.units(ux*uz, km * km))), "km^2")
+  expect_equal(as.numeric(as_units(ux*uz, km * km)), (x/1000)*z)
+  expect_equal(as.character(units(as_units(ux*uz, km * km))), "km^2")
   
   expect_equal(as.numeric(ux/ux), x/x)
   expect_equal(as.character(units(ux/ux)), "1")
