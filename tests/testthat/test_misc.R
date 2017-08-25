@@ -96,3 +96,9 @@ test_that("set_units works with symbols in character data, and resolves names", 
   expect_equal(y, set_units(c(1000,2000,3000), m))
 })
 
+test_that("all.equal works", {
+  expect_true(all.equal(set_units(1, m/s), set_units(3.6, km/h)))
+  expect_true(set_units(1, m/s) == set_units(3.6, km/h))
+  expect_true(all.equal(set_units(3.6, km/h), set_units(1, m/s)))
+  expect_false(set_units(3.6, km/h) == set_units(1, m/s))
+})

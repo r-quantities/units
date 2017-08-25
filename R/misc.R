@@ -44,8 +44,8 @@ rep.units = function(x, ...) {
 #' @details see also \code{demo(cf)} for parsing units in the CF standard name table. Note that \code{parse_unit} currently fails on expressions containing a \code{/}, such as \code{m/s-1}.
 #' @export
 parse_unit = function(str) {
-	if (length(grep("/", str)) > 0)
-		stop("parse_unit does not parse unit strings containing `/'")
+	if (length(grep(c("[*/]"), str)) > 0)
+		stop("parse_unit does not parse unit strings containing `*' or `/'")
 	parse_one = function(str) {
 		r <- regexpr("[-0-9]+", str)
 		if (r == -1)
@@ -109,6 +109,12 @@ deparse_unit = function(x) {
 as_cf = function(x) {
 	.Deprecated("deparse_unit") # nocov
 	deparse_unit(x)             # nocov
+}
+
+#' @export
+all.equal.units = function(target, current, ...) {
+	current = set_units(current, units(target))
+	all.equal(unclass(target), unclass(current), ...)
 }
 
 #' type_sum for tidy tibble printing

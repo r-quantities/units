@@ -40,10 +40,6 @@ Ops.symbolic_units <- function(e1, e2) {
   stop(paste("operation", .Generic, "not allowed for symbolic operators")) # nocov
 }
 
-.make_symbolic_units <- function(name) {
-  .symbolic_units(name)
-}
-
 #' The "unit" type for vectors that are actually dimension-less.
 #' @export
 unitless <- .symbolic_units(vector("character"), vector("character"))
@@ -127,7 +123,7 @@ as.character.symbolic_units <- function(x, ...,
 #' 
 #' @export
 make_unit <- function(name) {
-  as_units.default(1, .make_symbolic_units(name))
+  as_units.default(1, .symbolic_units(name))
 }
 
 .simplify_units <- function(value, sym_units) {
