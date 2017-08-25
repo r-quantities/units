@@ -1,5 +1,9 @@
 # version 0.4-6
 
+* add `all.equal` method for `units`; #51
+
+* deprecate `as_cf` in favor of `deparse_unit`
+
 * add calender/time conversions between `udunits` time units like `minutes from 1900-0-0`, and R's `POSIXct` and `Date`
 
 * deprecate `as.units` in favor of `as_units`
