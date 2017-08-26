@@ -122,8 +122,8 @@ ud_units[<span class="dv">1</span>:<span class="dv">3</span>]
 <p>We can set units to numerical values by <code>set_units</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(a &lt;-<span class="st"> </span><span class="kw"><a href="../reference/units.html">set_units</a></span>(<span class="kw">runif</span>(<span class="dv">10</span>),  m/s))
 ## Units: m/s
-##  [1] 0.06451673 0.65449441 0.88925591 0.25293697 0.37494575 0.51506363
-##  [7] 0.90530412 0.10343992 0.21726110 0.12453392</code></pre></div>
+##  [1] 0.66324967 0.07595123 0.14506026 0.13102854 0.11982429 0.12946322
+##  [7] 0.93012527 0.08961106 0.84382653 0.94102084</code></pre></div>
 <p>the result, e.g.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/units.html">set_units</a></span>(<span class="dv">10</span>, m/s)
 ## 10 m/s</code></pre></div>
@@ -142,8 +142,8 @@ ud_units[<span class="dv">1</span>:<span class="dv">3</span>]
 <span class="kw">units</span>(b) &lt;-<span class="st"> </span><span class="kw">with</span>(ud_units, km/h)
 b
 ## Units: km/h
-##  [1] 0.2322602 2.3561799 3.2013213 0.9105731 1.3498047 1.8542291 3.2590948
-##  [8] 0.3723837 0.7821399 0.4483221</code></pre></div>
+##  [1] 2.3876988 0.2734244 0.5222169 0.4717027 0.4313674 0.4660676 3.3484510
+##  [8] 0.3225998 3.0377755 3.3876750</code></pre></div>
 </div>
 </div>
 <div id="basic-manipulations" class="section level2">
@@ -155,25 +155,25 @@ b
 <p>Arithmetic operations verify units, and create new ones</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">a +<span class="st"> </span>a
 ## Units: m/s
-##  [1] 0.1290335 1.3089888 1.7785118 0.5058739 0.7498915 1.0301273 1.8106082
-##  [8] 0.2068798 0.4345222 0.2490678
+##  [1] 1.3264993 0.1519025 0.2901205 0.2620571 0.2396486 0.2589264 1.8602505
+##  [8] 0.1792221 1.6876531 1.8820417
 a *<span class="st"> </span>a
 ## Units: m^2/s^2
-##  [1] 0.004162409 0.428362936 0.790776078 0.063977111 0.140584318
-##  [6] 0.265290541 0.819575554 0.010699816 0.047202384 0.015508698
+##  [1] 0.439900131 0.005768589 0.021042480 0.017168478 0.014357860
+##  [6] 0.016760724 0.865133009 0.008030141 0.712043216 0.885520231
 a ^<span class="st"> </span><span class="dv">2</span>
 ## Units: m^2/s^2
-##  [1] 0.004162409 0.428362936 0.790776078 0.063977111 0.140584318
-##  [6] 0.265290541 0.819575554 0.010699816 0.047202384 0.015508698
+##  [1] 0.439900131 0.005768589 0.021042480 0.017168478 0.014357860
+##  [6] 0.016760724 0.865133009 0.008030141 0.712043216 0.885520231
 a **<span class="st"> </span>-<span class="dv">2</span>
 ## Units: s^2/m^2
-##  [1] 240.245520   2.334469   1.264580  15.630590   7.113169   3.769452
-##  [7]   1.220144  93.459548  21.185371  64.479946</code></pre></div>
+##  [1]   2.273243 173.352627  47.522915  58.246281  69.648262  59.663292
+##  [7]   1.155892 124.530811   1.404409   1.129280</code></pre></div>
 <p>and convert to the units of the first argument if necessary:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">a +<span class="st"> </span>b <span class="co"># m/s + km/h -&gt; m/s</span>
 ## Units: m/s
-##  [1] 0.1290335 1.3089888 1.7785118 0.5058739 0.7498915 1.0301273 1.8106082
-##  [8] 0.2068798 0.4345222 0.2490678</code></pre></div>
+##  [1] 1.3264993 0.1519025 0.2901205 0.2620571 0.2396486 0.2589264 1.8602505
+##  [8] 0.1792221 1.6876531 1.8820417</code></pre></div>
 <p>Currently, powers are only supported for integer powers, so using <code>a ** 2.5</code> would result in an error.</p>
 </div>
 <div id="unit-simplification" class="section level3">
@@ -183,20 +183,20 @@ a **<span class="st"> </span>-<span class="dv">2</span>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">t &lt;-<span class="st"> </span><span class="kw">with</span>(ud_units, s)
 a *<span class="st"> </span>t
 ## Units: m
-##  [1] 0.06451673 0.65449441 0.88925591 0.25293697 0.37494575 0.51506363
-##  [7] 0.90530412 0.10343992 0.21726110 0.12453392</code></pre></div>
+##  [1] 0.66324967 0.07595123 0.14506026 0.13102854 0.11982429 0.12946322
+##  [7] 0.93012527 0.08961106 0.84382653 0.94102084</code></pre></div>
 <p>which also work when units need to be converted before they can be simplified:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">t &lt;-<span class="st"> </span><span class="kw">with</span>(ud_units, min)
 a *<span class="st"> </span>t
 ## Units: m
-##  [1]  3.871004 39.269665 53.355355 15.176218 22.496745 30.903818 54.318247
-##  [8]  6.206395 13.035666  7.472035</code></pre></div>
+##  [1] 39.794980  4.557074  8.703616  7.861712  7.189457  7.767793 55.807516
+##  [8]  5.376663 50.629592 56.461251</code></pre></div>
 <p>Simplification to unit-less values gives the “1” as unit:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">with</span>(ud_units, m)
 a *<span class="st"> </span>t /<span class="st"> </span>m
 ## Units: 1
-##  [1]  3.871004 39.269665 53.355355 15.176218 22.496745 30.903818 54.318247
-##  [8]  6.206395 13.035666  7.472035</code></pre></div>
+##  [1] 39.794980  4.557074  8.703616  7.861712  7.189457  7.767793 55.807516
+##  [8]  5.376663 50.629592 56.461251</code></pre></div>
 <p>Allowed operations that require convertible units are <code>+</code>, <code>-</code>, <code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>. Operations that lead to new units are <code>*</code>, <code>/</code>, and the power operations <code>**</code> and <code>^</code>.</p>
 </div>
 <div id="mathematical-functions" class="section level3">
@@ -205,38 +205,38 @@ a *<span class="st"> </span>t /<span class="st"> </span>m
 <p>Mathematical operations allowed are: <code>abs</code>, <code>sign</code>, <code>floor</code>, <code>ceiling</code>, <code>trunc</code>, <code>round</code>, <code>signif</code>, <code>log</code>, <code>cumsum</code>, <code>cummax</code>, <code>cummin</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">signif</span>(a **<span class="st"> </span><span class="dv">2</span> /<span class="st"> </span><span class="dv">3</span>, <span class="dv">3</span>)
 ## Units: m^2/s^2
-##  [1] 0.00139 0.14300 0.26400 0.02130 0.04690 0.08840 0.27300 0.00357
-##  [9] 0.01570 0.00517
+##  [1] 0.14700 0.00192 0.00701 0.00572 0.00479 0.00559 0.28800 0.00268
+##  [9] 0.23700 0.29500
 <span class="kw">cumsum</span>(a)
 ## Units: m/s
-##  [1] 0.06451673 0.71901114 1.60826706 1.86120403 2.23614978 2.75121341
-##  [7] 3.65651753 3.75995745 3.97721854 4.10175246
+##  [1] 0.6632497 0.7392009 0.8842612 1.0152897 1.1351140 1.2645772 2.1947025
+##  [8] 2.2843135 3.1281401 4.0691609
 <span class="kw">log</span>(a) <span class="co"># base defaults to exp(1)</span>
 ## Units: (ln(m/s))
-##  [1] -2.74083070 -0.42389223 -0.11737022 -1.37461495 -0.98097392
-##  [6] -0.66346484 -0.09948434 -2.26876435 -1.52665544 -2.08317713
+##  [1] -0.41060378 -2.57766391 -1.93060601 -2.03234012 -2.12172887
+##  [6] -2.04435848 -0.07243601 -2.41227658 -0.16980834 -0.06078999
 <span class="kw">log</span>(a, <span class="dt">base =</span> <span class="dv">10</span>)
 ## Units: (lg(m/s))
-##  [1] -1.19032765 -0.18409406 -0.05097324 -0.59698769 -0.42603156
-##  [6] -0.28813912 -0.04320550 -0.98531184 -0.66301803 -0.90471233
+##  [1] -0.17832295 -1.11946521 -0.83845154 -0.88263410 -0.92145514
+##  [6] -0.88785361 -0.03145856 -1.04763841 -0.07374682 -0.02640076
 <span class="kw">log</span>(a, <span class="dt">base =</span> <span class="dv">2</span>)
 ## Units: (lb(m/s))
-##  [1] -3.9541829 -0.6115472 -0.1693294 -1.9831502 -1.4152462 -0.9571774
-##  [7] -0.1435256 -3.2731351 -2.2024982 -3.0053893</code></pre></div>
+##  [1] -0.59237603 -3.71878294 -2.78527572 -2.93204701 -3.06100773
+##  [6] -2.94938584 -0.10450307 -3.48017946 -0.24498164 -0.08770141</code></pre></div>
 </div>
 <div id="summary-functions" class="section level3">
 <h3 class="hasAnchor">
 <a href="#summary-functions" class="anchor"></a>Summary functions</h3>
 <p>Summary functions <code>sum</code>, <code>min</code>, <code>max</code>, and <code>range</code> are allowed:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(a)
-## 4.101752 m/s
+## 4.069161 m/s
 <span class="kw">min</span>(a)
-## 0.06451673 m/s
+## 0.07595123 m/s
 <span class="kw">max</span>(a)
-## 0.9053041 m/s
+## 0.9410208 m/s
 <span class="kw">range</span>(a)
 ## Units: m/s
-## [1] 0.06451673 0.90530412
+## [1] 0.07595123 0.94102084
 <span class="kw">with</span>(ud_units, <span class="kw">min</span>(m/s, km/h)) <span class="co"># converts to first unit:</span>
 ## 0.2777778 m/s</code></pre></div>
 </div>
@@ -246,10 +246,10 @@ a *<span class="st"> </span>t /<span class="st"> </span>m
 <p>Following <code>difftime</code>, printing behaves differently for length-one vectors:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">a
 ## Units: m/s
-##  [1] 0.06451673 0.65449441 0.88925591 0.25293697 0.37494575 0.51506363
-##  [7] 0.90530412 0.10343992 0.21726110 0.12453392
+##  [1] 0.66324967 0.07595123 0.14506026 0.13102854 0.11982429 0.12946322
+##  [7] 0.93012527 0.08961106 0.84382653 0.94102084
 a[<span class="dv">1</span>]
-## 0.06451673 m/s</code></pre></div>
+## 0.6632497 m/s</code></pre></div>
 </div>
 <div id="subsetting" class="section level3">
 <h3 class="hasAnchor">
@@ -257,31 +257,31 @@ a[<span class="dv">1</span>]
 <p>The usual subsetting rules work:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">a[<span class="dv">2</span>:<span class="dv">5</span>]
 ## Units: m/s
-## [1] 0.6544944 0.8892559 0.2529370 0.3749458
+## [1] 0.07595123 0.14506026 0.13102854 0.11982429
 a[-(<span class="dv">1</span>:<span class="dv">9</span>)]
-## 0.1245339 m/s</code></pre></div>
+## 0.9410208 m/s</code></pre></div>
 </div>
 <div id="concatenation" class="section level3">
 <h3 class="hasAnchor">
 <a href="#concatenation" class="anchor"></a>Concatenation</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(a,a)
 ## Units: m/s
-##  [1] 0.06451673 0.65449441 0.88925591 0.25293697 0.37494575 0.51506363
-##  [7] 0.90530412 0.10343992 0.21726110 0.12453392 0.06451673 0.65449441
-## [13] 0.88925591 0.25293697 0.37494575 0.51506363 0.90530412 0.10343992
-## [19] 0.21726110 0.12453392</code></pre></div>
+##  [1] 0.66324967 0.07595123 0.14506026 0.13102854 0.11982429 0.12946322
+##  [7] 0.93012527 0.08961106 0.84382653 0.94102084 0.66324967 0.07595123
+## [13] 0.14506026 0.13102854 0.11982429 0.12946322 0.93012527 0.08961106
+## [19] 0.84382653 0.94102084</code></pre></div>
 <p>concatenation converts to the units of the first argument, if necessary:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(a,b) <span class="co"># m/s, km/h -&gt; m/s</span>
 ## Units: m/s
-##  [1] 0.06451673 0.65449441 0.88925591 0.25293697 0.37494575 0.51506363
-##  [7] 0.90530412 0.10343992 0.21726110 0.12453392 0.06451673 0.65449441
-## [13] 0.88925591 0.25293697 0.37494575 0.51506363 0.90530412 0.10343992
-## [19] 0.21726110 0.12453392
+##  [1] 0.66324967 0.07595123 0.14506026 0.13102854 0.11982429 0.12946322
+##  [7] 0.93012527 0.08961106 0.84382653 0.94102084 0.66324967 0.07595123
+## [13] 0.14506026 0.13102854 0.11982429 0.12946322 0.93012527 0.08961106
+## [19] 0.84382653 0.94102084
 <span class="kw">c</span>(b,a) <span class="co"># km/h, m/s -&gt; km/h</span>
 ## Units: km/h
-##  [1] 0.2322602 2.3561799 3.2013213 0.9105731 1.3498047 1.8542291 3.2590948
-##  [8] 0.3723837 0.7821399 0.4483221 0.2322602 2.3561799 3.2013213 0.9105731
-## [15] 1.3498047 1.8542291 3.2590948 0.3723837 0.7821399 0.4483221</code></pre></div>
+##  [1] 2.3876988 0.2734244 0.5222169 0.4717027 0.4313674 0.4660676 3.3484510
+##  [8] 0.3225998 3.0377755 3.3876750 2.3876988 0.2734244 0.5222169 0.4717027
+## [15] 0.4313674 0.4660676 3.3484510 0.3225998 3.0377755 3.3876750</code></pre></div>
 </div>
 </div>
 <div id="conversion-tofrom-difftime" class="section level2">
@@ -292,10 +292,10 @@ a[-(<span class="dv">1</span>:<span class="dv">9</span>)]
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">t1 =<span class="st"> </span><span class="kw">Sys.time</span>() 
 t2 =<span class="st"> </span>t1 +<span class="st"> </span><span class="dv">3600</span> 
 d =<span class="st"> </span>t2 -<span class="st"> </span>t1
-(<span class="dt">du =</span> <span class="kw">as.units</span>(d))
+(<span class="dt">du =</span> <span class="kw">as_units</span>(d))
 ## 1 h</code></pre></div>
 <p>vice versa:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(<span class="dt">dt =</span> <span class="kw"><a href="../reference/as.dt.html">as.dt</a></span>(du))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(<span class="dt">dt =</span> <span class="kw"><a href="../reference/as_difftime.html">as_difftime</a></span>(du))
 ## Time difference of 1 hours
 <span class="kw">class</span>(dt)
 ## [1] "difftime"</code></pre></div>
@@ -378,8 +378,8 @@ z +<span class="st"> </span>y
 z /<span class="st"> </span>y
 ## Units: 1
 ##  [1] 1 1 1 1 1 1 1 1 1 1</code></pre></div>
-<p>Printing units in this form is done by</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/as_cf.html">as_cf</a></span>(z)
+<p>Printing units in character form is done by</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">deparse_unit</span>(z)
 ## [1] "m2 s-1"</code></pre></div>
 </div>
 <div id="plotting" class="section level2">
