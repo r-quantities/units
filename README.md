@@ -43,6 +43,7 @@ spd1 + set_units(10, s) # error checking
 * [package vignette](https://cran.r-project.org/web/packages/units/vignettes/units.html)
 * The [R Journal publication](https://journal.r-project.org/archive/2016-2/pebesma-mailund-hiebert.pdf), which has been [updated to recent package developments](https://edzer.github.io/units/articles/measurement_units_in_R.html)
 * the [udunits2 R package](https://github.com/pacificclimate/Rudunits2) github page
+* the UNIDATA [udunits2](https://github.com/Unidata/UDUNITS-2) library at github
 
 When installing the `udunits2` R package fails due to a missing
 udunits2 system library, either install it binary e.g. by
