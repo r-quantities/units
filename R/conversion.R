@@ -150,7 +150,7 @@ as_units <- function(x, value = unitless) {
 #' @export
 #' @name as_units
 as.units <- function(x, value = unitless) {
-	# .Deprecated("as_units")    # nocov
+	.Deprecated("as_units")    # nocov
 	as_units(x, value = value) # nocov
 }
 

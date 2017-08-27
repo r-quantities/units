@@ -1,3 +1,7 @@
+# version 0.5-0
+
+* Deprecate `as.dt` for `as_difftime`, `as.units` for `as_units` and `as_cf` for `deparse_unit`
+
 # version 0.4-6
 
 * add `all.equal` method for `units`; #51
