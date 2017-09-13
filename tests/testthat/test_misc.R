@@ -102,3 +102,10 @@ test_that("all.equal works", {
   expect_true(all.equal(set_units(3.6, km/h), set_units(1, m/s)))
   expect_false(set_units(3.6, km/h) == set_units(1, m/s))
 })
+
+test_that("seq works", {
+  seq(to = set_units(10, m), by = set_units(1, m), length.out = 5)
+  seq(set_units(10, m), by = set_units(1, m), length.out = 5)
+  seq(set_units(10, m), set_units(19, m))
+  seq(set_units(10, m), set_units(.02, km))
+})

@@ -1,5 +1,7 @@
 # version 0.5-0
 
+* add `seq` method for `units`, converting units to those of the first argument
+
 * Deprecate `as.dt` for `as_difftime`, `as.units` for `as_units` and `as_cf` for `deparse_unit`
 
 # version 0.4-6

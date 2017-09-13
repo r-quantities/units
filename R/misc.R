@@ -7,7 +7,7 @@ c.units <- function(..., recursive = FALSE) {
       if (!inherits(args[[i]], "units"))
         stop(paste("argument", i, "is not of class units"))
       tr = try(units(args[[i]]) <- u)
-	  if (class(tr) == "try-error")
+      if (class(tr) == "try-error")
         stop(paste("argument", i, 
                    "has units that are not convertible to that of the first argument"))
     }
@@ -31,8 +31,8 @@ diff.units = function(x, ...) {
 
 #' @export
 rep.units = function(x, ...) {
-	u = units(x)
-	.as.units(NextMethod(), u)
+  u = units(x)
+  .as.units(NextMethod(), u)
 }
 
 #' parse unit in product power form (e.g. km m-2 s-1)
@@ -44,40 +44,40 @@ rep.units = function(x, ...) {
 #' @details see also \code{demo(cf)} for parsing units in the CF standard name table. Note that \code{parse_unit} currently fails on expressions containing a \code{/}, such as \code{m/s-1}.
 #' @export
 parse_unit = function(str) {
-	if (length(grep(c("[*/]"), str)) > 0)
-		stop("parse_unit does not parse unit strings containing `*' or `/'")
-	parse_one = function(str) {
-		r <- regexpr("[-0-9]+", str)
-		if (r == -1)
-			return(make_unit(str))
-		power = as.integer(substr(str, r, nchar(str)))
-		if (power < 0)
-			u = 1/make_unit(substr(str, 1, r-1)) # word before power
-		else
-			u = make_unit(substr(str, 1, r-1))
-		if (abs(power) > 1) {
-			u0 = u
-			for (i in 2:abs(power))
-				u = u * u0
-		} 
-		return(u)
-	}
-	if (str == "1")
-		return(make_unit("1"))
-	first = TRUE
-	while ((r <- regexpr("[ ]+", str)) != -1) {
-		this = substr(str, 1, r-1) # first word
-		u = if (first) {
-			first = FALSE
-			parse_one(this)
-		} else
-			u * parse_one(this)
-		str = substr(str, r+1, nchar(str))
-	}
-	if (first) # single unit
-		parse_one(str)
-	else
-		u * parse_one(str)
+  if (length(grep(c("[*/]"), str)) > 0)
+    stop("parse_unit does not parse unit strings containing `*' or `/'")
+  parse_one = function(str) {
+    r <- regexpr("[-0-9]+", str)
+    if (r == -1)
+      return(make_unit(str))
+    power = as.integer(substr(str, r, nchar(str)))
+    if (power < 0)
+      u = 1/make_unit(substr(str, 1, r-1)) # word before power
+    else
+      u = make_unit(substr(str, 1, r-1))
+    if (abs(power) > 1) {
+      u0 = u
+      for (i in 2:abs(power))
+        u = u * u0
+      } 
+      return(u)
+    }
+  if (str == "1")
+     return(make_unit("1"))
+  first = TRUE
+  while ((r <- regexpr("[ ]+", str)) != -1) {
+    this = substr(str, 1, r-1) # first word
+    u = if (first) {
+      first = FALSE
+      parse_one(this)
+    } else
+      u * parse_one(this)
+    str = substr(str, r+1, nchar(str))
+  }
+  if (first) # single unit
+    parse_one(str)
+  else
+    u * parse_one(str)
 }
 
 #' deparse unit to string in product power form (e.g. km m-2 s-1)
@@ -91,30 +91,30 @@ parse_unit = function(str) {
 #' deparse_unit(u)
 #' @export
 deparse_unit = function(x) {
-	stopifnot(inherits(x, "units"))
-	u = units(x)
-	tn = table(u$numerator)
-	nm1 = names(tn)
-	vals1 = as.character(tn)
-	vals1[vals1 == "1"] = ""
-	td = - table(u$denominator)
-	nm2 = names(td)
-	vals2 = as.character(td)
-	paste(c(paste0(nm1, vals1), paste0(nm2, vals2)), collapse=" ")
+  stopifnot(inherits(x, "units"))
+  u = units(x)
+  tn = table(u$numerator)
+  nm1 = names(tn)
+  vals1 = as.character(tn)
+  vals1[vals1 == "1"] = ""
+  td = - table(u$denominator)
+  nm2 = names(td)
+  vals2 = as.character(td)
+  paste(c(paste0(nm1, vals1), paste0(nm2, vals2)), collapse=" ")
 }
 
 #' @export
 #' @name deparse_unit
 #' @details \code{as_cf} is deprecated; use \code{deparse_unit}.
 as_cf = function(x) {
-	.Deprecated("deparse_unit") # nocov
-	deparse_unit(x)             # nocov
+  .Deprecated("deparse_unit") # nocov
+  deparse_unit(x)             # nocov
 }
 
 #' @export
 all.equal.units = function(target, current, ...) {
-	current = set_units(current, units(target))
-	all.equal(unclass(target), unclass(current), ...)
+  current = set_units(current, units(target))
+  all.equal(unclass(target), unclass(current), ...)
 }
 
 #' type_sum for tidy tibble printing
@@ -125,4 +125,35 @@ all.equal.units = function(target, current, ...) {
 #' @export
 type_sum.units <- function(x, ...) {
   "units"
+}
+
+#' seq method for units objects
+#' @param from see \link[base]{seq}
+#' @param to see \link[base]{seq}
+#' @param by see \link[base]{seq}
+#' @param length.out see \link[base]{seq}
+#' @param along.with see \link[base]{seq}
+#' @param ... see \link[base]{seq}
+#' @details arguments with units are converted to have units of the first argument (which is either \code{from} or \code{to})
+#' @export
+#' @examples
+#' seq(to = set_units(10, m), by = set_units(1, m), length.out = 5)
+#' seq(set_units(10, m), by = set_units(1, m), length.out = 5)
+#' seq(set_units(10, m), set_units(19, m))
+#' seq(set_units(10, m), set_units(.1, km), set_units(10000, mm))
+seq.units = function(from, to, by = ((to - from)/(length.out - 1)),
+         length.out = NULL, along.with = NULL, ...) {
+  mf = missing(from)
+  mt = missing(to)
+  uuu = if (mf)
+      units(to)
+  	else
+      units(from)
+  if (! mf)
+    from = as.numeric(from)
+  if (! mt)
+  	to = as.numeric(set_units(to, uuu))
+  if (! missing(by))
+    by = as.numeric(set_units(by, uuu))
+  set_units(NextMethod(), uuu)
 }
