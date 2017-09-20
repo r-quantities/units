@@ -44,7 +44,7 @@ convert <- function(value, from, to) {
 }
 
 `units<-.logical` <- function(x, value) {
-  if(is.na(x)) {
+  if(all(is.na(x))) {
     c <- match.call()
     c[1] <- call('units<-.numeric')
     c[['x']] <- as.numeric(x)
@@ -140,7 +140,7 @@ set_units.numeric = function(x, value = units::unitless, ...) {
 }
 
 set_units.logical = function(x, value = units::unitless, ...) {
-  if (is.na(x)) {
+  if (all(is.na(x))) {
     c <- match.call()
     c[1] <- call('set_units.numeric')
     c[['x']] <- as.numeric(x)
