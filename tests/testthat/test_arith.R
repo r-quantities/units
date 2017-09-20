@@ -66,6 +66,11 @@ test_that("we can take powers of units", {
   expect_equal(units(ux ^ 0), unitless)
 })
 
+test_that("we support unary +/-", {
+  expect_equal(-set_units(10, m), set_units(-10, m))
+  expect_equal(+set_units(10, m), set_units(10, m))
+})
+
 test_that("we can convert units and simplify after multiplication", {
   x <- 1:4
   y <- 1:4
@@ -95,6 +100,21 @@ test_that("we can convert units and simplify after multiplication", {
   expect_equal(as.character(units(ux/uz)), "1")
   expect_equal(as.numeric(ux/uy/uz), x/y/(1000*z))
   expect_equal(as.character(units(ux/uy/uz)), "1/s")
+})
+
+test_that("unit one is handled correctly", {
+  one <- set_units(1, 1)
+  onem <- set_units(1, m)
+
+  expect_equal(one * one, one)
+  expect_equal(onem * one, onem)
+  expect_equal(one * one * one, one) 
+  expect_equal(onem * one * one, onem)
+  expect_equal(one / one, one)
+  expect_equal(onem / one, onem)
+  expect_equal(one ^ 3, one)
+  expect_equal(one ^ pi, one)
+  expect_equal(one ^ -pi, one)
 })
 
 test_that("we can compute powers +/- 1/n for integer n", {

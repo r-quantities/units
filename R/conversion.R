@@ -290,6 +290,7 @@ as.POSIXct.units = function (x, tz = "UTC", ...) {
 	as.POSIXct.numeric(as.numeric(u1), tz = tz, origin = as.POSIXct("1970-01-01 00:00:00", tz = "UTC"))
 }
 
+#' @method as.Date units
 #' @export
 as.Date.units = function (x, ...) {
 	u1 = set_units(x, "days since 1970-01-01")

@@ -26,13 +26,21 @@
 #' b <- set_units(1, kg/m/m/m)
 #' a + b
 Ops.units <- function(e1, e2) {
-  if (nargs() == 1)
-    stop(paste("unary", .Generic, "not defined for \"units\" objects"))
-  
+
+  unary = nargs() == 1
   eq  <- .Generic %in% c("+", "-", "==", "!=", "<", ">", "<=", ">=") # pm/equality-type
   prd <- .Generic %in% c("*", "/")                                   # product-type
   pw  <- .Generic %in% c( "**", "^")                                 # power-type
   pm  <- .Generic %in% c("+", "-")                                   # addition-type
+
+  if (unary) {
+    if (! pm)
+      stop("only unary + and - supported")
+    if (.Generic == "-")
+      return(e1 * set_units(-1.0, 1))
+	else
+      return(e1)
+  }
   
   if (! any(eq, prd, pw))
     stop(paste("operation", .Generic, "not allowed"))
@@ -60,6 +68,10 @@ Ops.units <- function(e1, e2) {
     u <- units(e1)
 
   } else if (pw) { # FIXME: I am not sure how to take powers of non-integers yet
+
+    if (identical(units(e1), unitless))
+      return(set_units(unclass(e1) ^ e2, 1))
+
     if (inherits(e2, "units") || length(e2) > 1L)
       stop("power operation only allowed with length-one numeric power")
     # if (round(e2) != e2)
@@ -90,8 +102,10 @@ Ops.units <- function(e1, e2) {
     } else { # -1 < e2 < 0 || 0 < e2 < 1
       if ((1/e2) %% 1 != 0) {
         stop("not a integer divisor")} # work on wording
-      if (any((table(units(e1)$denominator)*e2) %% 1 != 0) | 
-          any((table(units(e1)$numerator)*e2) %% 1 != 0)) {
+      #if ((length(units(e1)$denominator) && any((table(units(e1)$denominator)*e2) %% 1 != 0)) ||
+      #    (!all(units(e1)$numerator == "1") && any((table(units(e1)$numerator)*e2) %% 1 != 0))) {
+      if (any((table(units(e1)$denominator)*e2) %% 1 != 0) ||
+          any((table(units(e1)$numerator)*e2)   %% 1 != 0)) {
             stop("units not divisible")} # work on wording
       if (e2 > 0) # 0 < e2 < 1
         u <- .symbolic_units(

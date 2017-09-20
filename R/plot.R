@@ -72,6 +72,7 @@ make_unit_label = function(lab, u,
 plot.units <- function(x, y, xlab = NULL, ylab = NULL, ...) {
   # We define the axis labels if they are not already provided and then let
   # the default plotting function take over...
+  xlab0 = paste(deparse(substitute(x), 500), collapse = "\\n")
   if (missing(y)) { # from xy.coords:
     if (is.null(ylab))
       ylab <- make_unit_label(deparse(substitute(x)), x)
@@ -82,7 +83,7 @@ plot.units <- function(x, y, xlab = NULL, ylab = NULL, ...) {
     return(NextMethod("plot", x, y, xlab = xlab, ylab = ylab))
   } 
   if (is.null(xlab)) {
-    xlab <- make_unit_label(deparse(substitute(x)), x)
+    xlab <- make_unit_label(xlab0, x)
   }
   if (is.null(ylab) && inherits(y, "units")) {
     ylab <- make_unit_label(deparse(substitute(y)), y)
@@ -109,7 +110,7 @@ hist.units <- function(x, xlab = NULL, main = paste("Histogram of", xname), ...)
   # the default plotting function take over...
   xname <- paste(deparse(substitute(x), 500), collapse = "\n")
   if (is.null(xlab)) {
-    xlab <- make_unit_label(deparse(substitute(x)), x)
+    xlab <- make_unit_label(xname, x)
   }
   NextMethod("hist", xlab = xlab, main = main)
 }
