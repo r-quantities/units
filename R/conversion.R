@@ -43,6 +43,17 @@ convert <- function(value, from, to) {
   x
 }
 
+`units<-.logical` <- function(x, value) {
+  if(all(is.na(x))) {
+    c <- match.call()
+    c[1] <- call('units<-.numeric')
+    c[['x']] <- as.numeric(x)
+    eval(c)
+  } else {
+    stop("x must be numeric, non-NA logical not supported")
+  }
+}
+
 #' Convert units
 #' 
 #' @name units
@@ -125,6 +136,17 @@ set_units.numeric = function(x, value = units::unitless, ...) {
   else {
     units(x) = u
     x
+  }
+}
+
+set_units.logical <- function(x, value = units::unitless, ...) {
+  if (all(is.na(x))) {
+    c <- match.call()
+    c[1] <- call('set_units.numeric')
+    c[['x']] <- as.numeric(x)
+    eval(c)
+  } else {
+    stop("x must be numeric, non-NA logical not supported")
   }
 }
 

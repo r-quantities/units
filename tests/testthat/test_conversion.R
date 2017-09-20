@@ -30,6 +30,30 @@ test_that("we can convert numbers to physical units", {
   expect_equal(as.numeric(z), 1:4)
 })
 
+test_that("we can convert NA values to physical units", {
+  m <- make_unit("m")
+  x <- NA * m
+  expect_equal(class(x), "units")
+  expect_equal(as.character(units(x)), "m")
+  expect_equal(as.numeric(x), as.numeric(NA))
+
+  x <- set_units(NA,m/s)
+  expect_equal(as.character(units(x)), "m/s")
+  expect_equal(x + set_units(5,m/s), set_units(NA,m/s))
+  expect_error(x + set_units(5,m))
+
+  x <- NA
+  units(x) <- m
+  expect_that(as.character(units(x)), equals('m'))
+
+  x <- rep(NA,5)
+  units(x) <- with(ud_units,m/s)
+  expect_equal(length(x),5)
+  expect_equal(units(x),units(with(ud_units,m/s)))
+  expect_equal(x,5 * x)
+  expect_error(x + 1)
+})
+
 test_that("we can convert between two units that can be converted", {
   m <- make_unit("m")
   km <- make_unit("km")
