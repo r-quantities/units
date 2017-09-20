@@ -111,6 +111,7 @@ as_cf = function(x) {
   deparse_unit(x)             # nocov
 }
 
+#' @method all.equal units
 #' @export
 all.equal.units = function(target, current, ...) {
   current = set_units(current, units(target))

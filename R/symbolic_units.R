@@ -132,14 +132,16 @@ make_unit <- function(name) {
   # numerator and tries to find a value in the denominator that can be converted
   # to the same unit. It modifies "value" to rescale the nominator to the denomiator
   # before removing matching units.
+
+  drop_ones = function(u) u[ u != "1" ]
   
-  new_numerator <- sym_units$numerator
-  new_denominator <- sym_units$denominator
+  new_numerator <- drop_ones(sym_units$numerator)
+  new_denominator <- drop_ones(sym_units$denominator)
   
   delete_num <- c()
   for (i in seq_along(new_numerator)) {
     str1 <- new_numerator[i]
-    
+
     for (j in seq_along(new_denominator)) {
       str2 <- new_denominator[j]
 
