@@ -128,3 +128,12 @@ test_that("we can convert between units that are not simply a scalar from each o
   expect_equal(units(result), unitless)
 })
 
+test_that("the guarded assignment operator %<% works properly", {
+  x <- set_units(NA,mi/h)
+  y <- set_units(100,km/h)
+  x %<% y
+  z <- set_units(100,km)
+  expect_equal(x, set_units(y,mi/h))
+  expect_error(x %<% z)
+})
+

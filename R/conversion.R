@@ -314,3 +314,18 @@ as_units.Date = function(x, value) {
 	else
 		set_units(u, value)
 }
+
+#` @export
+`%<%` <- function(x,y) UseMethod("%<%")
+
+#' @export
+`%<%.units` <- function(x,y) {
+  parent <- parent.frame()
+  eval(call("<-", deparse(substitute(x)), set_units(y,units(x))), parent, parent)
+}
+
+`value<-` <- function(x, value) UseMethod("value<-")
+
+`value<-.units` <- function(x, value) {
+  set_units(value,units(x))
+}
