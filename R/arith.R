@@ -126,7 +126,8 @@ Ops.units <- function(e1, e2) {
     .as.units(NextMethod(), u)
 }
 
-#' matrix multiplication
+#' matrix multiplication, integer division, modulo
+#' @name modulo
 #' @param x numeric matrix or vector
 #' @param y numeric matrix or vector
 #' @export
@@ -140,6 +141,7 @@ Ops.units <- function(e1, e2) {
 		base::`%*%`(x, y)
 }
 
+#' @name modulo
 #' @export
 #' @examples
 #' a = set_units(1:5, m)
@@ -148,6 +150,52 @@ Ops.units <- function(e1, e2) {
 #' a %*% 1:5
 #' 1:5 %*% a
 `%*%.units` = function(x, y) {
-	# warning("%*%.units...")
-	set_units(`%*%.default`(unclass(x), unclass(y)), units(x[1] * y[1]))
+	set_units(`%*%.default`(unclass(x), unclass(y)), 
+		set_units(1, units(x)) * set_units(1, units(y)))
+}
+
+#' @name modulo
+#' @export
+`%/%` = function(x, y) UseMethod("%/%")
+
+#' @export
+`%/%.default` = function(x, y) {
+	if (inherits(y, "units"))
+		`%/%.units`(x, y)
+	else
+		base::`%/%`(x, y)
+}
+
+#' @name modulo
+#' @export
+#' @examples
+#' a = set_units(1:5, m)
+#' a %/% a
+#' a %/% 2
+#' 1:5 %/% set_units(2, m)
+`%/%.units` = function(x, y) {
+	set_units(`%/%.default`(unclass(x), unclass(y)), 
+		set_units(1, units(x)) / set_units(1, units(y)))
+}
+
+#' @name modulo
+#' @export
+`%%` = function(x, y) UseMethod("%%")
+
+#' @export
+`%%.default` = function(x, y) {
+	if (inherits(y, "units"))
+		`%%.units`(x, y)
+	else
+		base::`%%`(x, y)
+}
+
+#' @name modulo
+#' @export
+#' @examples
+#' a = set_units(1:5, m)
+#' a %% a
+#' a %% 2
+`%%.units` = function(x, y) {
+	set_units(`%%.default`(unclass(x), unclass(y)), units(x))
 }
