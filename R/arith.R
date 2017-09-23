@@ -125,3 +125,29 @@ Ops.units <- function(e1, e2) {
   } else
     .as.units(NextMethod(), u)
 }
+
+#' matrix multiplication
+#' @param x numeric matrix or vector
+#' @param y numeric matrix or vector
+#' @export
+`%*%` = function(x, y) UseMethod("%*%")
+
+#' @export
+`%*%.default` = function(x, y) {
+	if (inherits(y, "units"))
+		`%*%.units`(x, y)
+	else
+		base::`%*%`(x, y)
+}
+
+#' @export
+#' @examples
+#' a = set_units(1:5, m)
+#' a %*% a
+#' a %*% t(a)
+#' a %*% 1:5
+#' 1:5 %*% a
+`%*%.units` = function(x, y) {
+	# warning("%*%.units...")
+	set_units(`%*%.default`(unclass(x), unclass(y)), units(x[1] * y[1]))
+}
