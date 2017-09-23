@@ -1,5 +1,9 @@
 # version 0.5-0
 
+* add `%*%` as an S3 generic; #54 
+
+* add `%%` and `%/%` to `Ops.units`
+
 * support unary + and - ; #56
 
 * add `seq` method for `units`, converting units to those of the first argument
