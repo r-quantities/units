@@ -25,16 +25,23 @@
 #' a <- make_unit("kg m-3") # not understood by R as a division, but understood by udunits2
 #' b <- set_units(1, kg/m/m/m)
 #' a + b
+#' a = set_units(1:5, m)
+#' a %/% a
+#' a %/% set_units(2, 1)
+#' set_units(1:5, m^2) %/% set_units(2, m)
+#' a %% a
+#' a %% set_units(2, 1)
 Ops.units <- function(e1, e2) {
 
   unary = nargs() == 1
-  eq  <- .Generic %in% c("+", "-", "==", "!=", "<", ">", "<=", ">=") # pm/equality-type
-  prd <- .Generic %in% c("*", "/")                                   # product-type
+  eq  <- .Generic %in% c("+", "-", "==", "!=", "<", ">", "<=", ">=") # requiring identical units
+  prd <- .Generic %in% c("*", "/", "%/%")                            # product-type
   pw  <- .Generic %in% c( "**", "^")                                 # power-type
+  mod <- .Generic == "%%"                                            # modulo
   pm  <- .Generic %in% c("+", "-")                                   # addition-type
 
   if (unary) {
-    if (! pm)
+    if (! (.Generic %in% c("+", "-")))
       stop("only unary + and - supported")
     if (.Generic == "-")
       return(e1 * set_units(-1.0, 1))
@@ -42,7 +49,7 @@ Ops.units <- function(e1, e2) {
       return(e1)
   }
   
-  if (! any(eq, prd, pw))
+  if (! any(eq, prd, pw, mod))
     stop(paste("operation", .Generic, "not allowed"))
   
   if (eq) {
@@ -116,7 +123,7 @@ Ops.units <- function(e1, e2) {
           rep(unique(units(e1)$denominator),table(units(e1)$denominator)*abs(e2)),
           rep(unique(units(e1)$numerator),table(units(e1)$numerator)*abs(e2)))
     }
-  } else # eq, plus/minus:
+  } else # eq, plus/minus, mod:
     u <- units(e1)
 
   if (eq && !pm) {
@@ -126,13 +133,15 @@ Ops.units <- function(e1, e2) {
     .as.units(NextMethod(), u)
 }
 
-#' matrix multiplication, integer division, modulo
-#' @name modulo
+#' matrix multiplication
+#' @name matmult
 #' @param x numeric matrix or vector
 #' @param y numeric matrix or vector
 #' @export
+#' @details see \link[base]{%*%} for the base function, reimplemented as default method
 `%*%` = function(x, y) UseMethod("%*%")
 
+#' @name matmult
 #' @export
 `%*%.default` = function(x, y) {
 	if (inherits(y, "units"))
@@ -141,61 +150,15 @@ Ops.units <- function(e1, e2) {
 		base::`%*%`(x, y)
 }
 
-#' @name modulo
+#' @name matmult
 #' @export
 #' @examples
 #' a = set_units(1:5, m)
 #' a %*% a
 #' a %*% t(a)
-#' a %*% 1:5
-#' 1:5 %*% a
+#' a %*% set_units(1:5, 1)
+#' set_units(1:5, 1) %*% a
 `%*%.units` = function(x, y) {
 	set_units(`%*%.default`(unclass(x), unclass(y)), 
 		set_units(1, units(x)) * set_units(1, units(y)))
-}
-
-#' @name modulo
-#' @export
-`%/%` = function(x, y) UseMethod("%/%")
-
-#' @export
-`%/%.default` = function(x, y) {
-	if (inherits(y, "units"))
-		`%/%.units`(x, y)
-	else
-		base::`%/%`(x, y)
-}
-
-#' @name modulo
-#' @export
-#' @examples
-#' a = set_units(1:5, m)
-#' a %/% a
-#' a %/% 2
-#' 1:5 %/% set_units(2, m)
-`%/%.units` = function(x, y) {
-	set_units(`%/%.default`(unclass(x), unclass(y)), 
-		set_units(1, units(x)) / set_units(1, units(y)))
-}
-
-#' @name modulo
-#' @export
-`%%` = function(x, y) UseMethod("%%")
-
-#' @export
-`%%.default` = function(x, y) {
-	if (inherits(y, "units"))
-		`%%.units`(x, y)
-	else
-		base::`%%`(x, y)
-}
-
-#' @name modulo
-#' @export
-#' @examples
-#' a = set_units(1:5, m)
-#' a %% a
-#' a %% 2
-`%%.units` = function(x, y) {
-	set_units(`%%.default`(unclass(x), unclass(y)), units(x))
 }
