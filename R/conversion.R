@@ -43,6 +43,33 @@ convert <- function(value, from, to) {
   x
 }
 
+#' @export
+`units<-.data.frame` <- function(x, value) {
+  if(inherits(value,'units')) {
+    df <- x[lapply(x,class) %in% c('logical','numeric','units')]
+    value <- setNames(replicate(length(names(df)),value,simplify=FALSE),
+                      names(df))
+  }
+  if(!is.null(names(value)) && length(value) <= length(x)) {
+    if(!all(names(value) %in% names(x))) {
+      stop('Names specified that are not in data frame.')
+    }
+    for(n in names(x)) {
+      if(!is.null(value[[n]])) {
+        x[[n]] <- as_units(x[[n]],value[[n]])
+      }
+    }
+  } else if(length(value) != length(x)) {
+      stop(paste(length(value),'units given but data frame has a different number of columns'))
+  } else {
+    for(i in 1:length(value)) {
+      x[[i]] <- as_units(x[[i]],value[[i]])
+    }
+  }
+  x
+}
+
+#' @export
 `units<-.logical` <- function(x, value) {
   if(all(is.na(x))) {
     c <- match.call()
@@ -95,7 +122,6 @@ convert <- function(value, from, to) {
 #' }
 set_units = function(x, value, ...) UseMethod("set_units")
 
-#' @name units
 #' @export
 set_units.units = function(x, value, ...) {
   e = try(u <- eval(substitute(value), ud_units, parent.frame()), silent = TRUE)
@@ -115,7 +141,6 @@ set_units.units = function(x, value, ...) {
   x
 }
 
-#' @name units
 #' @export
 set_units.numeric = function(x, value = units::unitless, ...) {
   e = try(u <- eval(substitute(value), ud_units, parent.frame()), silent = TRUE)
@@ -139,6 +164,7 @@ set_units.numeric = function(x, value = units::unitless, ...) {
   }
 }
 
+#' @export
 set_units.logical <- function(x, value = units::unitless, ...) {
   if (all(is.na(x))) {
     c <- match.call()
@@ -150,6 +176,14 @@ set_units.logical <- function(x, value = units::unitless, ...) {
   }
 }
 
+#' @export
+set_units.data.frame <- function(x, value = units::unitless, ...) {
+  value <- eval(substitute(value), envir=ud_units)
+  units(x) <- value
+  x
+}
+
+
 #' retrieve measurement units from \code{units} object
 #'
 #' @export
@@ -158,6 +192,14 @@ set_units.logical <- function(x, value = units::unitless, ...) {
 units.units <- function(x) {
   attr(x, "units")
 }
+
+#' @export
+units.data.frame <- function(x) {
+  lapply(x[lapply(x,class) == 'units'],units)
+}
+
+#' @export
+units.list <- units.data.frame
 
 #' convert object to a units object
 #'
