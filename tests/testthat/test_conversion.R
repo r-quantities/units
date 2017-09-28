@@ -178,7 +178,9 @@ test_that("we can add units to data frames", {
                    c=set_units(c(4,5,6),km))
 
   expect_equal(r5, set_units(df,m))
+  expect_equal(r5, set_units(df,units(r5)))
   expect_equal(r6, set_units(df,list(b=m/hr)))
+  expect_equal(r6, set_units(df,units(r6)))
 
   df2 <- df
   units(df2) <- with(ud_units,m)

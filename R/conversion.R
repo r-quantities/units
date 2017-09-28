@@ -178,7 +178,7 @@ set_units.logical <- function(x, value = units::unitless, ...) {
 
 #' @export
 set_units.data.frame <- function(x, value = units::unitless, ...) {
-  value <- eval(substitute(value), envir=ud_units)
+  value <- eval(substitute(value), envir=ud_units, enclos=parent.frame())
   units(x) <- value
   x
 }
