@@ -44,7 +44,7 @@ convert <- function(value, from, to) {
 }
 
 `units<-.logical` <- function(x, value) {
-  if(all(is.na(x))) {
+  if (all(is.na(x))) {
     c <- match.call()
     c[1] <- call('units<-.numeric')
     c[['x']] <- as.numeric(x)
@@ -81,6 +81,11 @@ convert <- function(value, from, to) {
     stop(paste("cannot convert", units(x), "into", value), call. = FALSE)
 }
 
+unit_ambiguous = function(value) {
+  msg = paste("ambiguous argument:", value, "is interpreted by its name, not by its value")
+  warning(msg, call. = FALSE)
+}
+
 #' @name units
 #' @export
 #' @param ... ignored
@@ -98,19 +103,35 @@ set_units = function(x, value, ...) UseMethod("set_units")
 #' @name units
 #' @export
 set_units.units = function(x, value, ...) {
-  e = try(u <- eval(substitute(value), ud_units, parent.frame()), silent = TRUE)
-  if (inherits(e, "try-error") || ! (inherits(u, "units") 
-        || inherits(u, "symbolic_units"))) {
-	val_char = gsub("\"", "", deparse(substitute(value)))
-	u = if (val_char %in% names(ud_units))
-  	  ud_units[[ val_char ]]
-	else if (ud.is.parseable(val_char)) {
-      if (ud.get.symbol(val_char) != "")
-        val_char = ud.get.symbol(val_char)
-      make_unit(val_char)
-	} else if (ud.is.parseable(eval(value)))
-	  make_unit(eval(value))
-  }
+
+  e0 = try(u0 <- eval(substitute(value), ud_units, NULL), silent = TRUE)
+
+  e1 = try(u1 <- eval(substitute(value), ud_units, parent.frame()), silent = TRUE)
+  val_char = gsub("\"", "", deparse(substitute(value)))
+
+  e2 = try(u2 <- eval(substitute(value)), parent.frame(), silent = TRUE) # present in parent.frame()?
+  is_value = !inherits(e2, "try-error") && !is.character(substitute(value)) && 
+  	is.character(u2) && ud.is.parseable(u2)
+
+  u = if (!inherits(e0, "try-error") && inherits(u0, "units")) {
+    if (is_value) 
+      unit_ambiguous(val_char)
+    u0
+  } else if (val_char %in% names(ud_units)) {
+    ud_units[[ val_char ]]
+  } else if (ud.is.parseable(val_char)) {
+    if (is_value) 
+      unit_ambiguous(val_char)
+    if (ud.get.symbol(val_char) != "")
+      val_char = ud.get.symbol(val_char)
+    make_unit(val_char)
+  } else if (!inherits(e1, "try-error") && (inherits(u1, "units") || inherits(u1, "symbolic_units")))
+    u1
+  else if (ud.is.parseable(eval(value)))
+    make_unit(eval(value))
+  else
+    stop(paste(val_char, "not recognized as unit"))
+
   units(x) = u
   x
 }
@@ -118,24 +139,40 @@ set_units.units = function(x, value, ...) {
 #' @name units
 #' @export
 set_units.numeric = function(x, value = units::unitless, ...) {
-  e = try(u <- eval(substitute(value), ud_units, parent.frame()), silent = TRUE)
-  if (inherits(e, "try-error") || ! (inherits(u, "units") 
-          || inherits(u, "symbolic_units"))) {
-	val_char = gsub("\"", "", deparse(substitute(value)))
-	u = if (val_char %in% names(ud_units))
-  	  ud_units[[ val_char ]]
-	else if (ud.is.parseable(val_char)) {
-      if (ud.get.symbol(val_char) != "")
-        val_char = ud.get.symbol(val_char)
-      make_unit(val_char)
-	} else if (ud.is.parseable(eval(value)))
-	  make_unit(eval(value))
-  }
+
+  e0 = try(u0 <- eval(substitute(value), ud_units, NULL), silent = TRUE)
+
+  e1 = try(u1 <- eval(substitute(value), ud_units, parent.frame()), silent = TRUE)
+  val_char = gsub("\"", "", deparse(substitute(value)))
+
+  e2 = try(u2 <- eval(substitute(value)), parent.frame(), silent = TRUE) # present in parent.frame()?
+  is_value = !inherits(e2, "try-error") && !is.character(substitute(value)) && 
+  	is.character(u2) && ud.is.parseable(u2)
+
+  u = if (!inherits(e0, "try-error") && inherits(u0, "units")) {
+    if (is_value) 
+      unit_ambiguous(val_char)
+    u0
+  } else if (val_char %in% names(ud_units)) {
+    ud_units[[ val_char ]]
+  } else if (ud.is.parseable(val_char)) {
+    if (is_value) 
+      unit_ambiguous(val_char)
+    if (ud.get.symbol(val_char) != "")
+      val_char = ud.get.symbol(val_char)
+    make_unit(val_char)
+  } else if (!inherits(e1, "try-error") && (inherits(u1, "units") || inherits(u1, "symbolic_units")))
+    u1
+  else if (ud.is.parseable(eval(value)))
+    make_unit(eval(value))
+  else
+    stop(paste(val_char, "not recognized as unit"))
+
   if (inherits(u, "units"))
     x * u
   else {
-    units(x) = u
-    x
+    units(x) <- u
+	x
   }
 }
 

@@ -109,8 +109,6 @@ Ops.units <- function(e1, e2) {
     } else { # -1 < e2 < 0 || 0 < e2 < 1
       if ((1/e2) %% 1 != 0) {
         stop("not a integer divisor")} # work on wording
-      #if ((length(units(e1)$denominator) && any((table(units(e1)$denominator)*e2) %% 1 != 0)) ||
-      #    (!all(units(e1)$numerator == "1") && any((table(units(e1)$numerator)*e2) %% 1 != 0))) {
       if (any((table(units(e1)$denominator)*e2) %% 1 != 0) ||
           any((table(units(e1)$numerator)*e2)   %% 1 != 0)) {
             stop("units not divisible")} # work on wording
@@ -138,7 +136,7 @@ Ops.units <- function(e1, e2) {
 #' @param x numeric matrix or vector
 #' @param y numeric matrix or vector
 #' @export
-#' @details see \link[base]{%*%} for the base function, reimplemented as default method
+#' @details see \link[base]{`%*%`} for the base function, reimplemented as default method
 `%*%` = function(x, y) UseMethod("%*%")
 
 #' @name matmult
