@@ -387,7 +387,7 @@ with(mtcars, plot(1/displacement, 1/consumption))
 
 ```{r fig=TRUE, height=3.8, width=7}
 library(ggforce)
-ggplot(mtcars) + geom_point(aes(1/displacement, 1/consumption))
+ggplot(mtcars) + geom_point(aes(x = 1/displacement, y = 1/consumption))
 ```
 
 Automatic conversion between `units` and `difftime` is provided: 
