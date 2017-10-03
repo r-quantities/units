@@ -30,9 +30,7 @@ degree_C = "m"
 set_units(1, degree_C)
 
 degree_C = make_unit("m")
-(dc <- set_units(1, degree_C))
 
-degree_C = units(dc)
 set_units(1, degree_C)
 
 # OK:

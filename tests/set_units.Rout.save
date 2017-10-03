@@ -54,6 +54,8 @@ ambiguous argument: m is interpreted by its name, not by its value
 > m = make_unit("u")
 > set_units(1, m) # m by NSE
 1 m
+Warning message:
+ambiguous argument: m is interpreted by its name, not by its value 
 > 
 > degree_C = "m"
 > set_units(1, degree_C)
@@ -62,12 +64,11 @@ Warning message:
 ambiguous argument: degree_C is interpreted by its name, not by its value 
 > 
 > degree_C = make_unit("m")
-> (dc <- set_units(1, degree_C))
-1 °C
 > 
-> degree_C = units(dc)
 > set_units(1, degree_C)
 1 °C
+Warning message:
+ambiguous argument: degree_C is interpreted by its name, not by its value 
 > 
 > # OK:
 > set_units(1, "bar")
@@ -90,8 +91,8 @@ ambiguous argument: degree_C is interpreted by its name, not by its value
 > udunits2::ud.is.parseable("units(m)")
 [1] TRUE
 > set_units(10, uu <- degree_C)
-10 °C
+10 m
 > 
 > proc.time()
    user  system elapsed 
-  0.484   0.224   0.438 
+  0.524   0.260   0.518 

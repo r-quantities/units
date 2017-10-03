@@ -111,13 +111,15 @@ set_units.units = function(x, value, ...) {
 
   e2 = try(u2 <- eval(substitute(value)), parent.frame(), silent = TRUE) # present in parent.frame()?
   is_value = !inherits(e2, "try-error") && !is.character(substitute(value)) && 
-  	is.character(u2) && ud.is.parseable(u2)
+  	(inherits(u2, "units") || (is.character(u2) && ud.is.parseable(u2)))
 
   u = if (!inherits(e0, "try-error") && inherits(u0, "units")) {
     if (is_value) 
       unit_ambiguous(val_char)
     u0
   } else if (val_char %in% names(ud_units)) {
+    if (is_value) 
+      unit_ambiguous(val_char)
     ud_units[[ val_char ]]
   } else if (ud.is.parseable(val_char)) {
     if (is_value) 
@@ -147,13 +149,15 @@ set_units.numeric = function(x, value = units::unitless, ...) {
 
   e2 = try(u2 <- eval(substitute(value)), parent.frame(), silent = TRUE) # present in parent.frame()?
   is_value = !inherits(e2, "try-error") && !is.character(substitute(value)) && 
-  	is.character(u2) && ud.is.parseable(u2)
+  	(inherits(u2, "units") || (is.character(u2) && ud.is.parseable(u2)))
 
   u = if (!inherits(e0, "try-error") && inherits(u0, "units")) {
     if (is_value) 
       unit_ambiguous(val_char)
     u0
   } else if (val_char %in% names(ud_units)) {
+    if (is_value) 
+      unit_ambiguous(val_char)
     ud_units[[ val_char ]]
   } else if (ud.is.parseable(val_char)) {
     if (is_value) 
