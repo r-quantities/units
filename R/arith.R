@@ -22,15 +22,15 @@
 #' a + b
 #' a * b
 #' a / b
-#' a <- make_unit("kg m-3") # not understood by R as a division, but understood by udunits2
+#' a <- parse_unit("kg m-3")
 #' b <- set_units(1, kg/m/m/m)
 #' a + b
 #' a = set_units(1:5, m)
 #' a %/% a
-#' a %/% set_units(2, 1)
+#' a %/% set_units(2, unitless)
 #' set_units(1:5, m^2) %/% set_units(2, m)
 #' a %% a
-#' a %% set_units(2, 1)
+#' a %% set_units(2, unitless)
 Ops.units <- function(e1, e2) {
 
   unary = nargs() == 1
@@ -44,7 +44,7 @@ Ops.units <- function(e1, e2) {
     if (! (.Generic %in% c("+", "-")))
       stop("only unary + and - supported")
     if (.Generic == "-")
-      return(e1 * set_units(-1.0, 1))
+      return(e1 * set_units(-1.0, unitless))
 	else
       return(e1)
   }
@@ -77,7 +77,7 @@ Ops.units <- function(e1, e2) {
   } else if (pw) { # FIXME: I am not sure how to take powers of non-integers yet
 
     if (identical(units(e1), unitless))
-      return(set_units(unclass(e1) ^ e2, 1))
+      return(set_units(unclass(e1) ^ e2, unitless))
 
     if (inherits(e2, "units") || length(e2) > 1L)
       stop("power operation only allowed with length-one numeric power")
@@ -154,8 +154,8 @@ Ops.units <- function(e1, e2) {
 #' a = set_units(1:5, m)
 #' a %*% a
 #' a %*% t(a)
-#' a %*% set_units(1:5, 1)
-#' set_units(1:5, 1) %*% a
+#' a %*% set_units(1:5, unitless)
+#' set_units(1:5, unitless) %*% a
 `%*%.units` = function(x, y) {
 	set_units(`%*%.default`(unclass(x), unclass(y)), 
 		set_units(1, units(x)) * set_units(1, units(y)))

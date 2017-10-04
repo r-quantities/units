@@ -103,7 +103,7 @@ test_that("we can convert units and simplify after multiplication", {
 })
 
 test_that("unit one is handled correctly", {
-  one <- set_units(1, 1)
+  one <- set_units(1, unitless)
   onem <- set_units(1, m)
 
   expect_equal(one * one, one)
@@ -130,7 +130,7 @@ test_that("we can compute powers +/- 1/n for integer n", {
 
 test_that("%*%, %/% and %% work", {
   a = set_units(1:5, m)
-  expect_equal(a %/% set_units(2, m), set_units(c(0,1,1,2,2), 1))
+  expect_equal(a %/% set_units(2, m), set_units(c(0,1,1,2,2), unitless))
   expect_equal(a %% set_units(2, m), set_units(c(1,0,1,0,1), m))
   mat = set_units(matrix(1:5, 1), m)
   expect_equal(mat %*% t(mat), set_units(matrix(55), m^2))

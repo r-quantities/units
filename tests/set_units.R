@@ -39,10 +39,4 @@ set_units(1, "bar")
 (set_units(1, units(tenbar)))
 (set_units(1, tenbar))
 
-# still worrying:
-set_units(1, units(degree_C))
-udunits2::ud.is.parseable("units(degree_C)")
-# no warning, because units(degree_C) does not eval
-set_units(1, units(m))
-udunits2::ud.is.parseable("units(m)")
 set_units(10, uu <- degree_C)

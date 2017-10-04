@@ -4,14 +4,22 @@
 \alias{make_unit}
 \title{Create a new unit from a unit name.}
 \usage{
-make_unit(name)
+make_unit(name, user_defined = FALSE)
 }
 \arguments{
-\item{name}{Name of the new unit}
+\item{name}{Name of the new unit (character string, name of a character object, or expression)}
+
+\item{user_defined}{logical; is this a user-defined, non-SI/non-udunits unit?}
 }
 \value{
 A new unit object that can be used in arithmetics
 }
 \description{
 Create a new unit from a unit name.
+}
+\examples{
+make_unit(m/s)
+make_unit("m/s")
+str = "m/s"
+make_unit(str)
 }

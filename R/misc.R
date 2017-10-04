@@ -51,10 +51,13 @@ parse_unit = function(str) {
     if (r == -1)
       return(make_unit(str))
     power = as.integer(substr(str, r, nchar(str)))
-    if (power < 0)
-      u = 1/make_unit(substr(str, 1, r-1)) # word before power
-    else
-      u = make_unit(substr(str, 1, r-1))
+    u = if (power < 0) {
+	  subs = substr(str, 1, r-1) # word before power
+      1/make_unit(subs) # word before power
+    } else {
+      subs = substr(str, 1, r-1)
+      make_unit(subs)
+	}
     if (abs(power) > 1) {
       u0 = u
       for (i in 2:abs(power))
@@ -159,12 +162,12 @@ seq.units = function(from, to, by = ((to - from)/(length.out - 1)),
   set_units(NextMethod(), uuu)
 }
 
-#' @export
-as.data.frame.units = function(x, ...) {
-	unitsx = units(x)
-	x = unclass(x) # FIXME: names are not passed on for single vectors, e.g. as.data.frame(u[,1])
-	ret = as.data.frame(x)
-	structure(lapply(ret, function(y) set_units(y, unitsx)),
-		row.names = 1:nrow(ret), 
-		class = "data.frame")
-}
+##' @export
+#as.data.frame.units = function(x, ...) {
+#	unitsx = units(x)
+#	x = unclass(x) # FIXME: names are not passed on for single vectors, e.g. as.data.frame(u[,1])
+#	ret = as.data.frame(x)
+#	structure(lapply(ret, function(y) set_units(y, unitsx)),
+#		row.names = 1:nrow(ret), 
+#		class = "data.frame")
+#}

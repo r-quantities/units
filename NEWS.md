@@ -1,5 +1,9 @@
 # version 0.5-0
 
+* non-R expressions like `m kg-1` are no longer accepted by `make_unit`, but are parsed by `parse_unit`
+
+* `make_unit` now uses the R expression evaluator; #60
+
 * add `%*%` as an S3 generic; #54 
 
 * add `%%` and `%/%` to `Ops.units`

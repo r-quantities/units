@@ -104,13 +104,14 @@ set_units = function(x, value, ...) UseMethod("set_units")
 #' @export
 set_units.units = function(x, value, ...) {
 
-  e0 = try(u0 <- eval(substitute(value), ud_units, NULL), silent = TRUE)
+  subs = substitute(value)
+  e0 = try(u0 <- eval(subs, ud_units, NULL), silent = TRUE)
 
-  e1 = try(u1 <- eval(substitute(value), ud_units, parent.frame()), silent = TRUE)
-  val_char = gsub("\"", "", deparse(substitute(value)))
+  e1 = try(u1 <- eval(subs, ud_units, parent.frame()), silent = TRUE)
+  val_char = gsub("\"", "", deparse(subs))
 
-  e2 = try(u2 <- eval(substitute(value)), parent.frame(), silent = TRUE) # present in parent.frame()?
-  is_value = !inherits(e2, "try-error") && !is.character(substitute(value)) && 
+  e2 = try(u2 <- eval(subs, parent.frame()), silent = TRUE) # present in parent.frame()?
+  is_value = !inherits(e2, "try-error") && !is.character(subs) && 
   	(inherits(u2, "units") || (is.character(u2) && ud.is.parseable(u2)))
 
   u = if (!inherits(e0, "try-error") && inherits(u0, "units")) {
@@ -129,9 +130,10 @@ set_units.units = function(x, value, ...) {
     make_unit(val_char)
   } else if (!inherits(e1, "try-error") && (inherits(u1, "units") || inherits(u1, "symbolic_units")))
     u1
-  else if (ud.is.parseable(eval(value)))
-    make_unit(eval(value))
-  else
+  else if (ud.is.parseable(eval(value))) {
+	ev = eval(value)
+    make_unit(ev)
+  } else
     stop(paste(val_char, "not recognized as unit"))
 
   units(x) = u
@@ -142,13 +144,14 @@ set_units.units = function(x, value, ...) {
 #' @export
 set_units.numeric = function(x, value = units::unitless, ...) {
 
-  e0 = try(u0 <- eval(substitute(value), ud_units, NULL), silent = TRUE)
+  subs = substitute(value)
+  e0 = try(u0 <- eval(subs, ud_units, NULL), silent = TRUE)
 
-  e1 = try(u1 <- eval(substitute(value), ud_units, parent.frame()), silent = TRUE)
-  val_char = gsub("\"", "", deparse(substitute(value)))
+  e1 = try(u1 <- eval(subs, ud_units, parent.frame()), silent = TRUE)
+  val_char = gsub("\"", "", deparse(subs))
 
-  e2 = try(u2 <- eval(substitute(value)), parent.frame(), silent = TRUE) # present in parent.frame()?
-  is_value = !inherits(e2, "try-error") && !is.character(substitute(value)) && 
+  e2 = try(u2 <- eval(subs, parent.frame()), silent = TRUE) # present in parent.frame()?
+  is_value = !inherits(e2, "try-error") && !is.character(subs) && 
   	(inherits(u2, "units") || (is.character(u2) && ud.is.parseable(u2)))
 
   u = if (!inherits(e0, "try-error") && inherits(u0, "units")) {
@@ -167,9 +170,10 @@ set_units.numeric = function(x, value = units::unitless, ...) {
     make_unit(val_char)
   } else if (!inherits(e1, "try-error") && (inherits(u1, "units") || inherits(u1, "symbolic_units")))
     u1
-  else if (ud.is.parseable(eval(value)))
-    make_unit(eval(value))
-  else
+  else if (ud.is.parseable(eval(value))) {
+	ev = eval(value)
+    make_unit(ev)
+  } else
     stop(paste(val_char, "not recognized as unit"))
 
   if (inherits(u, "units"))

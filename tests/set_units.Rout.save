@@ -60,15 +60,17 @@ ambiguous argument: m is interpreted by its name, not by its value
 > degree_C = "m"
 > set_units(1, degree_C)
 1 °C
-Warning message:
-ambiguous argument: degree_C is interpreted by its name, not by its value 
+Warning messages:
+1: ambiguous argument: degree_C is interpreted by its name, not by its value 
+2: In strsplit(msg, "\n") : input string 1 is invalid in this locale
 > 
 > degree_C = make_unit("m")
 > 
 > set_units(1, degree_C)
 1 °C
-Warning message:
-ambiguous argument: degree_C is interpreted by its name, not by its value 
+Warning messages:
+1: ambiguous argument: degree_C is interpreted by its name, not by its value 
+2: In strsplit(msg, "\n") : input string 1 is invalid in this locale
 > 
 > # OK:
 > set_units(1, "bar")
@@ -80,19 +82,9 @@ ambiguous argument: degree_C is interpreted by its name, not by its value
 > (set_units(1, tenbar))
 10 bar
 > 
-> # still worrying:
-> set_units(1, units(degree_C))
-1 units(degree_C)
-> udunits2::ud.is.parseable("units(degree_C)")
-[1] TRUE
-> # no warning, because units(degree_C) does not eval
-> set_units(1, units(m))
-1 units(m)
-> udunits2::ud.is.parseable("units(m)")
-[1] TRUE
 > set_units(10, uu <- degree_C)
 10 m
 > 
 > proc.time()
    user  system elapsed 
-  0.524   0.260   0.518 
+  0.476   0.280   0.459 
