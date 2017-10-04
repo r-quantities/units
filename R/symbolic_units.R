@@ -139,9 +139,12 @@ make_unit <- function(name, user_defined = FALSE) {
     if (is.name(expr))
       expr = eval(expr, parent.frame())
 	e = try(expr0 <- parse(text = expr), silent = TRUE)
-	if (inherits(e, "try-error") && udunits2::ud.is.parseable(as.character(expr)))
-      return(make_unit0(expr))
-	else
+	if (inherits(e, "try-error")) {
+	  if (udunits2::ud.is.parseable(as.character(expr)))
+        return(make_unit0(expr))
+      else
+	    stop(paste("cannot create unit from", expr))
+    } else
       expr = expr0
   }
 
