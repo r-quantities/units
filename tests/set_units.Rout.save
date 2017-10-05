@@ -60,17 +60,15 @@ ambiguous argument: m is interpreted by its name, not by its value
 > degree_C = "m"
 > set_units(1, degree_C)
 1 °C
-Warning messages:
-1: ambiguous argument: degree_C is interpreted by its name, not by its value 
-2: In strsplit(msg, "\n") : input string 1 is invalid in this locale
+Warning message:
+ambiguous argument: degree_C is interpreted by its name, not by its value 
 > 
 > degree_C = make_unit("m")
 > 
 > set_units(1, degree_C)
 1 °C
-Warning messages:
-1: ambiguous argument: degree_C is interpreted by its name, not by its value 
-2: In strsplit(msg, "\n") : input string 1 is invalid in this locale
+Warning message:
+ambiguous argument: degree_C is interpreted by its name, not by its value 
 > 
 > # OK:
 > set_units(1, "bar")
@@ -87,4 +85,4 @@ Warning messages:
 > 
 > proc.time()
    user  system elapsed 
-  0.476   0.280   0.459 
+  0.468   0.292   0.456 

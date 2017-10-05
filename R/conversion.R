@@ -167,12 +167,11 @@ set_units.numeric = function(x, value = units::unitless, ...) {
       unit_ambiguous(val_char)
     if (ud.get.symbol(val_char) != "")
       val_char = ud.get.symbol(val_char)
-    make_unit(val_char)
+    make_unit0(val_char)
   } else if (!inherits(e1, "try-error") && (inherits(u1, "units") || inherits(u1, "symbolic_units")))
     u1
   else if (ud.is.parseable(eval(value))) {
-	ev = eval(value)
-    make_unit(ev)
+    make_unit0(eval(value))
   } else
     stop(paste(val_char, "not recognized as unit"))
 
