@@ -103,7 +103,7 @@ plot.units <- function(x, y, xlab = NULL, ylab = NULL, ...) {
 #' @export
 #' @examples
 #' units_options(parse = FALSE) # otherwise we break on the funny symbol!
-#' u = rnorm(100) * make_unit(`°C`)
+#' u = set_units(rnorm(100), degree_C)
 #' hist(u)
 hist.units <- function(x, xlab = NULL, main = paste("Histogram of", xname), ...) {
   # We define the axis labels if they are not already provided and then let
