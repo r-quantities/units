@@ -47,9 +47,9 @@ test_that("we can convert NA values to physical units", {
   expect_that(as.character(units(x)), equals('m'))
 
   x <- rep(NA,5)
-  units(x) <- with(ud_units,m/s)
+  units(x) <- make_units(m/s)
   expect_equal(length(x),5)
-  expect_equal(units(x),units(with(ud_units,m/s)))
+  expect_equal(units(x),units(make_units(m/s)))
   expect_equal(x,5 * x)
   expect_error(x + 1)
 })
@@ -116,14 +116,14 @@ test_that("m + m*s is an error", {
 })
 
 test_that("we can convert between units that are not simply a scalar from each other", {
-  m <- 0 * parse_unit("degC")
-  units(m) <- parse_unit("degK")
+  m <- 0 * parse_units("degC")
+  units(m) <- parse_units("degK")
   expect_equal(as.numeric(m), udunits2::ud.convert(0, "degC", "degK"))  
   expect_equal(as.character(units(m)), "degK")
   
-  temp <- 75 * parse_unit('degF')
-  units(temp) <- parse_unit('degK')
-  result <- temp / parse_unit('degF')
+  temp <- 75 * parse_units('degF')
+  units(temp) <- parse_units('degK')
+  result <- temp / parse_units('degF')
   expect_equal(as.numeric(result), 75)
   expect_equal(units(result), unitless)
 })

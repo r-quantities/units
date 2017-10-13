@@ -6,12 +6,6 @@
 \alias{units}
 \alias{units<-.units}
 \alias{units}
-\alias{set_units}
-\alias{units}
-\alias{set_units.units}
-\alias{units}
-\alias{set_units.numeric}
-\alias{units}
 \alias{units.units}
 \title{Set measurement units on a numeric vector}
 \usage{
@@ -19,20 +13,12 @@
 
 \method{units}{units}(x) <- value
 
-set_units(x, value, ...)
-
-\method{set_units}{units}(x, value, ...)
-
-\method{set_units}{numeric}(x, value = units::unitless, ...)
-
 \method{units}{units}(x)
 }
 \arguments{
 \item{x}{numeric vector, or object of class \code{units}}
 
 \item{value}{object of class \code{units} or \code{symbolic_units}, or in the case of \code{set_units} expression with symbols that can be resolved in \link{ud_units} (see examples).}
-
-\item{...}{ignored}
 }
 \value{
 object of class \code{units}
@@ -46,9 +32,6 @@ Convert units
 
 retrieve measurement units from \code{units} object
 }
-\details{
-\code{set_units} is a pipe-friendly version of \code{units<-} that evaluates \code{value} first in the environment of \link{ud_units}.
-}
 \examples{
 x = 1:3
 class(x)
@@ -58,11 +41,4 @@ y = 2:5
 a <- with(ud_units, 1:3 * m/s)
 units(a) <- with(ud_units, km/h)
 a
-# note that these units have NOT been defined or declared before:
-set_units(1:5, N/m^2)
-set_units(1:5, unitless) # unit "1", unitless
-if (require(magrittr)) {
- 1:5 \%>\% set_units(N/m^2)
- 1:10 \%>\% set_units(m) \%>\% set_units(km)
-}
 }

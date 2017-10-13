@@ -86,111 +86,13 @@ unit_ambiguous = function(value) {
   warning(msg, call. = FALSE)
 }
 
-#' @name units
-#' @export
-#' @param ... ignored
-#' @details \code{set_units} is a pipe-friendly version of \code{units<-} that evaluates \code{value} first in the environment of \link{ud_units}.
-#' @examples
-#' # note that these units have NOT been defined or declared before:
-#' set_units(1:5, N/m^2)
-#' set_units(1:5, unitless) # unit "1", unitless
-#' if (require(magrittr)) {
-#'  1:5 %>% set_units(N/m^2)
-#'  1:10 %>% set_units(m) %>% set_units(km)
-#' }
-set_units = function(x, value, ...) UseMethod("set_units")
 
-#' @name units
-#' @export
-set_units.units = function(x, value, ...) {
-
-  subs = substitute(value)
-  e0 = try(u0 <- eval(subs, ud_units, NULL), silent = TRUE)
-
-  e1 = try(u1 <- eval(subs, ud_units, parent.frame()), silent = TRUE)
-  val_char = gsub("\"", "", deparse(subs))
-
-  e2 = try(u2 <- eval(subs, parent.frame()), silent = TRUE) # present in parent.frame()?
-  is_value = !inherits(e2, "try-error") && !is.character(subs) && 
-  	(inherits(u2, "units") || (is.character(u2) && ud.is.parseable(u2)))
-
-  u = if (!inherits(e0, "try-error") && inherits(u0, "units")) {
-    if (is_value) 
-      unit_ambiguous(val_char)
-    u0
-  } else if (val_char %in% names(ud_units)) {
-    if (is_value) 
-      unit_ambiguous(val_char)
-    ud_units[[ val_char ]]
-  } else if (ud.is.parseable(val_char)) {
-    if (is_value) 
-      unit_ambiguous(val_char)
-    if (ud.get.symbol(val_char) != "")
-      val_char = ud.get.symbol(val_char)
-    make_unit0(val_char)
-  } else if (!inherits(e1, "try-error") && (inherits(u1, "units") || inherits(u1, "symbolic_units")))
-    u1
-  else if (ud.is.parseable(eval(value))) {
-    make_unit0(eval(value))
-  } else
-    stop(paste(val_char, "not recognized as unit"))
-
-  units(x) = u
-  x
-}
-
-#' @name units
-#' @export
-set_units.numeric = function(x, value = units::unitless, ...) {
-
-  subs = substitute(value)
-  e0 = try(u0 <- eval(subs, ud_units, NULL), silent = TRUE)
-
-  e1 = try(u1 <- eval(subs, ud_units, parent.frame()), silent = TRUE)
-  val_char = gsub("\"", "", deparse(subs))
-
-  e2 = try(u2 <- eval(subs, parent.frame()), silent = TRUE) # present in parent.frame()?
-  is_value = !inherits(e2, "try-error") && !is.character(subs) && 
-  	(inherits(u2, "units") || (is.character(u2) && ud.is.parseable(u2)))
-
-  u = if (!inherits(e0, "try-error") && inherits(u0, "units")) {
-    if (is_value) 
-      unit_ambiguous(val_char)
-    u0
-  } else if (val_char %in% names(ud_units)) {
-    if (is_value) 
-      unit_ambiguous(val_char)
-    ud_units[[ val_char ]]
-  } else if (ud.is.parseable(val_char)) {
-    if (is_value) 
-      unit_ambiguous(val_char)
-    if (ud.get.symbol(val_char) != "")
-      val_char = ud.get.symbol(val_char)
-    make_unit0(val_char)
-  } else if (!inherits(e1, "try-error") && (inherits(u1, "units") || inherits(u1, "symbolic_units")))
-    u1
-  else if (ud.is.parseable(eval(value))) {
-    make_unit0(eval(value))
-  } else
-    stop(paste(val_char, "not recognized as unit"))
-
-  if (inherits(u, "units"))
-    x * u
-  else {
-    units(x) <- u
-	x
-  }
-}
-
-set_units.logical <- function(x, value = units::unitless, ...) {
-  if (all(is.na(x))) {
-    c <- match.call()
-    c[1] <- call('set_units.numeric')
-    c[['x']] <- as.numeric(x)
-    eval(c)
-  } else {
+`units<-.logical` <- function(x, value) {
+  if (!all(is.na(x))) 
     stop("x must be numeric, non-NA logical not supported")
-  }
+  
+  stopifnot(inherits(value, "units") || inherits(value, "symbolic_units"))
+  set_units(as.numeric(x), value)
 }
 
 #' retrieve measurement units from \code{units} object

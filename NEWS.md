@@ -1,8 +1,18 @@
 # version 0.5-0
 
-* non-R expressions like `m kg-1` are no longer accepted by `make_unit`, but are parsed by `parse_unit`
+* Unit creation has been significantly refactored. New user facing unit creation
+functions are `make_units()` and `parse_units()`, which parse units as R
+expressions. see `?make_units` for details. @t-kalinowski
 
-* `make_unit` now uses the R expression evaluator; #60
+* `make_unit` has been depracated, please use `symbolic_unit` instead.
+
+* `parse_unit` has been depracated, please use `parse_units(implicit_exponents = TRUE)` instead.
+
+* `set_units` is no longer an exported generic. Instead, please define methods for `units<-`.
+
+* `ud_units` is no longer necessary and is soft-deprecated, and may be removed in a future release.
+
+
 
 * add `%*%` as an S3 generic; #54 
 
