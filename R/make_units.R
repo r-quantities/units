@@ -270,35 +270,3 @@ pc <- function(x) {
   
   eval(expr, tmp_env, baseenv())
 }
-
-
-
-
-# 
-# 
-# 
-# make_units(log(ug))
-# make_units(ug)
-# 
-# make_units(ug/l)
-# make_units(ug/foo/baz, TRUE)
-# make_units(ug/l)
-# #> 1 ug/l
-# parse_units("ug/l")
-# parse_units("ug/foo/baz", allow_user_defined = TRUE)
-# parse_units("in/s")
-# parse_units("'/s")
-# parse_units("log(ug/l)")
-# parse_units("in/s")
-# #> 1 ug/l
-# set_units(5, ug/l)
-# #> 5 ug/l
-# x <- 5
-# units(x) <- parse_units("ug/l")
-# set_units(1, units(x))
-# #> 1 ug/l
-# set_units(x, mg/l)
-# #> 0.005 mg/l
-# units(x) <- make_units(mg/l)
-# x
-#> 0.005 mg/l
