@@ -1,14 +1,4 @@
 
-
-
-# @return A new unit object that can be used in arithmetics
-# @examples
-# make_unit(m/s)
-# make_unit("m/s")
-# str = "m/s"
-# make_unit(str)
-#@export
-
 #' deprecated functions
 #' 
 #' The following functions are deprecated and will be removed in a future release.
