@@ -12,7 +12,9 @@ expressions. see `?make_units` for details. @t-kalinowski
 
 * `ud_units` is no longer necessary and is soft-deprecated, and may be removed in a future release.
 
-
+* new functions `valid_udunits()` and `valid_udunits_prefixes()` return
+informative dataframes listing the complete set of uit symbols and and unit
+names recognized. (@t-kalinowski)
 
 * add `%*%` as an S3 generic; #54 
 

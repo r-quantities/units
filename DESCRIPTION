@@ -15,7 +15,7 @@ Suggests:
     tibble,
     knitr,
     testthat,
-	ggforce,
+    ggforce,
     magrittr
 VignetteBuilder: knitr
 Description: Support for measurement units in R vectors, matrices
