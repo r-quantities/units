@@ -179,13 +179,11 @@ parse_units <- function(chr,
 #'   expression itself will not be used
 #' @export
 #' @rdname make_units
-set_units <- function(n, un) {
+set_units <- function(n, un, allow_user_defined = FALSE) {
   expr <- substitute(un)
   o <- try(force(un), silent = TRUE)
-  if (!inherits(o, "units") &&
-      !inherits(o, "symbolic_units") &&
-      !inherits(o, "difftime"))
-    un <- .eval_units(expr)
+  if (!inherits(o, "units") && !inherits(o, "symbolic_units"))
+    un <- .eval_units(expr, allow_user_defined = allow_user_defined)
 
   units(n) <- un
   n
