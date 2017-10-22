@@ -142,6 +142,7 @@ backtick <- function(x) {
 parse_units <- function(chr,
                         implicit_exponents = FALSE,
                         allow_user_defined = FALSE,
+                        auto_convert_name_to_symbol = TRUE,
                         auto_backtick = TRUE) {
 
 
@@ -159,7 +160,8 @@ parse_units <- function(chr,
     return(symbolic_unit(un, user_defined = user_defined, check_is_parsable = TRUE))
   }
 
-  .eval_units(expr, allow_user_defined = allow_user_defined)
+  .eval_units(expr, allow_user_defined = allow_user_defined, 
+              auto_convert_name_to_symbol = auto_convert_name_to_symbol)
 }
 
 
@@ -205,13 +207,20 @@ set_units <- function(n, un) {
 #'   an error is thrown.
 #'   
 #' @rdname make_units
-symbolic_unit <- function(chr, check_is_parsable = TRUE, user_defined = TRUE) {
+symbolic_unit <- function(chr, check_is_parsable = TRUE, user_defined = TRUE, 
+                          auto_convert_name_to_symbol = TRUE) {
   stopifnot(is.character(chr), length(chr) == 1)
   if(check_is_parsable && !udunits2::ud.is.parseable(chr)) {
     msg <- paste(sQuote(chr), "is not a unit recognized by udunits")
     fun <- if(isTRUE(user_defined)) warning else stop
     fun(msg, call. = FALSE)
   }
+  if(auto_convert_name_to_symbol && ud.is.parseable(chr)) {
+    sym <- ud.get.symbol(chr)
+    if(nzchar(sym))
+      chr <- sym
+  }
+  
   as_units.default(1, .symbolic_units(chr))
 }
 
@@ -242,7 +251,7 @@ pc <- function(x) {
 
 
 
-.eval_units <- function(expr, allow_user_defined = FALSE) {
+.eval_units <- function(expr, allow_user_defined = FALSE, auto_convert_name_to_symbol = TRUE) {
   
   stopifnot(is.language(expr))
   
@@ -256,7 +265,8 @@ pc <- function(x) {
   }
   
   names(vars) <- vars
-  tmp_env <- lapply(vars, symbolic_unit, check_is_parsable = FALSE)
+  tmp_env <- lapply(vars, symbolic_unit, check_is_parsable = FALSE, 
+                    auto_convert_name_to_symbol = auto_convert_name_to_symbol)
   
   eval(expr, tmp_env, baseenv())
 }
