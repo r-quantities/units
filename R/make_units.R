@@ -21,7 +21,7 @@ make_unit <- function(x, ...) {
 #'    \item \code{symbolic_unit()} for creation of a single symbolic unit: \code{symbolic_units("kg")}
 #'    }
 #'
-#' @param x a bare R expression.
+#' @param x a bare R expression describing units. Must be valid R syntax (reserved R syntax words like \code{in} must be backticked)
 #' @param allow_user_defined If FALSE (the default), an error is thrown if any
 #'   of the symbols that makeup the units expression are not recognized by the
 #'   udunits database. See details.
@@ -36,14 +36,6 @@ make_unit <- function(x, ...) {
 #'   is still returned, with a warning. To avoid the warning with user defined
 #'   units, use \code{symbolic_unit(...,user_defined = TRUE)}
 #'   
-#'   
-#'    the unit or a part of the unit is
-#'   unrecognized by the udunits2 database that powers the units package.
-#'   Otherwise throws warning. use `symbolic_unit(user_defined = TRUE)` to avoid
-#'   warnings with user defined units
-#'   
-#'   Must be valid R syntax (reserved words like \code{in} must be backticked)
-#' 
 #' @return A new unit object that can be used in arithmetics
 #' @export
 #' @noMd
@@ -181,13 +173,11 @@ parse_units <- function(chr,
 #'   expression itself will not be used
 #' @export
 #' @rdname make_units
-set_units <- function(n, un) {
+set_units <- function(n, un, allow_user_defined = FALSE) {
   expr <- substitute(un)
   o <- try(force(un), silent = TRUE)
-  if (!inherits(o, "units") &&
-      !inherits(o, "symbolic_units") &&
-      !inherits(o, "difftime"))
-    un <- .eval_units(expr)
+  if (!inherits(o, "units") && !inherits(o, "symbolic_units"))
+    un <- .eval_units(expr, allow_user_defined = allow_user_defined)
 
   units(n) <- un
   n
