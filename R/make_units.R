@@ -92,8 +92,11 @@ make_unit <- function(x, ...) {
 #'  # first sets to m, then converts to km
 #'  1:10 %>% set_units(m) %>% set_units(km) 
 #' }
-make_units <- function(x, allow_user_defined = FALSE){
-  .eval_units(substitute(x), allow_user_defined = allow_user_defined)
+make_units <- function(x, allow_user_defined = FALSE, 
+                       auto_convert_name_to_symbol = TRUE) {
+  .eval_units(substitute(x), 
+              allow_user_defined = allow_user_defined, 
+              auto_convert_name_to_symbol = auto_convert_name_to_symbol)
 }
 
 backtick <- function(x) {
@@ -173,11 +176,13 @@ parse_units <- function(chr,
 #'   expression itself will not be used
 #' @export
 #' @rdname make_units
-set_units <- function(n, un, allow_user_defined = FALSE) {
+set_units <- function(n, un, allow_user_defined = FALSE,
+                      auto_convert_name_to_symbol = TRUE) {
   expr <- substitute(un)
   o <- try(force(un), silent = TRUE)
   if (!inherits(o, "units") && !inherits(o, "symbolic_units"))
-    un <- .eval_units(expr, allow_user_defined = allow_user_defined)
+    un <- .eval_units(expr, allow_user_defined = allow_user_defined,
+                      auto_convert_name_to_symbol = auto_convert_name_to_symbol)
 
   units(n) <- un
   n
