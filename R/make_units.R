@@ -157,7 +157,7 @@ parse_units <- function(chr,
   if(inherits(o, "try-error")) {
     warning("Could not parse expression: ", sQuote(chr), 
       ". Returning as a single symbolic_unit()", call. = FALSE)
-    return(symbolic_unit(un, user_defined = user_defined, check_is_parsable = TRUE))
+    return(symbolic_unit(chr, user_defined = allow_user_defined, check_is_parsable = TRUE))
   }
 
   .eval_units(expr, allow_user_defined = allow_user_defined, 
