@@ -109,7 +109,7 @@ backtick <- function(x) {
   # don't double up backticks
   x <- gsub("`?([^() \\*^/`-]+)`?", "`\\1`", x)
   
-  gsub("`([0-9]+)`", "\\1", x) # unbacktick bare numbers
+  gsub("`([0-9]*\\.?[0-9]+)`", "\\1", x) # unbacktick bare numbers
 }
 
 #' @rdname make_units
