@@ -237,13 +237,16 @@ pc <- function(x) {
 
 
 
-.eval_units <- function(expr, allow_user_defined = FALSE, auto_convert_name_to_symbol = TRUE) {
+.eval_units <- function(expr, 
+  allow_user_defined = FALSE, 
+  auto_convert_name_to_symbol = TRUE) {
   
   stopifnot(is.language(expr))
   
   vars <- all.vars(expr)
-  parsable <- vapply(vars, ud.is.parseable, logical(1L))
+  if(!length(vars)) return(as_units(1, unitless))
   
+  parsable <- vapply(vars, ud.is.parseable, logical(1L))
   if(!all(parsable)) {
     msg <- .msg_units_not_recognized(vars[!parsable], expr)
     fun <- if (allow_user_defined) warning else stop
