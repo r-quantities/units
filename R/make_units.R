@@ -164,8 +164,6 @@ parse_units <- function(chr,
 #' @param n a numeric to be assigned units, or a units object to have units
 #'   converted.
 #'   
-#' @param un a units object or a bare expression describing a units object.
-#' 
 #' @details In \code{set_units()}, standard evaluation of the supplied argument
 #'   \code{un} is attempted first. If the result is not a units object, then the
 #'   bare expression that was typed into the function call is used to create a
@@ -176,15 +174,8 @@ parse_units <- function(chr,
 #'   expression itself will not be used
 #' @export
 #' @rdname make_units
-set_units <- function(n, un, allow_user_defined = FALSE,
-                      auto_convert_name_to_symbol = TRUE) {
-  expr <- substitute(un)
-  o <- try(force(un), silent = TRUE)
-  if (!inherits(o, "units") && !inherits(o, "symbolic_units"))
-    un <- .eval_units(expr, allow_user_defined = allow_user_defined,
-                      auto_convert_name_to_symbol = auto_convert_name_to_symbol)
-
-  units(n) <- un
+set_units <- function(n, ...) {
+  units(n) <- make_units(...)
   n
 }
 
