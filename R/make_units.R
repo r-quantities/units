@@ -44,10 +44,11 @@ make_unit <- function(x, ...) {
 #' # meters per second squared, i.e, acceleration
 #' x1 <- make_units(m/s^2)
 #' x2 <- parse_units("m/s^2")
-#' x3 <- set_units(1, m/s^2)
-#' x4 <- set_units(1, x1)
-#' x5 <- set_units(1, units(x1))
-#' x6 <- symbolic_unit("m") / symbolic_unit("s")^2
+#' x3 <- set_units(1,  m/s^2)
+#' x4 <- set_units(1, "m/s^2", mode = "string")
+#' x5 <- set_units(1, x1, mode = "units")
+#' x6 <- set_units(1, units(x1), mode = "units")
+#' x7 <- symbolic_unit("m") / symbolic_unit("s")^2
 #' 
 #' all_identical <- function(...) {
 #'   l <- list(...)
@@ -56,7 +57,7 @@ make_unit <- function(x, ...) {
 #'       return(FALSE)
 #'   TRUE
 #' }
-#' all_identical(x1, x2, x3, x4, x5, x6)
+#' all_identical(x1, x2, x3, x4, x5, x6, x7)
 #' 
 #' # Both full unit names or symbols can be used. Arithmetic operations and unit
 #' conversion between # unit objects that were defined as symbols and names will
