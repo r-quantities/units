@@ -85,7 +85,6 @@ make_unit <- function(x, ...) {
 #' # set_units is just a pipe friendly version of `units<-`
 #' note that these units have NOT been defined or declared before:
 #' set_units(1:5, N/m^2)
-#' set_units(1:5, unitless) # unit "1", unitless
 #' if (require(magrittr)) {
 #'  1:5 %>% set_units(N/m^2)
 #'  
@@ -93,10 +92,10 @@ make_unit <- function(x, ...) {
 #'  1:10 %>% set_units(m) %>% set_units(km) 
 #' }
 make_units <- function(x, allow_user_defined = FALSE, 
-                       auto_convert_name_to_symbol = TRUE) {
+                       auto_convert_names_to_symbols = TRUE) {
   .eval_units(substitute(x), 
               allow_user_defined = allow_user_defined, 
-              auto_convert_name_to_symbol = auto_convert_name_to_symbol)
+              auto_convert_names_to_symbols = auto_convert_names_to_symbols)
 }
 
 backtick <- function(x) {
@@ -137,7 +136,7 @@ backtick <- function(x) {
 parse_units <- function(chr,
                         implicit_exponents = FALSE,
                         allow_user_defined = FALSE,
-                        auto_convert_name_to_symbol = TRUE,
+                        auto_convert_names_to_symbols = TRUE,
                         auto_backtick = TRUE) {
 
 
@@ -156,7 +155,7 @@ parse_units <- function(chr,
   }
 
   .eval_units(expr, allow_user_defined = allow_user_defined, 
-              auto_convert_name_to_symbol = auto_convert_name_to_symbol)
+              auto_convert_names_to_symbols = auto_convert_names_to_symbols)
 }
 
 
@@ -243,7 +242,7 @@ pc <- function(x) {
 
 .eval_units <- function(expr, 
   allow_user_defined = FALSE, 
-  auto_convert_name_to_symbol = TRUE) {
+  auto_convert_names_to_symbols = TRUE) {
   
   stopifnot(is.language(expr))
   
@@ -259,7 +258,7 @@ pc <- function(x) {
   
   names(vars) <- vars
   tmp_env <- lapply(vars, symbolic_unit, check_is_parsable = FALSE, 
-                    auto_convert_name_to_symbol = auto_convert_name_to_symbol)
+                    auto_convert_name_to_symbol = auto_convert_names_to_symbols)
   
   unit <- eval(expr, tmp_env, baseenv())
   
