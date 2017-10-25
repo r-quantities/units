@@ -174,11 +174,11 @@ parse_units <- function(chr,
 #'   expression itself will not be used
 #' @export
 #' @rdname make_units
-set_units <- function(n, ..., mode = c("symbols", "string", "unit")) {
+set_units <- function(n, ..., mode = c("symbols", "string", "units")) {
     units(n) <- switch(match.arg(mode),
       symbols = make_units(...),
       string  = parse_units(...),
-      unit    = identity(...)
+      units    = identity(...)
     )
     n
   }
@@ -269,5 +269,5 @@ pc <- function(x) {
 The returned unit object was coerced to a value of 1.
 Use `install_conversion_constant()` to define a new unit that is a multiple of another unit.")
   
-  set_units(1L, units(unit), mode = "unit")
+  set_units(1L, units(unit), mode = "units")
 }
