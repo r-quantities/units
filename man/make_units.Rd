@@ -7,21 +7,27 @@
 \alias{symbolic_unit}
 \title{Unit creation}
 \usage{
-make_units(x, allow_user_defined = FALSE)
+make_units(x, allow_user_defined = FALSE,
+  auto_convert_names_to_symbols = TRUE)
 
 parse_units(chr, implicit_exponents = FALSE, allow_user_defined = FALSE,
-  auto_backtick = TRUE)
+  auto_convert_names_to_symbols = TRUE, auto_backtick = TRUE)
 
-set_units(n, un)
+set_units(n, ..., mode = c("symbols", "string", "units"))
 
-symbolic_unit(chr, check_is_parsable = TRUE, user_defined = TRUE)
+symbolic_unit(chr, check_is_parsable = TRUE, user_defined = TRUE,
+  auto_convert_name_to_symbol = TRUE)
 }
 \arguments{
-\item{x}{a bare R expression.}
+\item{x}{a bare R expression describing units. Must be valid R syntax
+(reserved R syntax words like \code{in} must be backticked)}
 
 \item{allow_user_defined}{If FALSE (the default), an error is thrown if any
 of the symbols that makeup the units expression are not recognized by the
 udunits database. See details.}
+
+\item{auto_convert_names_to_symbols}{Automatically attempt conversion of
+names to symbols in the supplied unit expression.}
 
 \item{chr}{a scalar character string describing a unit.}
 
@@ -35,7 +41,11 @@ details.}
 \item{n}{a numeric to be assigned units, or a units object to have units
 converted.}
 
-\item{un}{a units object or a bare expression describing a units object.}
+\item{mode}{if \code{"symbols"} (the default), then \code{...} are passed on
+to \code{make_units()}. If \code{"string"}, then \code{...} are passed on to
+\code{parse_units()}. If \code{"units"}, then \code{...} must be a single
+object of class \code{units} or \code{.symbolic_units} and the value is
+directly assigned to \code{n} via \code{`units<-`}}
 
 \item{check_is_parsable}{check if the symbolic unit is recognized by the
 udunits2 database}
@@ -45,6 +55,11 @@ database. This argument is ignored if `check_is_parsable = FALSE`. If
 `check_is_parsable = TRUE` and `user_defined = TRUE`, a warning is issued
 in the case of an unrecognized units, otherwise, if `user_defined = FALSE`,
 an error is thrown.}
+
+\item{auto_convert_name_to_symbol}{Automatically convert a unit name to it's
+symobl. E.g., \code{kilogram} becomes \code{kg}. Note, conversion is not
+reliable if the unit name contains a prefixe. This is a limitation of the
+underlying \code{udunits2} package and may change in the future.}
 }
 \value{
 A new unit object that can be used in arithmetics
@@ -52,10 +67,13 @@ A new unit object that can be used in arithmetics
 \description{
 Four functions are provided for creating \code{units} objects: 
 \itemize{ 
-   \item \code{make_units()} accepts a bare expression: \code{make_units(kg*m/s^2)}
+   \item \code{make_units()} accepts a bare expression: 
+         \code{make_units(kg*m/s^2)}
    \item \code{parse_units()} accepts a string: \code{parse_units("kg*m/s^2")}
-   \item \code{set_units()} a pipe friendly version of \code{`units<-`}. Accepts a unit object or a bare expression.
-   \item \code{symbolic_unit()} for creation of a single symbolic unit: \code{symbolic_units("kg")}
+   \item \code{set_units()} a pipe friendly version of \code{`units<-`}. 
+          Has multiple modes of operation, see details.
+   \item \code{symbolic_unit()} for creation of a single symbolic unit: 
+         \code{symbolic_units("kg")}
    }
 }
 \details{
@@ -68,14 +86,6 @@ In \code{make_units()}, \code{set_units()}, and
   unrecognized unit is found in the expression, a valid \code{units} object
   is still returned, with a warning. To avoid the warning with user defined
   units, use \code{symbolic_unit(...,user_defined = TRUE)}
-  
-  
-   the unit or a part of the unit is
-  unrecognized by the udunits2 database that powers the units package.
-  Otherwise throws warning. use `symbolic_unit(user_defined = TRUE)` to avoid
-  warnings with user defined units
-  
-  Must be valid R syntax (reserved words like \code{in} must be backticked)
 
 If \code{auto_backtick = TRUE} in \code{parse_units()}, symbols are
   automatically backticked prior to parsing the string as an R expression. A
@@ -93,38 +103,30 @@ If \code{auto_backtick = TRUE} in \code{parse_units()}, symbols are
   conversion and other Math operations should still give correct results so
   long as the unit string supplied returns \code{TRUE} for
   \code{udunits2::ud.is.parsable()}
-
-In \code{set_units()}, standard evaluation of the supplied argument
-  \code{un} is attempted first. If the result is not a units object, then the
-  bare expression that was typed into the function call is used to create a
-  new units object. For this reason, using \code{set_units()} with a bare
-  expression should be avoided in R packages and other situations where the
-  evaluation environemnt isn't always known in advance, because the supplied
-  expression may unexpectantly evaluate to a valid object, in which case the
-  expression itself will not be used
 }
 \examples{
 # these calls all return identical objects
 # meters per second squared, i.e, acceleration
 x1 <- make_units(m/s^2)
 x2 <- parse_units("m/s^2")
-x3 <- set_units(1, m/s^2)
-x4 <- set_units(1, x1)
-x5 <- set_units(1, units(x1))
-x6 <- symbolic_unit("m") / symbolic_unit("s")^2
+x3 <- set_units(1,  m/s^2)
+x4 <- set_units(1, "m/s^2", mode = "string")
+x5 <- set_units(1, x1, mode = "units")
+x6 <- set_units(1, units(x1), mode = "units")
+x7 <- symbolic_unit("m") / symbolic_unit("s")^2
 
-all_identical <- function(...) {
+all_equal <- function(...) {
   l <- list(...)
   for(i in seq_along(l)[-1])
-    if(!identical(l[[1]], l[[i]]))
+    if(l[[1]] != l[[i]])
       return(FALSE)
   TRUE
 }
-all_identical(x1, x2, x3, x4, x5, x6)
+all_equal(x1, x2, x3, x4, x5, x6, x7)
 
 # Both full unit names or symbols can be used. Arithmetic operations and unit
-conversion between # unit objects that were defined as symbols and names will
-work correctly, # although unit simplification in printing may not always occur.
+# conversion between unit objects that were defined as symbols and names will
+# work correctly, although unit simplification in printing may not always occur.
 x <- 500 * make_units(micrograms/liter)
 y <- set_units(200, ug/l)
 x + y
@@ -147,13 +149,11 @@ ml <- make_units(ml)
 cells/ml
 
 # set_units is just a pipe friendly version of `units<-`
-note that these units have NOT been defined or declared before:
 set_units(1:5, N/m^2)
-set_units(1:5, unitless) # unit "1", unitless
 if (require(magrittr)) {
  1:5 \%>\% set_units(N/m^2)
  
  # first sets to m, then converts to km
- 1:10 \%>\% set_units(m) \%>\% set_units(km) 
+ 1:5 \%>\% set_units(m) \%>\% set_units(km) 
 }
 }
