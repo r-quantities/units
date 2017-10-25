@@ -211,7 +211,7 @@ symbolic_unit <- function(chr, check_is_parsable = TRUE, user_defined = TRUE,
       chr <- sym
   }
   
-  as_units.default(1, .symbolic_units(chr))
+  set_units(1L, .symbolic_units(chr), mode = "units")
 }
 
 
