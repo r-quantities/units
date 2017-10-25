@@ -174,10 +174,14 @@ parse_units <- function(chr,
 #'   expression itself will not be used
 #' @export
 #' @rdname make_units
-set_units <- function(n, ...) {
-  units(n) <- make_units(...)
-  n
-}
+set_units <- function(n, ..., mode = c("symbols", "string", "unit")) {
+    units(n) <- switch(match.arg(mode),
+      symbols = make_units(...),
+      string  = parse_units(...),
+      unit    = identity(...)
+    )
+    n
+  }
 
 
 #' @export
