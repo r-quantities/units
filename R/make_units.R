@@ -261,5 +261,13 @@ pc <- function(x) {
   tmp_env <- lapply(vars, symbolic_unit, check_is_parsable = FALSE, 
                     auto_convert_name_to_symbol = auto_convert_name_to_symbol)
   
-  eval(expr, tmp_env, baseenv())
+  unit <- eval(expr, tmp_env, baseenv())
+  
+  if(as.numeric(unit) != 1) 
+    warning(call. = FALSE,
+"In ", sQuote(deparse(expr)), " the numeric multiplier ", sQuote(as.numeric(unit)), " was discarded. 
+The returned unit object was coerced to a value of 1.
+Use `install_conversion_constant()` to define a new unit that is a multiple of another unit.")
+  
+  set_units(1L, units(unit), mode = "unit")
 }
