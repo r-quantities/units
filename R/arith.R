@@ -157,6 +157,7 @@ Ops.units <- function(e1, e2) {
 #' a %*% set_units(1:5, unitless)
 #' set_units(1:5, unitless) %*% a
 `%*%.units` = function(x, y) {
-	set_units(`%*%.default`(unclass(x), unclass(y)), 
-		set_units(1, units(x)) * set_units(1, units(y)))
+	ret = `%*%.default`(unclass(x), unclass(y))
+	units(ret) = .multiply_symbolic_units(1, units(x), units(y))
+	ret
 }

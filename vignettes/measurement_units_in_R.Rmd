@@ -369,7 +369,7 @@ gallon = make_unit("gallon")
 # initialize units:
 mtcars$consumption = set_units(mtcars$mpg, mi/gallon)
 # "in" is also a reserved R keyword, and needs special treatment:
-mtcars$displacement = set_units(mtcars$disp, ud_units[["in"]]^3)
+mtcars$displacement = set_units(mtcars$disp, `in`^3)
 # convert to SI:
 mtcars$consumption = set_units(mtcars$consumption, km/l)
 mtcars$displacement = set_units(mtcars$displacement, cm^3)

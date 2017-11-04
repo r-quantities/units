@@ -231,31 +231,31 @@ as_difftime <- function(x) {
 
 #' @export
 as.POSIXct.units = function (x, tz = "UTC", ...) {
-	u1 = set_units(x, "seconds since 1970-01-01 00:00:00 +00:00")
-	as.POSIXct.numeric(as.numeric(u1), tz = tz, origin = as.POSIXct("1970-01-01 00:00:00", tz = "UTC"))
+	units(x) = symbolic_unit("seconds since 1970-01-01 00:00:00 +00:00")
+	as.POSIXct.numeric(as.numeric(x), tz = tz, origin = as.POSIXct("1970-01-01 00:00:00", tz = "UTC"))
 }
 
 #' @method as.Date units
 #' @export
 as.Date.units = function (x, ...) {
-	u1 = set_units(x, "days since 1970-01-01")
-	as.Date(as.numeric(u1), origin = as.Date("1970-01-01 00:00:00"))
+	units(x) = symbolic_unit("days since 1970-01-01")
+	as.Date(as.numeric(x), origin = as.Date("1970-01-01 00:00:00"))
 }
 
 #' @export
 as_units.POSIXt = function(x, value) {
-	u = set_units(as.numeric(as.POSIXct(x)), "seconds since 1970-01-01 00:00:00 +00:00")
-	if (missing(value))
-		u
-	else
-		set_units(u, value)
+	u = as.numeric(as.POSIXct(x))
+	units(u) = symbolic_unit("seconds since 1970-01-01 00:00:00 +00:00")
+	if (! missing(value))
+		units(u) = symbolic_unit(value)
+	u
 }
 
 #' @export
 as_units.Date = function(x, value) {
-	u = set_units(as.numeric(x), "days since 1970-01-01")
-	if (missing(value))
-		u
-	else
-		set_units(u, value)
+	u = as.numeric(x)
+	units(u) = symbolic_unit("days since 1970-01-01")
+	if (! missing(value))
+		units(u) = symbolic_unit(value)
+	u
 }
