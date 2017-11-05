@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>type_sum for tidy tibble printing — type_sum.units • units</title>
+<title>seq method for units objects — seq.units • units</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -98,35 +98,67 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>type_sum for tidy tibble printing</h1>
+    <h1>seq method for units objects</h1>
     </div>
 
     
-    <p>type_sum for tidy tibble printing</p>
+    <p>seq method for units objects</p>
     
 
-    <pre class="usage"><span class='fu'>type_sum.units</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='co'># S3 method for units</span>
+<span class='fu'>seq</span>(<span class='no'>from</span>, <span class='no'>to</span>, <span class='kw'>by</span> <span class='kw'>=</span> ((<span class='no'>to</span> - <span class='no'>from</span>)/(<span class='no'>length.out</span> - <span class='fl'>1</span>)),
+  <span class='kw'>length.out</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>along.with</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>object of class units</p></td>
+      <th>from</th>
+      <td><p>see <a href='http://www.rdocumentation.org/packages/base/topics/seq'>seq</a></p></td>
+    </tr>
+    <tr>
+      <th>to</th>
+      <td><p>see <a href='http://www.rdocumentation.org/packages/base/topics/seq'>seq</a></p></td>
+    </tr>
+    <tr>
+      <th>by</th>
+      <td><p>see <a href='http://www.rdocumentation.org/packages/base/topics/seq'>seq</a></p></td>
+    </tr>
+    <tr>
+      <th>length.out</th>
+      <td><p>see <a href='http://www.rdocumentation.org/packages/base/topics/seq'>seq</a></p></td>
+    </tr>
+    <tr>
+      <th>along.with</th>
+      <td><p>see <a href='http://www.rdocumentation.org/packages/base/topics/seq'>seq</a></p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>ignored</p></td>
+      <td><p>see <a href='http://www.rdocumentation.org/packages/base/topics/seq'>seq</a></p></td>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
+    <p>arguments with units are converted to have units of the first argument (which is either <code>from</code> or <code>to</code>)</p>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>seq</span>(<span class='kw'>to</span> <span class='kw'>=</span> <span class='fu'><a href='units.html'>set_units</a></span>(<span class='fl'>10</span>, <span class='no'>m</span>), <span class='kw'>by</span> <span class='kw'>=</span> <span class='fu'><a href='units.html'>set_units</a></span>(<span class='fl'>1</span>, <span class='no'>m</span>), <span class='kw'>length.out</span> <span class='kw'>=</span> <span class='fl'>5</span>)</div><div class='output co'>#&gt; Units: m
+#&gt; [1]  6  7  8  9 10</div><div class='input'><span class='fu'>seq</span>(<span class='fu'><a href='units.html'>set_units</a></span>(<span class='fl'>10</span>, <span class='no'>m</span>), <span class='kw'>by</span> <span class='kw'>=</span> <span class='fu'><a href='units.html'>set_units</a></span>(<span class='fl'>1</span>, <span class='no'>m</span>), <span class='kw'>length.out</span> <span class='kw'>=</span> <span class='fl'>5</span>)</div><div class='output co'>#&gt; Units: m
+#&gt; [1] 10 11 12 13 14</div><div class='input'><span class='fu'>seq</span>(<span class='fu'><a href='units.html'>set_units</a></span>(<span class='fl'>10</span>, <span class='no'>m</span>), <span class='fu'><a href='units.html'>set_units</a></span>(<span class='fl'>19</span>, <span class='no'>m</span>))</div><div class='output co'>#&gt; Units: m
+#&gt;  [1] 10 11 12 13 14 15 16 17 18 19</div><div class='input'><span class='fu'>seq</span>(<span class='fu'><a href='units.html'>set_units</a></span>(<span class='fl'>10</span>, <span class='no'>m</span>), <span class='fu'><a href='units.html'>set_units</a></span>(<span class='fl'>.1</span>, <span class='no'>km</span>), <span class='fu'><a href='units.html'>set_units</a></span>(<span class='fl'>10000</span>, <span class='no'>mm</span>))</div><div class='output co'>#&gt; Units: m
+#&gt;  [1]  10  20  30  40  50  60  70  80  90 100</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#details">Details</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

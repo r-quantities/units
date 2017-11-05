@@ -52,7 +52,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -103,6 +103,19 @@
     </div>
 
     <div class="contents">
+    <div id="version-0-5-0" class="section level1">
+<h1 class="hasAnchor">
+<a href="#version-0-5-0" class="anchor"></a>version 0.5-0</h1>
+<ul>
+<li><p>non-R expressions like <code>m kg-1</code> are no longer accepted by <code>make_unit</code>, but are parsed by <code>parse_unit</code></p></li>
+<li><p><code>make_unit</code> now uses the R expression evaluator; #60</p></li>
+<li><p>add <code>%*%</code> as an S3 generic; #54</p></li>
+<li><p>add <code>%%</code> and <code>%/%</code> to <code>Ops.units</code></p></li>
+<li><p>support unary + and - ; #56</p></li>
+<li><p>add <code>seq</code> method for <code>units</code>, converting units to those of the first argument</p></li>
+<li><p>Deprecate <code>as.dt</code> for <code>as_difftime</code>, <code>as.units</code> for <code>as_units</code> and <code>as_cf</code> for <code>deparse_unit</code></p></li>
+</ul>
+</div>
     <div id="version-0-4-6" class="section level1">
 <h1 class="hasAnchor">
 <a href="#version-0-4-6" class="anchor"></a>version 0.4-6</h1>
@@ -148,6 +161,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#version-0-5-0">0.5-0</a></li>
         <li><a href="#version-0-4-6">0.4-6</a></li>
         <li><a href="#version-0-4-5">0.4-5</a></li>
         <li><a href="#version-0-4-4">0.4-4</a></li>
