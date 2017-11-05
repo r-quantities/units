@@ -12,5 +12,5 @@ make_unit(x, ...)
 \item{...}{see \link{symbolic_unit}}
 }
 \description{
-The following functions are deprecated and will be removed in a future release.
+The following function will be deprecated and removed in a future release.
 }

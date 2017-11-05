@@ -44,7 +44,7 @@ rep.units = function(x, ...) {
 #' @details see also \code{demo(cf)} for parsing units in the CF standard name table. Note that \code{parse_unit} currently fails on expressions containing a \code{/}, such as \code{m/s-1}.
 #' @export
 parse_unit <- function(str) {
-  warning("parse_unit() is deprecated. Please use parse_units(x, implicit_exponents = TRUE) instead")
+  .Deprecated("parse_units(x, implicit_exponents = TRUE)")
   .parse_units_with_implicit_exponents(str)
 }
 
@@ -94,7 +94,7 @@ parse_unit <- function(str) {
 #' @param x object of class units
 #' @return length one character vector
 #' @examples 
-#' u = parse_unit("kg m-2 s-1")
+#' u = parse_units("kg m-2 s-1", implicit_exponents = TRUE)
 #' u
 #' deparse_unit(u)
 #' @export
