@@ -27,10 +27,10 @@
 #' a + b
 #' a = set_units(1:5, m)
 #' a %/% a
-#' a %/% set_units(2, unitless)
+#' a %/% set_units(2)
 #' set_units(1:5, m^2) %/% set_units(2, m)
 #' a %% a
-#' a %% set_units(2, unitless)
+#' a %% set_units(2 )
 Ops.units <- function(e1, e2) {
 
   unary = nargs() == 1
@@ -44,7 +44,7 @@ Ops.units <- function(e1, e2) {
     if (! (.Generic %in% c("+", "-")))
       stop("only unary + and - supported")
     if (.Generic == "-")
-      return(e1 * set_units(-1.0, unitless))
+      return(e1 * set_units(-1.0))
 	else
       return(e1)
   }
@@ -60,10 +60,10 @@ Ops.units <- function(e1, e2) {
   
   if (prd) {
     if (! inherits(e1, "units"))
-      units(e1) = unitless
+      e1 = set_units(e1) # TODO: or warn?
 
     if (! inherits(e2, "units"))
-      units(e2) = unitless
+      e2 = set_units(e2) # TODO: or warn?
 
     if (.Generic == "*") {
       e1 <- .multiply_symbolic_units(unclass(e1), units(e1), units(e2))
@@ -76,8 +76,8 @@ Ops.units <- function(e1, e2) {
 
   } else if (pw) { # FIXME: I am not sure how to take powers of non-integers yet
 
-    if (identical(units(e1), unitless))
-      return(set_units(unclass(e1) ^ e2, unitless))
+    if (identical(units(e1), set_units(1)))
+      return(set_units(unclass(e1) ^ e2, set_units(1)))
 
     if (inherits(e2, "units") || length(e2) > 1L)
       stop("power operation only allowed with length-one numeric power")
@@ -89,7 +89,7 @@ Ops.units <- function(e1, e2) {
     # when the power is negative and we have a special case when it is zero where
     # units should be removed.
     if (e2 == 0)
-      u <- unitless
+      u <- set_units(1)
     # else if (e2 > 0)
     #   u <- .symbolic_units(rep(units(e1)$numerator, e2),
     #                                        rep(units(e1)$denominator, e2))
@@ -154,8 +154,8 @@ Ops.units <- function(e1, e2) {
 #' a = set_units(1:5, m)
 #' a %*% a
 #' a %*% t(a)
-#' a %*% set_units(1:5, unitless)
-#' set_units(1:5, unitless) %*% a
+#' a %*% set_units(1:5, set_units(1))
+#' set_units(1:5, set_units(1)) %*% a
 `%*%.units` = function(x, y) {
 	ret = `%*%.default`(unclass(x), unclass(y))
 	units(ret) = .multiply_symbolic_units(1, units(x), units(y))

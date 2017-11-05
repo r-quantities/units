@@ -27,6 +27,6 @@ matrix multiplication
 a = set_units(1:5, m)
 a \%*\% a
 a \%*\% t(a)
-a \%*\% set_units(1:5, unitless)
-set_units(1:5, unitless) \%*\% a
+a \%*\% set_units(1:5, set_units(1))
+set_units(1:5, set_units(1)) \%*\% a
 }

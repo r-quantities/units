@@ -43,17 +43,6 @@ convert <- function(value, from, to) {
   x
 }
 
-`units<-.logical` <- function(x, value) {
-  if (all(is.na(x))) {
-    c <- match.call()
-    c[1] <- call('units<-.numeric')
-    c[['x']] <- as.numeric(x)
-    eval(c)
-  } else {
-    stop("x must be numeric, non-NA logical not supported")
-  }
-}
-
 #' Convert units
 #' 
 #' @name units
@@ -87,12 +76,14 @@ unit_ambiguous = function(value) {
 }
 
 
+#' @name units
+#' @export
 `units<-.logical` <- function(x, value) {
   if (!all(is.na(x))) 
     stop("x must be numeric, non-NA logical not supported")
   
   stopifnot(inherits(value, "units") || inherits(value, "symbolic_units"))
-  set_units(as.numeric(x), value)
+  set_units(as.numeric(x), value, mode = "units")
 }
 
 #' retrieve measurement units from \code{units} object

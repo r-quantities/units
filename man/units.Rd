@@ -6,12 +6,16 @@
 \alias{units}
 \alias{units<-.units}
 \alias{units}
+\alias{units<-.logical}
+\alias{units}
 \alias{units.units}
 \title{Set measurement units on a numeric vector}
 \usage{
 \method{units}{numeric}(x) <- value
 
 \method{units}{units}(x) <- value
+
+\method{units}{logical}(x) <- value
 
 \method{units}{units}(x)
 }
