@@ -12,8 +12,6 @@ expressions. see `?make_units` for details. @t-kalinowski
 
 * `ud_units` is no longer necessary and is soft-deprecated, and may be removed in a future release.
 
-
-
 * add `%*%` as an S3 generic; #54 
 
 * add `%%` and `%/%` to `Ops.units`
