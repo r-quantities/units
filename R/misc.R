@@ -122,7 +122,7 @@ as_cf = function(x) {
 #' @method all.equal units
 #' @export
 all.equal.units = function(target, current, ...) {
-  current = set_units(current, units(target))
+  current = set_units(current, units(target), mode = "units")
   all.equal(unclass(target), unclass(current), ...)
 }
 
