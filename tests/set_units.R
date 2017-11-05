@@ -4,7 +4,7 @@ library(testthat)
 ref = set_units(1, m)
 
 # character input
-expect_equal(set_units(1, "m", mode = "string"), ref)
+expect_equal(set_units(1, "m", mode = "character"), ref)
 # units input
 expect_equal(set_units(1, make_unit("m"), mode = "units"), ref)
 # symbolic_units input
@@ -16,7 +16,7 @@ set_units(1, m/s)
 foo = ref
 expect_equal(set_units(1, foo, mode = "units"), ref)
 foo = "m"
-expect_equal(set_units(1, foo, mode = "string"), ref)
+expect_equal(set_units(1, foo, mode = "character"), ref)
 foo = make_unit("m")
 expect_equal(set_units(1, foo, mode = "units"), ref)
 
@@ -35,7 +35,7 @@ degree_C = make_unit("m")
 set_units(1, degree_C)
 
 # OK:
-set_units(1, "bar", mode = "string")
+set_units(1, "bar", mode = "character")
 (tenbar <- set_units(10, bar))
 (set_units(1, units(tenbar), mode = "units"))
 (set_units(1, tenbar, mode = "units"))

@@ -28,61 +28,63 @@ The following object is masked from 'package:base':
 > ref = set_units(1, m)
 > 
 > # character input
-> expect_equal(set_units(1, "m"), ref)
+> expect_equal(set_units(1, "m", mode = "character"), ref)
 > # units input
-> expect_equal(set_units(1, make_unit("m")), ref)
+> expect_equal(set_units(1, make_unit("m"), mode = "units"), ref)
+Warning message:
+In make_unit("m") : make_unit() is deprecated. Please use symbolic_unit()
 > # symbolic_units input
-> expect_equal(set_units(1, units(ref)), ref)
+> expect_equal(set_units(1, units(ref), mode = "units"), ref)
 > 
 > set_units(1, m/s)
 1 m/s
 > 
 > # use object from parent frame, non-ambiguous:
 > foo = ref
-> expect_equal(set_units(1, foo), ref)
+> expect_equal(set_units(1, foo, mode = "units"), ref)
 > foo = "m"
-> expect_equal(set_units(1, foo), ref)
+> expect_equal(set_units(1, foo, mode = "character"), ref)
 > foo = make_unit("m")
-> expect_equal(set_units(1, foo), ref)
+Warning message:
+In make_unit("m") : make_unit() is deprecated. Please use symbolic_unit()
+> expect_equal(set_units(1, foo, mode = "units"), ref)
 > 
 > # ambiguous, should warn:
 > m = "u"
 > set_units(1, m) # m by NSE
 1 m
-Warning message:
-ambiguous argument: m is interpreted by its name, not by its value 
 > m = make_unit("u")
-> set_units(1, m) # m by NSE
-1 m
 Warning message:
-ambiguous argument: m is interpreted by its name, not by its value 
+In make_unit("u") : make_unit() is deprecated. Please use symbolic_unit()
+> set_units(1, m, mode = "units") # u by units
+1 u
+> set_units(1, m, mode = "symbols") # m by NSE
+1 m
 > 
 > degree_C = "m"
 > set_units(1, degree_C)
 1 °C
-Warning message:
-ambiguous argument: degree_C is interpreted by its name, not by its value 
 > 
 > degree_C = make_unit("m")
+Warning message:
+In make_unit("m") : make_unit() is deprecated. Please use symbolic_unit()
 > 
 > set_units(1, degree_C)
 1 °C
-Warning message:
-ambiguous argument: degree_C is interpreted by its name, not by its value 
 > 
 > # OK:
-> set_units(1, "bar")
+> set_units(1, "bar", mode = "character")
 1 bar
 > (tenbar <- set_units(10, bar))
 10 bar
-> (set_units(1, units(tenbar)))
+> (set_units(1, units(tenbar), mode = "units"))
 1 bar
-> (set_units(1, tenbar))
-10 bar
+> (set_units(1, tenbar, mode = "units"))
+1 bar
 > 
-> set_units(10, uu <- degree_C)
+> set_units(10, uu <- degree_C, mode = "units")
 10 m
 > 
 > proc.time()
    user  system elapsed 
-  0.468   0.292   0.456 
+  0.272   0.268   0.218 

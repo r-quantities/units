@@ -119,7 +119,8 @@ test_that("we can convert between units that are not simply a scalar from each o
   m <- 0 * parse_units("degC")
   units(m) <- parse_units("degK")
   expect_equal(as.numeric(m), udunits2::ud.convert(0, "degC", "degK"))  
-  expect_equal(as.character(units(m)), "degK")
+  #expect_equal(as.character(units(m)), "degK")
+  expect_equal(as.character(units(m)), "K")
   
   temp <- 75 * parse_units('degF')
   units(temp) <- parse_units('degK')

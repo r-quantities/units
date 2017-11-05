@@ -3,13 +3,14 @@
 #' 
 #' The following functions are deprecated and will be removed in a future release.
 #' 
+#' @param x see \link{symbolic_unit}
+#' @param ... see \link{symbolic_unit}
 #' @export
 #' @rdname deprecated
 make_unit <- function(x, ...) {
   warning("make_unit() is deprecated. Please use symbolic_unit()")
   symbolic_unit(x, ...)
 }
-
 
 #' Unit creation
 #'
@@ -51,7 +52,7 @@ make_unit <- function(x, ...) {
 #' x1 <- make_units(m/s^2)
 #' x2 <- parse_units("m/s^2")
 #' x3 <- set_units(1,  m/s^2)
-#' x4 <- set_units(1, "m/s^2", mode = "string")
+#' x4 <- set_units(1, "m/s^2", mode = "character")
 #' x5 <- set_units(1, x1, mode = "units")
 #' x6 <- set_units(1, units(x1), mode = "units")
 #' x7 <- symbolic_unit("m") / symbolic_unit("s")^2
@@ -169,22 +170,23 @@ parse_units <- function(chr,
 #' @param n a numeric to be assigned units, or a units object to have units
 #'   converted.
 #'
+#' @param ... see parameter \code{mode}
 #' @param mode if \code{"symbols"} (the default), then \code{...} are passed on
-#'   to \code{make_units()}. If \code{"string"}, then \code{...} are passed on to
+#'   to \code{make_units()}. If \code{"character"}, then \code{...} are passed on to
 #'   \code{parse_units()}. If \code{"units"}, then \code{...} must be a single
 #'   object of class \code{units} or \code{.symbolic_units} and the value is
 #'   directly assigned to \code{n} via \code{`units<-`}
 #'
 #' @export
 #' @rdname make_units
-set_units <- function(n, ..., mode = c("symbols", "string", "units")) {
+set_units <- function(n, ..., mode = c("symbols", "character", "units")) {
     units(n) <- switch(match.arg(mode),
-      symbols = make_units(...),
-      string  = parse_units(...),
-      units    = identity(...)
+      symbols   = make_units(...),
+      character = parse_units(...),
+      units     = identity(...)
     )
     n
-  }
+}
 
 
 #' @export

@@ -25,7 +25,7 @@ Math.units = function(x, ...) {
   if (!OK && units(x) == units(set_units(1, rad))) {
     OK <- switch(.Generic, "sin" = , "cos" = , "tan" = TRUE, FALSE)
     if (OK)
-	  x <- set_units(x, unitless)
+	  x <- set_units(x)
   }
 
   if (!OK) {

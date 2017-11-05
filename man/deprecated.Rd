@@ -4,7 +4,12 @@
 \alias{make_unit}
 \title{deprecated functions}
 \usage{
-make_unit(name, user_defined = FALSE)
+make_unit(x, ...)
+}
+\arguments{
+\item{x}{see \link{symbolic_unit}}
+
+\item{...}{see \link{symbolic_unit}}
 }
 \description{
 The following functions are deprecated and will be removed in a future release.

@@ -8,8 +8,8 @@ test_that("we can convert between units with a user-defined function", {
   install_conversion_constant("orange", "apple", 2) # one orange is worth two apples
   expect_equal(apples + oranges, (2 + 2*3) * make_unit("apple", user_defined = TRUE))
   expect_equal(oranges + apples, (3 + 2/2) * make_unit("orange", user_defined = TRUE))
-  expect_equal(oranges + apples, set_units(apples + oranges, oranges))
-  expect_equal(apples + oranges, set_units(apples + oranges, apples))
+  expect_equal(oranges + apples, set_units(apples + oranges, oranges, mode = "units"))
+  expect_equal(apples + oranges, set_units(apples + oranges, apples, mode = "units"))
   
   #install_conversion_constant("orange", "apple", 2, 1) # but you always have to add one
   #expect_equal(apples + oranges, (2 + 2*3 + 1) * make_unit("apple"))
@@ -30,6 +30,6 @@ test_that("we can simplify via user-defined units", {
   oranges <- 2 * make_unit("orange", user_defined = TRUE)
   install_conversion_constant("orange", "apple", 2) # one orange is worth two apples
   
-  expect_equal(apples / oranges, set_units(1, unitless))
-  expect_equal(oranges / apples, set_units(1, unitless))
+  expect_equal(apples / oranges, set_units(1))
+  expect_equal(oranges / apples, set_units(1))
 })

@@ -1,8 +1,8 @@
 # Measurement Units for R
 
-[![Build Status](https://travis-ci.org/edzer/units.svg?branch=master)](https://travis-ci.org/edzer/units) 
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/edzer/units?branch=master&svg=true)](https://ci.appveyor.com/project/edzer/units)
-[![Coverage Status](https://img.shields.io/codecov/c/github/edzer/units/master.svg)](https://codecov.io/github/edzer/units?branch=master)
+[![Build Status](https://travis-ci.org/r-quantities/units.svg?branch=master)](https://travis-ci.org/r-quantities/units) 
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/r-quantities/units?branch=master&svg=true)](https://ci.appveyor.com/project/r-quantities/units)
+[![Coverage Status](https://img.shields.io/codecov/c/github/r-quantities/units/master.svg)](https://codecov.io/github/r-quantities/units?branch=master)
 [![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html) [![CRAN](http://www.r-pkg.org/badges/version/units)](https://cran.r-project.org/package=units) 
 [![Downloads](http://cranlogs.r-pkg.org/badges/units?color=brightgreen)](http://www.r-pkg.org/pkg/units)
 
@@ -41,7 +41,7 @@ spd1 + set_units(10, s) # error checking
 
 * blog posts: [first](http://r-spatial.org/r/2016/06/10/units.html), [second](http://r-spatial.org/r/2016/08/16/units2.html), [third](http://r-spatial.org/r/2016/09/29/plot_units.html)
 * [package vignette](https://cran.r-project.org/web/packages/units/vignettes/units.html)
-* The [R Journal publication](https://journal.r-project.org/archive/2016-2/pebesma-mailund-hiebert.pdf), which has been [updated to recent package developments](https://edzer.github.io/units/articles/measurement_units_in_R.html)
+* The [R Journal publication](https://journal.r-project.org/archive/2016-2/pebesma-mailund-hiebert.pdf), which has been [updated to recent package developments](https://r-quantities.github.io/units/articles/measurement_units_in_R.html)
 * the [udunits2 R package](https://github.com/pacificclimate/Rudunits2) github page
 * the UNIDATA [udunits2](https://github.com/Unidata/UDUNITS-2) library at github
 

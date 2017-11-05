@@ -13,7 +13,7 @@ make_units(x, allow_user_defined = FALSE,
 parse_units(chr, implicit_exponents = FALSE, allow_user_defined = FALSE,
   auto_convert_names_to_symbols = TRUE, auto_backtick = TRUE)
 
-set_units(n, ..., mode = c("symbols", "string", "units"))
+set_units(n, ..., mode = c("symbols", "character", "units"))
 
 symbolic_unit(chr, check_is_parsable = TRUE, user_defined = TRUE,
   auto_convert_name_to_symbol = TRUE)
@@ -41,8 +41,10 @@ details.}
 \item{n}{a numeric to be assigned units, or a units object to have units
 converted.}
 
+\item{...}{see parameter \code{mode}}
+
 \item{mode}{if \code{"symbols"} (the default), then \code{...} are passed on
-to \code{make_units()}. If \code{"string"}, then \code{...} are passed on to
+to \code{make_units()}. If \code{"character"}, then \code{...} are passed on to
 \code{parse_units()}. If \code{"units"}, then \code{...} must be a single
 object of class \code{units} or \code{.symbolic_units} and the value is
 directly assigned to \code{n} via \code{`units<-`}}
@@ -110,7 +112,7 @@ If \code{auto_backtick = TRUE} in \code{parse_units()}, symbols are
 x1 <- make_units(m/s^2)
 x2 <- parse_units("m/s^2")
 x3 <- set_units(1,  m/s^2)
-x4 <- set_units(1, "m/s^2", mode = "string")
+x4 <- set_units(1, "m/s^2", mode = "character")
 x5 <- set_units(1, x1, mode = "units")
 x6 <- set_units(1, units(x1), mode = "units")
 x7 <- symbolic_unit("m") / symbolic_unit("s")^2

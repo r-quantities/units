@@ -161,10 +161,10 @@ seq.units = function(from, to, by = ((to - from)/(length.out - 1)),
   if (! mf)
     from = as.numeric(from)
   if (! mt)
-  	to = as.numeric(set_units(to, uuu))
+  	to = as.numeric(set_units(to, uuu, mode = "units"))
   if (! missing(by))
-    by = as.numeric(set_units(by, uuu))
-  set_units(NextMethod(), uuu)
+    by = as.numeric(set_units(by, uuu, mode = "units"))
+  set_units(NextMethod(), uuu, mode = "units")
 }
 
 ##' @export

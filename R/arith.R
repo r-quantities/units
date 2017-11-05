@@ -136,7 +136,7 @@ Ops.units <- function(e1, e2) {
 #' @param x numeric matrix or vector
 #' @param y numeric matrix or vector
 #' @export
-#' @details see \link[base]{`%*%`} for the base function, reimplemented as default method
+#' @details see \link[base]{ `%*%` } for the base function, reimplemented as default method
 `%*%` = function(x, y) UseMethod("%*%")
 
 #' @name matmult
