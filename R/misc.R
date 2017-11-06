@@ -35,20 +35,10 @@ rep.units = function(x, ...) {
   .as.units(NextMethod(), u)
 }
 
-#' parse unit in product power form (e.g. km m-2 s-1)
-#' 
-#' parse unit in product power form (e.g. km m-2 s-1)
-#' @param str lenght-one character vector containing the unit string
-#' @examples 
-#' parse_unit("kg m-2 s-1")
-#' @details see also \code{demo(cf)} for parsing units in the CF standard name table. Note that \code{parse_unit} currently fails on expressions containing a \code{/}, such as \code{m/s-1}.
-#' @export
-parse_unit <- function(str) {
-  warning("parse_unit() is deprecated. Please use parse_units(x, implicit_exponents = TRUE) instead")
-  .parse_units_with_implicit_exponents(str)
-}
 
-.parse_units_with_implicit_exponents <- function(str) {
+
+
+.parse_unit_with_implicit_exponents <- function(str) {
   if (length(grep(c("[*/]"), str)) > 0)
     stop("If 'implicit_exponents = TRUE', strings cannot contain `*' or `/'")
   parse_one = function(str) {

@@ -1,109 +1,6 @@
 
-#' deprecated functions
-#' 
-#' The following functions are deprecated and will be removed in a future release.
-#' 
-#' @param x see \link{symbolic_unit}
-#' @param ... see \link{symbolic_unit}
-#' @export
-#' @rdname deprecated
-make_unit <- function(x, ...) {
-  warning("make_unit() is deprecated. Please use symbolic_unit()")
-  symbolic_unit(x, ...)
-}
 
-#' Unit creation
-#'
-#' Four functions are provided for creating \code{units} objects: 
-#' \itemize{ 
-#'    \item \code{make_units()} accepts a bare expression: 
-#'          \code{make_units(kg*m/s^2)}
-#'    \item \code{parse_units()} accepts a string: \code{parse_units("kg*m/s^2")}
-#'    \item \code{set_units()} a pipe friendly version of \code{`units<-`}. 
-#'           Has multiple modes of operation, see details.
-#'    \item \code{symbolic_unit()} for creation of a single symbolic unit: 
-#'          \code{symbolic_units("kg")}
-#'    }
-#'
-#' @param x a bare R expression describing units. Must be valid R syntax
-#'   (reserved R syntax words like \code{in} must be backticked)
-#' @param allow_user_defined If FALSE (the default), an error is thrown if any
-#'   of the symbols that makeup the units expression are not recognized by the
-#'   udunits database. See details.
-#' @param auto_convert_names_to_symbols Automatically attempt conversion of
-#'   names to symbols in the supplied unit expression.
-#'
-#' @details In \code{make_units()}, \code{set_units()}, and
-#'   \code{parse_units()}, each of the symbols in the expression is treated as a
-#'   symbolic unit, as returned by \code{symbolic_unit}. By default, each of the
-#'   symbols must be recognized by the udunits database. To see which symbols
-#'   and names are currently recognized by the database, see
-#'   \code{udunits_symbols()}. If \code{allow_user_defined = TRUE} and an
-#'   unrecognized unit is found in the expression, a valid \code{units} object
-#'   is still returned, with a warning. To avoid the warning with user defined
-#'   units, use \code{symbolic_unit(...,user_defined = TRUE)}
-#'   
-#' @return A new unit object that can be used in arithmetics
-#' @export
-#' @noMd
-#' @examples
-#' # these calls all return identical objects
-#' # meters per second squared, i.e, acceleration
-#' x1 <- make_units(m/s^2)
-#' x2 <- parse_units("m/s^2")
-#' x3 <- set_units(1,  m/s^2)
-#' x4 <- set_units(1, "m/s^2", mode = "character")
-#' x5 <- set_units(1, x1, mode = "units")
-#' x6 <- set_units(1, units(x1), mode = "units")
-#' x7 <- symbolic_unit("m") / symbolic_unit("s")^2
-#' 
-#' all_equal <- function(...) {
-#'   l <- list(...)
-#'   for(i in seq_along(l)[-1])
-#'     if(l[[1]] != l[[i]])
-#'       return(FALSE)
-#'   TRUE
-#' }
-#' all_equal(x1, x2, x3, x4, x5, x6, x7)
-#' 
-#' # Both full unit names or symbols can be used. Arithmetic operations and unit
-#' # conversion between unit objects that were defined as symbols and names will
-#' # work correctly, although unit simplification in printing may not always occur.
-#' x <- 500 * make_units(micrograms/liter)
-#' y <- set_units(200, ug/l)
-#' x + y
-#' x * y # numberic result is correct, but units not simplified
-#' 
-#' # note, plural form of unit name accepted too ('liters' vs 'liter'), and 
-#' # denominator simplification can is performed correctly 
-#' x * set_units(5, liters)
-#' 
-#' # unit conversion works too
-#' set_units(x, grams/gallon)
-#' 
-#' # Creating custom, user defined units
-#' # For example, a microbiologist might work with counts of bacterial cells
-#' # make_units(cells/ml) # by default, throws an ERROR
-#' make_units(cells/ml, allow_user_defined = TRUE) # throws a warning instead
-#' # alternatively, create the custom unit separately
-#' cells <- symbolic_unit("cells", check_is_parsable = FALSE)
-#' ml <- make_units(ml)
-#' cells/ml
-#' 
-#' # set_units is just a pipe friendly version of `units<-`
-#' set_units(1:5, N/m^2)
-#' if (require(magrittr)) {
-#'  1:5 %>% set_units(N/m^2)
-#'  
-#'  # first sets to m, then converts to km
-#'  1:5 %>% set_units(m) %>% set_units(km) 
-#' }
-make_units <- function(x, allow_user_defined = FALSE, 
-                       auto_convert_names_to_symbols = TRUE) {
-  .eval_units(substitute(x), 
-              allow_user_defined = allow_user_defined, 
-              auto_convert_names_to_symbols = auto_convert_names_to_symbols)
-}
+
 
 backtick <- function(x) {
   # backtick all character runs uninterupted by one of ^()*^/`- or a space
@@ -113,7 +10,19 @@ backtick <- function(x) {
   gsub("`([0-9]*\\.?[0-9]+)`", "\\1", x) # unbacktick bare numbers
 }
 
-#' @rdname make_units
+
+are_exponents_implicit <- function(s) {
+  s <- trimws(s)
+  has <- function(chr, fixed = TRUE) grepl(chr, s, fixed = fixed)
+  !has("^") & !has("*") & !has("/") & has("\\s", fixed = FALSE)
+}
+
+is_udunits_time <- function(s) {
+  ud.is.parseable(s) && 
+    ud.are.convertible(s, "seconds since 1970-01-01")
+}
+
+#' @rdname make_unit
 #' @param implicit_exponents If the unit string is in product power form (e.g.
 #'   \code{"km m-2 s-1"}). Defaults to \code{FALSE}
 #'
@@ -121,7 +30,7 @@ backtick <- function(x) {
 #'   are automatically backticked prior to parsing as an R expression. See
 #'   details.
 #'
-#' @details If \code{auto_backtick = TRUE} in \code{parse_units()}, symbols are
+#' @details If \code{auto_backtick = TRUE} in \code{parse_unit()}, symbols are
 #'   automatically backticked prior to parsing the string as an R expression. A
 #'   heuristic is used to perform backticking, such that any continuous set of
 #'   characters uninterrupted by one of \code{()\*^-} are backticked (unless the
@@ -129,7 +38,7 @@ backtick <- function(x) {
 #'   to not doubleup on pre-existing backticks. For certain expressions, this
 #'   heurestic may give incorrect results.
 #'
-#'   If the string supplied to \code{parse_units} failes to parse as an R
+#'   If the string supplied to \code{parse_unit} failes to parse as an R
 #'   expression (via \code{parse(text = chr)}), then the string is treated as a
 #'   single symbolic unit and \code{symbolic_unit(chr)} is used as a fallback
 #'   with a warning. Note, in that case, automatic unit simplification may not
@@ -140,21 +49,30 @@ backtick <- function(x) {
 #'
 #' @export
 #' @noMd
-parse_units <- function(chr,
-                        implicit_exponents = FALSE,
+as_units.character <- function(chr,
+                        implicit_exponents = NA,
                         allow_user_defined = FALSE,
-                        auto_convert_names_to_symbols = TRUE,
+                        auto_convert_names_to_symbols = 
+                          getOption("units.auto_convert_names_to_symbols", TRUE),
                         auto_backtick = TRUE) {
 
 
   stopifnot(is.character(chr), length(chr) == 1)
+  
+  if(is.na(implicit_exponents))
+    implicit_exponents <- are_exponents_implicit(chr)
+  
   if(implicit_exponents)
-    return(.parse_units_with_implicit_exponents(chr)) # current parse_unit()
+    return(.parse_unit_with_implicit_exponents(chr)) 
 
+  if(is_udunits_time(chr))
+    return(symbolic_unit(chr))
+  
   if(auto_backtick)
     chr <- backtick(chr)
 
   o <- try(expr <- parse(text = chr)[[1]], silent = TRUE)
+  
   if(inherits(o, "try-error")) {
     warning("Could not parse expression: ", sQuote(chr), 
       ". Returning as a single symbolic_unit()", call. = FALSE)
@@ -165,26 +83,25 @@ parse_units <- function(chr,
               auto_convert_names_to_symbols = auto_convert_names_to_symbols)
 }
 
-
+#' @export
+make_unit <- as_units.character
 
 #' @param n a numeric to be assigned units, or a units object to have units
 #'   converted.
+#'   
+#' @param un a \code{units} object, or something coercable to one with \code{as_units}
 #'
 #' @param ... see parameter \code{mode}
 #' @param mode if \code{"symbols"} (the default), then \code{...} are passed on
-#'   to \code{make_units()}. If \code{"character"}, then \code{...} are passed on to
-#'   \code{parse_units()}. If \code{"units"}, then \code{...} must be a single
+#'   to \code{make_unit()}. If \code{"character"}, then \code{...} are passed on to
+#'   \code{parse_unit()}. If \code{"units"}, then \code{...} must be a single
 #'   object of class \code{units} or \code{.symbolic_units} and the value is
 #'   directly assigned to \code{n} via \code{`units<-`}
 #'
 #' @export
-#' @rdname make_units
-set_units <- function(n, ..., mode = c("symbols", "character", "units")) {
-    units(n) <- switch(match.arg(mode),
-      symbols   = make_units(...),
-      character = parse_units(...),
-      units     = identity(...)
-    )
+#' @rdname make_unit
+set_units <- function(n, un, ...) {
+    units(n) <- as_units(un, ...)
     n
 }
 
@@ -206,11 +123,11 @@ set_units <- function(n, ..., mode = c("symbols", "character", "units")) {
 #'   reliable if the unit name contains a prefixe. This is a limitation of the
 #'   underlying \code{udunits2} package and may change in the future.
 #'
-#' @rdname make_units
+#' @rdname make_unit
 symbolic_unit <- function(chr, check_is_parsable = TRUE, user_defined = TRUE, 
                           auto_convert_name_to_symbol = TRUE) {
   stopifnot(is.character(chr), length(chr) == 1)
-  if(check_is_parsable && !udunits2::ud.is.parseable(chr)) {
+  if(check_is_parsable && !ud.is.parseable(chr)) {
     msg <- paste(sQuote(chr), "is not a unit recognized by udunits")
     fun <- if(isTRUE(user_defined)) warning else stop
     fun(msg, call. = FALSE)
@@ -221,7 +138,7 @@ symbolic_unit <- function(chr, check_is_parsable = TRUE, user_defined = TRUE,
       chr <- sym
   }
   
-  set_units(1L, .symbolic_units(chr), mode = "units")
+  structure(1L, units = .symbolic_units(chr), class = "units")
 }
 
 
@@ -279,5 +196,12 @@ pc <- function(x) {
 The returned unit object was coerced to a value of 1.
 Use `install_conversion_constant()` to define a new unit that is a multiple of another unit.")
   
-  set_units(1L, units(unit), mode = "units")
+  structure(1L, units = units(unit), class = "units")
+}
+
+#' @export
+drop_units <- function(x) {
+  class(x) <- setdiff(class(x), "units")
+  attr(x, "units") <- NULL
+  x
 }

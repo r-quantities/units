@@ -3,7 +3,8 @@ context("Date/time")
 test_that("we can convert from udunits time/date to R", {
   #skip("set_units doesn't accept strings")
   # rewrite this to 
-	expect_equal(as.Date("1999-10-31"), as.Date(set_units(1, symbolic_unit("days since 1999-10-30"), mode = "units")))
+	expect_equal(as.Date("1999-10-31"), 
+	             as.Date(set_units(1, symbolic_unit("days since 1999-10-30"), mode = "units")))
 	expect_equal(as.POSIXct("1999-10-31 01:00:00", tz = "UTC"), 
 		as.POSIXct(set_units(25, symbolic_unit("hours since 1999-10-30"), mode = "units")))
 })

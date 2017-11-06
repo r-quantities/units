@@ -31,17 +31,25 @@ test_that("parse_units() backticks strings correctly", {
   expect_identical(units:::backtick(x[,"input"]), x[,"expected_output"])
 })
 
-test_that("parse_units() and make_units() make identical units", {
+test_that("various forms of unit creation and destruction work", {
 
-    expect_identical(make_units(`in`),   parse_units("in"))
-    expect_identical(make_units(kelvin), parse_units("kelvin"))
-    expect_identical(make_units(`%`),    parse_units("%"))
-    expect_identical(make_units(T),      parse_units("T"))
-    expect_identical(make_units(`'`/s),  parse_units("`'`/s"))
-    expect_identical(make_units(`'`),    parse_units("`'`"))
-    expect_identical(make_units(s/`'`),  parse_units("s/`'`"))
-    expect_identical(make_units(C),      parse_units("C"))
-    expect_identical(make_units(F),      parse_units("F"))
+  ox <- x <- 1L:4L
+  
+  units(x) <- "m/s"
+  expect_s3_class(x,"units")
+  
+  units(x) <- NULL
+  expect_identical(x, ox)
+  
+  
+  ox <- x <- matrix(1L:4L, ncol = 2)
+  
+  units(x) <- "m/s"
+  expect_s3_class(x,"units")
+  
+  units(x) <- NULL
+  expect_identical(x, ox)
+  
     
   
 })

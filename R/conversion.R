@@ -33,6 +33,11 @@ convert <- function(value, from, to) {
 #' class(x)
 #' y = 2:5
 `units<-.numeric` <- function(x, value) {
+  if(is.null(value))
+    return(x)
+  
+  value <- as_units(value)
+  
   stopifnot(inherits(value, "units") || inherits(value, "symbolic_units"))
   
   if (inherits(value, "units"))
@@ -53,6 +58,12 @@ convert <- function(value, from, to) {
 #' units(a) <- with(ud_units, km/h)
 #' a
 `units<-.units` <- function(x, value) {
+  
+  if(is.null(value))
+    return(drop_units(x))
+  
+  value <- as_units(value)
+  
   stopifnot(inherits(value, "units") || inherits(value, "symbolic_units"))
   
   if (inherits(value, "units"))
@@ -110,6 +121,14 @@ as_units <- function(x, value = unitless) {
 as.units <- function(x, value = unitless) {
 	.Deprecated("as_units")    # nocov
 	as_units(x, value = value) # nocov
+}
+
+#' @export
+as_units.units <- function(x, ...) x
+
+#' @export
+as_units.symbolic_units <- function(x, ...) {
+  structure(1L, units = x, class = "units")
 }
 
 #' @export
