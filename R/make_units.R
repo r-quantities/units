@@ -59,14 +59,14 @@ as_units.character <- function(chr,
 
   stopifnot(is.character(chr), length(chr) == 1)
   
+  if(is_udunits_time(chr))
+    return(symbolic_unit(chr))
+  
   if(is.na(implicit_exponents))
     implicit_exponents <- are_exponents_implicit(chr)
   
   if(implicit_exponents)
     return(.parse_unit_with_implicit_exponents(chr)) 
-
-  if(is_udunits_time(chr))
-    return(symbolic_unit(chr))
   
   if(auto_backtick)
     chr <- backtick(chr)
