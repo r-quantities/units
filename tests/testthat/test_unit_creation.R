@@ -50,6 +50,15 @@ test_that("various forms of unit creation and destruction work", {
   units(x) <- NULL
   expect_identical(x, ox)
   
-    
+  
+  ox <- y <- x <- 1L:4L
+  units(x) <- "m/s"
+  
+  expect_identical(x, set_units(y, "m/s"))
+  expect_identical(x, set_units(y, m/s, mode = "bare_symbols"))
+  
+  expect_identical(ox, set_units(x, NULL))
+  expect_identical(ox, set_units(x, NULL, mode = "bare_symbols"))
+  
   
 })
