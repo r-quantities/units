@@ -69,3 +69,4 @@ if that went well, assuming you installed by default in `/usr/local/`, add
 export UDUNITS2_XML_PATH="/usr/local/share/udunits/udunits2.xml"
 ```
 to your `~/.bashrc` file, start a new shell to activate this environment variable, and try installing R package `udunits2` once more. When launching rstudio from unity, you may have to load `udunits2` explicitly before using `units`, or set `UDUNITS2_XML_PATH` in a different way such that rstudio finds it.
+
