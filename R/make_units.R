@@ -79,12 +79,14 @@ as_units.character <- function(chr,
     return(symbolic_unit(chr, user_defined = allow_user_defined, check_is_parsable = TRUE))
   }
 
-  .eval_units(expr, allow_user_defined = allow_user_defined, 
+  as_units.call(expr, allow_user_defined = allow_user_defined, 
               auto_convert_names_to_symbols = auto_convert_names_to_symbols)
 }
 
 #' @export
 make_unit <- as_units.character
+
+
 
 #' @param n a numeric to be assigned units, or a units object to have units
 #'   converted.
@@ -100,11 +102,25 @@ make_unit <- as_units.character
 #'
 #' @export
 #' @rdname make_unit
-set_units <- function(n, un, ...) {
-    units(n) <- as_units(un, ...)
-    n
+set_units <- function(n, ...) UseMethod("set_units")
+
+#' @export
+set_units.default <- function(n, un, ...,
+  mode = getOption("units.set_units_mode", c("standard", "bare_symbols"))) {
+  
+  if (match.arg(mode) == "bare_symbols")
+    un <- substitute(un)
+  
+  units(n) <- as_units(un, ...)
+  n
 }
 
+
+#' @export
+set_units.difftime <- function(n, value) {
+  units(n) <- value
+  n
+}
 
 #' @export
 #' @param chr a scalar character string describing a unit.
@@ -168,14 +184,15 @@ pc <- function(x) {
 
 
 
-.eval_units <- function(expr, 
+as_units.call <- function(expr, 
   allow_user_defined = FALSE, 
   auto_convert_names_to_symbols = TRUE) {
   
   stopifnot(is.language(expr))
   
   vars <- all.vars(expr)
-  if(!length(vars)) return(as_units(1, unitless))
+  if(!length(vars)) 
+    return(structure(1L, units = unitless, class = "units"))
   
   parsable <- vapply(vars, ud.is.parseable, logical(1L))
   if(!all(parsable)) {
@@ -198,6 +215,12 @@ Use `install_conversion_constant()` to define a new unit that is a multiple of a
   
   structure(1L, units = units(unit), class = "units")
 }
+
+as_units.expression <- as_units.call  #function(x, ...) as_units.call(x[[1]], ...)
+as_units.name       <- as_units.call
+
+as_units.NULL <- function(x, ...) x
+
 
 #' @export
 drop_units <- function(x) {
