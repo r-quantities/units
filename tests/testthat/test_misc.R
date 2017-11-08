@@ -94,7 +94,7 @@ test_that("set_units works with symbols in character data, and resolves names", 
   expect_equal(set_units(1:2, degree_C),                      set_units(1:2, degree_Celsius))
   expect_equal(set_units(1:2, deg, mode = "standard"),        set_units(1:2, degree_Celsius))
   x = set_units(1:3, km)
-  y <- set_units(x, "meter", mode = "character")
+  y <- set_units(x, "meter", mode = "standard")
   expect_equal(y, set_units(c(1000,2000,3000), m))
 })
 
