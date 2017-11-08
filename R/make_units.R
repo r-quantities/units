@@ -1,46 +1,30 @@
 #' Unit creation
 #'
-#' A number of functions are provided for creating unit objects. \itemize{
-#'
-#' \item \code{as_units}, a generic \code{as_units}, with methods for a
-#' character string and for quoted language. Note, direct usage of this funciton
-#' by users is typically not necessary, as coersion via \code{as_units} is
-#' automatically done with \code{`units<-`} and \code{set_units()}.
-#'
-#' \item \code{make_units()}, which only accepts only bare expressions.
-#' \code{make_unit{m/s}} is equivelant to \code{as_units(quote(m/s))}
-#'
-#' \item \code{symbolic_unit()} for creation of a single symbolic unit
-#' \code{symbolic_units("kg")}.
-#'
-#' \item \code{set_units()}, a pipe_friendly version of \code{`units<-`}. By
-#' default it operates with bare expressions like \code{make_unit}, but this
-#' behavior can be disabled by a specifying \code{mode = "standard"} or setting 
-#' \code{options(units.set_units_mode = "standard")}.
-#'
+#' A number of functions are provided for creating unit objects. 
+#' \itemize{
+#'     \item \code{as_units}, a generic with methods for a
+#'     character string and for quoted language. Note, direct usage of this funciton
+#'     by users is typically not necessary, as coersion via \code{as_units} is
+#'     automatically done with \code{`units<-`} and \code{set_units()}.
+#'    
+#'     \item \code{make_units()}, constructs units from bare expressions.
+#'     \code{make_units(m/s)} is equivelant to \code{as_units(quote(m/s))}
+#'    
+#'     \item \code{set_units()}, a pipe_friendly version of \code{`units<-`}. By
+#'     default it operates with bare expressions like \code{make_unit}, but this
+#'     behavior can be disabled by a specifying \code{mode = "standard"} or setting 
+#'     \code{options(units.set_units_mode = "standard")}.
+#'     
+#'     \item \code{symbolic_unit()} for creation of a single symbolic unit
+#'     \code{symbolic_units("kg")}.
 #' }
 #' 
+#' @export
 #' @rdname make_units
 #' 
-#' @param x a bare R expression describing units. Must be valid R syntax
-#'   (reserved R syntax words like \code{in} must be backticked)
-#' @param allow_user_defined If FALSE (the default), an error is thrown if any
-#'   of the symbols that makeup the units expression are not recognized by the
-#'   udunits database. See details.
-#' @param auto_convert_names_to_symbols Automatically attempt conversion of
-#'   names to symbols in the supplied unit expression.
+#' @param bare_expression a bare R expression describing units. Must be valid R
+#'   syntax (reserved R syntax words like \code{in} must be backticked)
 #'
-#' @details In \code{make_unit()}, \code{set_units()}, and
-#'   \code{as_units()}, each of the symbols in the expression is treated as a
-#'   symbolic unit, as returned by \code{symbolic_unit}. By default, each of the
-#'   symbols must be recognized by the udunits database. To see which symbols
-#'   and names are currently recognized by the database, see
-#'   \code{udunits_symbols()}. If \code{allow_user_defined = TRUE} and an
-#'   unrecognized unit is found in the expression, a valid \code{units} object
-#'   is still returned, with a warning. To avoid the warning with user defined
-#'   units, use \code{symbolic_unit(...,user_defined = TRUE)}
-#'   
-#' @return A new unit object that can be used in arithmetics or unit conversion or unit assignment. 
 #' @noMd
 #' @examples
 #' # The easiest way to assign units to a numeric vector is like this: 
@@ -121,10 +105,11 @@
 #' # First define the unit, then the newly defined unit is accepted.
 #' define_new_symbolic_unit("cells")
 #' make_units(cells/ml) 
+#' 
 #' # Note, define_new_symbolic_unit() does not add any support for unit
-#' converstion, or arathmetic operations that require unit conversion. See
-#' ?install_conversion_function for how to define relationships for user defined
-#' units.
+#' # converstion, or arathmetic operations that require unit conversion. See
+#' # ?install_conversion_function for how to define relationships for user 
+#' # defined units.
 #'
 #' ## set_units()
 #' # set_units is a pipe friendly version of `units<-`. 
@@ -142,20 +127,19 @@
 #' # the bare symbols of the expression. In this mode, set_units() can be
 #' # thought of as a simple alias for `units<-` that is pipe friendly.
 #' set_units(1:5, "m/s", mode = "standard")
-#' set_units(1:5, make_unit(m/s), mode = "standard")
+#' set_units(1:5, make_units(m/s), mode = "standard")
 #' 
 #' # the mode of set_units() can be controlled via a global option
 #' # options(units.set_units_mode = "standard")
-NULL
-
-
-
-
-
-make_units <- function(x) {
-  as_units.call(substitute(x))
+#' 
+#' # To remove units use
+#' units(x) <- NULL
+#' # or
+#' drop_units(y)
 }
 
+
+#  ----- as_units.character helpers ------ 
 
 backtick <- function(x) {
   # backtick all character runs uninterupted by one of ^()*^/`- or a space
@@ -163,7 +147,6 @@ backtick <- function(x) {
   x <- gsub("`?([^() \\*^/`-]+)`?", "`\\1`", x)
   gsub("`([0-9]*\\.?[0-9]+)`", "\\1", x) # unbacktick bare numbers
 }
-
 
 are_exponents_implicit <- function(s) {
   s <- trimws(s)
@@ -176,30 +159,37 @@ is_udunits_time <- function(s) {
     ud.are.convertible(s, "seconds since 1970-01-01")
 }
 
-#' @rdname make_unit
+
+#' @rdname make_units
+#' @export
+#' @noMd
+#'
 #' @param implicit_exponents If the unit string is in product power form (e.g.
 #'   \code{"km m-2 s-1"}). Defaults to \code{NA}, in which case a guess is made
 #'   based on the supplied string. Set to \code{TRUE} or {FALSE} if the guess is
 #'   incorrect.
-#'   
-#' @details Generally speaking, there are 3 types of unit strings are accepted
-#'   in \code{as_units} (and by extension, \code{`units<-`}).
+#'
+#' @section Character strings:
+#'
+#'   Generally speaking, there are 3 types of unit strings are accepted in
+#'   \code{as_units} (and by extension, \code{`units<-`}).
 #'
 #'   The first, and likely most common, is a "standard" format unit
 #'   specificaiton where the relationship between unit symbols or names is
-#'   specified with arathmetic operators for division \code{/}, multiplication
-#'   \code{*} and power exponents \code{^}, or other mathematical functions like
-#'   \code{log()}. In this case, the string is parsed as an R expression via
-#'   \code{parse(text = )} after backticking all symbols. A heuristic is used to
+#'   specified explicitly with arathmetic symbols for division \code{/},
+#'   multiplication \code{*} and power exponents \code{^}, or other mathematical
+#'   functions like \code{log()}. In this case, the string is parsed as an R
+#'   expression via \code{parse(text = )} after backticking all unit symbols and
+#'   names, and then passed on to \code{as_units.call()}. A heuristic is used to
 #'   perform backticking, such that any continuous set of characters
-#'   uninterrupted by one of \code{()\*^-} are backticked (unless the character
+#'   uninterrupted by one of \code{()\\*^-} are backticked (unless the character
 #'   sequence consists solely of numbers \code{0-9}), with some care to not
 #'   doubleup on pre-existing backticks. This heurestic appears to be quite
 #'   robust, and works for units would otherwise not be valid R syntax. For
-#'   example, percent (\code{"%"}), feet (\code{"'"}), inches (\code{"in"}), and
-#'   Tesla (\code{"T"}) are all backticked and parsed correctly.
+#'   example, percent (\code{"\%"}), feet (\code{"'"}), inches (\code{"in"}),
+#'   and Tesla (\code{"T"}) are all backticked and parsed correctly.
 #'
-#'   Nevertheless, for certain complex expressions, this backticking heurestic
+#'   Nevertheless, for certain complex unit expressions, this backticking heurestic
 #'   may give incorrect results.  If the string supplied failes to parse as an R
 #'   expression, then the string is treated as a single symbolic unit and
 #'   \code{symbolic_unit(chr)} is used as a fallback with a warning. In that
@@ -209,7 +199,7 @@ is_udunits_time <- function(s) {
 #'   returns \code{TRUE} for \code{udunits2::ud.is.parsable()}.
 #'
 #'   The second type of unit string accepted is one with implicit exponents. In
-#'   this format, \code{/}, \code{`*`}, and \code{^}, may not be present in the
+#'   this format, \code{/}, \code{*}, and \code{^}, may not be present in the
 #'   string, and unit symbol or names must be separated by a space. Each unit
 #'   symbol may optionally be followed by a single number, specifying the power.
 #'   For example \code{"m2 s-2"} is equivelant to \code{"(m^2)*(s^-2)"}.
@@ -219,14 +209,10 @@ is_udunits_time <- function(s) {
 #'   since 1970-01-01 00:00:00"}. Note, that the handeling of time and calendar
 #'   operations via the udunits library is subtly different from the way R
 #'   handles date and time operations. This functionality is mostly exported for
-#'   users that work with udunits units data, e.g., with NetCDF files. Users are
+#'   users that work with udunits time data, e.g., with NetCDF files. Users are
 #'   otherwise encouraged to use \code{R}'s date and time functionality provided
 #'   by \code{Date} and \code{POSIXt} classes.
-#'
-#' @export
-#' @noMd
 as_units.character <- function(chr, implicit_exponents = NA) {
-
 
   stopifnot(is.character(chr), length(chr) == 1)
   
@@ -360,6 +346,22 @@ is_recognized_unit <- function(chr) {
 
 
 #' @export
+#' @rdname make_units
+#'
+#' @section Expressions:
+#'
+#'   In \code{as_units()}, each of the symbols in the unit expression is treated
+#'   individually, such that each symbol must be recognized by the udunits
+#'   database (checked by \code{ud.is.parseable()}, \emph{or} be a custom,
+#'   user-defined unit symbol that was defined either by
+#'   \code{define_new_symbolic_unit()} or \code{install_conversion_function()}.
+#'   To see which symbols and names are currently recognized by the udunits
+#'   database, see \code{udunits_symbols()}.
+#'
+#' @return A new unit object that can be used in arithmetic, unit conversion or
+#'   unit assignment.
+#'
+#' @seealso \code{\link{valid_udunits()}}
 as_units.call <- function(expr) {
   
   stopifnot(is.language(expr))
@@ -390,6 +392,22 @@ as_units.expression <- as_units.call
 as_units.name       <- as_units.call
 
 
+
+#' @param n a numeric to be assigned units, or a units object to have units
+#'   converted.
+#'
+#' @param un a \code{units} object, or something coercable to one with
+#'   \code{as_units}
+#'
+#' @param ... passed on to \code{as_units}
+#' @param mode if \code{"symbols"} (the default), then the bare expression
+#'   supplied for \code{un} is treated as the unit. Otherwise, if\code{mode =
+#'   "standard"}, the value of supplied to \code{un} is used. This argument can
+#'   be set via a global option \code{options(units.set_units_mode =
+#'   "standard")}
+#'   
+#' @export
+#' @rdname make_units
 #' @export
 drop_units <- function(x) {
   class(x) <- setdiff(class(x), "units")
