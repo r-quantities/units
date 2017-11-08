@@ -4,19 +4,32 @@ conversion_table <- new.env(parent = emptyenv())
 
 user_defined_units <- new.env(parent = emptyenv())
 
+
+#' Define new symbolic units
+#' 
+#' Adding a symbolic unit allows it to be used in \code{as_units}, \code{make_units} and \code{set_units}
+#' 
+#' @export
+#' @rdname user_defined_units
 define_new_symbolic_unit <- function(chr) {
   assign(chr, symbolic_unit(chr, check_is_parsable = FALSE), 
     envir =  user_defined_units)
 }
 
+#' @export
+#' @rdname user_defined_units
 get_user_defined_units <- function() {
   names(user_defined_units)
 }
 
+#' @rdname user_defined_units
+#' @export
 is_user_defined_unit  <- function(chr) {
   exists(chr, envir = user_defined_units)
 }
 
+#' @rdname user_defined_units
+#' @export
 remove_user_defined_symbolic_unit <- function(chr) {
   if(!is_user_defined_unit(chr))
     return(warning("unit ", sQuote(chr), " not defined. Nothing to remove"))
@@ -79,9 +92,10 @@ user_convert <- function(value, from, to) {
 #'   conversion.
 #'   
 #' @examples 
-#' 
-#' apples <- 2 * make_unit("apple", user_defined = TRUE)
-#' oranges <- 3 * make_unit("orange", user_defined = TRUE)
+#' define_new_symbolic_unit("apple")
+#' define_new_symbolic_unit("orange")
+#' apples <- 2 * as_units("apple")
+#' oranges <- 3 * as_units("orange")
 #' # one orange is worth two apples
 #' install_conversion_function("orange", "apple", function(x) 2 * x)
 #' install_conversion_function("apple", "orange", function(x) x / 2)
@@ -124,10 +138,10 @@ install_conversion_function <- function(from, to, f) {
 #'   
 #' @examples 
 #' 
-#' apples <- 2 * make_unit("apple", user_defined = TRUE)
-#' oranges <- 1 * make_unit("orange", user_defined = TRUE)
 #' # one orange is worth two apples
 #' install_conversion_constant("orange", "apple", 2)
+#' apples <- 2 * as_units("apple")
+#' oranges <- 1 * as_units("orange")
 #' apples + oranges
 #' oranges + apples
 #' 

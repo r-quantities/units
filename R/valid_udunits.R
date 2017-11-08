@@ -197,7 +197,7 @@ pcc <- function(...) paste0(..., collapse = ", ")
 #' @examples
 #' valid_udunits()
 #' valid_udunits_prefixes()
-#' if(interactive)
+#' if(interactive())
 #'   View(valid_udunits())
 valid_udunits <- function(quiet = FALSE) {
   if(!requireNamespace("xml2"))
@@ -229,7 +229,7 @@ valid_udunits_prefixes <- function(quiet = FALSE) {
   
   l <- lapply( xml2::xml_children(pr), function(prefix) {
     
-    symbols <- xml2::xml_find_all(prefix, ".//symbol") %>% xml2::xml_text()
+    symbols <- xml2::xml_find_all(prefix, ".//symbol") 
     symbols <- xml2::xml_text(symbols)
     symbol <- symbols[1]
     symbol_aliases <- pcc(symbols[-1])

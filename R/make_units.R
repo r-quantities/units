@@ -46,7 +46,7 @@
 #' x5 <- set_units(1, "m/s^2",   mode = "standard")
 #' x6 <- set_units(1, x1,        mode = "standard")
 #' x7 <- set_units(1, units(x1), mode = "standard")
-#' x8 <- symbolic_unit("m") / symbolic_unit("s")^2
+#' x8 <- as_units("m") / as_units("s")^2
 #'
 #' all_identical <- function(...) {
 #'   l <- list(...)
@@ -214,18 +214,18 @@ is_udunits_time <- function(s) {
 #'   users that work with udunits time data, e.g., with NetCDF files. Users are
 #'   otherwise encouraged to use \code{R}'s date and time functionality provided
 #'   by \code{Date} and \code{POSIXt} classes.
-as_units.character <- function(chr, implicit_exponents = NA) {
+as_units.character <- function(chr, implicit_exponents = NA, force_single_symbol = FALSE) {
 
   stopifnot(is.character(chr), length(chr) == 1)
   
-  if(is_udunits_time(chr))
+  if(force_single_symbol || is_udunits_time(chr))
     return(symbolic_unit(chr))
   
   if(is.na(implicit_exponents))
     implicit_exponents <- are_exponents_implicit(chr)
   
   if(implicit_exponents)
-    return(.parse_unit_with_implicit_exponents(chr)) 
+    return(.parse_unit_with_implicit_exponents(chr))
   
   chr <- backtick(chr)
   o <- try(expr <- parse(text = chr)[[1]], silent = TRUE)

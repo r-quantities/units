@@ -40,9 +40,10 @@ This is the most general way of specifying conversion between
   conversion.
 }
 \examples{
-
-apples <- 2 * make_unit("apple", user_defined = TRUE)
-oranges <- 3 * make_unit("orange", user_defined = TRUE)
+define_new_symbolic_unit("apple")
+define_new_symbolic_unit("orange")
+apples <- 2 * as_units("apple")
+oranges <- 3 * as_units("orange")
 # one orange is worth two apples
 install_conversion_function("orange", "apple", function(x) 2 * x)
 install_conversion_function("apple", "orange", function(x) x / 2)

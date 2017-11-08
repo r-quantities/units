@@ -9,7 +9,8 @@
 \usage{
 make_units(bare_expression)
 
-\method{as_units}{character}(chr, implicit_exponents = NA)
+\method{as_units}{character}(chr, implicit_exponents = NA,
+  force_single_symbol = FALSE)
 
 \method{as_units}{call}(expr)
 
@@ -140,7 +141,7 @@ x4 <- set_units(1,  m/s^2) # by default, mode = "symbols"
 x5 <- set_units(1, "m/s^2",   mode = "standard")
 x6 <- set_units(1, x1,        mode = "standard")
 x7 <- set_units(1, units(x1), mode = "standard")
-x8 <- symbolic_unit("m") / symbolic_unit("s")^2
+x8 <- as_units("m") / as_units("s")^2
 
 all_identical <- function(...) {
   l <- list(...)
