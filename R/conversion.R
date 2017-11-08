@@ -105,6 +105,11 @@ units.units <- function(x) {
   attr(x, "units")
 }
 
+#' @export
+units.symbolic_units <- function(x) {
+  x
+}
+
 #' convert object to a units object
 #'
 #' @param x object of class units
@@ -123,8 +128,11 @@ as.units <- function(x, value = unitless) {
 }
 
 #' @export
-as_units.units <- function(x, ...) x
-
+as_units.units <- function(x, value, ...) {
+  if(!missing(value) && !identical(units(value), units(x)))
+    warning("Use set_units() to perform unit conversion. Return unit unmodified")
+  x
+}
 #' @export
 as_units.symbolic_units <- function(x, ...) {
   structure(1L, units = x, class = "units")
@@ -153,16 +161,16 @@ as_units.difftime <- function(x, value) {
   
   # convert from difftime to udunits2:
   if (u == "secs") # secs -> s
-    x <- x * make_unit("s")
+    x <- x * symbolic_unit("s")
   else if (u == "mins") # mins -> min
-    x <- x * make_unit("min")
+    x <- x * symbolic_unit("min")
   else if (u == "hours") # hours -> h
-    x <- x * make_unit("h")
+    x <- x * symbolic_unit("h")
   else if (u == "days") # days -> d
-    x <- x * make_unit("d")
+    x <- x * symbolic_unit("d")
   else if (u == "weeks") { # weeks -> 7 days
     x <- 7 * x
-    x <- x * make_unit("d")
+    x <- x * symbolic_unit("d")
   } else 
     stop(paste("unknown time units", u, "in difftime object"))
   

@@ -113,7 +113,7 @@ as_cf = function(x) {
 #' @method all.equal units
 #' @export
 all.equal.units = function(target, current, ...) {
-  current = set_units(current, units(target), mode = "units")
+  current = set_units(current, units(target), mode = "standard")
   all.equal(unclass(target), unclass(current), ...)
 }
 
@@ -152,10 +152,10 @@ seq.units = function(from, to, by = ((to - from)/(length.out - 1)),
   if (! mf)
     from = as.numeric(from)
   if (! mt)
-  	to = as.numeric(set_units(to, uuu, mode = "units"))
+  	to = as.numeric(set_units(to, uuu, mode = "standard"))
   if (! missing(by))
-    by = as.numeric(set_units(by, uuu, mode = "units"))
-  set_units(NextMethod(), uuu, mode = "units")
+    by = as.numeric(set_units(by, uuu, mode = "standard"))
+  set_units(NextMethod(), uuu, mode = "standard")
 }
 
 ##' @export

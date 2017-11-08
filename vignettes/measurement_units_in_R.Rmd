@@ -346,7 +346,7 @@ b = set_units(1:10, h)
 a * b
 ustr1 = paste(rep("m", 101), collapse = "*")
 ustr2 = "dm^100"
-make_unit(ustr1) / make_unit(ustr2)
+as_units(ustr1) / as_units(ustr2)
 ```
 
 Units are printed as simple R expressions, e.g.
@@ -355,7 +355,7 @@ set_units(1, m^5/s^4)
 ```
 Another way to print units commonly seen in Climate and Forecast Conventions\footnote{CF, \url{http://cfconventions.org/Data/cf-standard-names/34/build/cf-standard-name-table.html}} is `m2 s-1` for m$^2$/s. These are not R expressions, but as they can be parsed by `parse_unit`:
 ```{r}
-parse_unit("m2 s-1")
+as_units("m2 s-1")
 deparse_unit(set_units(1, m^2*s^-1))
 ```
 The `plot` and `hist` methods add units to default axis labels, an

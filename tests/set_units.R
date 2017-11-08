@@ -6,7 +6,7 @@ ref = set_units(1, m)
 # character input
 expect_equal(set_units(1, "m", mode = "character"), ref)
 # units input
-expect_equal(set_units(1, make_unit("m"), mode = "units"), ref)
+expect_equal(set_units(1, as_units("m"), mode = "units"), ref)
 # symbolic_units input
 expect_equal(set_units(1, units(ref), mode = "units"), ref)
 
@@ -17,20 +17,20 @@ foo = ref
 expect_equal(set_units(1, foo, mode = "units"), ref)
 foo = "m"
 expect_equal(set_units(1, foo, mode = "character"), ref)
-foo = make_unit("m")
+foo = as_units("m")
 expect_equal(set_units(1, foo, mode = "units"), ref)
 
 # ambiguous, should warn:
 m = "u"
 set_units(1, m) # m by NSE
-m = make_unit("u")
+m = as_units("u")
 set_units(1, m, mode = "units") # u by units
 set_units(1, m, mode = "symbols") # m by NSE
 
 degree_C = "m"
 set_units(1, degree_C)
 
-degree_C = make_unit("m")
+degree_C = as_units("m")
 
 set_units(1, degree_C)
 

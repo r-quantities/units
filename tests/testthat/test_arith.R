@@ -1,8 +1,8 @@
 context("Arithmetic")
 
 test_that("we can compare vectors with equal units", {
-  x <- 1:4 * make_unit("m")
-  y <- 1:4 * make_unit("m")
+  x <- 1:4 * as_units("m")
+  y <- 1:4 * as_units("m")
   z <- 2 * y
   
   expect_true(all(x == y))
@@ -21,7 +21,7 @@ test_that("we can compare vectors with equal units", {
 
 test_that("we can scale units with scalars", {
   x <- 1:4
-  ux <- x * make_unit("m")
+  ux <- x * as_units("m")
   
   expect_equal(as.numeric(10 * ux), 10 * x)
   expect_equal(as.numeric(ux / 10), x / 10)
@@ -29,8 +29,8 @@ test_that("we can scale units with scalars", {
 
 test_that("we can multiply and divide units", {
   x <- 1:4 ; y <- 5:8
-  m <- x * make_unit("m")
-  s <- y * make_unit("s")
+  m <- x * as_units("m")
+  s <- y * as_units("s")
   
   expect_equal(as.numeric(m * s), x * y)
   expect_equal(as.numeric(m / s), x / y)
@@ -43,7 +43,7 @@ test_that("we can multiply and divide units", {
 
 test_that("we can take powers of units", {
   x <- 1:4
-  ux <- x * make_unit("m")
+  ux <- x * as_units("m")
   
   expect_equal(as.numeric(ux ** 2), x ** 2)
   expect_equal(as.numeric(ux ^ 2), x ^ 2)
@@ -75,9 +75,9 @@ test_that("we can convert units and simplify after multiplication", {
   x <- 1:4
   y <- 1:4
   z <- 1:4
-  m <- make_unit("m")
-  s <- make_unit("s")
-  km <- make_unit("km")
+  m <- as_units("m")
+  s <- as_units("s")
+  km <- as_units("km")
   ux <- x * m
   uy <- y * s
   uz <- z * km
@@ -89,8 +89,8 @@ test_that("we can convert units and simplify after multiplication", {
   expect_equal(as.character(units(ux*uy)), "m*s")
   expect_equal(as.numeric(ux*uz), x*z)
   expect_equal(as.character(units(ux*uz)), "km*m")
-  expect_equal(as.numeric(as_units(ux*uz, km * km)), (x/1000)*z)
-  expect_equal(as.character(units(as_units(ux*uz, km * km))), "km^2")
+  expect_equal(as.numeric(set_units(ux*uz, km * km)), (x/1000)*z)
+  expect_equal(as.character(units(set_units(ux*uz, km * km))), "km^2")
   
   expect_equal(as.numeric(ux/ux), x/x)
   expect_equal(as.character(units(ux/ux)), "1")

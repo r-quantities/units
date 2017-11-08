@@ -24,7 +24,8 @@ x \%*\% y
 matrix multiplication
 }
 \details{
-see \code{\link[base]{`\%*\%`}} for the base function, reimplemented as default method
+see \code{\link[base]{`\%*\%`}} for the base function, reimplemented
+  as default method
 }
 \examples{
 a = set_units(1:5, m)
