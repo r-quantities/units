@@ -21,7 +21,7 @@ par(oldpar)
 
 units_options(parse = FALSE)
 n = 100
-u = rnorm(1:n) * as_units("°C")
+u = rnorm(1:n) * as_units("degree_C")
 v = rnorm(1:n) * as_units("s")
 plot(u, v)
 plot(u, type = 'l')

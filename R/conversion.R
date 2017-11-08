@@ -134,7 +134,9 @@ as_units.units <- function(x, value, ...) {
   x
 }
 #' @export
-as_units.symbolic_units <- function(x, ...) {
+as_units.symbolic_units <- function(x, value, ...) {
+  if(!missing(value))
+    warning("supplied value ignored")
   structure(1L, units = x, class = "units")
 }
 
@@ -261,7 +263,7 @@ as_units.POSIXt = function(x, value) {
 as_units.Date = function(x, value) {
 	u = as.numeric(x)
 	units(u) = symbolic_unit("days since 1970-01-01")
-	if (! missing(value))
+	if (!missing(value))
 		units(u) = symbolic_unit(value)
 	u
 }

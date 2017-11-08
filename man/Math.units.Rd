@@ -17,8 +17,8 @@ Mathematical operations for units objects
 \examples{
 a = sqrt(1:10)
 a <- with(ud_units, a * m/s)
-log(a)
-log(a, base = 10)
+# log(a)
+# log(a, base = 10)
 cumsum(a)
 signif(a, 2)
 }
