@@ -100,6 +100,7 @@ deparse_unit = function(x) {
   vals2 = as.character(td)
   paste(c(paste0(nm1, vals1), paste0(nm2, vals2)), collapse=" ")
 }
+# This should perhaps be an option in format.symbolic_units
 
 #' @export
 #' @name deparse_unit
