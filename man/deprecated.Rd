@@ -2,14 +2,12 @@
 % Please edit documentation in R/depracated.R
 \name{make_unit}
 \alias{make_unit}
-\title{deprecated functions}
+\alias{parse_unit}
+\title{Deprecated functions}
 \usage{
-make_unit(x, ...)
-}
-\arguments{
-\item{x}{see \link{symbolic_unit}}
+make_unit(chr, ...)
 
-\item{...}{see \link{symbolic_unit}}
+parse_unit(chr, ...)
 }
 \description{
 The following functions are deprecated and will be removed in a future release.
