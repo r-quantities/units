@@ -10,7 +10,7 @@
 \alias{as_units.difftime}
 \title{convert object to a units object}
 \usage{
-as_units(x, value = unitless)
+as_units(x, ...)
 
 as.units(x, value = unitless)
 

@@ -35,10 +35,9 @@ convert <- function(value, from, to) {
 `units<-.numeric` <- function(x, value) {
   if(is.null(value))
     return(x)
-  
-  value <- as_units(value)
-  
-  stopifnot(inherits(value, "units") || inherits(value, "symbolic_units"))
+ 
+  if(!inherits(value, "units") && !inherits(value, "symbolic_units"))
+    value <- as_units(value)
   
   if (inherits(value, "units"))
     value <- units(value)
@@ -62,9 +61,8 @@ convert <- function(value, from, to) {
   if(is.null(value))
     return(drop_units(x))
   
-  value <- as_units(value)
-  
-  stopifnot(inherits(value, "units") || inherits(value, "symbolic_units"))
+  if(!inherits(value, "units") && !inherits(value, "symbolic_units"))
+    value <- as_units(value)
   
   if (inherits(value, "units"))
     value <- units(value)
@@ -93,8 +91,9 @@ unit_ambiguous = function(value) {
   if (!all(is.na(x))) 
     stop("x must be numeric, non-NA logical not supported")
   
-  stopifnot(inherits(value, "units") || inherits(value, "symbolic_units"))
-  set_units(as.numeric(x), value, mode = "units")
+  x <- as.numeric(x)
+  units(x) <- value
+  x
 }
 
 #' retrieve measurement units from \code{units} object
@@ -112,7 +111,7 @@ units.units <- function(x) {
 #' @param value target unit, defaults to `unitless`
 #'
 #' @export
-as_units <- function(x, value = unitless) {
+as_units <- function(x, ...) {
   UseMethod("as_units")
 }
 
