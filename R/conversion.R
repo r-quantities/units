@@ -132,18 +132,7 @@ as_units.symbolic_units <- function(x, ...) {
 
 #' @export
 #' @name as_units
-as_units.default <- function(x, value = unitless) {
-
-  unit_name <- substitute(value)
-  if (is.symbol(unit_name)) {
-    unit_name <- as.character(unit_name)
-    if (!exists(unit_name, envir = parent.frame())) {
-      value <- units:: ud_units[[unit_name]]
-      if (is.null(value))
-        stop(paste("unit", unit_name, "not found: define with make_unit?"))
-    }
-  }
-  
+as_units.default <- function(x, value = unitless, ...) {
   units(x) <- value
   x
 }

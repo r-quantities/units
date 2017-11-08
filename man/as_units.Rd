@@ -14,7 +14,7 @@ as_units(x, ...)
 
 as.units(x, value = unitless)
 
-\method{as_units}{default}(x, value = unitless)
+\method{as_units}{default}(x, value = unitless, ...)
 
 \method{as_units}{difftime}(x, value)
 }
