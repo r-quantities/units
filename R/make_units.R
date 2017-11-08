@@ -136,6 +136,8 @@
 #' units(x) <- NULL
 #' # or
 #' drop_units(y)
+make_units <- function(bare_expression) {
+  as_units.call(substitute(bare_expression))
 }
 
 
@@ -235,47 +237,6 @@ as_units.character <- function(chr, implicit_exponents = NA) {
   }
 
   as_units.call(expr)
-}
-
-
-#' @param n a numeric to be assigned units, or a units object to have units
-#'   converted.
-#'   
-#' @param un a \code{units} object, or something coercable to one with \code{as_units}
-#'
-#' @param ... see parameter \code{mode}
-#' @param mode if \code{"symbols"} (the default), then \code{...} are passed on
-#'   to \code{make_unit()}. If \code{"character"}, then \code{...} are passed on to
-#'   \code{parse_unit()}. If \code{"units"}, then \code{...} must be a single
-#'   object of class \code{units} or \code{.symbolic_units} and the value is
-#'   directly assigned to \code{n} via \code{`units<-`}
-#'
-#' @export
-#' @rdname make_unit
-set_units <- function(n, ...) UseMethod("set_units")
-
-#' @export
-set_units.default <- function(n, un, ...,
-  mode = getOption("units.set_units_mode", c("symbols", "standard"))) {
-  
-  if(missing(un))
-    un <- unitless
-  
-  else if (match.arg(mode) == "symbols")
-    un <- substitute(un)
-  
-  if(is.null(un))
-    return(drop_units(n))
-  
-  units(n) <- as_units(un, ...)
-  n
-}
-
-
-#' @export
-set_units.difftime <- function(n, value) {
-  units(n) <- value
-  n
 }
 
 # not longer exported
@@ -400,6 +361,33 @@ as_units.name       <- as_units.call
 #'   
 #' @export
 #' @rdname make_units
+set_units <- function(n, ...) UseMethod("set_units")
+
+#' @export
+set_units.default <- function(n, un, ...,
+  mode = getOption("units.set_units_mode", c("symbols", "standard"))) {
+  
+  if (missing(un))
+    un <- unitless
+  else if (match.arg(mode) == "symbols")
+    un <- substitute(un)
+  
+  if (is.null(un))
+    return(drop_units(n))
+  
+  units(n) <- as_units(un, ...)
+  n
+}
+
+
+#' @export
+set_units.difftime <- function(n, value) {
+  units(n) <- value
+  n
+}
+
+
+
 #' @export
 drop_units <- function(x) {
   class(x) <- setdiff(class(x), "units")
