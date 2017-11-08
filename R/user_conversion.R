@@ -2,6 +2,35 @@
 # Using environments as hash tables...
 conversion_table <- new.env(parent = emptyenv())
 
+user_defined_units <- new.env(parent = emptyenv())
+
+define_new_symbolic_unit <- function(chr) {
+  assign(chr, symbolic_unit(chr, check_is_parsable = FALSE), 
+    envir =  user_defined_units)
+}
+
+get_user_defined_units <- function() {
+  names(user_defined_units)
+}
+
+is_user_defined_unit  <- function(chr) {
+  exists(chr, envir = user_defined_units)
+}
+
+remove_user_defined_symbolic_unit <- function(chr) {
+  if(!is_user_defined_unit(chr))
+    return(warning("unit ", sQuote(chr), " not defined. Nothing to remove"))
+  rm(list = chr, envir = user_defined_units)
+}
+
+
+# define_new_symbolic_unit("foobar")
+# get_user_defined_units()
+# remove_user_defined_unit("foobar")
+# get_user_defined_units()
+
+
+
 get_conversion_function <- function(from, to) {
   if (!exists(from, conversion_table)) return(NULL)
   table <- get(from, conversion_table)
@@ -63,6 +92,8 @@ user_convert <- function(value, from, to) {
 #'   
 #' @export
 install_conversion_function <- function(from, to, f) {
+  define_new_symbolic_unit(to)
+  define_new_symbolic_unit(from)
   if (!exists(from, conversion_table)) {
     assign(from, new.env(parent = emptyenv()), conversion_table)
   }
