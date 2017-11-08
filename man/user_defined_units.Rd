@@ -15,6 +15,9 @@ is_user_defined_unit(chr)
 
 remove_user_defined_symbolic_unit(chr)
 }
+\arguments{
+\item{chr}{a length 1 character vector that is the new unit name or symbol.}
+}
 \description{
 Adding a symbolic unit allows it to be used in \code{as_units}, \code{make_units} and \code{set_units}
 }

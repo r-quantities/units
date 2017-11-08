@@ -9,6 +9,8 @@ user_defined_units <- new.env(parent = emptyenv())
 #' 
 #' Adding a symbolic unit allows it to be used in \code{as_units}, \code{make_units} and \code{set_units}
 #' 
+#' @param chr a length 1 character vector that is the new unit name or symbol.
+#' 
 #' @export
 #' @rdname user_defined_units
 define_new_symbolic_unit <- function(chr) {

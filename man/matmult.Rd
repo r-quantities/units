@@ -24,7 +24,7 @@ x \%*\% y
 matrix multiplication
 }
 \details{
-see \code{\link[base]{`\%*\%`}} for the base function, reimplemented
+see \code{"\link[base]{\%*\%}"} for the base function, reimplemented
   as default method
 }
 \examples{

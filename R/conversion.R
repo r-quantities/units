@@ -113,7 +113,8 @@ units.symbolic_units <- function(x) {
 #' convert object to a units object
 #'
 #' @param x object of class units
-#' @param value target unit, defaults to `unitless`
+#' @param value an object of class units
+#' @param ... passed on to other methods
 #'
 #' @export
 as_units <- function(x, ...) {
@@ -147,7 +148,7 @@ as_units.default <- function(x, value = unitless, ...) {
   x
 }
 
-#' convert difftime objects to units
+#'  difftime objects to units
 #'
 #' @export
 #' @name as_units

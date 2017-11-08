@@ -10,6 +10,10 @@ valid_udunits(quiet = FALSE)
 
 valid_udunits_prefixes(quiet = FALSE)
 }
+\arguments{
+\item{quiet}{logical, defaults TRUE to give a message about where the udunits db is
+being read from.}
+}
 \value{
 a data frame with columns `symbol`, `symbol_aliases`, `
   name_singular`, `name_singular_aliases`, `name_plural`, or

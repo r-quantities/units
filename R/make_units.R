@@ -20,7 +20,7 @@
 #' }
 #' 
 #' @export
-#' @rdname make_units
+#' @rdname as_units
 #' 
 #' @param bare_expression a bare R expression describing units. Must be valid R
 #'   syntax (reserved R syntax words like \code{in} must be backticked)
@@ -162,12 +162,11 @@ is_udunits_time <- function(s) {
 }
 
 
-#' @rdname make_units
+#' @rdname as_units
 #' @export
 #' @noMd
 #'
 #' @param force_single_symbol Whether to perform no string parsing and force treatment of the string as a single symbol.
-#' @param ... ignored
 #' 
 #' @param implicit_exponents If the unit string is in product power form (e.g.
 #'   \code{"km m-2 s-1"}). Defaults to \code{NA}, in which case a guess is made
@@ -242,7 +241,7 @@ as_units.character <- function(x, implicit_exponents = NA, force_single_symbol =
   as_units.call(expr)
 }
 
-# not longer exported
+# no longer exported
 # ' @param chr a scalar character string describing a unit.
 # '
 # ' @param check_is_parsable check if the symbolic unit is recognized by the
@@ -302,7 +301,7 @@ is_recognized_unit <- function(chr) {
 
 
 #' @export
-#' @rdname make_units
+#' @rdname as_units
 #'
 #' @section Expressions:
 #'
@@ -317,7 +316,7 @@ is_recognized_unit <- function(chr) {
 #' @return A new unit object that can be used in arithmetic, unit conversion or
 #'   unit assignment.
 #'
-#' @seealso \code{\link{valid_udunits()}}
+#' @seealso \code{\link{valid_udunits}}
 as_units.call <- function(x, ...) {
   
   stopifnot(is.language(x))
@@ -348,48 +347,6 @@ as_units.expression <- as_units.call
 as_units.name       <- as_units.call
 
 
-
-#' @param n a numeric to be assigned units, or a units object to have units
-#'   converted.
-#'
-#' @param un a \code{units} object, or something coercable to one with
-#'   \code{as_units}
-#'
-#' @param ... passed on to \code{as_units}
-#' @param mode if \code{"symbols"} (the default), then the bare expression
-#'   supplied for \code{un} is treated as the unit. Otherwise, if\code{mode =
-#'   "standard"}, the value of supplied to \code{un} is used. This argument can
-#'   be set via a global option \code{options(units.set_units_mode =
-#'   "standard")}
-#'   
-#' @export
-#' @rdname make_units
-set_units <- function(n, ...) UseMethod("set_units")
-
-#' @export
-set_units.default <- function(n, un, ...,
-  mode = getOption("units.set_units_mode", c("symbols", "standard"))) {
-  
-  if (missing(un))
-    un <- unitless
-  else if (match.arg(mode) == "symbols")
-    un <- substitute(un)
-  
-  if (is.null(un))
-    return(drop_units(n))
-  
-  units(n) <- as_units(un, ...)
-  n
-}
-
-
-#' @export
-set_units.difftime <- function(n, value, ...) {
-  units(n) <- value
-  n
-}
-
-
 #' drop units
 #' 
 #' @param x a units object
@@ -401,38 +358,4 @@ drop_units <- function(x) {
   attr(x, "units") <- NULL
   x
 }
-
-# as_units 
-# 
-# Create `units` objects
-# methods provided:
-# 
-# as_units.character # alias for parse_units
-# as_units.numeric   # alias for set_units
-# as_units.units     # warns if attempting to convert / change units
-# 
-# as_units.name
-# as_units.expression
-# as_units.call       
-
-
-# usage:
-# x <- 1:3
-# units(x) <- "m/s"
-# units(x) <- quote(m/s)
-# 
-# # by default, any object that is not a units object is coerced with as_units. Methods for as_units are provided for character and language objects
-# 
-# # by default, value is coerced with as_units
-# units(x) <- as_units("m/s")
-# units(x) <- make_units(m/s)
-# 
-# set_units(x, m/s)
-# set_units(x, "m/s", mode = "standard")
-# set_units(x, "m/s", mode = "standard")
-
-
-# units(x) <- parse_units("m/s")
-
-
 

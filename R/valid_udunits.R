@@ -186,6 +186,9 @@ pcc <- function(...) paste0(..., collapse = ", ")
 #' Note, this is primarily intended for interactive use, the exact format of the
 #' returned dataframe may change in the future.
 #'
+#' @param quiet logical, defaults TRUE to give a message about where the udunits db is
+#'   being read from.
+#'
 #' @return a data frame with columns `symbol`, `symbol_aliases`, `
 #'   name_singular`, `name_singular_aliases`, `name_plural`, or
 #'   `name_plural_aliases`, `def`, `definition`, `comment`, `dimensionless` and
