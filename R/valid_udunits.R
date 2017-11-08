@@ -176,15 +176,15 @@ pcc <- function(...) paste0(..., collapse = ", ")
 #'
 #' The returned dataframe is constructed at runtime by reading the xml database
 #' that powers unit conversion in [package:udunits2]. Inspect this dataframe to
-#' determine what inputs are accepted by `make_units`, `parse_units`,
-#' `set_units`, and `symbolic_unit`. Any entry listed under `symbol`,
-#' `symbol_aliases`, ` name_singular`, `name_singular_aliases`, `name_plural`,
-#' or `name_plural_aliases` is valid. Additionaly, any entry under `symbol` or
-#' `symbol_aliases` may can also contain a valid prefix, as, as specified by
-#' `valid_udunits_prefixes()`.
+#' determine what inputs are accepted by `as_units` (and the other functions it
+#' powers: `make_units`, `set_units`, `units<-`). Any entry listed under
+#' `symbol`, `symbol_aliases`, ` name_singular`, `name_singular_aliases`,
+#' `name_plural`, or `name_plural_aliases` is valid. Additionaly, any entry
+#' under `symbol` or `symbol_aliases` may can also contain a valid prefix, as,
+#' as specified by `valid_udunits_prefixes()`.
 #'
-#' Note, this is primarily intended for interactive use, the exact format of
-#' the returned dataframe may change in the future.
+#' Note, this is primarily intended for interactive use, the exact format of the
+#' returned dataframe may change in the future.
 #'
 #' @return a data frame with columns `symbol`, `symbol_aliases`, `
 #'   name_singular`, `name_singular_aliases`, `name_plural`, or
