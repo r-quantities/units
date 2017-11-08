@@ -278,31 +278,21 @@ set_units.difftime <- function(n, value) {
   n
 }
 
-#' @export
-#' @param chr a scalar character string describing a unit.
-#'
-#' @param check_is_parsable check if the symbolic unit is recognized by the
-#'   udunits2 database
-#'
-#' @param user_defined Create a custom unit that is recognized by the udunits2
-#'   database. This argument is ignored if `check_is_parsable = FALSE`. If
-#'   `check_is_parsable = TRUE` and `user_defined = TRUE`, a warning is issued
-#'   in the case of an unrecognized units, otherwise, if `user_defined = FALSE`,
-#'   an error is thrown.
-#'
-#' @param auto_convert_name_to_symbol Automatically convert a unit name to it's
-#'   symobl. E.g., \code{kilogram} becomes \code{kg}. Note, conversion is not
-#'   reliable if the unit name contains a prefixe. This is a limitation of the
-#'   underlying \code{udunits2} package and may change in the future.
-#'
-#' @rdname make_unit
+# not longer exported
+# ' @param chr a scalar character string describing a unit.
+# '
+# ' @param check_is_parsable check if the symbolic unit is recognized by the
+# '   udunits2 database. If \code{TRUE} (the default), an error is issued with
+# '   unrecognized symbols.
+# '
+# ' @rdname make_units # not longer exported
 symbolic_unit <- function(chr, check_is_parsable = TRUE) {
   
   stopifnot(is.character(chr), length(chr) == 1)
   
   if (check_is_parsable && !ud.is.parseable(chr)) {
     msg <- paste(sQuote(chr), "is not a unit recognized by udunits")
-    fun(msg, call. = FALSE)
+    stop(msg, call. = FALSE)
   }
  
   auto_convert <- getOption("units.auto_convert_names_to_symbols", TRUE)
@@ -337,7 +327,9 @@ pc <- function(x) {
   is_are <- if (length(unrecognized_symbols) > 1L) "are" else "is" 
   
   paste0("In ", sQuote(full_expr), ", ", 
-    pc(sQuote(unrecognized_symbols)), " ", is_are, " not recognized by udunits")
+    pc(sQuote(unrecognized_symbols)), " ", is_are, " not recognized by udunits.\n",
+    "See a table of valid unit symbols and names with valid_udunits().\n", 
+    "Add user-defined units with define_new_symbolic_unit().")
 }
 
 is_recognized_unit <- function(chr) {
