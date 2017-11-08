@@ -44,14 +44,14 @@ rep.units = function(x, ...) {
   parse_one = function(str) {
     r <- regexpr("[-0-9]+", str)
     if (r == -1)
-      return(make_unit(str))
+      return(symbolic_unit(str))
     power = as.integer(substr(str, r, nchar(str)))
     u = if (power < 0) {
 	  subs = substr(str, 1, r-1) # word before power
-      1/make_unit(subs) # word before power
+      1/symbolic_unit(subs) # word before power
     } else {
       subs = substr(str, 1, r-1)
-      make_unit(subs)
+      symbolic_unit(subs)
 	}
     if (abs(power) > 1) {
       u0 = u
@@ -61,7 +61,7 @@ rep.units = function(x, ...) {
       return(u)
     }
   if (str == "1")
-     return(make_unit("1"))
+     return(symbolic_unit("1"))
   first = TRUE
   while ((r <- regexpr("[ ]+", str)) != -1) {
     this = substr(str, 1, r-1) # first word
