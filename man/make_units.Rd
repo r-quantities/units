@@ -9,10 +9,10 @@
 \usage{
 make_units(bare_expression)
 
-\method{as_units}{character}(chr, implicit_exponents = NA,
-  force_single_symbol = FALSE)
+\method{as_units}{character}(x, implicit_exponents = NA,
+  force_single_symbol = FALSE, ...)
 
-\method{as_units}{call}(expr)
+\method{as_units}{call}(x, ...)
 
 set_units(n, ...)
 }
@@ -25,13 +25,17 @@ syntax (reserved R syntax words like \code{in} must be backticked)}
 based on the supplied string. Set to \code{TRUE} or {FALSE} if the guess is
 incorrect.}
 
+\item{force_single_symbol}{Whether to perform no string parsing and force treatment of the string as a single symbol.}
+
+\item{...}{ignored}
+
 \item{n}{a numeric to be assigned units, or a units object to have units
 converted.}
 
-\item{...}{passed on to \code{as_units}}
-
 \item{un}{a \code{units} object, or something coercable to one with
 \code{as_units}}
+
+\item{...}{passed on to \code{as_units}}
 
 \item{mode}{if \code{"symbols"} (the default), then the bare expression
 supplied for \code{un} is treated as the unit. Otherwise, if\code{mode =

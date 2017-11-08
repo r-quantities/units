@@ -16,7 +16,7 @@ as.units(x, value = unitless)
 
 \method{as_units}{default}(x, value = unitless, ...)
 
-\method{as_units}{difftime}(x, value)
+\method{as_units}{difftime}(x, value, ...)
 }
 \arguments{
 \item{x}{object of class units}

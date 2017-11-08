@@ -156,7 +156,7 @@ as_units.default <- function(x, value = unitless, ...) {
 #' s = Sys.time()
 #' d  = s - (s+1)
 #' as_units(d)
-as_units.difftime <- function(x, value) {
+as_units.difftime <- function(x, value, ...) {
   u <- attr(x, "units")
   x <- unclass(x)
   attr(x, "units") <- NULL
@@ -251,7 +251,7 @@ as.Date.units = function (x, ...) {
 }
 
 #' @export
-as_units.POSIXt = function(x, value) {
+as_units.POSIXt = function(x, value, ...) {
 	u = as.numeric(as.POSIXct(x))
 	units(u) = symbolic_unit("seconds since 1970-01-01 00:00:00 +00:00")
 	if (! missing(value))
@@ -260,7 +260,7 @@ as_units.POSIXt = function(x, value) {
 }
 
 #' @export
-as_units.Date = function(x, value) {
+as_units.Date = function(x, value, ...) {
 	u = as.numeric(x)
 	units(u) = symbolic_unit("days since 1970-01-01")
 	if (!missing(value))

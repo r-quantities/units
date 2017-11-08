@@ -166,6 +166,9 @@ is_udunits_time <- function(s) {
 #' @export
 #' @noMd
 #'
+#' @param force_single_symbol Whether to perform no string parsing and force treatment of the string as a single symbol.
+#' @param ... ignored
+#' 
 #' @param implicit_exponents If the unit string is in product power form (e.g.
 #'   \code{"km m-2 s-1"}). Defaults to \code{NA}, in which case a guess is made
 #'   based on the supplied string. Set to \code{TRUE} or {FALSE} if the guess is
@@ -214,26 +217,26 @@ is_udunits_time <- function(s) {
 #'   users that work with udunits time data, e.g., with NetCDF files. Users are
 #'   otherwise encouraged to use \code{R}'s date and time functionality provided
 #'   by \code{Date} and \code{POSIXt} classes.
-as_units.character <- function(chr, implicit_exponents = NA, force_single_symbol = FALSE) {
+as_units.character <- function(x, implicit_exponents = NA, force_single_symbol = FALSE, ...) {
 
-  stopifnot(is.character(chr), length(chr) == 1)
+  stopifnot(is.character(x), length(x) == 1)
   
-  if(force_single_symbol || is_udunits_time(chr))
-    return(symbolic_unit(chr))
+  if(force_single_symbol || is_udunits_time(x))
+    return(symbolic_unit(x))
   
   if(is.na(implicit_exponents))
-    implicit_exponents <- are_exponents_implicit(chr)
+    implicit_exponents <- are_exponents_implicit(x)
   
   if(implicit_exponents)
-    return(.parse_unit_with_implicit_exponents(chr))
+    return(.parse_unit_with_implicit_exponents(x))
   
-  chr <- backtick(chr)
-  o <- try(expr <- parse(text = chr)[[1]], silent = TRUE)
+  x <- backtick(x)
+  o <- try(expr <- parse(text = x)[[1]], silent = TRUE)
   
   if(inherits(o, "try-error")) {
-    warning("Could not parse expression: ", sQuote(chr), 
+    warning("Could not parse expression: ", sQuote(x), 
       ". Returning as a single symbolic_unit()", call. = FALSE)
-    return(symbolic_unit(chr, check_is_parsable = TRUE))
+    return(symbolic_unit(x, check_is_parsable = TRUE))
   }
 
   as_units.call(expr)
@@ -315,26 +318,26 @@ is_recognized_unit <- function(chr) {
 #'   unit assignment.
 #'
 #' @seealso \code{\link{valid_udunits()}}
-as_units.call <- function(expr) {
+as_units.call <- function(x, ...) {
   
-  stopifnot(is.language(expr))
+  stopifnot(is.language(x))
   
-  vars <- all.vars(expr)
+  vars <- all.vars(x)
   if(!length(vars)) 
     return(structure(1, units = unitless, class = "units"))
   
   recognized <- vapply(vars, is_recognized_unit, logical(1L))
   if(!all(recognized)) 
-    stop(.msg_units_not_recognized(vars[!recognized], expr), call. = FALSE)
+    stop(.msg_units_not_recognized(vars[!recognized], x), call. = FALSE)
   
   names(vars) <- vars
   tmp_env <- lapply(vars, symbolic_unit, check_is_parsable = FALSE)
   
-  unit <- eval(expr, tmp_env, baseenv())
+  unit <- eval(x, tmp_env, baseenv())
   
   if(as.numeric(unit) != 1) 
     warning(call. = FALSE,
-"In ", sQuote(deparse(expr)), " the numeric multiplier ", sQuote(as.numeric(unit)), " was discarded. 
+"In ", sQuote(deparse(x)), " the numeric multiplier ", sQuote(as.numeric(unit)), " was discarded. 
 The returned unit object was coerced to a value of 1.
 Use `install_conversion_constant()` to define a new unit that is a multiple of another unit.")
   
@@ -381,13 +384,17 @@ set_units.default <- function(n, un, ...,
 
 
 #' @export
-set_units.difftime <- function(n, value) {
+set_units.difftime <- function(n, value, ...) {
   units(n) <- value
   n
 }
 
 
-
+#' drop units
+#' 
+#' @param x a units object
+#' 
+#' @return the numeric without any units attributes, while preserving other attributes like dimensions or other classes.
 #' @export
 drop_units <- function(x) {
   class(x) <- setdiff(class(x), "units")

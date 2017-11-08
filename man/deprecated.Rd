@@ -5,9 +5,12 @@
 \alias{parse_unit}
 \title{Deprecated functions}
 \usage{
-make_unit(chr, ...)
+make_unit(chr)
 
-parse_unit(chr, ...)
+parse_unit(chr)
+}
+\arguments{
+\item{chr}{length 1 character string}
 }
 \description{
 The following functions are deprecated and will be removed in a future release.
