@@ -152,12 +152,15 @@ NULL
 
 
 
+make_units <- function(x) {
+  as_units.call(substitute(x))
+}
+
 
 backtick <- function(x) {
   # backtick all character runs uninterupted by one of ^()*^/`- or a space
   # don't double up backticks
   x <- gsub("`?([^() \\*^/`-]+)`?", "`\\1`", x)
-  
   gsub("`([0-9]*\\.?[0-9]+)`", "\\1", x) # unbacktick bare numbers
 }
 
@@ -222,12 +225,7 @@ is_udunits_time <- function(s) {
 #'
 #' @export
 #' @noMd
-as_units.character <- function(chr,
-                        implicit_exponents = NA,
-                        allow_user_defined = FALSE,
-                        auto_convert_names_to_symbols = 
-                          getOption("units.auto_convert_names_to_symbols", TRUE),
-                        auto_backtick = TRUE) {
+as_units.character <- function(chr, implicit_exponents = NA) {
 
 
   stopifnot(is.character(chr), length(chr) == 1)
@@ -241,24 +239,17 @@ as_units.character <- function(chr,
   if(implicit_exponents)
     return(.parse_unit_with_implicit_exponents(chr)) 
   
-  if(auto_backtick)
-    chr <- backtick(chr)
-
+  chr <- backtick(chr)
   o <- try(expr <- parse(text = chr)[[1]], silent = TRUE)
   
   if(inherits(o, "try-error")) {
     warning("Could not parse expression: ", sQuote(chr), 
       ". Returning as a single symbolic_unit()", call. = FALSE)
-    return(symbolic_unit(chr, user_defined = allow_user_defined, check_is_parsable = TRUE))
+    return(symbolic_unit(chr, check_is_parsable = TRUE))
   }
 
-  as_units.call(expr, allow_user_defined = allow_user_defined, 
-              auto_convert_names_to_symbols = auto_convert_names_to_symbols)
+  as_units.call(expr)
 }
-
-#' @export
-make_unit <- as_units.character
-
 
 
 #' @param n a numeric to be assigned units, or a units object to have units
@@ -279,10 +270,16 @@ set_units <- function(n, ...) UseMethod("set_units")
 
 #' @export
 set_units.default <- function(n, un, ...,
-  mode = getOption("units.set_units_mode", c("standard", "bare_symbols"))) {
+  mode = getOption("units.set_units_mode", c("symbols", "standard"))) {
   
-  if (match.arg(mode) == "bare_symbols")
+  if(missing(un))
+    un <- unitless
+  
+  else if (match.arg(mode) == "symbols")
     un <- substitute(un)
+  
+  if(is.null(un))
+    return(drop_units(n))
   
   units(n) <- as_units(un, ...)
   n
@@ -313,21 +310,23 @@ set_units.difftime <- function(n, value) {
 #'   underlying \code{udunits2} package and may change in the future.
 #'
 #' @rdname make_unit
-symbolic_unit <- function(chr, check_is_parsable = TRUE, user_defined = TRUE, 
-                          auto_convert_name_to_symbol = TRUE) {
+symbolic_unit <- function(chr, check_is_parsable = TRUE) {
+  
   stopifnot(is.character(chr), length(chr) == 1)
-  if(check_is_parsable && !ud.is.parseable(chr)) {
+  
+  if (check_is_parsable && !ud.is.parseable(chr)) {
     msg <- paste(sQuote(chr), "is not a unit recognized by udunits")
-    fun <- if(isTRUE(user_defined)) warning else stop
     fun(msg, call. = FALSE)
   }
-  if(auto_convert_name_to_symbol && ud.is.parseable(chr)) {
+ 
+  auto_convert <- getOption("units.auto_convert_names_to_symbols", TRUE)
+  if (auto_convert && ud.is.parseable(chr)) {
     sym <- ud.get.symbol(chr)
-    if(nzchar(sym))
+    if (nzchar(sym))
       chr <- sym
   }
   
-  structure(1L, units = .symbolic_units(chr), class = "units")
+  structure(1, units = .symbolic_units(chr), class = "units")
 }
 
 
@@ -355,28 +354,26 @@ pc <- function(x) {
     pc(sQuote(unrecognized_symbols)), " ", is_are, " not recognized by udunits")
 }
 
+is_recognized_unit <- function(chr) {
+  ud.is.parseable(chr) || is_user_defined_unit(chr)
+}
 
 
-as_units.call <- function(expr, 
-  allow_user_defined = FALSE, 
-  auto_convert_names_to_symbols = TRUE) {
+#' @export
+as_units.call <- function(expr) {
   
   stopifnot(is.language(expr))
   
   vars <- all.vars(expr)
   if(!length(vars)) 
-    return(structure(1L, units = unitless, class = "units"))
+    return(structure(1, units = unitless, class = "units"))
   
-  parsable <- vapply(vars, ud.is.parseable, logical(1L))
-  if(!all(parsable)) {
-    msg <- .msg_units_not_recognized(vars[!parsable], expr)
-    fun <- if (allow_user_defined) warning else stop
-    fun(msg, call. = FALSE)
-  }
+  recognized <- vapply(vars, is_recognized_unit, logical(1L))
+  if(!all(recognized)) 
+    stop(.msg_units_not_recognized(vars[!recognized], expr), call. = FALSE)
   
   names(vars) <- vars
-  tmp_env <- lapply(vars, symbolic_unit, check_is_parsable = FALSE, 
-                    auto_convert_name_to_symbol = auto_convert_names_to_symbols)
+  tmp_env <- lapply(vars, symbolic_unit, check_is_parsable = FALSE)
   
   unit <- eval(expr, tmp_env, baseenv())
   
@@ -386,13 +383,11 @@ as_units.call <- function(expr,
 The returned unit object was coerced to a value of 1.
 Use `install_conversion_constant()` to define a new unit that is a multiple of another unit.")
   
-  structure(1L, units = units(unit), class = "units")
+  structure(1, units = units(unit), class = "units")
 }
 
-as_units.expression <- as_units.call  #function(x, ...) as_units.call(x[[1]], ...)
+as_units.expression <- as_units.call
 as_units.name       <- as_units.call
-
-as_units.NULL <- function(x, ...) x
 
 
 #' @export
@@ -401,3 +396,38 @@ drop_units <- function(x) {
   attr(x, "units") <- NULL
   x
 }
+
+# as_units 
+# 
+# Create `units` objects
+# methods provided:
+# 
+# as_units.character # alias for parse_units
+# as_units.numeric   # alias for set_units
+# as_units.units     # warns if attempting to convert / change units
+# 
+# as_units.name
+# as_units.expression
+# as_units.call       
+
+
+# usage:
+# x <- 1:3
+# units(x) <- "m/s"
+# units(x) <- quote(m/s)
+# 
+# # by default, any object that is not a units object is coerced with as_units. Methods for as_units are provided for character and language objects
+# 
+# # by default, value is coerced with as_units
+# units(x) <- as_units("m/s")
+# units(x) <- make_units(m/s)
+# 
+# set_units(x, m/s)
+# set_units(x, "m/s", mode = "standard")
+# set_units(x, "m/s", mode = "standard")
+
+
+# units(x) <- parse_units("m/s")
+
+
+
