@@ -1,3 +1,154 @@
+#' Unit creation
+#'
+#' A number of functions are provided for creating unit objects. \itemize{
+#'
+#' \item \code{as_units}, a generic \code{as_units}, with methods for a
+#' character string and for quoted language. Note, direct usage of this funciton
+#' by users is typically not necessary, as coersion via \code{as_units} is
+#' automatically done with \code{`units<-`} and \code{set_units()}.
+#'
+#' \item \code{make_units()}, which only accepts only bare expressions.
+#' \code{make_unit{m/s}} is equivelant to \code{as_units(quote(m/s))}
+#'
+#' \item \code{symbolic_unit()} for creation of a single symbolic unit
+#' \code{symbolic_units("kg")}.
+#'
+#' \item \code{set_units()}, a pipe_friendly version of \code{`units<-`}. By
+#' default it operates with bare expressions like \code{make_unit}, but this
+#' behavior can be disabled by a specifying \code{mode = "standard"} or setting 
+#' \code{options(units.set_units_mode = "standard")}.
+#'
+#' }
+#' 
+#' @rdname make_units
+#' 
+#' @param x a bare R expression describing units. Must be valid R syntax
+#'   (reserved R syntax words like \code{in} must be backticked)
+#' @param allow_user_defined If FALSE (the default), an error is thrown if any
+#'   of the symbols that makeup the units expression are not recognized by the
+#'   udunits database. See details.
+#' @param auto_convert_names_to_symbols Automatically attempt conversion of
+#'   names to symbols in the supplied unit expression.
+#'
+#' @details In \code{make_unit()}, \code{set_units()}, and
+#'   \code{as_units()}, each of the symbols in the expression is treated as a
+#'   symbolic unit, as returned by \code{symbolic_unit}. By default, each of the
+#'   symbols must be recognized by the udunits database. To see which symbols
+#'   and names are currently recognized by the database, see
+#'   \code{udunits_symbols()}. If \code{allow_user_defined = TRUE} and an
+#'   unrecognized unit is found in the expression, a valid \code{units} object
+#'   is still returned, with a warning. To avoid the warning with user defined
+#'   units, use \code{symbolic_unit(...,user_defined = TRUE)}
+#'   
+#' @return A new unit object that can be used in arithmetics or unit conversion or unit assignment. 
+#' @noMd
+#' @examples
+#' # The easiest way to assign units to a numeric vector is like this: 
+#' x <- y <- 1:4
+#' units(x) <- "m/s"  # meters / second
+#' 
+#' # Alternatively, the easiest pipe-friendly way to set units:
+#' if(require(magrittr)) 
+#'   y %>% set_units(m/s)
+#' 
+#' 
+#' # these different ways of creating the same unit:
+#' # meters per second squared, i.e, acceleration
+#' x1 <- make_units(m/s^2)
+#' x2 <- as_units(quote(m/s^2))
+#' x2 <- as_units("m/s^2")
+#' x3 <- as_units("m s-2") # in product power form, i.e., implicit exponents = T
+#' x4 <- set_units(1,  m/s^2) # by default, mode = "symbols"
+#' x5 <- set_units(1, "m/s^2",   mode = "standard")
+#' x6 <- set_units(1, x1,        mode = "standard")
+#' x7 <- set_units(1, units(x1), mode = "standard")
+#' x8 <- symbolic_unit("m") / symbolic_unit("s")^2
+#'
+#' all_identical <- function(...) {
+#'   l <- list(...)
+#'   for(i in seq_along(l)[-1])
+#'     if(!identical(l[[1]], l[[i]]))
+#'       return(FALSE)
+#'   TRUE
+#' }
+#' all_identical(x1, x2, x3, x4, x5, x6, x7, x8)
+#'
+#' # Note, direct usage of these unit creation functions is typically not 
+#' # necessary, since coersion is automatically done via as_units(). Again, 
+#' # these are all equivelant ways to generate the same result.
+#'
+#' x1 <- x2 <- x3 <- x4 <- x5 <- x6 <- x7 <- x8 <- 1:4
+#' units(x1) <- "m/s^2"
+#' units(x2) <- "m s-2"
+#' units(x3) <- quote(m/s^2)
+#' units(x4) <- make_units(m/s^2)
+#' units(x5) <- as_units(quote(m/s^2))
+#' x6 <- set_units(x6, m/s^2)
+#' x7 <- set_units(x7, "m/s^2", mode = "standard")
+#' x8 <- set_units(x8, units(x1), mode = "standard")
+#'
+#' all_identical(x1, x2, x3, x4, x5, x6, x7, x8)
+#'
+#'
+#' # Both unit names or symbols can be used. By default, unit names are
+#' # automatically converted to unit symbols.
+#' make_units(degree_C)
+#' make_units(kilogram)
+#' make_units(ohm)
+#' # Note, if the printing of non-ascii characters is garbled, then you may
+#' # need to specify the encoding on your system manually like this:
+#' # udunits2::ud.set.encoding("latin1")
+#' # not all unit names get converted to symbols under different encodings
+#'
+#' ## Arithmetic operations and units
+#' # conversion between unit objects that were defined as symbols and names will
+#' # work correctly, although unit simplification in printing may not always occur.
+#' x <- 500 * make_units(micrograms/liter)
+#' y <- set_units(200, ug/l)
+#' x + y
+#' x * y # numberic result is correct, but units not simplified completely
+#'
+#' # note, plural form of unit name accepted too ('liters' vs 'liter'), and
+#' # denominator simplification can be performed correctly
+#' x * set_units(5, liters)
+#'
+#' # unit conversion works too
+#' set_units(x, grams/gallon)
+#'
+#' ## Creating custom, user defined units
+#' # For example, a microbiologist might work with counts of bacterial cells
+#' # make_units(cells/ml) # by default, throws an ERROR
+#' # First define the unit, then the newly defined unit is accepted.
+#' define_new_symbolic_unit("cells")
+#' make_units(cells/ml) 
+#' # Note, define_new_symbolic_unit() does not add any support for unit
+#' converstion, or arathmetic operations that require unit conversion. See
+#' ?install_conversion_function for how to define relationships for user defined
+#' units.
+#'
+#' ## set_units()
+#' # set_units is a pipe friendly version of `units<-`. 
+#' if (require(magrittr)) {
+#'  1:5 %>% set_units(N/m^2)
+#'  # first sets to m, then converts to km
+#'  1:5 %>% set_units(m) %>% set_units(km)
+#' }
+#' 
+#' # set_units has two modes of operation. By default, it operates with 
+#' # bare symbols to define the units.
+#' set_units(1:5, m/s)
+#'
+#' # use `mode = "standard"` to use the value of supplied argument, rather than
+#' # the bare symbols of the expression. In this mode, set_units() can be
+#' # thought of as a simple alias for `units<-` that is pipe friendly.
+#' set_units(1:5, "m/s", mode = "standard")
+#' set_units(1:5, make_unit(m/s), mode = "standard")
+#' 
+#' # the mode of set_units() can be controlled via a global option
+#' # options(units.set_units_mode = "standard")
+NULL
+
+
 
 
 
@@ -24,28 +175,50 @@ is_udunits_time <- function(s) {
 
 #' @rdname make_unit
 #' @param implicit_exponents If the unit string is in product power form (e.g.
-#'   \code{"km m-2 s-1"}). Defaults to \code{FALSE}
+#'   \code{"km m-2 s-1"}). Defaults to \code{NA}, in which case a guess is made
+#'   based on the supplied string. Set to \code{TRUE} or {FALSE} if the guess is
+#'   incorrect.
+#'   
+#' @details Generally speaking, there are 3 types of unit strings are accepted
+#'   in \code{as_units} (and by extension, \code{`units<-`}).
 #'
-#' @param auto_backtick If \code{TRUE} (the default), symbols in the unit object
-#'   are automatically backticked prior to parsing as an R expression. See
-#'   details.
+#'   The first, and likely most common, is a "standard" format unit
+#'   specificaiton where the relationship between unit symbols or names is
+#'   specified with arathmetic operators for division \code{/}, multiplication
+#'   \code{*} and power exponents \code{^}, or other mathematical functions like
+#'   \code{log()}. In this case, the string is parsed as an R expression via
+#'   \code{parse(text = )} after backticking all symbols. A heuristic is used to
+#'   perform backticking, such that any continuous set of characters
+#'   uninterrupted by one of \code{()\*^-} are backticked (unless the character
+#'   sequence consists solely of numbers \code{0-9}), with some care to not
+#'   doubleup on pre-existing backticks. This heurestic appears to be quite
+#'   robust, and works for units would otherwise not be valid R syntax. For
+#'   example, percent (\code{"%"}), feet (\code{"'"}), inches (\code{"in"}), and
+#'   Tesla (\code{"T"}) are all backticked and parsed correctly.
 #'
-#' @details If \code{auto_backtick = TRUE} in \code{parse_unit()}, symbols are
-#'   automatically backticked prior to parsing the string as an R expression. A
-#'   heuristic is used to perform backticking, such that any continuous set of
-#'   characters uninterrupted by one of \code{()\*^-} are backticked (unless the
-#'   character sequence consists solely of numbers \code{0-9}), with some care
-#'   to not doubleup on pre-existing backticks. For certain expressions, this
-#'   heurestic may give incorrect results.
+#'   Nevertheless, for certain complex expressions, this backticking heurestic
+#'   may give incorrect results.  If the string supplied failes to parse as an R
+#'   expression, then the string is treated as a single symbolic unit and
+#'   \code{symbolic_unit(chr)} is used as a fallback with a warning. In that
+#'   case, automatic unit simplification may not work properly when performing
+#'   operations on unit objects, but unit conversion and other Math operations
+#'   should still give correct results so long as the unit string supplied
+#'   returns \code{TRUE} for \code{udunits2::ud.is.parsable()}.
 #'
-#'   If the string supplied to \code{parse_unit} failes to parse as an R
-#'   expression (via \code{parse(text = chr)}), then the string is treated as a
-#'   single symbolic unit and \code{symbolic_unit(chr)} is used as a fallback
-#'   with a warning. Note, in that case, automatic unit simplification may not
-#'   work properly when performing operations on unit objects, but unit
-#'   conversion and other Math operations should still give correct results so
-#'   long as the unit string supplied returns \code{TRUE} for
-#'   \code{udunits2::ud.is.parsable()}
+#'   The second type of unit string accepted is one with implicit exponents. In
+#'   this format, \code{/}, \code{`*`}, and \code{^}, may not be present in the
+#'   string, and unit symbol or names must be separated by a space. Each unit
+#'   symbol may optionally be followed by a single number, specifying the power.
+#'   For example \code{"m2 s-2"} is equivelant to \code{"(m^2)*(s^-2)"}.
+#'
+#'   The third type of unit string format accepted is the special case of
+#'   udunits time duration with a reference origin, for example \code{"hours
+#'   since 1970-01-01 00:00:00"}. Note, that the handeling of time and calendar
+#'   operations via the udunits library is subtly different from the way R
+#'   handles date and time operations. This functionality is mostly exported for
+#'   users that work with udunits units data, e.g., with NetCDF files. Users are
+#'   otherwise encouraged to use \code{R}'s date and time functionality provided
+#'   by \code{Date} and \code{POSIXt} classes.
 #'
 #' @export
 #' @noMd
