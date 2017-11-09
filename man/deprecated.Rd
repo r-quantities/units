@@ -15,6 +15,10 @@ as.units(x, value = unitless)
 }
 \arguments{
 \item{chr}{length 1 character string}
+
+\item{x}{a numeric}
+
+\item{value}{a units object, by default, unitless}
 }
 \description{
 The following functions are deprecated and will be removed in a future release.

@@ -1,7 +1,7 @@
 # version 0.5-0
 
 * Unit creation has been significantly refactored. `units<-` now accepts strings
-or quoted language objects on the right hand side, powered by new s3 methods for
+or quoted language objects on the right hand side, powered by new S3 methods for
 `as_units`. New user facing function `make_units()` (plural s) is also provided.
 See `?as_units` for details. @t-kalinowski
 
