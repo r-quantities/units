@@ -136,8 +136,8 @@
 #' units(x) <- NULL
 #' # or
 #' drop_units(y)
-make_units <- function(bare_expression) {
-  as_units.call(substitute(bare_expression))
+make_units <- function(bare_expression, check_is_valid = TRUE) {
+  as_units.call(substitute(bare_expression), check_is_valid = check_is_valid)
 }
 
 
@@ -216,12 +216,15 @@ is_udunits_time <- function(s) {
 #'   users that work with udunits time data, e.g., with NetCDF files. Users are
 #'   otherwise encouraged to use \code{R}'s date and time functionality provided
 #'   by \code{Date} and \code{POSIXt} classes.
-as_units.character <- function(x, implicit_exponents = NA, force_single_symbol = FALSE, ...) {
+as_units.character <- function(x, 
+                               check_is_valid = TRUE,
+                               implicit_exponents = NA, 
+                               force_single_symbol = FALSE, ...) {
 
   stopifnot(is.character(x), length(x) == 1)
   
   if(force_single_symbol || is_udunits_time(x))
-    return(symbolic_unit(x))
+    return(symbolic_unit(x, check_is_valid = check_is_valid))
   
   if(is.na(implicit_exponents))
     implicit_exponents <- are_exponents_implicit(x)
@@ -234,11 +237,11 @@ as_units.character <- function(x, implicit_exponents = NA, force_single_symbol =
   
   if(inherits(o, "try-error")) {
     warning("Could not parse expression: ", sQuote(x), 
-      ". Returning as a single symbolic_unit()", call. = FALSE)
-    return(symbolic_unit(x, check_is_valid = TRUE))
+      ". Returning as a single symbolic unit()", call. = FALSE)
+    return(symbolic_unit(x, check_is_valid = check_is_valid))
   }
 
-  as_units.call(expr)
+  as_units.call(expr, check_is_valid = check_is_valid)
 }
 
 # no longer exported
@@ -281,6 +284,8 @@ pc <- function(x) {
             paste0(x[-lx], collapse = ", "), ", and ", x[lx]))
 }
 
+`%not_in%` <- function(x, table) match(x, table, nomatch = 0L) == 0L
+
 
 .msg_units_not_recognized <- function(unrecognized_symbols, full_expr) {
     
@@ -308,21 +313,26 @@ units_eval_env$lb <- function(x) base::log(x, base = 2)
 #' @export
 #' @rdname as_units
 #'
+#' @param check_is_valid Throw an error if all the unit symbols are not either
+#'   recognized by udunits2 via \code{udunits2::ud.is.parseable()}, or a custom
+#'   user defined via \code{install_symbolic_unit()}. If \code{FALSE}, no check
+#'   is performed for validity.
+#'
 #' @section Expressions:
 #'
 #'   In \code{as_units()}, each of the symbols in the unit expression is treated
 #'   individually, such that each symbol must be recognized by the udunits
 #'   database (checked by \code{ud.is.parseable()}, \emph{or} be a custom,
 #'   user-defined unit symbol that was defined either by
-#'   \code{install_symbolic_unit()} or \code{install_conversion_function()}.
-#'   To see which symbols and names are currently recognized by the udunits
+#'   \code{install_symbolic_unit()} or \code{install_conversion_function()}. To
+#'   see which symbols and names are currently recognized by the udunits
 #'   database, see \code{udunits_symbols()}.
 #'
 #' @return A new unit object that can be used in arithmetic, unit conversion or
 #'   unit assignment.
 #'
 #' @seealso \code{\link{valid_udunits}}
-as_units.call <- function(x, ...) {
+as_units.call <- function(x, check_is_valid = TRUE, ...) {
   
   stopifnot(is.language(x))
   
@@ -330,16 +340,18 @@ as_units.call <- function(x, ...) {
   if(!length(vars)) 
     return(structure(1, units = unitless, class = "units"))
   
-  valid <- vapply(vars, is_valid_unit_symbol, logical(1L))
-  if(!all(valid)) 
-    stop(.msg_units_not_recognized(vars[!valid], x), call. = FALSE)
+  if (check_is_valid) {
+    valid <- vapply(vars, is_valid_unit_symbol, logical(1L))
+    if (!all(valid))
+      stop(.msg_units_not_recognized(vars[!valid], x), call. = FALSE)
+  }
   
   names(vars) <- vars
   tmp_env <- lapply(vars, symbolic_unit, check_is_valid = FALSE)
   
   unit <- eval(x, tmp_env, units_eval_env)
   
-  if(as.numeric(unit) != 1) 
+  if(as.numeric(unit) %not_in% c(1, 0)) # 0 if log() used. 
     warning(call. = FALSE,
 "In ", sQuote(deparse(x)), " the numeric multiplier ", sQuote(as.numeric(unit)), " was discarded. 
 The returned unit object was coerced to a value of 1.

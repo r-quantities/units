@@ -3,8 +3,6 @@
 \name{as_units}
 \alias{as_units}
 \alias{as_units}
-\alias{as.units}
-\alias{as_units}
 \alias{as_units.default}
 \alias{as_units}
 \alias{as_units.difftime}
@@ -15,18 +13,16 @@
 \usage{
 as_units(x, ...)
 
-as.units(x, value = unitless)
-
 \method{as_units}{default}(x, value = unitless, ...)
 
 \method{as_units}{difftime}(x, value, ...)
 
-make_units(bare_expression)
+make_units(bare_expression, check_is_valid = TRUE)
 
-\method{as_units}{character}(x, implicit_exponents = NA,
-  force_single_symbol = FALSE, ...)
+\method{as_units}{character}(x, check_is_valid = TRUE,
+  implicit_exponents = NA, force_single_symbol = FALSE, ...)
 
-\method{as_units}{call}(x, ...)
+\method{as_units}{call}(x, check_is_valid = TRUE, ...)
 }
 \arguments{
 \item{x}{object of class units}
@@ -37,6 +33,11 @@ make_units(bare_expression)
 
 \item{bare_expression}{a bare R expression describing units. Must be valid R
 syntax (reserved R syntax words like \code{in} must be backticked)}
+
+\item{check_is_valid}{Throw an error if all the unit symbols are not either
+recognized by udunits2 via \code{udunits2::ud.is.parseable()}, or a custom
+user defined via \code{install_symbolic_unit()}. If \code{FALSE}, no check
+is performed for validity.}
 
 \item{implicit_exponents}{If the unit string is in product power form (e.g.
 \code{"km m-2 s-1"}). Defaults to \code{NA}, in which case a guess is made
@@ -126,8 +127,8 @@ A number of functions are provided for creating unit objects.
   individually, such that each symbol must be recognized by the udunits
   database (checked by \code{ud.is.parseable()}, \emph{or} be a custom,
   user-defined unit symbol that was defined either by
-  \code{install_symbolic_unit()} or \code{install_conversion_function()}.
-  To see which symbols and names are currently recognized by the udunits
+  \code{install_symbolic_unit()} or \code{install_conversion_function()}. To
+  see which symbols and names are currently recognized by the udunits
   database, see \code{udunits_symbols()}.
 }
 

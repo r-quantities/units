@@ -19,7 +19,7 @@ converted}
 
 \item{...}{passed on to \code{as_units}}
 
-\item{value}{a \code{units} object, or something coercable to one with
+\item{value}{a \code{units} object, or something coercible to one with
 \code{as_units}. Depending on \code{mode}, the value is either treated as
 an bare expression or via standard evaluation.}
 
