@@ -8,7 +8,7 @@
 #'   converted
 #'
 #'
-#' @param value a \code{units} object, or something coercable to one with
+#' @param value a \code{units} object, or something coercible to one with
 #'   \code{as_units}. Depending on \code{mode}, the value is either treated as
 #'   an bare expression or via standard evaluation.
 #'

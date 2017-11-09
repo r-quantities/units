@@ -179,7 +179,7 @@ pcc <- function(...) paste0(..., collapse = ", ")
 #' determine what inputs are accepted by `as_units` (and the other functions it
 #' powers: `make_units`, `set_units`, `units<-`). Any entry listed under
 #' `symbol`, `symbol_aliases`, ` name_singular`, `name_singular_aliases`,
-#' `name_plural`, or `name_plural_aliases` is valid. Additionaly, any entry
+#' `name_plural`, or `name_plural_aliases` is valid. Additionally, any entry
 #' under `symbol` or `symbol_aliases` may can also contain a valid prefix, as,
 #' as specified by `valid_udunits_prefixes()`.
 #'
