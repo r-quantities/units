@@ -299,6 +299,11 @@ is_valid_unit_symbol <- function(chr) {
   ud.is.parseable(chr) || is_user_defined_unit(chr)
 }
 
+units_eval_env <- new.env(parent = baseenv())
+units_eval_env$ln <- function(x) base::log(x)
+units_eval_env$lg <- function(x) base::log(x, base = 10)
+units_eval_env$lb <- function(x) base::log(x, base = 2)
+
 
 #' @export
 #' @rdname as_units
@@ -332,7 +337,7 @@ as_units.call <- function(x, ...) {
   names(vars) <- vars
   tmp_env <- lapply(vars, symbolic_unit, check_is_valid = FALSE)
   
-  unit <- eval(x, tmp_env, baseenv())
+  unit <- eval(x, tmp_env, units_eval_env)
   
   if(as.numeric(unit) != 1) 
     warning(call. = FALSE,
