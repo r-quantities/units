@@ -122,13 +122,6 @@ as_units <- function(x, ...) {
 }
 
 #' @export
-#' @name as_units
-as.units <- function(x, value = unitless) {
-	.Deprecated("as_units")    # nocov
-	as_units(x, value = value) # nocov
-}
-
-#' @export
 as_units.units <- function(x, value, ...) {
   if(!missing(value) && !identical(units(value), units(x)))
     warning("Use set_units() to perform unit conversion. Return unit unmodified")

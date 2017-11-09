@@ -8,14 +8,24 @@
 #' @export
 #' @rdname deprecated
 make_unit <- function(chr) {
-  warning("make_unit() is deprecated. Please use as_units()")
-  as_units.character(chr, force_single_symbol = TRUE)
+  .Deprecated("as_units", msg = "make_unit() is deprecated. Please use as_units()")
+  if(!is_valid_unit_symbol(chr))
+    warning(paste(sQuote(chr), "is not a valid unit symbol recognized by udunits"), call.=FALSE)
+  as_units.character(chr, force_single_symbol = TRUE, check_is_valid = FALSE)
 }
 
 #' @export
 #' @rdname deprecated
 parse_unit <- function(chr) {
-  warning("parse_unit() is deprecated. Please use as_units()")
+  .Deprecated("as_units", msg = "parse_unit() is deprecated. Please use as_units()")
   as_units.character(chr, implicit_exponents = TRUE)
 }
+
+#' @export
+#' @name deprecated
+as.units <- function(x, value = unitless) {
+  .Deprecated("as_units")    # nocov
+  as_units(x, value = value) # nocov
+}
+
 

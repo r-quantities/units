@@ -3,11 +3,15 @@
 \name{make_unit}
 \alias{make_unit}
 \alias{parse_unit}
+\alias{deprecated}
+\alias{as.units}
 \title{Deprecated functions}
 \usage{
 make_unit(chr)
 
 parse_unit(chr)
+
+as.units(x, value = unitless)
 }
 \arguments{
 \item{chr}{length 1 character string}
