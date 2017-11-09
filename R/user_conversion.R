@@ -6,16 +6,24 @@ user_defined_units <- new.env(parent = emptyenv())
 
 
 #' Define new symbolic units
-#' 
-#' Adding a symbolic unit allows it to be used in \code{as_units}, \code{make_units} and \code{set_units}
-#' 
+#'
+#' Adding a symbolic unit allows it to be used in \code{as_units},
+#' \code{make_units} and \code{set_units}. No installation is performed if the
+#' unit is already known by udunits.
+#'
 #' @param chr a length 1 character vector that is the new unit name or symbol.
-#' 
+#' @param warn warns if the supplied unit symbol is already a valid unit symbol
+#'   recognized by udunits.
+#'
 #' @export
 #' @rdname install_symbolic_unit
-install_symbolic_unit <- function(chr) {
-  if(ud.is.parseable(chr))
-    return(warning(sQuote(chr), " is already a valid unit recognized by udunits. Installation not necessary and is not performed"))
+install_symbolic_unit <- function(chr, warn = TRUE) {
+  if(ud.is.parseable(chr)) {
+    if (warn) 
+      warning(sQuote(chr), " is already a valid unit recognized by udunits.\n",
+              "Installation not necessary and is not performed")
+    return(invisible(FALSE))
+  }
   assign(chr, NULL, envir =  user_defined_units)
 }
 
@@ -109,8 +117,8 @@ user_convert <- function(value, from, to) {
 #'   
 #' @export
 install_conversion_function <- function(from, to, f) {
-  install_symbolic_unit(to)
-  install_symbolic_unit(from)
+  install_symbolic_unit(to, warn = FALSE)
+  install_symbolic_unit(from, warn = FALSE)
   if (!exists(from, conversion_table)) {
     assign(from, new.env(parent = emptyenv()), conversion_table)
   }
