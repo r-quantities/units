@@ -57,12 +57,12 @@ difftime objects to units
 A number of functions are provided for creating unit objects. 
 \itemize{
     \item \code{as_units}, a generic with methods for a
-    character string and for quoted language. Note, direct usage of this funciton
-    by users is typically not necessary, as coersion via \code{as_units} is
+    character string and for quoted language. Note, direct usage of this function
+    by users is typically not necessary, as coercion via \code{as_units} is
     automatically done with \code{`units<-`} and \code{set_units()}.
    
     \item \code{make_units()}, constructs units from bare expressions.
-    \code{make_units(m/s)} is equivelant to \code{as_units(quote(m/s))}
+    \code{make_units(m/s)} is equivalent to \code{as_units(quote(m/s))}
    
     \item \code{set_units()}, a pipe_friendly version of \code{`units<-`}. By
     default it operates with bare expressions like \code{make_unit}, but this
@@ -80,8 +80,8 @@ A number of functions are provided for creating unit objects.
   \code{as_units} (and by extension, \code{`units<-`}).
 
   The first, and likely most common, is a "standard" format unit
-  specificaiton where the relationship between unit symbols or names is
-  specified explicitly with arathmetic symbols for division \code{/},
+  specification where the relationship between unit symbols or names is
+  specified explicitly with arithmetic symbols for division \code{/},
   multiplication \code{*} and power exponents \code{^}, or other mathematical
   functions like \code{log()}. In this case, the string is parsed as an R
   expression via \code{parse(text = )} after backticking all unit symbols and
@@ -89,13 +89,13 @@ A number of functions are provided for creating unit objects.
   perform backticking, such that any continuous set of characters
   uninterrupted by one of \code{()\\*^-} are backticked (unless the character
   sequence consists solely of numbers \code{0-9}), with some care to not
-  doubleup on pre-existing backticks. This heurestic appears to be quite
+  double up on pre-existing backticks. This heuristic appears to be quite
   robust, and works for units would otherwise not be valid R syntax. For
   example, percent (\code{"\%"}), feet (\code{"'"}), inches (\code{"in"}),
   and Tesla (\code{"T"}) are all backticked and parsed correctly.
 
-  Nevertheless, for certain complex unit expressions, this backticking heurestic
-  may give incorrect results.  If the string supplied failes to parse as an R
+  Nevertheless, for certain complex unit expressions, this backticking heuristic
+  may give incorrect results.  If the string supplied fails to parse as an R
   expression, then the string is treated as a single symbolic unit and
   \code{symbolic_unit(chr)} is used as a fallback with a warning. In that
   case, automatic unit simplification may not work properly when performing
@@ -107,11 +107,11 @@ A number of functions are provided for creating unit objects.
   this format, \code{/}, \code{*}, and \code{^}, may not be present in the
   string, and unit symbol or names must be separated by a space. Each unit
   symbol may optionally be followed by a single number, specifying the power.
-  For example \code{"m2 s-2"} is equivelant to \code{"(m^2)*(s^-2)"}.
+  For example \code{"m2 s-2"} is equivalent to \code{"(m^2)*(s^-2)"}.
 
   The third type of unit string format accepted is the special case of
   udunits time duration with a reference origin, for example \code{"hours
-  since 1970-01-01 00:00:00"}. Note, that the handeling of time and calendar
+  since 1970-01-01 00:00:00"}. Note, that the handling of time and calendar
   operations via the udunits library is subtly different from the way R
   handles date and time operations. This functionality is mostly exported for
   users that work with udunits time data, e.g., with NetCDF files. Users are
@@ -166,8 +166,8 @@ all_identical <- function(...) {
 all_identical(x1, x2, x3, x4, x5, x6, x7, x8)
 
 # Note, direct usage of these unit creation functions is typically not 
-# necessary, since coersion is automatically done via as_units(). Again, 
-# these are all equivelant ways to generate the same result.
+# necessary, since coercion is automatically done via as_units(). Again, 
+# these are all equivalent ways to generate the same result.
 
 x1 <- x2 <- x3 <- x4 <- x5 <- x6 <- x7 <- x8 <- 1:4
 units(x1) <- "m/s^2"
@@ -198,7 +198,7 @@ make_units(ohm)
 x <- 500 * make_units(micrograms/liter)
 y <- set_units(200, ug/l)
 x + y
-x * y # numberic result is correct, but units not simplified completely
+x * y # numeric result is correct, but units not simplified completely
 
 # note, plural form of unit name accepted too ('liters' vs 'liter'), and
 # denominator simplification can be performed correctly
@@ -215,7 +215,7 @@ install_symbolic_unit("cells")
 make_units(cells/ml) 
 
 # Note, install_symbolic_unit() does not add any support for unit
-# converstion, or arathmetic operations that require unit conversion. See
+# conversion, or arithmetic operations that require unit conversion. See
 # ?install_conversion_function for how to define relationships for user 
 # defined units.
 

@@ -5,13 +5,18 @@
 \alias{uninstall_symbolic_unit}
 \title{Define new symbolic units}
 \usage{
-install_symbolic_unit(chr)
+install_symbolic_unit(chr, warn = TRUE)
 
 uninstall_symbolic_unit(chr)
 }
 \arguments{
 \item{chr}{a length 1 character vector that is the new unit name or symbol.}
+
+\item{warn}{warns if the supplied unit symbol is already a valid unit symbol
+recognized by udunits.}
 }
 \description{
-Adding a symbolic unit allows it to be used in \code{as_units}, \code{make_units} and \code{set_units}
+Adding a symbolic unit allows it to be used in \code{as_units},
+\code{make_units} and \code{set_units}. No installation is performed if the
+unit is already known by udunits.
 }
