@@ -126,7 +126,7 @@ A number of functions are provided for creating unit objects.
   individually, such that each symbol must be recognized by the udunits
   database (checked by \code{ud.is.parseable()}, \emph{or} be a custom,
   user-defined unit symbol that was defined either by
-  \code{define_new_symbolic_unit()} or \code{install_conversion_function()}.
+  \code{install_symbolic_unit()} or \code{install_conversion_function()}.
   To see which symbols and names are currently recognized by the udunits
   database, see \code{udunits_symbols()}.
 }
@@ -211,10 +211,10 @@ set_units(x, grams/gallon)
 # For example, a microbiologist might work with counts of bacterial cells
 # make_units(cells/ml) # by default, throws an ERROR
 # First define the unit, then the newly defined unit is accepted.
-define_new_symbolic_unit("cells")
+install_symbolic_unit("cells")
 make_units(cells/ml) 
 
-# Note, define_new_symbolic_unit() does not add any support for unit
+# Note, install_symbolic_unit() does not add any support for unit
 # converstion, or arathmetic operations that require unit conversion. See
 # ?install_conversion_function for how to define relationships for user 
 # defined units.

@@ -7,7 +7,7 @@ See `?as_units` for details. @t-kalinowski
 
 * `make_unit` and `parse_unit` (singular unit) have been depracated, please use `as_units` instead.
 
-* new function `define_new_symbolic_unit()` for adding custom, user-defined units. 
+* new function `install_symbolic_unit()` for adding custom, user-defined units. 
 
 * `ud_units` is no longer necessary and is soft-deprecated, and may be removed in a future release.
 

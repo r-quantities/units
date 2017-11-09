@@ -12,36 +12,36 @@ user_defined_units <- new.env(parent = emptyenv())
 #' @param chr a length 1 character vector that is the new unit name or symbol.
 #' 
 #' @export
-#' @rdname user_defined_units
-define_new_symbolic_unit <- function(chr) {
-  assign(chr, symbolic_unit(chr, check_is_parsable = FALSE), 
-    envir =  user_defined_units)
+#' @rdname install_symbolic_unit
+install_symbolic_unit <- function(chr) {
+  if(ud.is.parseable(chr))
+    return(warning(sQuote(chr), " is already a valid unit recognized by udunits. Installation not necessary and is not performed"))
+  assign(chr, NULL, envir =  user_defined_units)
 }
 
-#' @export
-#' @rdname user_defined_units
+
 get_user_defined_units <- function() {
   names(user_defined_units)
 }
 
-#' @rdname user_defined_units
-#' @export
 is_user_defined_unit  <- function(chr) {
   exists(chr, envir = user_defined_units)
 }
 
-#' @rdname user_defined_units
+
+
+#' @rdname install_symbolic_unit
 #' @export
-remove_user_defined_symbolic_unit <- function(chr) {
+uninstall_symbolic_unit <- function(chr) {
   if(!is_user_defined_unit(chr))
     return(warning("unit ", sQuote(chr), " not defined. Nothing to remove"))
   rm(list = chr, envir = user_defined_units)
 }
 
 
-# define_new_symbolic_unit("foobar")
+# install_symbolic_unit("foobar")
 # get_user_defined_units()
-# remove_user_defined_unit("foobar")
+# install_symbolic_unit("foobar")
 # get_user_defined_units()
 
 
@@ -94,10 +94,11 @@ user_convert <- function(value, from, to) {
 #'   conversion.
 #'   
 #' @examples 
-#' define_new_symbolic_unit("apple")
-#' define_new_symbolic_unit("orange")
+#' install_symbolic_unit("apple")
+#' install_symbolic_unit("orange")
 #' apples <- 2 * as_units("apple")
 #' oranges <- 3 * as_units("orange")
+#' 
 #' # one orange is worth two apples
 #' install_conversion_function("orange", "apple", function(x) 2 * x)
 #' install_conversion_function("apple", "orange", function(x) x / 2)
@@ -108,8 +109,8 @@ user_convert <- function(value, from, to) {
 #'   
 #' @export
 install_conversion_function <- function(from, to, f) {
-  define_new_symbolic_unit(to)
-  define_new_symbolic_unit(from)
+  install_symbolic_unit(to)
+  install_symbolic_unit(from)
   if (!exists(from, conversion_table)) {
     assign(from, new.env(parent = emptyenv()), conversion_table)
   }

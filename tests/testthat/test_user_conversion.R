@@ -3,8 +3,8 @@ context("User-defined unit conversion")
 test_that("we can convert between units with a user-defined function", {
   expect_error(as_units("apple"))
   expect_error(as_units("orange"))
-  define_new_symbolic_unit("apple")
-  define_new_symbolic_unit("orange")
+  install_symbolic_unit("apple")
+  install_symbolic_unit("orange")
   apples <- 2 * as_units("apple")
   oranges <- 3 * as_units("orange")
   expect_error(apples + oranges)
@@ -22,7 +22,7 @@ test_that("we can convert between units with a user-defined function", {
   
   # now just checking that we get different results with a different fruit
   expect_error(as_units("banana"))
-  define_new_symbolic_unit("banana")
+  install_symbolic_unit("banana")
   bananas <- 6 * as_units("banana")
   expect_error(apples + bananas)
   expect_error(bananas + apples)
@@ -32,8 +32,8 @@ test_that("we can convert between units with a user-defined function", {
 })
 
 test_that("we can simplify via user-defined units", {
-  define_new_symbolic_unit("apple")
-  define_new_symbolic_unit("orange")
+  install_symbolic_unit("apple")
+  install_symbolic_unit("orange")
   
   apples <- 4 * as_units("apple")
   oranges <- 2 * as_units("orange")
