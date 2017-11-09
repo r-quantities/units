@@ -48,12 +48,15 @@ test_that("we can take logarithms units", {
   x <- 1:4
   ux <- x * as_units("m")
   
-  #expect_equal(as.numeric(log(ux)), log(x))
-  #expect_equal(units(log(ux)), "ln(m)")
-  
-  #expect_equal(as.numeric(log(ux, base = 2)), log(x, base = 2))
-  #expect_equal(units(log(ux, base = 2)), "lb(m)")
-  
-  #expect_equal(as.numeric(log(ux, base = 10)), log(x, base = 10))
-  #expect_equal(units(log(ux, base = 10)), "lg(m)")
+  expect_equal(as.numeric(log(ux)), log(x))
+  expect_equal(units(log(ux)), units(as_units("ln(m)")))
+  expect_equal(as.character(units(log(ux))), "ln(m)")
+
+  expect_equal(as.numeric(log(ux, base = 2)), log(x, base = 2))
+  expect_equal(units(log(ux, base = 2)), units(as_units("lb(m)")))
+  expect_equal(as.character(units(log(ux, base = 2))), "lb(m)")
+
+  expect_equal(as.numeric(log(ux, base = 10)), log(x, base = 10))
+  expect_equal(units(log(ux, base = 10)), units(as_units("lg(m)")))
+  expect_equal(as.character(units(log(ux, base = 10))), "lg(m)")
 })
