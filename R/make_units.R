@@ -36,7 +36,7 @@
 #'   y %>% set_units(m/s)
 #' 
 #' 
-#' # these different ways of creating the same unit:
+#' # these are different ways of creating the same unit:
 #' # meters per second squared, i.e, acceleration
 #' x1 <- make_units(m/s^2)
 #' x2 <- as_units(quote(m/s^2))
@@ -235,7 +235,7 @@ as_units.character <- function(x, implicit_exponents = NA, force_single_symbol =
   if(inherits(o, "try-error")) {
     warning("Could not parse expression: ", sQuote(x), 
       ". Returning as a single symbolic_unit()", call. = FALSE)
-    return(symbolic_unit(x, check_is_parsable = TRUE))
+    return(symbolic_unit(x, check_is_valid = TRUE))
   }
 
   as_units.call(expr)
@@ -249,12 +249,12 @@ as_units.character <- function(x, implicit_exponents = NA, force_single_symbol =
 # '   unrecognized symbols.
 # '
 # ' @rdname make_units # not longer exported
-symbolic_unit <- function(chr, check_is_parsable = TRUE) {
+symbolic_unit <- function(chr, check_is_valid = TRUE) {
   
   stopifnot(is.character(chr), length(chr) == 1)
   
-  if (check_is_parsable && !ud.is.parseable(chr)) {
-    msg <- paste(sQuote(chr), "is not a unit recognized by udunits")
+  if (check_is_valid && !is_valid_unit_symbol(chr)) {
+    msg <- paste(sQuote(chr), "is not a unit recognized by udunits or a user-defined unit")
     stop(msg, call. = FALSE)
   }
  
@@ -295,7 +295,7 @@ pc <- function(x) {
     "Add user-defined units with define_new_symbolic_unit().")
 }
 
-is_recognized_unit <- function(chr) {
+is_valid_unit_symbol <- function(chr) {
   ud.is.parseable(chr) || is_user_defined_unit(chr)
 }
 
@@ -325,12 +325,12 @@ as_units.call <- function(x, ...) {
   if(!length(vars)) 
     return(structure(1, units = unitless, class = "units"))
   
-  recognized <- vapply(vars, is_recognized_unit, logical(1L))
-  if(!all(recognized)) 
-    stop(.msg_units_not_recognized(vars[!recognized], x), call. = FALSE)
+  valid <- vapply(vars, is_valid_unit_symbol, logical(1L))
+  if(!all(valid)) 
+    stop(.msg_units_not_recognized(vars[!valid], x), call. = FALSE)
   
   names(vars) <- vars
-  tmp_env <- lapply(vars, symbolic_unit, check_is_parsable = FALSE)
+  tmp_env <- lapply(vars, symbolic_unit, check_is_valid = FALSE)
   
   unit <- eval(x, tmp_env, baseenv())
   

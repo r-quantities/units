@@ -144,7 +144,7 @@ if(require(magrittr))
   y \%>\% set_units(m/s)
 
 
-# these different ways of creating the same unit:
+# these are different ways of creating the same unit:
 # meters per second squared, i.e, acceleration
 x1 <- make_units(m/s^2)
 x2 <- as_units(quote(m/s^2))
