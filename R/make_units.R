@@ -292,7 +292,7 @@ pc <- function(x) {
   paste0("In ", sQuote(full_expr), ", ", 
     pc(sQuote(unrecognized_symbols)), " ", is_are, " not recognized by udunits.\n",
     "See a table of valid unit symbols and names with valid_udunits().\n", 
-    "Add user-defined units with install_symbolic_unit().")
+    "Add custom user-defined units with install_symbolic_unit().")
 }
 
 is_valid_unit_symbol <- function(chr) {
