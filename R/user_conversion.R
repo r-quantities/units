@@ -39,17 +39,25 @@ is_user_defined_unit  <- function(chr) {
 
 
 #' @rdname install_symbolic_unit
+#' @param all if \code{TRUE}, uninstalls all user defined custom symbolic units
 #' @export
-uninstall_symbolic_unit <- function(chr) {
-  if(!is_user_defined_unit(chr))
+uninstall_symbolic_unit <- function(chr, all = FALSE) {
+  if(all) {
+    chr <- ls(envir = user_defined_units)
+  } else if(!is_user_defined_unit(chr))
     return(warning("unit ", sQuote(chr), " not defined. Nothing to remove"))
+  
   rm(list = chr, envir = user_defined_units)
 }
 
-
 # install_symbolic_unit("foobar")
 # get_user_defined_units()
-# install_symbolic_unit("foobar")
+# install_symbolic_unit("foobar2")
+# get_user_defined_units()
+# 
+# uninstall_symbolic_unit(all = T)
+# get_user_defined_units()
+# uninstall_symbolic_unit(all = T)
 # get_user_defined_units()
 
 

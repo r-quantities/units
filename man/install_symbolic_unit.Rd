@@ -7,13 +7,15 @@
 \usage{
 install_symbolic_unit(chr, warn = TRUE)
 
-uninstall_symbolic_unit(chr)
+uninstall_symbolic_unit(chr, all = FALSE)
 }
 \arguments{
 \item{chr}{a length 1 character vector that is the new unit name or symbol.}
 
 \item{warn}{warns if the supplied unit symbol is already a valid unit symbol
 recognized by udunits.}
+
+\item{all}{if \code{TRUE}, uninstalls all user defined custom symbolic units}
 }
 \description{
 Adding a symbolic unit allows it to be used in \code{as_units},
