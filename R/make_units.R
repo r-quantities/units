@@ -149,9 +149,9 @@ backtick <- function(x) {
 
 are_exponents_implicit <- function(s) {
   s <- trimws(s)
-  has <- function(chr, fixed = TRUE) 
-    grepl(chr, s, fixed = fixed, perl = !fixed)
-  !has("^") & !has("*") & !has("/") & has("\\s", fixed = FALSE)
+  has <- function(chr, regex = FALSE) 
+    grepl(chr, s, fixed = !regex, perl = regex)
+  !has("^") & !has("*") & !has("/") & has("\\s|\\d$", regex = TRUE)
 }
 
 is_udunits_time <- function(s) {

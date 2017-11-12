@@ -31,6 +31,22 @@ test_that("parse_units() backticks strings correctly", {
   expect_identical(units:::backtick(x[,"input"]), x[,"expected_output"])
 })
 
+test_that("explicit exponents identified correctly", {
+  expect_true( are_exponents_implicit("m s") )
+  expect_true( are_exponents_implicit("m2") )
+  expect_true( are_exponents_implicit("m-2") )
+  expect_true( are_exponents_implicit("2 m") )
+  expect_true( are_exponents_implicit("m s-2") )
+  expect_true( are_exponents_implicit("m s-2 kg") )
+  expect_true( are_exponents_implicit("2 m s") )
+  
+  expect_false( are_exponents_implicit("m") )
+  expect_false( are_exponents_implicit("m/s") )
+  expect_false( are_exponents_implicit("m^2") )
+  expect_false( are_exponents_implicit("m*s") )
+})
+
+
 test_that("various forms of unit creation and destruction work", {
 
   ox <- x <- 1L:4L
