@@ -20,14 +20,13 @@ converted}
 \item{...}{passed on to \code{as_units}}
 
 \item{value}{a \code{units} object, or something coercible to one with
-\code{as_units}. Depending on \code{mode}, the value is either treated as
-an bare expression or via standard evaluation.}
+\code{as_units}. Depending on \code{mode}, the unit is constructed from the
+supplied bare expression or from the supplied value via standard evaluation.}
 
-\item{mode}{if \code{"symbols"} (the default), then the bare expression
-supplied for \code{un} is treated as the unit. Otherwise, if\code{mode =
-"standard"}, the value of supplied to \code{un} is used. This argument can
-be set via a global option \code{options(units.set_units_mode =
-"standard")}}
+\item{mode}{if \code{"symbols"} (the default), then unit is constructed from
+the bare expression supplied. Otherwise, if\code{mode = "standard"},
+standard evaluation is used for the supplied value This argument can be set
+via a global option \code{options(units.set_units_mode = "standard")}}
 }
 \description{
 A pipe friendly version of \code{units<-}

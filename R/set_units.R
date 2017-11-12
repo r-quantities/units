@@ -7,18 +7,16 @@
 #' @param x a numeric to be assigned units, or a units object to have units
 #'   converted
 #'
-#'
 #' @param value a \code{units} object, or something coercible to one with
-#'   \code{as_units}. Depending on \code{mode}, the value is either treated as
-#'   an bare expression or via standard evaluation.
+#'   \code{as_units}. Depending on \code{mode}, the unit is constructed from the
+#'   supplied bare expression or from the supplied value via standard evaluation.
 #'
 #' @param ... passed on to \code{as_units}
 #'
-#' @param mode if \code{"symbols"} (the default), then the bare expression
-#'   supplied for \code{un} is treated as the unit. Otherwise, if\code{mode =
-#'   "standard"}, the value of supplied to \code{un} is used. This argument can
-#'   be set via a global option \code{options(units.set_units_mode =
-#'   "standard")}
+#' @param mode if \code{"symbols"} (the default), then unit is constructed from
+#'   the bare expression supplied. Otherwise, if\code{mode = "standard"},
+#'   standard evaluation is used for the supplied value This argument can be set
+#'   via a global option \code{options(units.set_units_mode = "standard")}
 #'
 #' @note for objects of class difftime, \code{set_units} is a simple alias for
 #'   \code{`units<-`}, and calls \code{units(x) <- value} directly without

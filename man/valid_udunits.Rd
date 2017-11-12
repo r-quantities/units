@@ -11,26 +11,28 @@ valid_udunits(quiet = FALSE)
 valid_udunits_prefixes(quiet = FALSE)
 }
 \arguments{
-\item{quiet}{logical, defaults TRUE to give a message about where the udunits db is
-being read from.}
+\item{quiet}{logical, defaults \code{TRUE} to give a message about the location of
+the udunits database being read.}
 }
 \value{
-a data frame with columns `symbol`, `symbol_aliases`, `
-  name_singular`, `name_singular_aliases`, `name_plural`, or
-  `name_plural_aliases`, `def`, `definition`, `comment`, `dimensionless` and
-  `source_xml`
+a data frame with columns \code{symbol} , \code{symbol_aliases} ,
+  \code{name_singular} , \code{name_singular_aliases} , \code{name_plural} ,
+  or \code{name_plural_aliases} , \code{def} , \code{definition} ,
+  \code{comment} , \code{dimensionless} and \code{source_xml}
 }
 \description{
 The returned dataframe is constructed at runtime by reading the xml database
 that powers unit conversion in [package:udunits2]. Inspect this dataframe to
-determine what inputs are accepted by `as_units` (and the other functions it
-powers: `make_units`, `set_units`, `units<-`). Any entry listed under
-`symbol`, `symbol_aliases`, ` name_singular`, `name_singular_aliases`,
-`name_plural`, or `name_plural_aliases` is valid. Additionally, any entry
-under `symbol` or `symbol_aliases` may can also contain a valid prefix, as,
-as specified by `valid_udunits_prefixes()`.
+determine what inputs are accepted by \code{as_units} (and the other
+functions it powers: \code{make_units} , \code{set_units} , \code{units<-}).
 }
 \details{
+Any entry listed under \code{symbol} , \code{symbol_aliases} , \code{
+name_singular} , \code{name_singular_aliases} , \code{name_plural} , or
+\code{name_plural_aliases} is valid. Additionally, any entry under
+\code{symbol} or \code{symbol_aliases} may can also contain a valid prefix,
+as specified by \code{valid_udunits_prefixes()} .
+
 Note, this is primarily intended for interactive use, the exact format of the
 returned dataframe may change in the future.
 }

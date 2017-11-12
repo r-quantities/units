@@ -14,9 +14,6 @@
 #'     default it operates with bare expressions like \code{make_unit}, but this
 #'     behavior can be disabled by a specifying \code{mode = "standard"} or setting 
 #'     \code{options(units.set_units_mode = "standard")}.
-#'     
-#'     \item \code{symbolic_unit()} for creation of a single symbolic unit
-#'     \code{symbolic_units("kg")}.
 #' }
 #' 
 #' @export
@@ -152,13 +149,13 @@ backtick <- function(x) {
 
 are_exponents_implicit <- function(s) {
   s <- trimws(s)
-  has <- function(chr, fixed = TRUE) grepl(chr, s, fixed = fixed)
+  has <- function(chr, fixed = TRUE) 
+    grepl(chr, s, fixed = fixed, perl = !fixed)
   !has("^") & !has("*") & !has("/") & has("\\s", fixed = FALSE)
 }
 
 is_udunits_time <- function(s) {
-  ud.is.parseable(s) && 
-    ud.are.convertible(s, "seconds since 1970-01-01")
+  ud.is.parseable(s) && ud.are.convertible(s, "seconds since 1970-01-01")
 }
 
 
@@ -166,11 +163,12 @@ is_udunits_time <- function(s) {
 #' @export
 #' @noMd
 #'
-#' @param force_single_symbol Whether to perform no string parsing and force treatment of the string as a single symbol.
+#' @param force_single_symbol Whether to perform no string parsing and force
+#'   treatment of the string as a single symbol.
 #' 
 #' @param implicit_exponents If the unit string is in product power form (e.g.
 #'   \code{"km m-2 s-1"}). Defaults to \code{NA}, in which case a guess is made
-#'   based on the supplied string. Set to \code{TRUE} or {FALSE} if the guess is
+#'   based on the supplied string. Set to \code{TRUE} or \code{FALSE} if the guess is
 #'   incorrect.
 #'
 #' @section Character strings:
@@ -244,6 +242,9 @@ as_units.character <- function(x,
   as_units.call(expr, check_is_valid = check_is_valid)
 }
 
+
+
+
 # no longer exported
 # ' @param chr a scalar character string describing a unit.
 # '
@@ -264,7 +265,7 @@ symbolic_unit <- function(chr, check_is_valid = TRUE) {
   auto_convert <- getOption("units.auto_convert_names_to_symbols", TRUE)
   if (auto_convert && ud.is.parseable(chr)) {
     sym <- ud.get.symbol(chr)
-    if (nzchar(sym))
+    if (nzchar(sym)) 
       chr <- sym
   }
   
@@ -272,16 +273,18 @@ symbolic_unit <- function(chr, check_is_valid = TRUE) {
 }
 
 
-# from package:TKutils, paste + pretty collapse
-pc <- function(x) {
+# from package:yasp, paste collapse with serial (oxford) comma
+pc_and <- function(..., sep = "") {
+  x <- paste(..., sep = sep, collapse = NULL)
   lx <- length(x)
-  switch( as.character(lx),
-          "0" = character(), 
-          "1" = x,
-          "2" = paste0(x, collapse = " and "),
-          # else
-          paste0(
-            paste0(x[-lx], collapse = ", "), ", and ", x[lx]))
+  if(lx == 0L)
+    ""
+  else if (lx == 1L)
+    x
+  else if (lx == 2L)
+    paste0(x, collapse = " and ")
+  else
+    paste0( paste0(x[-lx], collapse = ", "), ", and ", x[lx])
 }
 
 `%not_in%` <- function(x, table) match(x, table, nomatch = 0L) == 0L
@@ -295,7 +298,7 @@ pc <- function(x) {
   is_are <- if (length(unrecognized_symbols) > 1L) "are" else "is" 
   
   paste0("In ", sQuote(full_expr), ", ", 
-    pc(sQuote(unrecognized_symbols)), " ", is_are, " not recognized by udunits.\n",
+    pc_and(sQuote(unrecognized_symbols)), " ", is_are, " not recognized by udunits.\n",
     "See a table of valid unit symbols and names with valid_udunits().\n", 
     "Add custom user-defined units with install_symbolic_unit().")
 }
@@ -313,10 +316,14 @@ units_eval_env$lb <- function(x) base::log(x, base = 2)
 #' @export
 #' @rdname as_units
 #'
-#' @param check_is_valid Throw an error if all the unit symbols are not either
+#' @param check_is_valid throw an error if all the unit symbols are not either
 #'   recognized by udunits2 via \code{udunits2::ud.is.parseable()}, or a custom
 #'   user defined via \code{install_symbolic_unit()}. If \code{FALSE}, no check
-#'   is performed for validity.
+#'   for validity is performed.
+#'   
+#' @note By default, unit names are automatically substituted with unit names
+#'   (e.g., kilogram --> kg). To turn off this behavior, set
+#'   \code{options("units.auto_convert_names_to_symbols" = FALSE)}
 #'
 #' @section Expressions:
 #'
@@ -368,7 +375,8 @@ as_units.name       <- as_units.call
 #' 
 #' @param x a units object
 #' 
-#' @return the numeric without any units attributes, while preserving other attributes like dimensions or other classes.
+#' @return the numeric without any units attributes, while preserving other
+#'   attributes like dimensions or other classes.
 #' @export
 drop_units <- function(x) {
   class(x) <- setdiff(class(x), "units")

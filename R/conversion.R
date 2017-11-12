@@ -113,7 +113,8 @@ units.symbolic_units <- function(x) {
 #' convert object to a units object
 #'
 #' @param x object of class units
-#' @param value an object of class units
+#' @param value an object of class units, or something coercible to one with
+#'   \code{as_units}
 #' @param ... passed on to other methods
 #'
 #' @export

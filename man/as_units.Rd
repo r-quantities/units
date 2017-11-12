@@ -29,22 +29,24 @@ make_units(bare_expression, check_is_valid = TRUE)
 
 \item{...}{passed on to other methods}
 
-\item{value}{an object of class units}
+\item{value}{an object of class units, or something coercible to one with
+\code{as_units}}
 
 \item{bare_expression}{a bare R expression describing units. Must be valid R
 syntax (reserved R syntax words like \code{in} must be backticked)}
 
-\item{check_is_valid}{Throw an error if all the unit symbols are not either
+\item{check_is_valid}{throw an error if all the unit symbols are not either
 recognized by udunits2 via \code{udunits2::ud.is.parseable()}, or a custom
 user defined via \code{install_symbolic_unit()}. If \code{FALSE}, no check
-is performed for validity.}
+for validity is performed.}
 
 \item{implicit_exponents}{If the unit string is in product power form (e.g.
 \code{"km m-2 s-1"}). Defaults to \code{NA}, in which case a guess is made
-based on the supplied string. Set to \code{TRUE} or {FALSE} if the guess is
+based on the supplied string. Set to \code{TRUE} or \code{FALSE} if the guess is
 incorrect.}
 
-\item{force_single_symbol}{Whether to perform no string parsing and force treatment of the string as a single symbol.}
+\item{force_single_symbol}{Whether to perform no string parsing and force
+treatment of the string as a single symbol.}
 }
 \value{
 A new unit object that can be used in arithmetic, unit conversion or
@@ -69,10 +71,12 @@ A number of functions are provided for creating unit objects.
     default it operates with bare expressions like \code{make_unit}, but this
     behavior can be disabled by a specifying \code{mode = "standard"} or setting 
     \code{options(units.set_units_mode = "standard")}.
-    
-    \item \code{symbolic_unit()} for creation of a single symbolic unit
-    \code{symbolic_units("kg")}.
 }
+}
+\note{
+By default, unit names are automatically substituted with unit names
+  (e.g., kilogram --> kg). To turn off this behavior, set
+  \code{options("units.auto_convert_names_to_symbols" = FALSE)}
 }
 \section{Character strings}{
 

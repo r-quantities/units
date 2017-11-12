@@ -10,7 +10,8 @@ drop_units(x)
 \item{x}{a units object}
 }
 \value{
-the numeric without any units attributes, while preserving other attributes like dimensions or other classes.
+the numeric without any units attributes, while preserving other
+  attributes like dimensions or other classes.
 }
 \description{
 drop units
