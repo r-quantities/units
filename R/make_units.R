@@ -243,35 +243,7 @@ as_units.character <- function(x,
 }
 
 
-
-
-# no longer exported
-# ' @param chr a scalar character string describing a unit.
-# '
-# ' @param check_is_parsable check if the symbolic unit is recognized by the
-# '   udunits2 database. If \code{TRUE} (the default), an error is issued with
-# '   unrecognized symbols.
-# '
-# ' @rdname make_units # not longer exported
-symbolic_unit <- function(chr, check_is_valid = TRUE) {
-  
-  stopifnot(is.character(chr), length(chr) == 1)
-  
-  if (check_is_valid && !is_valid_unit_symbol(chr)) {
-    msg <- paste(sQuote(chr), "is not a unit recognized by udunits or a user-defined unit")
-    stop(msg, call. = FALSE)
-  }
- 
-  auto_convert <- getOption("units.auto_convert_names_to_symbols", TRUE)
-  if (auto_convert && ud.is.parseable(chr)) {
-    sym <- ud.get.symbol(chr)
-    if (nzchar(sym)) 
-      chr <- sym
-  }
-  
-  structure(1, units = .symbolic_units(chr), class = "units")
-}
-
+#  ----- as_units.call helpers ------ 
 
 # from package:yasp, paste collapse with serial (oxford) comma
 pc_and <- function(..., sep = "") {
@@ -288,7 +260,6 @@ pc_and <- function(..., sep = "") {
 }
 
 `%not_in%` <- function(x, table) match(x, table, nomatch = 0L) == 0L
-
 
 .msg_units_not_recognized <- function(unrecognized_symbols, full_expr) {
     
@@ -371,12 +342,35 @@ as_units.expression <- as_units.call
 as_units.name       <- as_units.call
 
 
+symbolic_unit <- function(chr, check_is_valid = TRUE) {
+  
+  stopifnot(is.character(chr), length(chr) == 1)
+  
+  if (check_is_valid && !is_valid_unit_symbol(chr)) {
+    msg <- paste(sQuote(chr), "is not a unit recognized by udunits or a user-defined unit")
+    stop(msg, call. = FALSE)
+  }
+  
+  auto_convert <- getOption("units.auto_convert_names_to_symbols", TRUE)
+  if (auto_convert && ud.is.parseable(chr)) {
+    sym <- ud.get.symbol(chr)
+    if (nzchar(sym)) 
+      chr <- sym
+  }
+  
+  structure(1, units = .symbolic_units(chr), class = "units")
+}
+
+
 #' drop units
 #' 
 #' @param x a units object
 #' 
 #' @return the numeric without any units attributes, while preserving other
 #'   attributes like dimensions or other classes.
+#'   
+#' @note Equivalent to \code{units(x) <- NULL}
+#' 
 #' @export
 drop_units <- function(x) {
   class(x) <- setdiff(class(x), "units")

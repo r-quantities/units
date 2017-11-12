@@ -16,3 +16,6 @@ the numeric without any units attributes, while preserving other
 \description{
 drop units
 }
+\note{
+Equivalent to \code{units(x) <- NULL}
+}
