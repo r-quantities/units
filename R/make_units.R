@@ -338,7 +338,11 @@ Use `install_conversion_constant()` to define a new unit that is a multiple of a
   structure(1, units = units(unit), class = "units")
 }
 
+
+#' @export
 as_units.expression <- as_units.call
+
+#' @export
 as_units.name       <- as_units.call
 
 

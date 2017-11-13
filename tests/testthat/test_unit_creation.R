@@ -77,4 +77,20 @@ test_that("various forms of unit creation and destruction work", {
   expect_identical(ox, set_units(x, NULL, mode = "standard"))
   
   
+  meter <- units:::symbolic_unit("m")
+  
+  expect_identical(meter, make_units(m))
+  expect_identical(meter, as_units("m"))
+  expect_identical(meter, as_units(quote(m)))
+  expect_identical(meter, as_units(expression(m)))
+  
+  meter_per_sec <- meter/units:::symbolic_unit("s")
+  
+  expect_identical(meter_per_sec, make_units(m/s))
+  expect_identical(meter_per_sec, as_units("m/s"))
+  expect_identical(meter_per_sec, as_units(" m / s "))
+  expect_identical(meter_per_sec, as_units(quote(m/s)))
+  expect_identical(meter_per_sec, as_units(expression(m/s)))
+  expect_identical(meter_per_sec, as_units("m s-1"))
+  
 })
