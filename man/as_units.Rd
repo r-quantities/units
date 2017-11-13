@@ -20,7 +20,7 @@ as_units(x, ...)
 make_units(bare_expression, check_is_valid = TRUE)
 
 \method{as_units}{character}(x, check_is_valid = TRUE,
-  implicit_exponents = NA, force_single_symbol = FALSE, ...)
+  implicit_exponents = NULL, force_single_symbol = FALSE, ...)
 
 \method{as_units}{call}(x, check_is_valid = TRUE, ...)
 }
@@ -41,7 +41,7 @@ user defined via \code{install_symbolic_unit()}. If \code{FALSE}, no check
 for validity is performed.}
 
 \item{implicit_exponents}{If the unit string is in product power form (e.g.
-\code{"km m-2 s-1"}). Defaults to \code{NA}, in which case a guess is made
+\code{"km m-2 s-1"}). Defaults to \code{NULL}, in which case a guess is made
 based on the supplied string. Set to \code{TRUE} or \code{FALSE} if the guess is
 incorrect.}
 

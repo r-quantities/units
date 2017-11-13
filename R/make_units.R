@@ -167,7 +167,7 @@ is_udunits_time <- function(s) {
 #'   treatment of the string as a single symbol.
 #' 
 #' @param implicit_exponents If the unit string is in product power form (e.g.
-#'   \code{"km m-2 s-1"}). Defaults to \code{NA}, in which case a guess is made
+#'   \code{"km m-2 s-1"}). Defaults to \code{NULL}, in which case a guess is made
 #'   based on the supplied string. Set to \code{TRUE} or \code{FALSE} if the guess is
 #'   incorrect.
 #'
@@ -216,7 +216,7 @@ is_udunits_time <- function(s) {
 #'   by \code{Date} and \code{POSIXt} classes.
 as_units.character <- function(x, 
                                check_is_valid = TRUE,
-                               implicit_exponents = NA, 
+                               implicit_exponents = NULL, 
                                force_single_symbol = FALSE, ...) {
 
   stopifnot(is.character(x), length(x) == 1)
@@ -224,7 +224,7 @@ as_units.character <- function(x,
   if(force_single_symbol || is_udunits_time(x))
     return(symbolic_unit(x, check_is_valid = check_is_valid))
   
-  if(is.na(implicit_exponents))
+  if(is.null(implicit_exponents))
     implicit_exponents <- are_exponents_implicit(x)
   
   if(implicit_exponents)
