@@ -27,7 +27,6 @@ test_that("parse_units() backticks strings correctly", {
   ))
   colnames(x) <- c("input", "expected_output")
 
-  
   expect_identical(units:::backtick(x[,"input"]), x[,"expected_output"])
 })
 
@@ -44,6 +43,23 @@ test_that("explicit exponents identified correctly", {
   expect_false( are_exponents_implicit("m/s") )
   expect_false( are_exponents_implicit("m^2") )
   expect_false( are_exponents_implicit("m*s") )
+})
+
+test_that("global options are respected", {
+  # rt: round trip
+  rt <- function(x) as.character(units(as_units(x)))
+  
+  expect_equal("g", rt("grams"))
+  
+  op <- options(units.auto_convert_names_to_symbols = FALSE)
+  expect_equal("grams", rt("grams"))
+  
+  options(units.auto_convert_names_to_symbols = TRUE)
+  expect_equal("g", rt("grams"))
+  
+  options(op)
+  expect_equal("g", rt("grams"))
+  
 })
 
 
