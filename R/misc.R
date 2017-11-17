@@ -35,33 +35,22 @@ rep.units = function(x, ...) {
   .as.units(NextMethod(), u)
 }
 
-#' parse unit in product power form (e.g. km m-2 s-1)
-#' 
-#' parse unit in product power form (e.g. km m-2 s-1)
-#' @param str lenght-one character vector containing the unit string
-#' @examples 
-#' parse_unit("kg m-2 s-1")
-#' @details see also \code{demo(cf)} for parsing units in the CF standard name table. Note that \code{parse_unit} currently fails on expressions containing a \code{/}, such as \code{m/s-1}.
-#' @export
-parse_unit <- function(str) {
-  .Deprecated("parse_units(x, implicit_exponents = TRUE)")
-  .parse_units_with_implicit_exponents(str)
-}
 
-.parse_units_with_implicit_exponents <- function(str) {
+
+.parse_unit_with_implicit_exponents <- function(str) {
   if (length(grep(c("[*/]"), str)) > 0)
     stop("If 'implicit_exponents = TRUE', strings cannot contain `*' or `/'")
   parse_one = function(str) {
     r <- regexpr("[-0-9]+", str)
     if (r == -1)
-      return(make_unit(str))
+      return(symbolic_unit(str))
     power = as.integer(substr(str, r, nchar(str)))
     u = if (power < 0) {
 	  subs = substr(str, 1, r-1) # word before power
-      1/make_unit(subs) # word before power
+      1/symbolic_unit(subs) # word before power
     } else {
       subs = substr(str, 1, r-1)
-      make_unit(subs)
+      symbolic_unit(subs)
 	}
     if (abs(power) > 1) {
       u0 = u
@@ -71,7 +60,7 @@ parse_unit <- function(str) {
       return(u)
     }
   if (str == "1")
-     return(make_unit("1"))
+     return(symbolic_unit("1"))
   first = TRUE
   while ((r <- regexpr("[ ]+", str)) != -1) {
     this = substr(str, 1, r-1) # first word
@@ -110,6 +99,7 @@ deparse_unit = function(x) {
   vals2 = as.character(td)
   paste(c(paste0(nm1, vals1), paste0(nm2, vals2)), collapse=" ")
 }
+# This should perhaps be an option in format.symbolic_units
 
 #' @export
 #' @name deparse_unit
@@ -122,7 +112,7 @@ as_cf = function(x) {
 #' @method all.equal units
 #' @export
 all.equal.units = function(target, current, ...) {
-  current = set_units(current, units(target), mode = "units")
+  current = set_units(current, units(target), mode = "standard")
   all.equal(unclass(target), unclass(current), ...)
 }
 
@@ -161,10 +151,10 @@ seq.units = function(from, to, by = ((to - from)/(length.out - 1)),
   if (! mf)
     from = as.numeric(from)
   if (! mt)
-  	to = as.numeric(set_units(to, uuu, mode = "units"))
+  	to = as.numeric(set_units(to, uuu, mode = "standard"))
   if (! missing(by))
-    by = as.numeric(set_units(by, uuu, mode = "units"))
-  set_units(NextMethod(), uuu, mode = "units")
+    by = as.numeric(set_units(by, uuu, mode = "standard"))
+  set_units(NextMethod(), uuu, mode = "standard")
 }
 
 ##' @export

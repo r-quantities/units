@@ -1,16 +1,22 @@
 # version 0.5-0
 
-* Unit creation has been significantly refactored. New user facing unit creation
-functions are `make_units()` and `parse_units()`, which parse units as R
-expressions. see `?make_units` for details. @t-kalinowski
+* Unit creation has been significantly refactored. `units<-` now accepts strings
+or quoted language objects on the right hand side, powered by new S3 methods for
+`as_units`. New user facing function `make_units()` (plural s) is also provided.
+See `?as_units` for details. @t-kalinowski
 
-* `make_unit` has been depracated, please use `symbolic_unit` instead.
+* new functions `valid_udunits()` and `valid_udunits_prefixes()` generate tidy
+dataframes listing all the valid unit names, symbols, and prefixes recognized by
+udunits. @t-kalinowski
 
-* `parse_unit` has been depracated, please use `parse_units(implicit_exponents = TRUE)` instead.
+* new function `install_symbolic_unit()` for adding custom, user-defined units. 
+@t-kalinowski
 
-* `set_units` is no longer an exported generic. Instead, please define methods for `units<-`.
+* `make_unit` and `parse_unit` (singular unit) have been deprecated, please use 
+`as_units` instead.
 
-* `ud_units` is no longer necessary and is soft-deprecated, and may be removed in a future release.
+* `ud_units` is no longer necessary and is soft-deprecated, and may be removed
+in a future release.
 
 * add `%*%` as an S3 generic; #54 
 

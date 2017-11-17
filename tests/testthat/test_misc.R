@@ -1,8 +1,8 @@
 context("Misc. utility functions")
 
 test_that("We can concatenate units if they have the same unit", {
-  x <- 1:4 * symbolic_unit("m")
-  y <- 5:8 * symbolic_unit("m")
+  x <- 1:4 * as_units("m")
+  y <- 5:8 * as_units("m")
   z <- c(x, y)
   
   expect_equal(length(z), length(x) + length(y))
@@ -11,49 +11,49 @@ test_that("We can concatenate units if they have the same unit", {
 })
 
 test_that("We can't concatenate units if they have different units", {
-  x <- 1:4 * symbolic_unit("m")
-  y <- 5:8 * symbolic_unit("s")
+  x <- 1:4 * as_units("m")
+  y <- 5:8 * as_units("s")
   expect_error(c(x, y))
 })
 
 test_that("We can concatenate units if their units can be converted", {
-  x <- 1:4 * symbolic_unit("m")
-  y <- 5:8 * symbolic_unit("km")
+  x <- 1:4 * as_units("m")
+  y <- 5:8 * as_units("km")
   z <- c(x, y)
   
   expect_equal(length(z), length(x) + length(y))
   expect_equal(as.character(units(z)), "m")
   expect_equal(x, z[1:4])
-  expect_equal(as_units(y, units(symbolic_unit("m"))), z[1:4 + 4])
+  expect_equal(set_units(y, units(as_units("m")), mode = "standard"), z[1:4 + 4])
 })
 
 test_that("We can use diff on a units object", {
-  x = 1:10 * symbolic_unit("m")
-  y = rep(1,9) * symbolic_unit("m")
+  x = 1:10 * as_units("m")
+  y = rep(1,9) * as_units("m")
   expect_equal(diff(x), y)
 })
 
 test_that("type_sum is available for units objects", {
   library(tibble)
-  expect_equal(type_sum(symbolic_unit("m")), "units")
+  expect_equal(type_sum(as_units("m")), "units")
 })
 
 test_that("parse_unit works", {
-  kg = symbolic_unit("kg")
-  m = symbolic_unit("m")
-  s = symbolic_unit("s")
+  kg = as_units("kg")
+  m = as_units("m")
+  s = as_units("s")
   u0 = kg/m/m/s
-  u = parse_units("kg m-2 s-1", implicit_exponents = TRUE)
+  u = as_units("kg m-2 s-1", implicit_exponents = TRUE)
   expect_equal(u, u0)
-  J = symbolic_unit("J")
+  J = as_units("J")
   u0 = with(ud_units, kg*kg*kg*m*m*J/s/s/s/s/s)
-  u = parse_units("kg3 m2 s-5 J", implicit_exponents = TRUE)
+  u = as_units("kg3 m2 s-5 J", implicit_exponents = TRUE)
   expect_equal(u, u0)
 })
 
 test_that("deparse_unit works", {
   str = "kg m-2 s-1"
-  u = parse_units(str, implicit_exponents = TRUE)
+  u = as_units(str, implicit_exponents = TRUE)
   str0 = deparse_unit(u)
   expect_equal(str, str0)
 })
@@ -64,7 +64,7 @@ test_that("we can provide a symbol to as_units and make it look in ud_units", {
   expect_equal(as.numeric(five_ha), 5)
   expect_equal(units(five_ha), units(ud_units$ha))
   
-  ha <- symbolic_unit("m") # make sure that user-defined units overrule
+  ha <- as_units("m") # make sure that user-defined units overrule
   five_ha <- as_units(5, ha) # ha pulled from ud_units
   expect_equal(as.numeric(five_ha), 5)
   expect_equal(units(five_ha), units(ud_units$m))
@@ -88,13 +88,13 @@ test_that("set_units works with symbols in character data, and resolves names", 
   skip_on_os("windows") # encoding issue with degree:
 
   deg = "°C"
-  expect_equal(set_units(1:2, deg, mode = "character"), set_units(1:2, "degree_C", mode = "character"))
-  expect_equal(set_units(1:2, deg, mode = "character"), set_units(1:2, "degree_Celsius", mode = "character"))
-  expect_equal(set_units(1:2, "degree_C", mode = "character"), set_units(1:2, "degree_Celsius", mode = "character"))
-  expect_equal(set_units(1:2, degree_C), set_units(1:2, degree_Celsius))
-  expect_equal(set_units(1:2, deg, mode = "character"), set_units(1:2, degree_Celsius))
+  expect_equal(set_units(1:2, deg, mode = "standard"),        set_units(1:2, "degree_C", mode = "standard"))
+  expect_equal(set_units(1:2, deg, mode = "standard"),        set_units(1:2, "degree_Celsius", mode = "standard"))
+  expect_equal(set_units(1:2, "degree_C", mode = "standard"), set_units(1:2, "degree_Celsius", mode = "standard"))
+  expect_equal(set_units(1:2, degree_C),                      set_units(1:2, degree_Celsius))
+  expect_equal(set_units(1:2, deg, mode = "standard"),        set_units(1:2, degree_Celsius))
   x = set_units(1:3, km)
-  y <- set_units(x, "meter", mode = "character")
+  y <- set_units(x, "meter", mode = "standard")
   expect_equal(y, set_units(c(1000,2000,3000), m))
 })
 
