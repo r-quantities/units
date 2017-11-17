@@ -21,5 +21,5 @@ as.units(x, value = unitless)
 \item{value}{a units object, by default, unitless}
 }
 \description{
-The following function will be deprecated and removed in a future release.
+The following functions are deprecated and will be removed in a future release.
 }
