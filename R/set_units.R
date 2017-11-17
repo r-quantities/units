@@ -45,8 +45,15 @@ set_units.default <- function(x, value, ...,
 
 #' @rdname set_units
 #' @export
-set_units.difftime <- function(x, value, ...) {
-  units(x) <- value
-  x
-}
+set_units.difftime <- function(x, value, ...,
+  mode = getOption("units.set_units_mode", c("symbols", "standard"))) {
 
+  if (match.arg(mode) == "symbols")
+    value <- substitute(value)
+
+  x = as_units(x)
+  units(x) <- as_units(value, ...)
+  x
+
+  #NextMethod()
+}

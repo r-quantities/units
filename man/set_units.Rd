@@ -11,7 +11,8 @@ set_units(x, ...)
 \method{set_units}{default}(x, value, ...,
   mode = getOption("units.set_units_mode", c("symbols", "standard")))
 
-\method{set_units}{difftime}(x, value, ...)
+\method{set_units}{difftime}(x, value, ...,
+  mode = getOption("units.set_units_mode", c("symbols", "standard")))
 }
 \arguments{
 \item{x}{a numeric to be assigned units, or a units object to have units
