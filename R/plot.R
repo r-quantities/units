@@ -61,7 +61,7 @@ make_unit_label = function(lab, u,
 #' units_options(sep = c("~~~", "~"), group = c("", ""))  # no brackets; extra space
 #' plot(weight, displacement)
 #' units_options(sep = c("~", "~~"), group = c("[", "]"))
-#' gallon = make_unit("gallon")
+#' gallon = as_units("gallon")
 #' consumption = mtcars$mpg * with(ud_units, mi/gallon)
 #' units(consumption) = with(ud_units, km/l)
 #' plot(displacement, consumption) # division in consumption

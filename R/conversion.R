@@ -33,7 +33,11 @@ convert <- function(value, from, to) {
 #' class(x)
 #' y = 2:5
 `units<-.numeric` <- function(x, value) {
-  stopifnot(inherits(value, "units") || inherits(value, "symbolic_units"))
+  if(is.null(value))
+    return(x)
+ 
+  if(!inherits(value, "units") && !inherits(value, "symbolic_units"))
+    value <- as_units(value)
   
   if (inherits(value, "units"))
     value <- units(value)
@@ -53,7 +57,12 @@ convert <- function(value, from, to) {
 #' units(a) <- with(ud_units, km/h)
 #' a
 `units<-.units` <- function(x, value) {
-  stopifnot(inherits(value, "units") || inherits(value, "symbolic_units"))
+  
+  if(is.null(value))
+    return(drop_units(x))
+  
+  if(!inherits(value, "units") && !inherits(value, "symbolic_units"))
+    value <- as_units(value)
   
   if (inherits(value, "units"))
     value <- units(value)
@@ -82,8 +91,9 @@ unit_ambiguous = function(value) {
   if (!all(is.na(x))) 
     stop("x must be numeric, non-NA logical not supported")
   
-  stopifnot(inherits(value, "units") || inherits(value, "symbolic_units"))
-  set_units(as.numeric(x), value, mode = "units")
+  x <- as.numeric(x)
+  units(x) <- value
+  x
 }
 
 #' retrieve measurement units from \code{units} object
@@ -95,42 +105,44 @@ units.units <- function(x) {
   attr(x, "units")
 }
 
+#' @export
+units.symbolic_units <- function(x) {
+  x
+}
+
 #' convert object to a units object
 #'
 #' @param x object of class units
-#' @param value target unit, defaults to `unitless`
+#' @param value an object of class units, or something coercible to one with
+#'   \code{as_units}
+#' @param ... passed on to other methods
 #'
 #' @export
-as_units <- function(x, value = unitless) {
+as_units <- function(x, ...) {
   UseMethod("as_units")
 }
 
 #' @export
-#' @name as_units
-as.units <- function(x, value = unitless) {
-	.Deprecated("as_units")    # nocov
-	as_units(x, value = value) # nocov
+as_units.units <- function(x, value, ...) {
+  if(!missing(value) && !identical(units(value), units(x)))
+    warning("Use set_units() to perform unit conversion. Return unit unmodified")
+  x
+}
+#' @export
+as_units.symbolic_units <- function(x, value, ...) {
+  if(!missing(value))
+    warning("supplied value ignored")
+  structure(1L, units = x, class = "units")
 }
 
 #' @export
 #' @name as_units
-as_units.default <- function(x, value = unitless) {
-
-  unit_name <- substitute(value)
-  if (is.symbol(unit_name)) {
-    unit_name <- as.character(unit_name)
-    if (!exists(unit_name, envir = parent.frame())) {
-      value <- units:: ud_units[[unit_name]]
-      if (is.null(value))
-        stop(paste("unit", unit_name, "not found: define with make_unit?"))
-    }
-  }
-  
+as_units.default <- function(x, value = unitless, ...) {
   units(x) <- value
   x
 }
 
-#' convert difftime objects to units
+#'  difftime objects to units
 #'
 #' @export
 #' @name as_units
@@ -139,23 +151,23 @@ as_units.default <- function(x, value = unitless) {
 #' s = Sys.time()
 #' d  = s - (s+1)
 #' as_units(d)
-as_units.difftime <- function(x, value) {
+as_units.difftime <- function(x, value, ...) {
   u <- attr(x, "units")
   x <- unclass(x)
   attr(x, "units") <- NULL
   
   # convert from difftime to udunits2:
   if (u == "secs") # secs -> s
-    x <- x * make_unit("s")
+    x <- x * symbolic_unit("s")
   else if (u == "mins") # mins -> min
-    x <- x * make_unit("min")
+    x <- x * symbolic_unit("min")
   else if (u == "hours") # hours -> h
-    x <- x * make_unit("h")
+    x <- x * symbolic_unit("h")
   else if (u == "days") # days -> d
-    x <- x * make_unit("d")
+    x <- x * symbolic_unit("d")
   else if (u == "weeks") { # weeks -> 7 days
     x <- 7 * x
-    x <- x * make_unit("d")
+    x <- x * symbolic_unit("d")
   } else 
     stop(paste("unknown time units", u, "in difftime object"))
   
@@ -234,7 +246,7 @@ as.Date.units = function (x, ...) {
 }
 
 #' @export
-as_units.POSIXt = function(x, value) {
+as_units.POSIXt = function(x, value, ...) {
 	u = as.numeric(as.POSIXct(x))
 	units(u) = symbolic_unit("seconds since 1970-01-01 00:00:00 +00:00")
 	if (! missing(value))
@@ -243,10 +255,10 @@ as_units.POSIXt = function(x, value) {
 }
 
 #' @export
-as_units.Date = function(x, value) {
+as_units.Date = function(x, value, ...) {
 	u = as.numeric(x)
 	units(u) = symbolic_unit("days since 1970-01-01")
-	if (! missing(value))
+	if (!missing(value))
 		units(u) = symbolic_unit(value)
 	u
 }

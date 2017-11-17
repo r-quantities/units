@@ -27,21 +27,86 @@ test_that("parse_units() backticks strings correctly", {
   ))
   colnames(x) <- c("input", "expected_output")
 
-  
   expect_identical(units:::backtick(x[,"input"]), x[,"expected_output"])
 })
 
-test_that("parse_units() and make_units() make identical units", {
+test_that("explicit exponents identified correctly", {
+  expect_true( are_exponents_implicit("m s") )
+  expect_true( are_exponents_implicit("m2") )
+  expect_true( are_exponents_implicit("m-2") )
+  expect_true( are_exponents_implicit("2 m") )
+  expect_true( are_exponents_implicit("m s-2") )
+  expect_true( are_exponents_implicit("m s-2 kg") )
+  expect_true( are_exponents_implicit("2 m s") )
+  
+  expect_false( are_exponents_implicit("m") )
+  expect_false( are_exponents_implicit("m/s") )
+  expect_false( are_exponents_implicit("m^2") )
+  expect_false( are_exponents_implicit("m*s") )
+})
 
-    expect_identical(make_units(`in`),   parse_units("in"))
-    expect_identical(make_units(kelvin), parse_units("kelvin"))
-    expect_identical(make_units(`%`),    parse_units("%"))
-    expect_identical(make_units(T),      parse_units("T"))
-    expect_identical(make_units(`'`/s),  parse_units("`'`/s"))
-    expect_identical(make_units(`'`),    parse_units("`'`"))
-    expect_identical(make_units(s/`'`),  parse_units("s/`'`"))
-    expect_identical(make_units(C),      parse_units("C"))
-    expect_identical(make_units(F),      parse_units("F"))
-    
+test_that("global options are respected", {
+  # rt: round trip
+  rt <- function(x) as.character(units(as_units(x)))
+  
+  expect_equal("g", rt("grams"))
+  
+  op <- options(units.auto_convert_names_to_symbols = FALSE)
+  expect_equal("grams", rt("grams"))
+  
+  options(units.auto_convert_names_to_symbols = TRUE)
+  expect_equal("g", rt("grams"))
+  
+  options(op)
+  expect_equal("g", rt("grams"))
+  
+})
+
+
+test_that("various forms of unit creation and destruction work", {
+
+  ox <- x <- 1L:4L
+  
+  units(x) <- "m/s"
+  expect_s3_class(x,"units")
+  
+  units(x) <- NULL
+  expect_identical(x, ox)
+  
+  
+  ox <- x <- matrix(1L:4L, ncol = 2)
+  
+  units(x) <- "m/s"
+  expect_s3_class(x,"units")
+  
+  units(x) <- NULL
+  expect_identical(x, ox)
+  
+  
+  ox <- y <- x <- 1L:4L
+  units(x) <- "m/s"
+  
+  expect_identical(x, set_units(y, m/s))
+  expect_identical(x, set_units(y, "m/s", mode = "standard"))
+  
+  expect_identical(ox, set_units(x, NULL))
+  expect_identical(ox, set_units(x, NULL, mode = "standard"))
+  
+  
+  meter <- units:::symbolic_unit("m")
+  
+  expect_identical(meter, make_units(m))
+  expect_identical(meter, as_units("m"))
+  expect_identical(meter, as_units(quote(m)))
+  expect_identical(meter, as_units(expression(m)))
+  
+  meter_per_sec <- meter/units:::symbolic_unit("s")
+  
+  expect_identical(meter_per_sec, make_units(m/s))
+  expect_identical(meter_per_sec, as_units("m/s"))
+  expect_identical(meter_per_sec, as_units(" m / s "))
+  expect_identical(meter_per_sec, as_units(quote(m/s)))
+  expect_identical(meter_per_sec, as_units(expression(m/s)))
+  expect_identical(meter_per_sec, as_units("m s-1"))
   
 })

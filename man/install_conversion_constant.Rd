@@ -32,10 +32,10 @@ This function handles the very common case where units are related
 }
 \examples{
 
-apples <- 2 * make_unit("apple", user_defined = TRUE)
-oranges <- 1 * make_unit("orange", user_defined = TRUE)
 # one orange is worth two apples
 install_conversion_constant("orange", "apple", 2)
+apples <- 2 * as_units("apple")
+oranges <- 1 * as_units("orange")
 apples + oranges
 oranges + apples
 

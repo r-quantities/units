@@ -10,7 +10,7 @@ plot(weight, displacement)
 units_options(sep = c("~~~", "~"), group = c("", ""))  # no brackets; extra space
 plot(weight, displacement)
 units_options(sep = c("~", "~~"), group = c("[", "]"))
-gallon = make_unit("gallon")
+gallon = as_units("gallon")
 consumption = mtcars$mpg * with(ud_units, mi/gallon)
 units(consumption) = with(ud_units, km/l)
 plot(displacement, consumption) # division in consumption
@@ -21,8 +21,8 @@ par(oldpar)
 
 units_options(parse = FALSE)
 n = 100
-u = rnorm(1:n) * make_unit("°C")
-v = rnorm(1:n) * make_unit("s")
+u = rnorm(1:n) * as_units("degree_C")
+v = rnorm(1:n) * as_units("s")
 plot(u, v)
 plot(u, type = 'l')
 hist(u)
