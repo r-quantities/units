@@ -83,7 +83,7 @@ rep.units = function(x, ...) {
 #' @param x object of class units
 #' @return length one character vector
 #' @examples 
-#' u = parse_units("kg m-2 s-1", implicit_exponents = TRUE)
+#' u = as_units("kg m-2 s-1", implicit_exponents = TRUE)
 #' u
 #' deparse_unit(u)
 #' @export
