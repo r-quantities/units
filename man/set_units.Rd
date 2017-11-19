@@ -2,27 +2,20 @@
 % Please edit documentation in R/set_units.R
 \name{set_units}
 \alias{set_units}
-\alias{set_units.default}
-\alias{set_units.difftime}
 \title{set_units}
 \usage{
-set_units(x, ...)
-
-\method{set_units}{default}(x, value, ...,
-  mode = getOption("units.set_units_mode", c("symbols", "standard")))
-
-\method{set_units}{difftime}(x, value, ...,
-  mode = getOption("units.set_units_mode", c("symbols", "standard")))
+set_units(x, value, ..., mode = getOption("units.set_units_mode", c("symbols",
+  "standard")))
 }
 \arguments{
 \item{x}{a numeric to be assigned units, or a units object to have units
 converted}
 
-\item{...}{passed on to \code{as_units}}
-
 \item{value}{a \code{units} object, or something coercible to one with
 \code{as_units}. Depending on \code{mode}, the unit is constructed from the
 supplied bare expression or from the supplied value via standard evaluation.}
+
+\item{...}{passed on to \code{as_units}}
 
 \item{mode}{if \code{"symbols"} (the default), then unit is constructed from
 the bare expression supplied. Otherwise, if\code{mode = "standard"},
@@ -31,9 +24,4 @@ via a global option \code{options(units.set_units_mode = "standard")}}
 }
 \description{
 A pipe friendly version of \code{units<-}
-}
-\note{
-for objects of class difftime, \code{set_units} is a simple alias for
-  \code{`units<-`}, and calls \code{units(x) <- value} directly without
-  calling \code{as_units(value)}
 }

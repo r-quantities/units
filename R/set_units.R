@@ -18,17 +18,9 @@
 #'   standard evaluation is used for the supplied value This argument can be set
 #'   via a global option \code{options(units.set_units_mode = "standard")}
 #'
-#' @note for objects of class difftime, \code{set_units} is a simple alias for
-#'   \code{`units<-`}, and calls \code{units(x) <- value} directly without
-#'   calling \code{as_units(value)}
-#'
 #' @export
 #' @rdname set_units
-set_units <- function(x, ...) UseMethod("set_units")
-
-#' @rdname set_units
-#' @export
-set_units.default <- function(x, value, ...,
+set_units <- function(x, value, ...,
   mode = getOption("units.set_units_mode", c("symbols", "standard"))) {
   
   if (missing(value))
@@ -37,23 +29,9 @@ set_units.default <- function(x, value, ...,
     value <- substitute(value)
   
   if (is.null(value))
-    return(drop_units(x))
-  
-  units(x) <- as_units(value, ...)
-  x
-}
-
-#' @rdname set_units
-#' @export
-set_units.difftime <- function(x, value, ...,
-  mode = getOption("units.set_units_mode", c("symbols", "standard"))) {
-
-  if (match.arg(mode) == "symbols")
-    value <- substitute(value)
-
-  x = as_units(x)
-  units(x) <- as_units(value, ...)
-  x
-
-  #NextMethod()
+    drop_units(x)
+  else {
+    units(x) <- as_units(value, ...)
+    x
+  }
 }
