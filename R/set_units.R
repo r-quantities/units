@@ -32,9 +32,8 @@ set_units <- function(x, value, ...,
   }
   
   if (is.null(value))
-    drop_units(x)
-  else {
-    units(x) <- as_units(value, ...)
-    x
-  }
+    return(drop_units(x))
+  
+  units(x) <- as_units(value, ...)
+  x
 }
