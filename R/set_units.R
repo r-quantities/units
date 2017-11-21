@@ -28,9 +28,8 @@ set_units <- function(x, value, ...,
   else if (match.arg(mode) == "symbols") {
     value <- substitute(value)
     
-    if(is.numeric(value) && value != 1)
+    if(is.numeric(value) && !identical(value, 1) && !identical(value, 1L))
       stop("The only valid number defining a unit is '1', signifying a unitless unit")
-    
   }
   
   if (is.null(value))
