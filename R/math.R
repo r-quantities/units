@@ -25,7 +25,7 @@ Math.units = function(x, ...) {
   if (!OK && units(x) == units(set_units(1, rad))) {
     OK <- switch(.Generic, "sin" = , "cos" = , "tan" = TRUE, FALSE)
     if (OK)
-	  x <- set_units(x, unitless)
+	  x <- set_units(x)
   }
 
   if (!OK) {
@@ -47,7 +47,7 @@ Math.units = function(x, ...) {
         u = paste0("lb(",units(x),")")
       else
         stop(paste("log with base", dts$base, "not supported"))
-      .as.units(NextMethod(.Generic), units(make_unit(u)))
+      .as.units(NextMethod(.Generic), units(symbolic_unit(u, check_is_valid = FALSE)))
       # nocov end
     } else
       .as.units(NextMethod(.Generic), units(x))

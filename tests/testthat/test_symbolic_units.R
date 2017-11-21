@@ -43,10 +43,10 @@ test_that("we can simplify basic units with conversion", {
 })
 
 test_that("we can compare units", {
-  g <- make_unit("g")
-  m <- make_unit("m")
-  s <- make_unit("s")
-  d <- make_unit("day")
+  g <- as_units("g")
+  m <- as_units("m")
+  s <- as_units("s")
+  d <- as_units("day")
   e1 <- 1:10 * g * m / s / d
   e2 <- 1:10 * m / s
   expect_equal(units:::.same_units(units(e1),units(e1)), TRUE)
