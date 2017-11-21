@@ -314,7 +314,7 @@ as_units.call <- function(x, check_is_valid = TRUE, ...) {
   
   stopifnot(is.language(x))
   
-  if(missing(x))
+  if(missing(x) || tryCatch(eval(x, baseenv()) == 1, error = function(e) FALSE))
     return(structure(1, units = unitless, class = "units"))
   
   vars <- all.vars(x)

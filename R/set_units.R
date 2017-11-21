@@ -27,8 +27,12 @@ set_units <- function(x, value, ...,
     value <- unitless
   else if (match.arg(mode) == "symbols") {
     value <- substitute(value)
-    # if(class(value) == "character")
-    #   stop("Please set `mode = standard` to supply character strings as units")
+    
+    if(is.numeric(value) && value != 1)
+      stop("The only valid number defining a unit is '1', signifying a unitless unit")
+    
+    if(identical(value, quote(unitless)))
+      value <- 1
   }
   
   if (is.null(value))
