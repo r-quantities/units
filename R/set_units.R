@@ -25,8 +25,11 @@ set_units <- function(x, value, ...,
   
   if (missing(value))
     value <- unitless
-  else if (match.arg(mode) == "symbols")
+  else if (match.arg(mode) == "symbols") {
     value <- substitute(value)
+    # if(class(value) == "character")
+    #   stop("Please set `mode = standard` to supply character strings as units")
+  }
   
   if (is.null(value))
     drop_units(x)

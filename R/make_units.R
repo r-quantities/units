@@ -314,9 +314,14 @@ as_units.call <- function(x, check_is_valid = TRUE, ...) {
   
   stopifnot(is.language(x))
   
-  vars <- all.vars(x)
-  if(!length(vars)) 
+  if(missing(x))
     return(structure(1, units = unitless, class = "units"))
+  
+  vars <- all.vars(x)
+  if(!length(vars))
+    stop(call. = FALSE,
+"No symbols found. Please supply bare expressions with this approach.
+See ?as_units for alternative ways of creating units (e.g., from strings)")
   
   if (check_is_valid) {
     valid <- vapply(vars, is_valid_unit_symbol, logical(1L))
@@ -327,7 +332,10 @@ as_units.call <- function(x, check_is_valid = TRUE, ...) {
   names(vars) <- vars
   tmp_env <- lapply(vars, symbolic_unit, check_is_valid = FALSE)
   
-  unit <- eval(x, tmp_env, units_eval_env)
+  unit <- try(eval(x, tmp_env, units_eval_env), silent = TRUE)
+  if(inherits(unit, "try-error"))
+    stop(paste0(unit, "\n", 
+      "Did you try to supply a value in a context where a bare expression was expected?"))
   
   if(as.numeric(unit) %not_in% c(1, 0)) # 0 if log() used. 
     warning(call. = FALSE,
