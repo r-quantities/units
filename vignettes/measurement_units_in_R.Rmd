@@ -11,6 +11,9 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
 ```{r echo=FALSE}
 knitr::opts_chunk$set(collapse = TRUE)
 ```
@@ -99,7 +102,7 @@ introduced in R.
 ## SI
 
 The [BIPM](http://www.bipm.org/) (Bureau International des Poids et
-Mesures) is the "_the intergovernmental organization through which
+Mesures) is "_the intergovernmental organization through which
 Member States act together on matters related to measurement science
 and measurement standards.  Its recommended practical system of units
 of measurement is the International System of Units (Syst\`{e}me

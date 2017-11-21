@@ -31,6 +31,6 @@ see \code{"\link[base]{\%*\%}"} for the base function, reimplemented
 a = set_units(1:5, m)
 a \%*\% a
 a \%*\% t(a)
-a \%*\% set_units(1:5, set_units(1))
-set_units(1:5, set_units(1)) \%*\% a
+a \%*\% set_units(1:5, 1)
+set_units(1:5, 1) \%*\% a
 }

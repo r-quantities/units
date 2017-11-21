@@ -110,3 +110,17 @@ test_that("various forms of unit creation and destruction work", {
   expect_identical(meter_per_sec, as_units("m s-1"))
   
 })
+
+
+test_that("set_units default enforces NSE", {
+  
+  
+  expect_error(set_units(1:3, as_units("m")))
+  expect_error(set_units(1:3, as_units("m/s")))
+  expect_error(set_units(1:3, make_units(m)))
+  expect_error(set_units(1:3, make_units(m/s)))
+  
+  # is it bad if this works?
+  # expect_error(set_units(1:3, "m/s"))
+                         
+})

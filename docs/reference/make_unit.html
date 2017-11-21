@@ -52,7 +52,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -105,14 +105,18 @@
     <p>Create a new unit from a unit name.</p>
     
 
-    <pre class="usage"><span class='fu'>make_unit</span>(<span class='no'>name</span>)</pre>
+    <pre class="usage"><span class='fu'>make_unit</span>(<span class='no'>name</span>, <span class='kw'>user_defined</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>name</th>
-      <td><p>Name of the new unit</p></td>
+      <td><p>Name of the new unit (character string, name of a character object, or expression)</p></td>
+    </tr>
+    <tr>
+      <th>user_defined</th>
+      <td><p>logical; is this a user-defined, non-SI/non-udunits unit?</p></td>
     </tr>
     </table>
     
@@ -121,6 +125,9 @@
     <p>A new unit object that can be used in arithmetics</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>make_unit</span>(<span class='no'>m</span>/<span class='no'>s</span>)</div><div class='output co'>#&gt; 1 m/s</div><div class='input'><span class='fu'>make_unit</span>(<span class='st'>"m/s"</span>)</div><div class='output co'>#&gt; 1 m/s</div><div class='input'><span class='no'>str</span> <span class='kw'>=</span> <span class='st'>"m/s"</span>
+<span class='fu'>make_unit</span>(<span class='no'>str</span>)</div><div class='output co'>#&gt; 1 m/s</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -128,7 +135,9 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

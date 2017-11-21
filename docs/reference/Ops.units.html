@@ -52,7 +52,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -135,9 +135,15 @@ or in case of power a number (integer n or 1/n)</p></td>
 <span class='no'>a</span> + <span class='no'>b</span></div><div class='output co'>#&gt; Units: (m/s)
 #&gt; [1] 2 4 6</div><div class='input'><span class='no'>a</span> * <span class='no'>b</span></div><div class='output co'>#&gt; Units: (m/s)^2
 #&gt; [1] 1 4 9</div><div class='input'><span class='no'>a</span> / <span class='no'>b</span></div><div class='output co'>#&gt; Units: 1
-#&gt; [1] 1 1 1</div><div class='input'><span class='no'>a</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_unit.html'>make_unit</a></span>(<span class='st'>"kg m-3"</span>) <span class='co'># not understood by R as a division, but understood by udunits2</span>
+#&gt; [1] 1 1 1</div><div class='input'><span class='no'>a</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='parse_unit.html'>parse_unit</a></span>(<span class='st'>"kg m-3"</span>)
 <span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='units.html'>set_units</a></span>(<span class='fl'>1</span>, <span class='no'>kg</span>/<span class='no'>m</span>/<span class='no'>m</span>/<span class='no'>m</span>)
-<span class='no'>a</span> + <span class='no'>b</span></div><div class='output co'>#&gt; 2 (kg m-3)</div></pre>
+<span class='no'>a</span> + <span class='no'>b</span></div><div class='output co'>#&gt; 2 kg/m^3</div><div class='input'><span class='no'>a</span> <span class='kw'>=</span> <span class='fu'><a href='units.html'>set_units</a></span>(<span class='fl'>1</span>:<span class='fl'>5</span>, <span class='no'>m</span>)
+<span class='no'>a</span> <span class='kw'>%/%</span> <span class='no'>a</span></div><div class='output co'>#&gt; Units: 1
+#&gt; [1] 1 1 1 1 1</div><div class='input'><span class='no'>a</span> <span class='kw'>%/%</span> <span class='fu'><a href='units.html'>set_units</a></span>(<span class='fl'>2</span>, <span class='no'>unitless</span>)</div><div class='output co'>#&gt; Units: m
+#&gt; [1] 0 1 1 2 2</div><div class='input'><span class='fu'><a href='units.html'>set_units</a></span>(<span class='fl'>1</span>:<span class='fl'>5</span>, <span class='no'>m</span>^<span class='fl'>2</span>) <span class='kw'>%/%</span> <span class='fu'><a href='units.html'>set_units</a></span>(<span class='fl'>2</span>, <span class='no'>m</span>)</div><div class='output co'>#&gt; Units: m^2/m
+#&gt; [1] 0 1 1 2 2</div><div class='input'><span class='no'>a</span> <span class='kw'>%%</span> <span class='no'>a</span></div><div class='output co'>#&gt; Units: m
+#&gt; [1] 0 0 0 0 0</div><div class='input'><span class='no'>a</span> <span class='kw'>%%</span> <span class='fu'><a href='units.html'>set_units</a></span>(<span class='fl'>2</span>, <span class='no'>unitless</span>)</div><div class='output co'>#&gt; Units: m
+#&gt; [1] 1 0 1 0 1</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -25,13 +25,19 @@ set_units <- function(x, value, ...,
   
   if (missing(value))
     value <- unitless
-  else if (match.arg(mode) == "symbols")
+  else if (match.arg(mode) == "symbols") {
     value <- substitute(value)
+    
+    if(is.numeric(value) && value != 1)
+      stop("The only valid number defining a unit is '1', signifying a unitless unit")
+    
+    if(identical(value, quote(unitless)))
+      value <- 1
+  }
   
   if (is.null(value))
-    drop_units(x)
-  else {
-    units(x) <- as_units(value, ...)
-    x
-  }
+    return(drop_units(x))
+  
+  units(x) <- as_units(value, ...)
+  x
 }

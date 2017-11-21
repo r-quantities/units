@@ -1,3 +1,4 @@
+![rq](https://user-images.githubusercontent.com/520851/32419488-b0a18c1e-c27a-11e7-8861-8d79e8697582.png)
 # Measurement Units for R
 
 [![Build Status](https://travis-ci.org/r-quantities/units.svg?branch=master)](https://travis-ci.org/r-quantities/units) 
@@ -39,7 +40,7 @@ spd1 + set_units(10, s) # error checking
 #   cannot convert s into m/s
 ```
 
-* blog posts: [first](http://r-spatial.org/r/2016/06/10/units.html), [second](http://r-spatial.org/r/2016/08/16/units2.html), [third](http://r-spatial.org/r/2016/09/29/plot_units.html)
+* blog posts: [first](http://r-quantities.org/r/2016/06/10/units.html), [second](http://r-quantities.org/r/2016/08/16/units2.html), [third](http://r-quantities.org/r/2016/09/29/plot_units.html)
 * [package vignette](https://cran.r-project.org/web/packages/units/vignettes/units.html)
 * The [R Journal publication](https://journal.r-project.org/archive/2016-2/pebesma-mailund-hiebert.pdf), which has been [updated to recent package developments](https://r-quantities.github.io/units/articles/measurement_units_in_R.html)
 * the [udunits2 R package](https://github.com/pacificclimate/Rudunits2) github page
@@ -68,3 +69,4 @@ if that went well, assuming you installed by default in `/usr/local/`, add
 export UDUNITS2_XML_PATH="/usr/local/share/udunits/udunits2.xml"
 ```
 to your `~/.bashrc` file, start a new shell to activate this environment variable, and try installing R package `udunits2` once more. When launching rstudio from unity, you may have to load `udunits2` explicitly before using `units`, or set `UDUNITS2_XML_PATH` in a different way such that rstudio finds it.
+

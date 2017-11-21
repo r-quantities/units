@@ -29,7 +29,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -83,7 +83,7 @@
     
     
 <div class="contents">
-<p>This vignette is identical to <span class="citation">E. Pebesma, Mailund, and Hiebert (2016)</span>, except for two changes:</p>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script><p>This vignette is identical to <span class="citation">E. Pebesma, Mailund, and Hiebert (2016)</span>, except for two changes:</p>
 <ul>
 <li>it has been synchronized with updates to the <a href="https://cran.r-project.org/package=units">units</a> package</li>
 <li>it has been converted to R-markdown</li>
@@ -142,7 +142,7 @@ year_duration =<span class="st"> </span><span class="kw">diff</span>(temp_data$d
 <div id="si" class="section level2">
 <h2 class="hasAnchor">
 <a href="#si" class="anchor"></a>SI</h2>
-<p>The <a href="http://www.bipm.org/">BIPM</a> (Bureau International des Poids et Mesures) is the “<em>the intergovernmental organization through which Member States act together on matters related to measurement science and measurement standards. Its recommended practical system of units of measurement is the International System of Units (Syst`{e}me International d’Unit'{e}s, with the international abbreviation SI)</em> (<a href="http://www.bipm.org/en/measurement-units/" class="uri">http://www.bipm.org/en/measurement-units/</a>)”.</p>
+<p>The <a href="http://www.bipm.org/">BIPM</a> (Bureau International des Poids et Mesures) is “<em>the intergovernmental organization through which Member States act together on matters related to measurement science and measurement standards. Its recommended practical system of units of measurement is the International System of Units (Syst`{e}me International d’Unit'{e}s, with the international abbreviation SI)</em> (<a href="http://www.bipm.org/en/measurement-units/" class="uri">http://www.bipm.org/en/measurement-units/</a>)”.</p>
 <p><span class="citation">International Bureau of Weights and Measures, Taylor, and Thompson (2001)</span> describe the SI units, where, briefly, <em>SI units</em></p>
 <ul>
 <li>consist of seven base units (length, mass, time &amp; duration, electric current, thermodynamic temperature, amount of substance, and luminous intensity), each with a name and abbreviation (see table below)</li>
@@ -154,60 +154,60 @@ year_duration =<span class="st"> </span><span class="kw">diff</span>(temp_data$d
 <p>base quantities, SI units and their symbols (from <span class="citation">International Bureau of Weights and Measures, Taylor, and Thompson (2001)</span>, p. 23):</p>
 <table class="table">
 <thead><tr class="header">
-<th align="left">Base quantity</th>
-<th align="left"></th>
-<th align="left">SI base unit</th>
-<th align="left"></th>
+<th>Base quantity</th>
+<th></th>
+<th>SI base unit</th>
+<th></th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">Name</td>
-<td align="left">Symbol</td>
-<td align="left">Name</td>
-<td align="left">Symbol</td>
+<td>Name</td>
+<td>Symbol</td>
+<td>Name</td>
+<td>Symbol</td>
 </tr>
 <tr class="even">
-<td align="left">length</td>
-<td align="left">
+<td>length</td>
+<td>
 <span class="math inline">\(l,x,r,\)</span> etc.</td>
-<td align="left">meter</td>
-<td align="left">m</td>
+<td>meter</td>
+<td>m</td>
 </tr>
 <tr class="odd">
-<td align="left">mass</td>
-<td align="left"><span class="math inline">\(m\)</span></td>
-<td align="left">kilogram</td>
-<td align="left">kg</td>
+<td>mass</td>
+<td><span class="math inline">\(m\)</span></td>
+<td>kilogram</td>
+<td>kg</td>
 </tr>
 <tr class="even">
-<td align="left">time, duration</td>
-<td align="left"><span class="math inline">\(t\)</span></td>
-<td align="left">second</td>
-<td align="left">s</td>
+<td>time, duration</td>
+<td><span class="math inline">\(t\)</span></td>
+<td>second</td>
+<td>s</td>
 </tr>
 <tr class="odd">
-<td align="left">electric current</td>
-<td align="left"><span class="math inline">\(I, i\)</span></td>
-<td align="left">ampere</td>
-<td align="left">A</td>
+<td>electric current</td>
+<td><span class="math inline">\(I, i\)</span></td>
+<td>ampere</td>
+<td>A</td>
 </tr>
 <tr class="even">
-<td align="left">thermodynamic temperature</td>
-<td align="left"><span class="math inline">\(T\)</span></td>
-<td align="left">kelvin</td>
-<td align="left">K</td>
+<td>thermodynamic temperature</td>
+<td><span class="math inline">\(T\)</span></td>
+<td>kelvin</td>
+<td>K</td>
 </tr>
 <tr class="odd">
-<td align="left">amount of substance</td>
-<td align="left"><span class="math inline">\(n\)</span></td>
-<td align="left">mole</td>
-<td align="left">mol</td>
+<td>amount of substance</td>
+<td><span class="math inline">\(n\)</span></td>
+<td>mole</td>
+<td>mol</td>
 </tr>
 <tr class="even">
-<td align="left">luminous intensity</td>
-<td align="left"><span class="math inline">\(I_v\)</span></td>
-<td align="left">candela</td>
-<td align="left">cd</td>
+<td>luminous intensity</td>
+<td><span class="math inline">\(I_v\)</span></td>
+<td>candela</td>
+<td>cd</td>
 </tr>
 </tbody>
 </table>
@@ -252,7 +252,7 @@ conv_unit_options$volume
 <p>The R package <a href="https://cran.r-project.org/package=udunits2">udunits2</a> <span class="citation">(Hiebert 2015)</span> provides an R level interface to the most important functions in the C library.</p>
 <p>The functions provided by <a href="https://cran.r-project.org/package=udunits2">udunits2</a> are</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(udunits2)
-## udunits system database read from /usr/local/share/udunits/udunits2.xml
+## udunits system database read from /home/edzer/R/x86_64-pc-linux-gnu-library/3.4/udunits2/share/udunits2.xml
 <span class="kw">ls</span>(<span class="dv">2</span>)
 ## [1] "ud.are.convertible"  "ud.convert"          "ud.get.name"        
 ## [4] "ud.get.symbol"       "ud.have.unit.system" "ud.is.parseable"    
@@ -366,11 +366,11 @@ x^<span class="dv">3</span>
 ## [1] "cannot convert cm*km/h/s into cm/s"</code></pre></div>
 <p>The full set of methods and method groups for <code>units</code> objects is shown by</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">methods</span>(<span class="dt">class =</span> <span class="st">"units"</span>)
-##  [1] all.equal     as.data.frame as.Date       as.POSIXct    c            
-##  [6] diff          format        hist          Math          mean         
-## [11] median        Ops           plot          print         quantile     
-## [16] rep           set_units     summary       Summary       [            
-## [21] units&lt;-       units         weighted.mean
+##  [1] [             all.equal     as.data.frame as.Date       as.POSIXct   
+##  [6] c             diff          format        hist          Math         
+## [11] mean          median        Ops           plot          print        
+## [16] quantile      rep           set_units     summary       Summary      
+## [21] units         units&lt;-       weighted.mean
 ## see '?methods' for accessing help and source code</code></pre></div>
 <p>where the method groups</p>
 <ul>
@@ -387,22 +387,14 @@ b =<span class="st"> </span><span class="kw"><a href="../reference/units.html">s
 a *<span class="st"> </span>b
 ## Units: m
 ##  [1]   3600  14400  32400  57600  90000 129600 176400 230400 291600 360000
-<span class="kw"><a href="../reference/make_unit.html">make_unit</a></span>(m100_a) /<span class="st"> </span><span class="kw"><a href="../reference/make_unit.html">make_unit</a></span>(dm100_b)
-## 1e+100 1</code></pre></div>
+ustr1 =<span class="st"> </span><span class="kw">paste</span>(<span class="kw">rep</span>(<span class="st">"m"</span>, <span class="dv">101</span>), <span class="dt">collapse =</span> <span class="st">"*"</span>)
+ustr2 =<span class="st"> "dm^100"</span>
+<span class="kw"><a href="../reference/make_unit.html">make_unit</a></span>(ustr1) /<span class="st"> </span><span class="kw"><a href="../reference/make_unit.html">make_unit</a></span>(ustr2)
+## 1 m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m*m/dm^100</code></pre></div>
 <p>Units are printed as simple R expressions, e.g.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/units.html">set_units</a></span>(<span class="dv">1</span>, m^<span class="dv">5</span>/s^<span class="dv">4</span>)
 ## 1 m^5/s^4</code></pre></div>
-<p>Another way to print units commonly seen in Climate and Forecast Conventions is <code>m2 s-1</code> for m<span class="math inline">\(^2\)</span>/s. These are not R expressions, but as they are understood by udunits, they can be converted (by udunits) but not simplified (by R):</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x =<span class="st"> </span><span class="kw"><a href="../reference/make_unit.html">make_unit</a></span>(<span class="st">"m2 s-1"</span>)
-y =<span class="st"> </span><span class="kw"><a href="../reference/units.html">set_units</a></span>(<span class="dv">1</span>, km^<span class="dv">2</span>/h)
-z =<span class="st"> </span><span class="kw"><a href="../reference/units.html">set_units</a></span>(<span class="dv">1</span>, m^<span class="dv">2</span>/s)
-x +<span class="st"> </span>y
-## 278.7778 (m2 s-1)
-x/y
-## 1 h*(m2 s-1)/km^2
-z/y
-## 0.0036 1</code></pre></div>
-<p>However, <code>parse_unit</code> parses such units, and <code>deparse_unit</code> returns such unit strings from <code>units</code> objects:</p>
+<p>Another way to print units commonly seen in Climate and Forecast Conventions is <code>m2 s-1</code> for m<span class="math inline">\(^2\)</span>/s. These are not R expressions, but as they can be parsed by <code>parse_unit</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/parse_unit.html">parse_unit</a></span>(<span class="st">"m2 s-1"</span>)
 ## 1 m^2/s
 <span class="kw">deparse_unit</span>(<span class="kw"><a href="../reference/units.html">set_units</a></span>(<span class="dv">1</span>, m^<span class="dv">2</span>*s^-<span class="dv">1</span>))
@@ -420,11 +412,12 @@ mtcars$consumption =<span class="st"> </span><span class="kw"><a href="../refere
 mtcars$displacement =<span class="st"> </span><span class="kw"><a href="../reference/units.html">set_units</a></span>(mtcars$displacement, cm^<span class="dv">3</span>)
 <span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">par</span>(<span class="st">"mar"</span>) +<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, .<span class="dv">3</span>, <span class="dv">0</span>, <span class="dv">0</span>))
 <span class="kw">with</span>(mtcars, <span class="kw">plot</span>(<span class="dv">1</span>/displacement, <span class="dv">1</span>/consumption))</code></pre></div>
-<p><img src="measurement_units_in_R_files/figure-html/unnamed-chunk-30-1.png" width="672"></p>
+<p><img src="measurement_units_in_R_files/figure-html/unnamed-chunk-29-1.png" width="672"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggforce)
 ## Loading required package: ggplot2
-<span class="kw">ggplot</span>(mtcars) +<span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dv">1</span>/displacement, <span class="dv">1</span>/consumption))</code></pre></div>
-<p><img src="measurement_units_in_R_files/figure-html/unnamed-chunk-31-1.png" width="672"></p>
+if (utils::<span class="kw">packageVersion</span>(<span class="st">"ggplot2"</span>) &gt;<span class="st"> "2.2.1"</span>)
+  <span class="kw">ggplot</span>(mtcars) +<span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="dv">1</span>/displacement, <span class="dt">y =</span> <span class="dv">1</span>/consumption))</code></pre></div>
+<p><img src="measurement_units_in_R_files/figure-html/unnamed-chunk-30-1.png" width="672"></p>
 <p>Automatic conversion between <code>units</code> and <code>difftime</code> is provided:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(<span class="dt">dt =</span> <span class="kw">diff</span>(<span class="kw">Sys.time</span>() +<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1+60</span>, <span class="dv">1+60+3600</span>))) <span class="co"># class difftime</span>
 ## Time differences in secs
@@ -466,7 +459,7 @@ mtcars$displacement =<span class="st"> </span><span class="kw"><a href="../refer
 <a href="#references" class="anchor"></a>References</h1>
 <div id="refs" class="references">
 <div id="ref-h5">
-<p>Annau, Mario. 2016. <em>H5: Interface to the ’HDF5’ Library</em>. <a href="https://CRAN.R-project.org/package=h5" class="uri">https://CRAN.R-project.org/package=h5</a>.</p>
+<p>Annau, Mario. 2016. <em>H5: Interface to the ’Hdf5’ Library</em>. <a href="https://CRAN.R-project.org/package=h5" class="uri">https://CRAN.R-project.org/package=h5</a>.</p>
 </div>
 <div id="ref-measurements">
 <p>Birk, Matthew A. 2016. <em>Measurements: Tools for Units of Measurement</em>. <a href="https://CRAN.R-project.org/package=measurements" class="uri">https://CRAN.R-project.org/package=measurements</a>.</p>
@@ -475,7 +468,7 @@ mtcars$displacement =<span class="st"> </span><span class="kw"><a href="../refer
 <p>Cobb, George W., and David S. Moore. 1997. “Mathematics, Statistics, and Teaching.” <em>American Mathematical Monthly</em>, 801–23.</p>
 </div>
 <div id="ref-NISTunits">
-<p>Gama, Jose. 2014. <em>NISTunits: Fundamental Physical Constants and Unit Conversions from NIST</em>. <a href="https://CRAN.R-project.org/package=NISTunits" class="uri">https://CRAN.R-project.org/package=NISTunits</a>.</p>
+<p>Gama, Jose. 2014. <em>NISTunits: Fundamental Physical Constants and Unit Conversions from Nist</em>. <a href="https://CRAN.R-project.org/package=NISTunits" class="uri">https://CRAN.R-project.org/package=NISTunits</a>.</p>
 </div>
 <div id="ref-lubridate">
 <p>Grolemund, Garrett, and Hadley Wickham. 2011. “Dates and Times Made Easy with Lubridate.” <em>Journal of Statistical Software</em> 40 (1): 1–25. doi:<a href="https://doi.org/10.18637/jss.v040.i03">10.18637/jss.v040.i03</a>.</p>
@@ -484,16 +477,16 @@ mtcars$displacement =<span class="st"> </span><span class="kw"><a href="../refer
 <p>Hiebert, James. 2015. <em>Udunits2: Udunits-2 Bindings for R</em>.</p>
 </div>
 <div id="ref-iliffe">
-<p>Iliffe, Jonathan, and Roger Lott. 2008. <em>Datums and Map Projections: For Remote Sensing, GIS and Surveying</em>. CRC Inc.</p>
+<p>Iliffe, Jonathan, and Roger Lott. 2008. <em>Datums and Map Projections: For Remote Sensing, Gis and Surveying</em>. CRC Inc.</p>
 </div>
 <div id="ref-si">
 <p>International Bureau of Weights and Measures, Barry N Taylor, and Ambler Thompson. 2001. “The International System of Units (SI).” US Department of Commerce, Technology Administration, National Institute of Standards; Technology.</p>
 </div>
 <div id="ref-lang">
-<p>Lang, K.R. 2006. <em>Astrophysical Formulae Volume II: Space, Time, Matter and Cosmology, 3rd Edition 1999. 2nd Printing</em>. Springer.</p>
+<p>Lang, K.R. 2006. <em>Astrophysical Formulae Volume Ii: Space, Time, Matter and Cosmology, 3rd Edition 1999. 2nd Printing</em>. Springer.</p>
 </div>
 <div id="ref-RNetCDF">
-<p>Michna, Pavel, and Milton Woods. 2016. <em>RNetCDF: Interface to NetCDF Datasets</em>. <a href="https://CRAN.R-project.org/package=RNetCDF" class="uri">https://CRAN.R-project.org/package=RNetCDF</a>.</p>
+<p>Michna, Pavel, and Milton Woods. 2016. <em>RNetCDF: Interface to Netcdf Datasets</em>. <a href="https://CRAN.R-project.org/package=RNetCDF" class="uri">https://CRAN.R-project.org/package=RNetCDF</a>.</p>
 </div>
 <div id="ref-sos4R">
 <p>Nüst, D., C. Stasch, and E. J. Pebesma. 2011. “Connecting R to the Sensor Web.” In, edited by S. Geertman, W. Reinhardt, and F. Toppen, 227–46. Lecture Notes in Geoinformation and Cartography. Springer.</p>
