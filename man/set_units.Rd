@@ -25,3 +25,6 @@ via a global option \code{options(units.set_units_mode = "standard")}}
 \description{
 A pipe friendly version of \code{units<-}
 }
+\seealso{
+\code{\link{as_units}}
+}

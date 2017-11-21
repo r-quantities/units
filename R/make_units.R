@@ -339,9 +339,8 @@ See ?as_units for usage examples.")
       "Did you try to supply a value in a context where a bare expression was expected?"))
   
   if(as.numeric(unit) %not_in% c(1, 0)) # 0 if log() used. 
-    warning(call. = FALSE,
-"In ", sQuote(deparse(x)), " the numeric multiplier ", sQuote(as.numeric(unit)), " was discarded. 
-The returned unit object was coerced to a value of 1.
+    stop(call. = FALSE,
+"In ", sQuote(deparse(x)), " the numeric multiplier ", sQuote(as.numeric(unit)), " is invalid. 
 Use `install_conversion_constant()` to define a new unit that is a multiple of another unit.")
   
   structure(1, units = units(unit), class = "units")
