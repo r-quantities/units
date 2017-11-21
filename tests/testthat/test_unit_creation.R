@@ -111,10 +111,28 @@ test_that("various forms of unit creation and destruction work", {
   
 })
 
+test_that("unitless objects can be created", {
+  unit <- 1
+  units(unit) <-  units:::unitless
+  
+  xul <- x <- 2:5
+  units(xul) <-  units:::unitless
+  
+  
+  expect_identical(unit, make_units())
+  expect_identical(unit, make_units(1))
+  
+  expect_identical(unit, as_units(1))
+  expect_identical(unit, as_units("1"))
+  
+  expect_identical(xul, set_units(x, 1))
+  expect_identical(xul, set_units(x))
+  expect_identical(xul, set_units(x, "1"))
+  expect_identical(xul, set_units(x, "1", mode = "standard"))
+  expect_identical(xul, set_units(x, mode = "standard"))
+})
 
 test_that("set_units default enforces NSE", {
-  
-  
   expect_error(set_units(1:3, as_units("m")))
   expect_error(set_units(1:3, as_units("m/s")))
   expect_error(set_units(1:3, make_units(m)))
@@ -122,5 +140,4 @@ test_that("set_units default enforces NSE", {
   
   # is it bad if this works?
   # expect_error(set_units(1:3, "m/s"))
-                         
 })

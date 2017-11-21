@@ -31,8 +31,6 @@ set_units <- function(x, value, ...,
     if(is.numeric(value) && value != 1)
       stop("The only valid number defining a unit is '1', signifying a unitless unit")
     
-    if(identical(value, quote(unitless)))
-      value <- 1
   }
   
   if (is.null(value))

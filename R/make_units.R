@@ -151,7 +151,7 @@ are_exponents_implicit <- function(s) {
   s <- trimws(s)
   has <- function(chr, regex = FALSE) 
     grepl(chr, s, fixed = !regex, perl = regex)
-  !has("^") && !has("*") && !has("/") && has("\\s|\\d$", regex = TRUE)
+  !has("^") && !has("*") && !has("/") && has("\\s|\\D.*\\d$", regex = TRUE)
 }
 
 is_udunits_time <- function(s) {
@@ -312,16 +312,17 @@ units_eval_env$lb <- function(x) base::log(x, base = 2)
 #' @seealso \code{\link{valid_udunits}}
 as_units.call <- function(x, check_is_valid = TRUE, ...) {
   
-  stopifnot(is.language(x))
-  
-  if(missing(x) || tryCatch(eval(x, baseenv()) == 1, error = function(e) FALSE))
+  if(missing(x) || identical(x, quote(expr =)) || 
+     identical(x, 1) || identical(x, 1L))
     return(structure(1, units = unitless, class = "units"))
+  
+  stopifnot(is.language(x))
   
   vars <- all.vars(x)
   if(!length(vars))
     stop(call. = FALSE,
 "No symbols found. Please supply bare expressions with this approach.
-See ?as_units for alternative ways of creating units (e.g., from strings)")
+See ?as_units for usage examples.")
   
   if (check_is_valid) {
     valid <- vapply(vars, is_valid_unit_symbol, logical(1L))
