@@ -2,8 +2,9 @@
 
 * Unit creation has been significantly refactored. `units<-` now accepts strings
 or quoted language objects on the right hand side, powered by new S3 methods for
-`as_units`. New user facing function `make_units()` (plural s) is also provided.
-See `?as_units` for details. @t-kalinowski
+`as_units`. All valid unit symbols and unit names recognized by package 'udunits2' are 
+now accepted. New user facing function `make_units()` (plural s) is also
+provided. See `?as_units` for details. @t-kalinowski
 
 * new functions `valid_udunits()` and `valid_udunits_prefixes()` generate tidy
 dataframes listing all the valid unit names, symbols, and prefixes recognized by
