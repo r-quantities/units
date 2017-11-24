@@ -333,10 +333,10 @@ See ?as_units for usage examples.")
   names(vars) <- vars
   tmp_env <- lapply(vars, symbolic_unit, check_is_valid = FALSE)
   
-  unit <- try(eval(x, tmp_env, units_eval_env), silent = TRUE)
-  if(inherits(unit, "try-error"))
-    stop(paste0(unit, "\n", 
-      "Did you try to supply a value in a context where a bare expression was expected?"))
+  unit <- tryCatch( eval(x, tmp_env, units_eval_env),
+    error = function(e) stop( paste0( conditionMessage(e), "\n",
+          "Did you try to supply a value in a context where a bare expression was expected?"
+        ), call. = FALSE ))
   
   if(as.numeric(unit) %not_in% c(1, 0)) # 0 if log() used. 
     stop(call. = FALSE,
