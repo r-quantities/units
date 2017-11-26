@@ -178,7 +178,12 @@ as_units.difftime <- function(x, value, ...) {
 }
 
 #' @export
-as.data.frame.units <- as.data.frame.numeric
+as.data.frame.units <- function(x, ...) {
+	df = as.data.frame(unclass(x), ...)
+	for (i in seq_along(df))
+		units(df[[i]]) = units(x)
+	df
+}
 
 #' convert units object into difftime object
 #'
