@@ -27,8 +27,6 @@ parse_unit <- function(chr) {
 #' @param x a numeric
 #' @param value a units object, by default, unitless
 as.units <- function(x, value = unitless) {
-  .Deprecated("as_units")    # nocov
+  # .Deprecated("as_units")    # nocov
   as_units(x, value = value) # nocov
 }
-
-
