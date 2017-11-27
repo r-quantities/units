@@ -22,7 +22,7 @@
 #' a + b
 #' a * b
 #' a / b
-#' a <- parse_unit("kg m-3")
+#' a <- as_units("kg m-3")
 #' b <- set_units(1, kg/m/m/m)
 #' a + b
 #' a = set_units(1:5, m)

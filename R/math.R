@@ -10,8 +10,8 @@
 #' @export
 #' 
 #' @examples
-#' a = sqrt(1:10)
-#' a <- with(ud_units, a * m/s)
+#' a <- sqrt(1:10)
+#' a <- set_units(a, m/s)
 #' log(a)
 #' log(a, base = 10)
 #' cumsum(a)
