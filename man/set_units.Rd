@@ -13,12 +13,13 @@ converted}
 
 \item{value}{a \code{units} object, or something coercible to one with
 \code{as_units}. Depending on \code{mode}, the unit is constructed from the
-supplied bare expression or from the supplied value via standard evaluation.}
+supplied bare expression or from the supplied value via standard
+evaluation.}
 
 \item{...}{passed on to \code{as_units}}
 
 \item{mode}{if \code{"symbols"} (the default), then unit is constructed from
-the bare expression supplied. Otherwise, if\code{mode = "standard"},
+the expression supplied. Otherwise, if\code{mode = "standard"},
 standard evaluation is used for the supplied value This argument can be set
 via a global option \code{options(units.set_units_mode = "standard")}}
 }

@@ -194,7 +194,7 @@ class(dt)
 ## units in `matrix` objects
 ```{r}
 set_units(matrix(1:4,2,2), m/s)
-set_units(matrix(1:4,2,2), m/s * 4 * m/s)
+set_units(matrix(1:4,2,2), m/s * m/s)
 ```
 but
 ```{r}
