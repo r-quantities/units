@@ -82,7 +82,7 @@
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/edzer/units/">
+  <a href="https://github.com/r-quantities/units/">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -128,7 +128,7 @@
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="as_units.html">as_units</a></code> <code><a href="as_units.html">as.units</a></code> </p>
+            <p><code><a href="as_units.html">as_units</a></code> <code><a href="as_units.html">make_units</a></code> </p>
           </td>
           <td><p>convert object to a units object</p></td>
         </tr><tr>
@@ -137,6 +137,18 @@
             <p><code><a href="deparse_unit.html">deparse_unit</a></code> <code><a href="deparse_unit.html">as_cf</a></code> </p>
           </td>
           <td><p>deparse unit to string in product power form (e.g. km m-2 s-1)</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="deprecated.html">make_unit</a></code> <code><a href="deprecated.html">parse_unit</a></code> <code><a href="deprecated.html">as.units</a></code> </p>
+          </td>
+          <td><p>Deprecated functions</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="drop_units.html">drop_units</a></code> </p>
+          </td>
+          <td><p>drop units</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -158,9 +170,9 @@
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="make_unit.html">make_unit</a></code> </p>
+            <p><code><a href="install_symbolic_unit.html">install_symbolic_unit</a></code> <code><a href="install_symbolic_unit.html">uninstall_symbolic_unit</a></code> </p>
           </td>
-          <td><p>Create a new unit from a unit name.</p></td>
+          <td><p>Define new symbolic units</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -182,12 +194,6 @@
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="parse_unit.html">parse_unit</a></code> </p>
-          </td>
-          <td><p>parse unit in product power form (e.g. km m-2 s-1)</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
             <p><code><a href="plot.units.html">make_unit_label</a></code> <code><a href="plot.units.html">plot</a></code> </p>
           </td>
           <td><p>create axis label with appropriate labels</p></td>
@@ -197,6 +203,12 @@
             <p><code><a href="seq.units.html">seq</a></code> </p>
           </td>
           <td><p>seq method for units objects</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="set_units.html">set_units</a></code> </p>
+          </td>
+          <td><p>set_units</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -224,9 +236,15 @@
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="units.html">units<-</a></code> <code><a href="units.html">set_units</a></code> <code><a href="units.html">units</a></code> </p>
+            <p><code><a href="units.html">units<-</a></code> <code><a href="units.html">units</a></code> </p>
           </td>
           <td><p>Set measurement units on a numeric vector</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="valid_udunits.html">valid_udunits</a></code> <code><a href="valid_udunits.html">valid_udunits_prefixes</a></code> </p>
+          </td>
+          <td><p>Get information about valid units</p></td>
         </tr>
       </tbody>
       </table>
@@ -243,7 +261,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Edzer Pebesma, Thomas Mailund.</p>
+  <p>Developed by Edzer Pebesma, Thomas Mailund, Tomasz Kalinowski.</p>
 </div>
 
 <div class="pkgdown">

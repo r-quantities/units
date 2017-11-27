@@ -356,7 +356,7 @@ Units are printed as simple R expressions, e.g.
 ```{r}
 set_units(1, m^5/s^4)
 ```
-Another way to print units commonly seen in Climate and Forecast Conventions\footnote{CF, \url{http://cfconventions.org/Data/cf-standard-names/34/build/cf-standard-name-table.html}} is `m2 s-1` for m$^2$/s. These are not R expressions, but as they can be parsed by `parse_unit`:
+Another way to print units commonly seen in Climate and Forecast Conventions\footnote{CF, \url{http://cfconventions.org/Data/cf-standard-names/34/build/cf-standard-name-table.html}} is `m2 s-1` for m$^2$/s. These are not R expressions, but they can be parsed by `as_units`, and created by `deparse_unit`:
 ```{r}
 as_units("m2 s-1")
 deparse_unit(set_units(1, m^2*s^-1))

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>matrix multiplication — matmult • units</title>
+<title>Define new symbolic units — install_symbolic_unit • units</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -98,65 +98,44 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>matrix multiplication</h1>
+    <h1>Define new symbolic units</h1>
     </div>
 
     
-    <p>matrix multiplication</p>
+    <p>Adding a symbolic unit allows it to be used in <code>as_units</code>,
+<code>make_units</code> and <code>set_units</code>. No installation is performed if the
+unit is already known by udunits.</p>
     
 
-    <pre class="usage">x %*% y
+    <pre class="usage"><span class='fu'>install_symbolic_unit</span>(<span class='no'>chr</span>, <span class='kw'>warn</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-# S3 method for default
-%*%(x, y)
-
-# S3 method for units
-%*%(x, y)</pre>
+<span class='fu'>uninstall_symbolic_unit</span>(<span class='no'>chr</span>, <span class='kw'>all</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>numeric matrix or vector</p></td>
+      <th>chr</th>
+      <td><p>a length 1 character vector that is the new unit name or symbol.</p></td>
     </tr>
     <tr>
-      <th>y</th>
-      <td><p>numeric matrix or vector</p></td>
+      <th>warn</th>
+      <td><p>warns if the supplied unit symbol is already a valid unit symbol
+recognized by udunits.</p></td>
+    </tr>
+    <tr>
+      <th>all</th>
+      <td><p>if <code>TRUE</code>, uninstalls all user defined custom symbolic units</p></td>
     </tr>
     </table>
     
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>see <code>"<a href='http://www.rdocumentation.org/packages/base/topics/matmult'>%*%</a>"</code> for the base function, reimplemented
-  as default method</p>
-    
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>a</span> <span class='kw'>=</span> <span class='fu'><a href='set_units.html'>set_units</a></span>(<span class='fl'>1</span>:<span class='fl'>5</span>, <span class='no'>m</span>)
-<span class='no'>a</span> <span class='kw'>%*%</span> <span class='no'>a</span></div><div class='output co'>#&gt; Units: m^2
-#&gt;      [,1]
-#&gt; [1,]   55</div><div class='input'><span class='no'>a</span> <span class='kw'>%*%</span> <span class='fu'>t</span>(<span class='no'>a</span>)</div><div class='output co'>#&gt; Units: m^2
-#&gt;      [,1] [,2] [,3] [,4] [,5]
-#&gt; [1,]    1    2    3    4    5
-#&gt; [2,]    2    4    6    8   10
-#&gt; [3,]    3    6    9   12   15
-#&gt; [4,]    4    8   12   16   20
-#&gt; [5,]    5   10   15   20   25</div><div class='input'><span class='no'>a</span> <span class='kw'>%*%</span> <span class='fu'><a href='set_units.html'>set_units</a></span>(<span class='fl'>1</span>:<span class='fl'>5</span>, <span class='fl'>1</span>)</div><div class='output co'>#&gt; Units: m
-#&gt;      [,1]
-#&gt; [1,]   55</div><div class='input'><span class='fu'><a href='set_units.html'>set_units</a></span>(<span class='fl'>1</span>:<span class='fl'>5</span>, <span class='fl'>1</span>) <span class='kw'>%*%</span> <span class='no'>a</span></div><div class='output co'>#&gt; Units: m
-#&gt;      [,1]
-#&gt; [1,]   55</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#details">Details</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+                </ul>
 
   </div>
 </div>

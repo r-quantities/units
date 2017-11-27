@@ -82,7 +82,7 @@
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/edzer/units/">
+  <a href="https://github.com/r-quantities/units/">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -145,10 +145,10 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='no'>apples</span> <span class='kw'>&lt;-</span> <span class='fl'>2</span> * <span class='fu'><a href='make_unit.html'>make_unit</a></span>(<span class='st'>"apple"</span>, <span class='kw'>user_defined</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>oranges</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span> * <span class='fu'><a href='make_unit.html'>make_unit</a></span>(<span class='st'>"orange"</span>, <span class='kw'>user_defined</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='co'># one orange is worth two apples</span>
 <span class='fu'>install_conversion_constant</span>(<span class='st'>"orange"</span>, <span class='st'>"apple"</span>, <span class='fl'>2</span>)
+<span class='no'>apples</span> <span class='kw'>&lt;-</span> <span class='fl'>2</span> * <span class='fu'>as_units</span>(<span class='st'>"apple"</span>)
+<span class='no'>oranges</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span> * <span class='fu'>as_units</span>(<span class='st'>"orange"</span>)
 <span class='no'>apples</span> + <span class='no'>oranges</span></div><div class='output co'>#&gt; 4 apple</div><div class='input'><span class='no'>oranges</span> + <span class='no'>apples</span></div><div class='output co'>#&gt; 2 orange</div><div class='input'>
 </div></pre>
   </div>
@@ -169,7 +169,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Edzer Pebesma, Thomas Mailund.</p>
+  <p>Developed by Edzer Pebesma, Thomas Mailund, Tomasz Kalinowski.</p>
 </div>
 
 <div class="pkgdown">
