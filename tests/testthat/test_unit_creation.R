@@ -51,13 +51,14 @@ test_that("global options are respected", {
   
   expect_equal("g", rt("grams"))
   
-  op <- units_options(auto_convert_names_to_symbols = FALSE)
+  #op <- units_options(auto_convert_names_to_symbols = FALSE)
+  units_options(auto_convert_names_to_symbols = FALSE)
   expect_equal("grams", rt("grams"))
   
   units_options(auto_convert_names_to_symbols = TRUE)
   expect_equal("g", rt("grams"))
   
-  units_options(op)
+  #units_options(op)
   expect_equal("g", rt("grams"))
   
 })
