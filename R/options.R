@@ -1,4 +1,4 @@
-.units_options <- new.env(FALSE, parent=globalenv())
+.units_options <- new.env(FALSE, parent = globalenv())
 
 #' set one or more units global options
 #' 
@@ -16,23 +16,31 @@
 #' units_options(sep = c("~", "~"), group = c("[", "]"), negative_power = FALSE, parse = TRUE)
 #' @export
 units_options = function(..., sep, group, negative_power, parse, set_units_mode, auto_convert_names_to_symbols) {
-	op = as.list(.units_options)
+	# op = as.list(units:::.units_options)
 	if (!missing(sep)) {
 	    stopifnot(is.character(sep) && length(sep) == 2)
-		assign(".units.sep", sep, envir=.units_options)
+		assign(".units.sep", sep, envir = .units_options)
 	}
 	if (!missing(group)) {
 	    stopifnot(is.character(group) && length(group) == 2 && all(nchar(group) <= 1))
-		assign(".units.group", group, envir=.units_options)
+		assign(".units.group", group, envir = .units_options)
 	}
-	if (!missing(negative_power))
+	if (!missing(negative_power)) {
+		stopifnot(is.logical(negative_power))
 		assign(".units.negative_power", negative_power, envir=.units_options)
-	if (!missing(parse))
-		assign(".units.parse", parse, envir=.units_options)
-	if (!missing(set_units_mode))
+	}
+	if (!missing(parse)) {
+		stopifnot(is.logical(parse))
+		assign(".units.parse", parse, envir = .units_options)
+	}
+	if (!missing(set_units_mode)) {
+		stopifnot(is.character(set_units_mode) && length(set_units_mode) == 1)
 		assign(".units.set_units_mode", set_units_mode, envir=.units_options)
-	if (!missing(auto_convert_names_to_symbols))
-		assign(".units.auto_convert_names_to_symbols", auto_convert_names_to_symbols, envir=.units_options)
+	}
+	if (!missing(auto_convert_names_to_symbols)) {
+		stopifnot(is.logical(auto_convert_names_to_symbols))
+		assign(".units.auto_convert_names_to_symbols", auto_convert_names_to_symbols, envir = .units_options)
+	}
 
 	dots = list(...)
 	if (length(dots)) {
@@ -41,7 +49,7 @@ units_options = function(..., sep, group, negative_power, parse, set_units_mode,
 		else
 			get(paste0(".units.", dots[[1]]), envir = .units_options)
 	} else
-		invisible(op)
+		invisible(NULL)
 }
 
 units_options(
