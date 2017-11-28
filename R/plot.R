@@ -16,9 +16,9 @@
 #' @details \link{units_options} can be used to set and change the defaults for
 #'   \code{sep}, \code{group} and \code{doParse}.
 make_unit_label = function(lab, u,
-  		sep = get(".units.sep", envir=.units_options),
-  		group = get(".units.group", envir=.units_options),
-  		parse = get(".units.parse", envir = .units_options)) {
+  		sep = units_options("sep"),
+  		group = units_options("group"),
+  		parse = units_options("parse")) {
 
   if (parse) {
     str = paste0("group('", group[1], "',", 

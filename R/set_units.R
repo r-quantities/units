@@ -17,17 +17,16 @@
 #' @param mode if \code{"symbols"} (the default), then unit is constructed from
 #'   the expression supplied. Otherwise, if\code{mode = "standard"},
 #'   standard evaluation is used for the supplied value This argument can be set
-#'   via a global option \code{options(units.set_units_mode = "standard")}
+#'   via a global option \code{units_options(set_units_mode = "standard")}
 #'
 #' @export
 #' @rdname set_units
 #' @seealso \code{\link{as_units}}
-set_units <- function(x, value, ...,
-  mode = getOption("units.set_units_mode", c("symbols", "standard"))) {
+set_units <- function(x, value, ..., mode = units_options("set_units_mode")) {
   
   if (missing(value))
     value <- unitless
-  else if (match.arg(mode) == "symbols") {
+  else if (mode == "symbols") {
     value <- substitute(value)
     
     if(is.numeric(value) && !identical(value, 1) && !identical(value, 1L))

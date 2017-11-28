@@ -4,8 +4,7 @@
 \alias{set_units}
 \title{set_units}
 \usage{
-set_units(x, value, ..., mode = getOption("units.set_units_mode", c("symbols",
-  "standard")))
+set_units(x, value, ..., mode = units_options("set_units_mode"))
 }
 \arguments{
 \item{x}{a numeric to be assigned units, or a units object to have units
@@ -21,7 +20,7 @@ evaluation.}
 \item{mode}{if \code{"symbols"} (the default), then unit is constructed from
 the expression supplied. Otherwise, if\code{mode = "standard"},
 standard evaluation is used for the supplied value This argument can be set
-via a global option \code{options(units.set_units_mode = "standard")}}
+via a global option \code{units_options(set_units_mode = "standard")}}
 }
 \description{
 A pipe friendly version of \code{units<-}

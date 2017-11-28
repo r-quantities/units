@@ -13,7 +13,7 @@
 #'     \item \code{set_units()}, a pipe_friendly version of \code{`units<-`}. By
 #'     default it operates with bare expressions like \code{make_unit}, but this
 #'     behavior can be disabled by a specifying \code{mode = "standard"} or setting 
-#'     \code{options(units.set_units_mode = "standard")}.
+#'     \code{units_options(set_units_mode = "standard")}.
 #' }
 #' 
 #' @export
@@ -127,7 +127,7 @@
 #' set_units(1:5, make_units(m/s), mode = "standard")
 #' 
 #' # the mode of set_units() can be controlled via a global option
-#' # options(units.set_units_mode = "standard")
+#' # units_options(set_units_mode = "standard")
 #' 
 #' # To remove units use
 #' units(x) <- NULL
@@ -294,7 +294,7 @@ units_eval_env$lb <- function(x) base::log(x, base = 2)
 #'   
 #' @note By default, unit names are automatically substituted with unit names
 #'   (e.g., kilogram --> kg). To turn off this behavior, set
-#'   \code{options("units.auto_convert_names_to_symbols" = FALSE)}
+#'   \code{units_options(auto_convert_names_to_symbols = FALSE)}
 #'
 #' @section Expressions:
 #'
@@ -363,7 +363,7 @@ symbolic_unit <- function(chr, check_is_valid = TRUE) {
     stop(msg, call. = FALSE)
   }
   
-  auto_convert <- getOption("units.auto_convert_names_to_symbols", TRUE)
+  auto_convert <- units_options("auto_convert_names_to_symbols")
   if (auto_convert && ud.is.parseable(chr)) {
     sym <- ud.get.symbol(chr)
     if (nzchar(sym)) 

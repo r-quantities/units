@@ -138,9 +138,9 @@ Mathematical operations allowed are: `abs`, `sign`, `floor`,
 ```{r}
 signif(a ** 2 / 3, 3)
 cumsum(a)
-# log(a) # base defaults to exp(1)
-# log(a, base = 10)
-# log(a, base = 2)
+log(a) # base defaults to exp(1)
+log(a, base = 10)
+log(a, base = 2)
 ```
 
 ### Summary functions

@@ -6,9 +6,8 @@
 \alias{plot.units}
 \title{create axis label with appropriate labels}
 \usage{
-make_unit_label(lab, u, sep = get(".units.sep", envir = .units_options),
-  group = get(".units.group", envir = .units_options),
-  parse = get(".units.parse", envir = .units_options))
+make_unit_label(lab, u, sep = units_options("sep"),
+  group = units_options("group"), parse = units_options("parse"))
 
 \method{plot}{units}(x, y, xlab = NULL, ylab = NULL, ...)
 }
