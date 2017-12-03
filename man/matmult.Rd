@@ -23,10 +23,14 @@ x \%*\% y
 \description{
 matrix multiplication
 }
+\details{
+see \code{"\link[base]{\%*\%}"} for the base function, reimplemented
+  as default method
+}
 \examples{
 a = set_units(1:5, m)
 a \%*\% a
 a \%*\% t(a)
-a \%*\% set_units(1:5, unitless)
-set_units(1:5, unitless) \%*\% a
+a \%*\% set_units(1:5, 1)
+set_units(1:5, 1) \%*\% a
 }

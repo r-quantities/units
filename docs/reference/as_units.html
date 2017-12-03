@@ -82,7 +82,7 @@
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/edzer/units/">
+  <a href="https://github.com/r-quantities/units/">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -103,18 +103,37 @@
 
     
     <p>convert object to a units object</p>
-<p>convert difftime objects to units</p>
+<p>difftime objects to units</p>
+<p>A number of functions are provided for creating unit objects.</p><ul>
+<li><p><code>as_units</code>, a generic with methods for a
+    character string and for quoted language. Note, direct usage of this function
+    by users is typically not necessary, as coercion via <code>as_units</code> is
+    automatically done with <code>`units&lt;-`</code> and <code><a href='set_units.html'>set_units()</a></code>.</p></li>
+<li><p><code>make_units()</code>, constructs units from bare expressions.
+    <code>make_units(m/s)</code> is equivalent to <code>as_units(quote(m/s))</code></p></li>
+<li><p><code><a href='set_units.html'>set_units()</a></code>, a pipe_friendly version of <code>`units&lt;-`</code>. By
+    default it operates with bare expressions like <code>make_unit</code>, but this
+    behavior can be disabled by a specifying <code>mode = "standard"</code> or setting 
+    <code>options(units.set_units_mode = "standard")</code>.</p></li>
+</ul>
     
 
-    <pre class="usage"><span class='fu'>as_units</span>(<span class='no'>x</span>, <span class='kw'>value</span> <span class='kw'>=</span> <span class='no'>unitless</span>)
-
-<span class='fu'>as.units</span>(<span class='no'>x</span>, <span class='kw'>value</span> <span class='kw'>=</span> <span class='no'>unitless</span>)
+    <pre class="usage"><span class='fu'>as_units</span>(<span class='no'>x</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for default</span>
-<span class='fu'>as_units</span>(<span class='no'>x</span>, <span class='kw'>value</span> <span class='kw'>=</span> <span class='no'>unitless</span>)
+<span class='fu'>as_units</span>(<span class='no'>x</span>, <span class='kw'>value</span> <span class='kw'>=</span> <span class='no'>unitless</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for difftime</span>
-<span class='fu'>as_units</span>(<span class='no'>x</span>, <span class='no'>value</span>)</pre>
+<span class='fu'>as_units</span>(<span class='no'>x</span>, <span class='no'>value</span>, <span class='no'>...</span>)
+
+<span class='fu'>make_units</span>(<span class='no'>bare_expression</span>, <span class='kw'>check_is_valid</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='co'># S3 method for character</span>
+<span class='fu'>as_units</span>(<span class='no'>x</span>, <span class='kw'>check_is_valid</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>implicit_exponents</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>force_single_symbol</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for call</span>
+<span class='fu'>as_units</span>(<span class='no'>x</span>, <span class='kw'>check_is_valid</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -124,22 +143,229 @@
       <td><p>object of class units</p></td>
     </tr>
     <tr>
+      <th>...</th>
+      <td><p>passed on to other methods</p></td>
+    </tr>
+    <tr>
       <th>value</th>
-      <td><p>target unit, defaults to `unitless`</p></td>
+      <td><p>an object of class units, or something coercible to one with
+<code>as_units</code></p></td>
+    </tr>
+    <tr>
+      <th>bare_expression</th>
+      <td><p>a bare R expression describing units. Must be valid R
+syntax (reserved R syntax words like <code>in</code> must be backticked)</p></td>
+    </tr>
+    <tr>
+      <th>check_is_valid</th>
+      <td><p>throw an error if all the unit symbols are not either
+recognized by udunits2 via <code><a href='http://www.rdocumentation.org/packages/udunits2/topics/ud.is.parseable'>udunits2::ud.is.parseable()</a></code>, or a custom
+user defined via <code><a href='install_symbolic_unit.html'>install_symbolic_unit()</a></code>. If <code>FALSE</code>, no check
+for validity is performed.</p></td>
+    </tr>
+    <tr>
+      <th>implicit_exponents</th>
+      <td><p>If the unit string is in product power form (e.g.
+<code>"km m-2 s-1"</code>). Defaults to <code>NULL</code>, in which case a guess is made
+based on the supplied string. Set to <code>TRUE</code> or <code>FALSE</code> if the guess is
+incorrect.</p></td>
+    </tr>
+    <tr>
+      <th>force_single_symbol</th>
+      <td><p>Whether to perform no string parsing and force
+treatment of the string as a single symbol.</p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A new unit object that can be used in arithmetic, unit conversion or
+  unit assignment.</p>
+    
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+
+    <p>By default, unit names are automatically substituted with unit names
+  (e.g., kilogram --&gt; kg). To turn off this behavior, set
+  <code>options("units.auto_convert_names_to_symbols" = FALSE)</code></p>
+    
+    <h2 class="hasAnchor" id="character-strings"><a class="anchor" href="#character-strings"></a>Character strings</h2>
+
+    
+    <p>Generally speaking, there are 3 types of unit strings are accepted in
+  <code>as_units</code> (and by extension, <code>`units&lt;-`</code>).</p>
+<p>The first, and likely most common, is a "standard" format unit
+  specification where the relationship between unit symbols or names is
+  specified explicitly with arithmetic symbols for division <code>/</code>,
+  multiplication <code>*</code> and power exponents <code>^</code>, or other mathematical
+  functions like <code>log()</code>. In this case, the string is parsed as an R
+  expression via <code>parse(text = )</code> after backticking all unit symbols and
+  names, and then passed on to <code>as_units.call()</code>. A heuristic is used to
+  perform backticking, such that any continuous set of characters
+  uninterrupted by one of <code>()\*^-</code> are backticked (unless the character
+  sequence consists solely of numbers <code>0-9</code>), with some care to not
+  double up on pre-existing backticks. This heuristic appears to be quite
+  robust, and works for units would otherwise not be valid R syntax. For
+  example, percent (<code>"%"</code>), feet (<code>"'"</code>), inches (<code>"in"</code>),
+  and Tesla (<code>"T"</code>) are all backticked and parsed correctly.</p>
+<p>Nevertheless, for certain complex unit expressions, this backticking heuristic
+  may give incorrect results.  If the string supplied fails to parse as an R
+  expression, then the string is treated as a single symbolic unit and
+  <code>symbolic_unit(chr)</code> is used as a fallback with a warning. In that
+  case, automatic unit simplification may not work properly when performing
+  operations on unit objects, but unit conversion and other Math operations
+  should still give correct results so long as the unit string supplied
+  returns <code>TRUE</code> for <code>udunits2::ud.is.parsable()</code>.</p>
+<p>The second type of unit string accepted is one with implicit exponents. In
+  this format, <code>/</code>, <code>*</code>, and <code>^</code>, may not be present in the
+  string, and unit symbol or names must be separated by a space. Each unit
+  symbol may optionally be followed by a single number, specifying the power.
+  For example <code>"m2 s-2"</code> is equivalent to <code>"(m^2)*(s^-2)"</code>.</p>
+<p>The third type of unit string format accepted is the special case of
+  udunits time duration with a reference origin, for example <code>"hours
+  since 1970-01-01 00:00:00"</code>. Note, that the handling of time and calendar
+  operations via the udunits library is subtly different from the way R
+  handles date and time operations. This functionality is mostly exported for
+  users that work with udunits time data, e.g., with NetCDF files. Users are
+  otherwise encouraged to use <code>R</code>'s date and time functionality provided
+  by <code>Date</code> and <code>POSIXt</code> classes.</p>
+    
+    <h2 class="hasAnchor" id="expressions"><a class="anchor" href="#expressions"></a>Expressions</h2>
+
+    
+    <p>In <code>as_units()</code>, each of the symbols in the unit expression is treated
+  individually, such that each symbol must be recognized by the udunits
+  database (checked by <code>ud.is.parseable()</code>, <em>or</em> be a custom,
+  user-defined unit symbol that was defined either by
+  <code><a href='install_symbolic_unit.html'>install_symbolic_unit()</a></code> or <code><a href='install_conversion_function.html'>install_conversion_function()</a></code>. To
+  see which symbols and names are currently recognized by the udunits
+  database, see <code>udunits_symbols()</code>.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p><code>valid_udunits</code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>s</span> <span class='kw'>=</span> <span class='fu'>Sys.time</span>()
 <span class='no'>d</span>  <span class='kw'>=</span> <span class='no'>s</span> - (<span class='no'>s</span>+<span class='fl'>1</span>)
-<span class='fu'>as_units</span>(<span class='no'>d</span>)</div><div class='output co'>#&gt; -1 s</div></pre>
+<span class='fu'>as_units</span>(<span class='no'>d</span>)</div><div class='output co'>#&gt; -1 s</div><div class='input'><span class='co'># The easiest way to assign units to a numeric vector is like this: </span>
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>:<span class='fl'>4</span>
+<span class='fu'>units</span>(<span class='no'>x</span>) <span class='kw'>&lt;-</span> <span class='st'>"m/s"</span>  <span class='co'># meters / second</span>
+
+<span class='co'># Alternatively, the easiest pipe-friendly way to set units:</span>
+<span class='kw'>if</span>(<span class='fu'>require</span>(<span class='no'>magrittr</span>))
+  <span class='no'>y</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='set_units.html'>set_units</a></span>(<span class='no'>m</span>/<span class='no'>s</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required package: magrittr</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: ‘magrittr’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:testthat’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    equals, is_less_than, not</span></div><div class='output co'>#&gt; Units: m/s
+#&gt; [1] 1 2 3 4</div><div class='input'>
+
+<span class='co'># these are different ways of creating the same unit:</span>
+<span class='co'># meters per second squared, i.e, acceleration</span>
+<span class='no'>x1</span> <span class='kw'>&lt;-</span> <span class='fu'>make_units</span>(<span class='no'>m</span>/<span class='no'>s</span>^<span class='fl'>2</span>)
+<span class='no'>x2</span> <span class='kw'>&lt;-</span> <span class='fu'>as_units</span>(<span class='fu'>quote</span>(<span class='no'>m</span>/<span class='no'>s</span>^<span class='fl'>2</span>))
+<span class='no'>x2</span> <span class='kw'>&lt;-</span> <span class='fu'>as_units</span>(<span class='st'>"m/s^2"</span>)
+<span class='no'>x3</span> <span class='kw'>&lt;-</span> <span class='fu'>as_units</span>(<span class='st'>"m s-2"</span>) <span class='co'># in product power form, i.e., implicit exponents = T</span>
+<span class='no'>x4</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='set_units.html'>set_units</a></span>(<span class='fl'>1</span>,  <span class='no'>m</span>/<span class='no'>s</span>^<span class='fl'>2</span>) <span class='co'># by default, mode = "symbols"</span>
+<span class='no'>x5</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='set_units.html'>set_units</a></span>(<span class='fl'>1</span>, <span class='st'>"m/s^2"</span>,   <span class='kw'>mode</span> <span class='kw'>=</span> <span class='st'>"standard"</span>)
+<span class='no'>x6</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='set_units.html'>set_units</a></span>(<span class='fl'>1</span>, <span class='no'>x1</span>,        <span class='kw'>mode</span> <span class='kw'>=</span> <span class='st'>"standard"</span>)
+<span class='no'>x7</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='set_units.html'>set_units</a></span>(<span class='fl'>1</span>, <span class='fu'>units</span>(<span class='no'>x1</span>), <span class='kw'>mode</span> <span class='kw'>=</span> <span class='st'>"standard"</span>)
+<span class='no'>x8</span> <span class='kw'>&lt;-</span> <span class='fu'>as_units</span>(<span class='st'>"m"</span>) / <span class='fu'>as_units</span>(<span class='st'>"s"</span>)^<span class='fl'>2</span>
+
+<span class='no'>all_identical</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>...</span>) {
+  <span class='no'>l</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='no'>...</span>)
+  <span class='kw'>for</span>(<span class='no'>i</span> <span class='kw'>in</span> <span class='fu'>seq_along</span>(<span class='no'>l</span>)[-<span class='fl'>1</span>])
+    <span class='kw'>if</span>(!<span class='fu'>identical</span>(<span class='no'>l</span><span class='kw'>[[</span><span class='fl'>1</span>]], <span class='no'>l</span><span class='kw'>[[</span><span class='no'>i</span>]]))
+      <span class='fu'>return</span>(<span class='fl'>FALSE</span>)
+  <span class='fl'>TRUE</span>
+}
+<span class='fu'>all_identical</span>(<span class='no'>x1</span>, <span class='no'>x2</span>, <span class='no'>x3</span>, <span class='no'>x4</span>, <span class='no'>x5</span>, <span class='no'>x6</span>, <span class='no'>x7</span>, <span class='no'>x8</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='co'># Note, direct usage of these unit creation functions is typically not </span>
+<span class='co'># necessary, since coercion is automatically done via as_units(). Again, </span>
+<span class='co'># these are all equivalent ways to generate the same result.</span>
+
+<span class='no'>x1</span> <span class='kw'>&lt;-</span> <span class='no'>x2</span> <span class='kw'>&lt;-</span> <span class='no'>x3</span> <span class='kw'>&lt;-</span> <span class='no'>x4</span> <span class='kw'>&lt;-</span> <span class='no'>x5</span> <span class='kw'>&lt;-</span> <span class='no'>x6</span> <span class='kw'>&lt;-</span> <span class='no'>x7</span> <span class='kw'>&lt;-</span> <span class='no'>x8</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>:<span class='fl'>4</span>
+<span class='fu'>units</span>(<span class='no'>x1</span>) <span class='kw'>&lt;-</span> <span class='st'>"m/s^2"</span>
+<span class='fu'>units</span>(<span class='no'>x2</span>) <span class='kw'>&lt;-</span> <span class='st'>"m s-2"</span>
+<span class='fu'>units</span>(<span class='no'>x3</span>) <span class='kw'>&lt;-</span> <span class='fu'>quote</span>(<span class='no'>m</span>/<span class='no'>s</span>^<span class='fl'>2</span>)
+<span class='fu'>units</span>(<span class='no'>x4</span>) <span class='kw'>&lt;-</span> <span class='fu'>make_units</span>(<span class='no'>m</span>/<span class='no'>s</span>^<span class='fl'>2</span>)
+<span class='fu'>units</span>(<span class='no'>x5</span>) <span class='kw'>&lt;-</span> <span class='fu'>as_units</span>(<span class='fu'>quote</span>(<span class='no'>m</span>/<span class='no'>s</span>^<span class='fl'>2</span>))
+<span class='no'>x6</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='set_units.html'>set_units</a></span>(<span class='no'>x6</span>, <span class='no'>m</span>/<span class='no'>s</span>^<span class='fl'>2</span>)
+<span class='no'>x7</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='set_units.html'>set_units</a></span>(<span class='no'>x7</span>, <span class='st'>"m/s^2"</span>, <span class='kw'>mode</span> <span class='kw'>=</span> <span class='st'>"standard"</span>)
+<span class='no'>x8</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='set_units.html'>set_units</a></span>(<span class='no'>x8</span>, <span class='fu'>units</span>(<span class='no'>x1</span>), <span class='kw'>mode</span> <span class='kw'>=</span> <span class='st'>"standard"</span>)
+
+<span class='fu'>all_identical</span>(<span class='no'>x1</span>, <span class='no'>x2</span>, <span class='no'>x3</span>, <span class='no'>x4</span>, <span class='no'>x5</span>, <span class='no'>x6</span>, <span class='no'>x7</span>, <span class='no'>x8</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+
+<span class='co'># Both unit names or symbols can be used. By default, unit names are</span>
+<span class='co'># automatically converted to unit symbols.</span>
+<span class='fu'>make_units</span>(<span class='no'>degree_C</span>)</div><div class='output co'>#&gt; 1 °C</div><div class='input'><span class='fu'>make_units</span>(<span class='no'>kilogram</span>)</div><div class='output co'>#&gt; 1 kg</div><div class='input'><span class='fu'>make_units</span>(<span class='no'>ohm</span>)</div><div class='output co'>#&gt; 1 Ω</div><div class='input'><span class='co'># Note, if the printing of non-ascii characters is garbled, then you may</span>
+<span class='co'># need to specify the encoding on your system manually like this:</span>
+<span class='co'># udunits2::ud.set.encoding("latin1")</span>
+<span class='co'># not all unit names get converted to symbols under different encodings</span>
+
+<span class='co'>## Arithmetic operations and units</span>
+<span class='co'># conversion between unit objects that were defined as symbols and names will</span>
+<span class='co'># work correctly, although unit simplification in printing may not always occur.</span>
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fl'>500</span> * <span class='fu'>make_units</span>(<span class='no'>micrograms</span>/<span class='no'>liter</span>)
+<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='set_units.html'>set_units</a></span>(<span class='fl'>200</span>, <span class='no'>ug</span>/<span class='no'>l</span>)
+<span class='no'>x</span> + <span class='no'>y</span></div><div class='output co'>#&gt; 700 micrograms/L</div><div class='input'><span class='no'>x</span> * <span class='no'>y</span> <span class='co'># numeric result is correct, but units not simplified completely</span></div><div class='output co'>#&gt; 1e+05 micrograms*ug/L^2</div><div class='input'>
+<span class='co'># note, plural form of unit name accepted too ('liters' vs 'liter'), and</span>
+<span class='co'># denominator simplification can be performed correctly</span>
+<span class='no'>x</span> * <span class='fu'><a href='set_units.html'>set_units</a></span>(<span class='fl'>5</span>, <span class='no'>liters</span>)</div><div class='output co'>#&gt; 2500 micrograms</div><div class='input'>
+<span class='co'># unit conversion works too</span>
+<span class='fu'><a href='set_units.html'>set_units</a></span>(<span class='no'>x</span>, <span class='no'>grams</span>/<span class='no'>gallon</span>)</div><div class='output co'>#&gt; 0.001892706 g/gallon</div><div class='input'>
+<span class='co'>## Creating custom, user defined units</span>
+<span class='co'># For example, a microbiologist might work with counts of bacterial cells</span>
+<span class='co'># make_units(cells/ml) # by default, throws an ERROR</span>
+<span class='co'># First define the unit, then the newly defined unit is accepted.</span>
+<span class='fu'><a href='install_symbolic_unit.html'>install_symbolic_unit</a></span>(<span class='st'>"cells"</span>)
+<span class='fu'>make_units</span>(<span class='no'>cells</span>/<span class='no'>ml</span>)</div><div class='output co'>#&gt; 1 cells/ml</div><div class='input'>
+<span class='co'># Note, install_symbolic_unit() does not add any support for unit</span>
+<span class='co'># conversion, or arithmetic operations that require unit conversion. See</span>
+<span class='co'># ?install_conversion_function for how to define relationships for user </span>
+<span class='co'># defined units.</span>
+
+<span class='co'>## set_units()</span>
+<span class='co'># set_units is a pipe friendly version of `units&lt;-`. </span>
+<span class='kw'>if</span> (<span class='fu'>require</span>(<span class='no'>magrittr</span>)) {
+ <span class='fl'>1</span>:<span class='fl'>5</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='set_units.html'>set_units</a></span>(<span class='no'>N</span>/<span class='no'>m</span>^<span class='fl'>2</span>)
+ <span class='co'># first sets to m, then converts to km</span>
+ <span class='fl'>1</span>:<span class='fl'>5</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='set_units.html'>set_units</a></span>(<span class='no'>m</span>) <span class='kw'>%&gt;%</span> <span class='fu'><a href='set_units.html'>set_units</a></span>(<span class='no'>km</span>)
+}</div><div class='output co'>#&gt; Units: km
+#&gt; [1] 0.001 0.002 0.003 0.004 0.005</div><div class='input'>
+<span class='co'># set_units has two modes of operation. By default, it operates with </span>
+<span class='co'># bare symbols to define the units.</span>
+<span class='fu'><a href='set_units.html'>set_units</a></span>(<span class='fl'>1</span>:<span class='fl'>5</span>, <span class='no'>m</span>/<span class='no'>s</span>)</div><div class='output co'>#&gt; Units: m/s
+#&gt; [1] 1 2 3 4 5</div><div class='input'>
+<span class='co'># use `mode = "standard"` to use the value of supplied argument, rather than</span>
+<span class='co'># the bare symbols of the expression. In this mode, set_units() can be</span>
+<span class='co'># thought of as a simple alias for `units&lt;-` that is pipe friendly.</span>
+<span class='fu'><a href='set_units.html'>set_units</a></span>(<span class='fl'>1</span>:<span class='fl'>5</span>, <span class='st'>"m/s"</span>, <span class='kw'>mode</span> <span class='kw'>=</span> <span class='st'>"standard"</span>)</div><div class='output co'>#&gt; Units: m/s
+#&gt; [1] 1 2 3 4 5</div><div class='input'><span class='fu'><a href='set_units.html'>set_units</a></span>(<span class='fl'>1</span>:<span class='fl'>5</span>, <span class='fu'>make_units</span>(<span class='no'>m</span>/<span class='no'>s</span>), <span class='kw'>mode</span> <span class='kw'>=</span> <span class='st'>"standard"</span>)</div><div class='output co'>#&gt; Units: m/s
+#&gt; [1] 1 2 3 4 5</div><div class='input'>
+<span class='co'># the mode of set_units() can be controlled via a global option</span>
+<span class='co'># options(units.set_units_mode = "standard")</span>
+
+<span class='co'># To remove units use</span>
+<span class='fu'>units</span>(<span class='no'>x</span>) <span class='kw'>&lt;-</span> <span class='kw'>NULL</span>
+<span class='co'># or</span>
+<span class='fu'><a href='drop_units.html'>drop_units</a></span>(<span class='no'>y</span>)</div><div class='output co'>#&gt; [1] 200</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
+      
+      <li><a href="#value">Value</a></li>
+
+      <li><a href="#note">Note</a></li>
+
+      <li><a href="#character-strings">Character strings</a></li>
+
+      <li><a href="#expressions">Expressions</a></li>
+
+      <li><a href="#see-also">See also</a></li>
+      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -148,7 +374,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Edzer Pebesma, Thomas Mailund.</p>
+  <p>Developed by Edzer Pebesma, Thomas Mailund, Tomasz Kalinowski.</p>
 </div>
 
 <div class="pkgdown">

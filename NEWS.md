@@ -1,8 +1,23 @@
 # version 0.5-0
 
-* non-R expressions like `m kg-1` are no longer accepted by `make_unit`, but are parsed by `parse_unit`
+* Unit creation has been significantly refactored. `units<-` now accepts strings
+or quoted language objects on the right hand side, powered by new S3 methods for
+`as_units`. All valid unit symbols and unit names recognized by package 'udunits2' are 
+now accepted. New user facing function `make_units()` (plural s) is also
+provided. See `?as_units` for details. @t-kalinowski
 
-* `make_unit` now uses the R expression evaluator; #60
+* new functions `valid_udunits()` and `valid_udunits_prefixes()` generate tidy
+dataframes listing all the valid unit names, symbols, and prefixes recognized by
+udunits. @t-kalinowski
+
+* new function `install_symbolic_unit()` for adding custom, user-defined units. 
+@t-kalinowski
+
+* `make_unit` and `parse_unit` (singular unit) have been deprecated, please use 
+`as_units` instead.
+
+* `ud_units` is no longer necessary and is soft-deprecated, and may be removed
+in a future release.
 
 * add `%*%` as an S3 generic; #54 
 

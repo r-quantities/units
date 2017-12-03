@@ -116,52 +116,6 @@ as.character.symbolic_units <- function(x, ...,
   }
 }
 
-make_unit0 = function(name) as_units.default(1, .symbolic_units(name))
-
-#' Create a new unit from a unit name.
-#' 
-#' @param name Name of the new unit (character string, name of a character object, or expression)
-#' @param user_defined logical; is this a user-defined, non-SI/non-udunits unit?
-#' @return A new unit object that can be used in arithmetics
-#' @examples
-#' make_unit(m/s)
-#' make_unit("m/s")
-#' str = "m/s"
-#' make_unit(str)
-#' @export
-make_unit <- function(name, user_defined = FALSE) {
-
-  if (user_defined)
-    return(make_unit0(name))
-
-  expr <- substitute(name)
-  if (is.character(expr) || (is.name(expr) && !udunits2::ud.is.parseable(as.character(expr)))) {
-    if (is.name(expr))
-      expr = eval(expr, parent.frame())
-	e = try(expr0 <- parse(text = expr), silent = TRUE)
-	if (inherits(e, "try-error")) {
-	  if (udunits2::ud.is.parseable(as.character(expr)))
-        return(make_unit0(expr))
-      else
-	    stop(paste("cannot create unit from", expr))
-    } else
-      expr = expr0
-  }
-
-
-  nms <- all.names(expr)
-  nms <- nms[sapply(nms, udunits2::ud.is.parseable)]
-  names(nms) <- nms
-  tmp_env <- lapply(nms, make_unit0)
-  
-  e = try(rslt <- eval(expr, tmp_env, baseenv()), silent = TRUE)
-
-  if (inherits(e, "try-error") || !inherits(rslt, "units"))
-    stop(paste("cannot create unit from", expr))
-
-  rslt
-}
-
 .simplify_units <- function(value, sym_units) {
   
   # This is just a brute force implementation that takes each element in the

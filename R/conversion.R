@@ -33,7 +33,11 @@ convert <- function(value, from, to) {
 #' class(x)
 #' y = 2:5
 `units<-.numeric` <- function(x, value) {
-  stopifnot(inherits(value, "units") || inherits(value, "symbolic_units"))
+  if(is.null(value))
+    return(x)
+ 
+  if(!inherits(value, "units") && !inherits(value, "symbolic_units"))
+    value <- as_units(value)
   
   if (inherits(value, "units"))
     value <- units(value)
@@ -41,17 +45,6 @@ convert <- function(value, from, to) {
   attr(x, "units") = value
   class(x) <- "units"
   x
-}
-
-`units<-.logical` <- function(x, value) {
-  if (all(is.na(x))) {
-    c <- match.call()
-    c[1] <- call('units<-.numeric')
-    c[['x']] <- as.numeric(x)
-    eval(c)
-  } else {
-    stop("x must be numeric, non-NA logical not supported")
-  }
 }
 
 #' Convert units
@@ -64,7 +57,12 @@ convert <- function(value, from, to) {
 #' units(a) <- with(ud_units, km/h)
 #' a
 `units<-.units` <- function(x, value) {
-  stopifnot(inherits(value, "units") || inherits(value, "symbolic_units"))
+  
+  if(is.null(value))
+    return(drop_units(x))
+  
+  if(!inherits(value, "units") && !inherits(value, "symbolic_units"))
+    value <- as_units(value)
   
   if (inherits(value, "units"))
     value <- units(value)
@@ -86,111 +84,16 @@ unit_ambiguous = function(value) {
   warning(msg, call. = FALSE)
 }
 
-#' @name units
-#' @export
-#' @param ... ignored
-#' @details \code{set_units} is a pipe-friendly version of \code{units<-} that evaluates \code{value} first in the environment of \link{ud_units}.
-#' @examples
-#' # note that these units have NOT been defined or declared before:
-#' set_units(1:5, N/m^2)
-#' set_units(1:5, unitless) # unit "1", unitless
-#' if (require(magrittr)) {
-#'  1:5 %>% set_units(N/m^2)
-#'  1:10 %>% set_units(m) %>% set_units(km)
-#' }
-set_units = function(x, value, ...) UseMethod("set_units")
 
 #' @name units
 #' @export
-set_units.units = function(x, value, ...) {
-
-  subs = substitute(value)
-  e0 = try(u0 <- eval(subs, ud_units, NULL), silent = TRUE)
-
-  e1 = try(u1 <- eval(subs, ud_units, parent.frame()), silent = TRUE)
-  val_char = gsub("\"", "", deparse(subs))
-
-  e2 = try(u2 <- eval(subs, parent.frame()), silent = TRUE) # present in parent.frame()?
-  is_value = !inherits(e2, "try-error") && !is.character(subs) && 
-  	(inherits(u2, "units") || (is.character(u2) && ud.is.parseable(u2)))
-
-  u = if (!inherits(e0, "try-error") && inherits(u0, "units")) {
-    if (is_value) 
-      unit_ambiguous(val_char)
-    u0
-  } else if (val_char %in% names(ud_units)) {
-    if (is_value) 
-      unit_ambiguous(val_char)
-    ud_units[[ val_char ]]
-  } else if (ud.is.parseable(val_char)) {
-    if (is_value) 
-      unit_ambiguous(val_char)
-    if (ud.get.symbol(val_char) != "")
-      val_char = ud.get.symbol(val_char)
-    make_unit0(val_char)
-  } else if (!inherits(e1, "try-error") && (inherits(u1, "units") || inherits(u1, "symbolic_units")))
-    u1
-  else if (ud.is.parseable(eval(value))) {
-    make_unit0(eval(value))
-  } else
-    stop(paste(val_char, "not recognized as unit"))
-
-  units(x) = u
-  x
-}
-
-#' @name units
-#' @export
-set_units.numeric = function(x, value = units::unitless, ...) {
-
-  subs = substitute(value)
-  e0 = try(u0 <- eval(subs, ud_units, NULL), silent = TRUE)
-
-  e1 = try(u1 <- eval(subs, ud_units, parent.frame()), silent = TRUE)
-  val_char = gsub("\"", "", deparse(subs))
-
-  e2 = try(u2 <- eval(subs, parent.frame()), silent = TRUE) # present in parent.frame()?
-  is_value = !inherits(e2, "try-error") && !is.character(subs) && 
-  	(inherits(u2, "units") || (is.character(u2) && ud.is.parseable(u2)))
-
-  u = if (!inherits(e0, "try-error") && inherits(u0, "units")) {
-    if (is_value) 
-      unit_ambiguous(val_char)
-    u0
-  } else if (val_char %in% names(ud_units)) {
-    if (is_value) 
-      unit_ambiguous(val_char)
-    ud_units[[ val_char ]]
-  } else if (ud.is.parseable(val_char)) {
-    if (is_value) 
-      unit_ambiguous(val_char)
-    if (ud.get.symbol(val_char) != "")
-      val_char = ud.get.symbol(val_char)
-    make_unit0(val_char)
-  } else if (!inherits(e1, "try-error") && (inherits(u1, "units") || inherits(u1, "symbolic_units")))
-    u1
-  else if (ud.is.parseable(eval(value))) {
-    make_unit0(eval(value))
-  } else
-    stop(paste(val_char, "not recognized as unit"))
-
-  if (inherits(u, "units"))
-    x * u
-  else {
-    units(x) <- u
-	x
-  }
-}
-
-set_units.logical <- function(x, value = units::unitless, ...) {
-  if (all(is.na(x))) {
-    c <- match.call()
-    c[1] <- call('set_units.numeric')
-    c[['x']] <- as.numeric(x)
-    eval(c)
-  } else {
+`units<-.logical` <- function(x, value) {
+  if (!all(is.na(x))) 
     stop("x must be numeric, non-NA logical not supported")
-  }
+  
+  x <- as.numeric(x)
+  units(x) <- value
+  x
 }
 
 #' retrieve measurement units from \code{units} object
@@ -202,42 +105,44 @@ units.units <- function(x) {
   attr(x, "units")
 }
 
+#' @export
+units.symbolic_units <- function(x) {
+  x
+}
+
 #' convert object to a units object
 #'
 #' @param x object of class units
-#' @param value target unit, defaults to `unitless`
+#' @param value an object of class units, or something coercible to one with
+#'   \code{as_units}
+#' @param ... passed on to other methods
 #'
 #' @export
-as_units <- function(x, value = unitless) {
+as_units <- function(x, ...) {
   UseMethod("as_units")
 }
 
 #' @export
-#' @name as_units
-as.units <- function(x, value = unitless) {
-	.Deprecated("as_units")    # nocov
-	as_units(x, value = value) # nocov
+as_units.units <- function(x, value, ...) {
+  if(!missing(value) && !identical(units(value), units(x)))
+    warning("Use set_units() to perform unit conversion. Return unit unmodified")
+  x
+}
+#' @export
+as_units.symbolic_units <- function(x, value, ...) {
+  if(!missing(value))
+    warning("supplied value ignored")
+  structure(1L, units = x, class = "units")
 }
 
 #' @export
 #' @name as_units
-as_units.default <- function(x, value = unitless) {
-
-  unit_name <- substitute(value)
-  if (is.symbol(unit_name)) {
-    unit_name <- as.character(unit_name)
-    if (!exists(unit_name, envir = parent.frame())) {
-      value <- units:: ud_units[[unit_name]]
-      if (is.null(value))
-        stop(paste("unit", unit_name, "not found: define with make_unit?"))
-    }
-  }
-  
+as_units.default <- function(x, value = unitless, ...) {
   units(x) <- value
   x
 }
 
-#' convert difftime objects to units
+#'  difftime objects to units
 #'
 #' @export
 #' @name as_units
@@ -246,23 +151,23 @@ as_units.default <- function(x, value = unitless) {
 #' s = Sys.time()
 #' d  = s - (s+1)
 #' as_units(d)
-as_units.difftime <- function(x, value) {
+as_units.difftime <- function(x, value, ...) {
   u <- attr(x, "units")
   x <- unclass(x)
   attr(x, "units") <- NULL
   
   # convert from difftime to udunits2:
   if (u == "secs") # secs -> s
-    x <- x * make_unit("s")
+    x <- x * symbolic_unit("s")
   else if (u == "mins") # mins -> min
-    x <- x * make_unit("min")
+    x <- x * symbolic_unit("min")
   else if (u == "hours") # hours -> h
-    x <- x * make_unit("h")
+    x <- x * symbolic_unit("h")
   else if (u == "days") # days -> d
-    x <- x * make_unit("d")
+    x <- x * symbolic_unit("d")
   else if (u == "weeks") { # weeks -> 7 days
     x <- 7 * x
-    x <- x * make_unit("d")
+    x <- x * symbolic_unit("d")
   } else 
     stop(paste("unknown time units", u, "in difftime object"))
   
@@ -273,7 +178,12 @@ as_units.difftime <- function(x, value) {
 }
 
 #' @export
-as.data.frame.units <- as.data.frame.numeric
+as.data.frame.units <- function(x, ...) {
+	df = as.data.frame(unclass(x), ...)
+	for (i in seq_along(df))
+		units(df[[i]]) = units(x)
+	df
+}
 
 #' convert units object into difftime object
 #'
@@ -329,31 +239,31 @@ as_difftime <- function(x) {
 
 #' @export
 as.POSIXct.units = function (x, tz = "UTC", ...) {
-	u1 = set_units(x, "seconds since 1970-01-01 00:00:00 +00:00")
-	as.POSIXct.numeric(as.numeric(u1), tz = tz, origin = as.POSIXct("1970-01-01 00:00:00", tz = "UTC"))
+	units(x) = symbolic_unit("seconds since 1970-01-01 00:00:00 +00:00")
+	as.POSIXct.numeric(as.numeric(x), tz = tz, origin = as.POSIXct("1970-01-01 00:00:00", tz = "UTC"))
 }
 
 #' @method as.Date units
 #' @export
 as.Date.units = function (x, ...) {
-	u1 = set_units(x, "days since 1970-01-01")
-	as.Date(as.numeric(u1), origin = as.Date("1970-01-01 00:00:00"))
+	units(x) = symbolic_unit("days since 1970-01-01")
+	as.Date(as.numeric(x), origin = as.Date("1970-01-01 00:00:00"))
 }
 
 #' @export
-as_units.POSIXt = function(x, value) {
-	u = set_units(as.numeric(as.POSIXct(x)), "seconds since 1970-01-01 00:00:00 +00:00")
-	if (missing(value))
-		u
-	else
-		set_units(u, value)
+as_units.POSIXt = function(x, value, ...) {
+	u = as.numeric(as.POSIXct(x))
+	units(u) = symbolic_unit("seconds since 1970-01-01 00:00:00 +00:00")
+	if (! missing(value))
+		units(u) = symbolic_unit(value)
+	u
 }
 
 #' @export
-as_units.Date = function(x, value) {
-	u = set_units(as.numeric(x), "days since 1970-01-01")
-	if (missing(value))
-		u
-	else
-		set_units(u, value)
+as_units.Date = function(x, value, ...) {
+	u = as.numeric(x)
+	units(u) = symbolic_unit("days since 1970-01-01")
+	if (!missing(value))
+		units(u) = symbolic_unit(value)
+	u
 }

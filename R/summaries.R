@@ -17,7 +17,7 @@ Summary.units = function(..., na.rm = FALSE) {
       if (!ud.are.convertible(units(args[[i]]), u))
         stop(paste("argument", i, 
                    "has units that are not convertible to that of the first argument"))
-      args[[i]] = as_units(args[[i]], u) # convert to first unit
+      args[[i]] = set_units(args[[i]], u, mode = "standard") # convert to first unit
     }
   }
   args = lapply(args, unclass)

@@ -82,7 +82,7 @@
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/edzer/units/">
+  <a href="https://github.com/r-quantities/units/">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -113,13 +113,8 @@
 <span class='co'># S3 method for units</span>
 <span class='fu'>units</span>(<span class='no'>x</span>) <span class='kw'>&lt;-</span> <span class='no'>value</span>
 
-<span class='fu'>set_units</span>(<span class='no'>x</span>, <span class='no'>value</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for units</span>
-<span class='fu'>set_units</span>(<span class='no'>x</span>, <span class='no'>value</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for numeric</span>
-<span class='fu'>set_units</span>(<span class='no'>x</span>, <span class='kw'>value</span> <span class='kw'>=</span> <span class='kw pkg'>units</span><span class='kw ns'>::</span><span class='no'><a href='http://www.rdocumentation.org/packages/units/topics/unitless'>unitless</a></span>, <span class='no'>...</span>)
+<span class='co'># S3 method for logical</span>
+<span class='fu'>units</span>(<span class='no'>x</span>) <span class='kw'>&lt;-</span> <span class='no'>value</span>
 
 <span class='co'># S3 method for units</span>
 <span class='fu'>units</span>(<span class='no'>x</span>)</pre>
@@ -135,10 +130,6 @@
       <th>value</th>
       <td><p>object of class <code>units</code> or <code>symbolic_units</code>, or in the case of <code>set_units</code> expression with symbols that can be resolved in <a href='ud_units.html'>ud_units</a> (see examples).</p></td>
     </tr>
-    <tr>
-      <th>...</th>
-      <td><p>ignored</p></td>
-    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -146,25 +137,11 @@
     <p>object of class <code>units</code></p>
 <p>the units method retrieves the units attribute, which is of class <code>symbolic_units</code></p>
     
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p><code>set_units</code> is a pipe-friendly version of <code>units&lt;-</code> that evaluates <code>value</code> first in the environment of <a href='ud_units.html'>ud_units</a>.</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>x</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>3</span>
 <span class='fu'>class</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; [1] "integer"</div><div class='input'><span class='fu'>units</span>(<span class='no'>x</span>) <span class='kw'>&lt;-</span> <span class='fu'>with</span>(<span class='no'>ud_units</span>, <span class='no'>m</span>/<span class='no'>s</span>) <span class='co'># valid</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(substitute(expr), data, enclos = parent.frame()): object 'm' not found</span></div><div class='input'><span class='fu'>class</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; [1] "integer"</div><div class='input'><span class='no'>y</span> <span class='kw'>=</span> <span class='fl'>2</span>:<span class='fl'>5</span>
-<span class='no'>a</span> <span class='kw'>&lt;-</span> <span class='fu'>with</span>(<span class='no'>ud_units</span>, <span class='fl'>1</span>:<span class='fl'>3</span> * <span class='no'>m</span>/<span class='no'>s</span>)</div><div class='output co'>#&gt; <span class='error'>Error in eval(substitute(expr), data, enclos = parent.frame()): object 'm' not found</span></div><div class='input'><span class='fu'>units</span>(<span class='no'>a</span>) <span class='kw'>&lt;-</span> <span class='fu'>with</span>(<span class='no'>ud_units</span>, <span class='no'>km</span>/<span class='no'>h</span>)</div><div class='output co'>#&gt; <span class='error'>Error in eval(substitute(expr), data, enclos = parent.frame()): object 'km' not found</span></div><div class='input'><span class='no'>a</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'a' not found</span></div><div class='input'><span class='co'># note that these units have NOT been defined or declared before:</span>
-<span class='fu'>set_units</span>(<span class='fl'>1</span>:<span class='fl'>5</span>, <span class='no'>N</span>/<span class='no'>m</span>^<span class='fl'>2</span>)</div><div class='output co'>#&gt; Units: Pa
-#&gt; [1] 1 2 3 4 5</div><div class='input'><span class='fu'>set_units</span>(<span class='fl'>1</span>:<span class='fl'>5</span>, <span class='no'>unitless</span>) <span class='co'># unit "1", unitless</span></div><div class='output co'>#&gt; Units: 1
-#&gt; [1] 1 2 3 4 5</div><div class='input'><span class='kw'>if</span> (<span class='fu'>require</span>(<span class='no'>magrittr</span>)) {
- <span class='fl'>1</span>:<span class='fl'>5</span> <span class='kw'>%&gt;%</span> <span class='fu'>set_units</span>(<span class='no'>N</span>/<span class='no'>m</span>^<span class='fl'>2</span>)
- <span class='fl'>1</span>:<span class='fl'>10</span> <span class='kw'>%&gt;%</span> <span class='fu'>set_units</span>(<span class='no'>m</span>) <span class='kw'>%&gt;%</span> <span class='fu'>set_units</span>(<span class='no'>km</span>)
-}</div><div class='output co'>#&gt; <span class='message'>Loading required package: magrittr</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘magrittr’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:testthat’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    equals, is_less_than, not</span></div><div class='output co'>#&gt; Units: km
-#&gt;  [1] 0.001 0.002 0.003 0.004 0.005 0.006 0.007 0.008 0.009 0.010</div></pre>
+<span class='no'>a</span> <span class='kw'>&lt;-</span> <span class='fu'>with</span>(<span class='no'>ud_units</span>, <span class='fl'>1</span>:<span class='fl'>3</span> * <span class='no'>m</span>/<span class='no'>s</span>)</div><div class='output co'>#&gt; <span class='error'>Error in eval(substitute(expr), data, enclos = parent.frame()): object 'm' not found</span></div><div class='input'><span class='fu'>units</span>(<span class='no'>a</span>) <span class='kw'>&lt;-</span> <span class='fu'>with</span>(<span class='no'>ud_units</span>, <span class='no'>km</span>/<span class='no'>h</span>)</div><div class='output co'>#&gt; <span class='error'>Error in eval(substitute(expr), data, enclos = parent.frame()): object 'km' not found</span></div><div class='input'><span class='no'>a</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'a' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -172,8 +149,6 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
@@ -183,7 +158,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Edzer Pebesma, Thomas Mailund.</p>
+  <p>Developed by Edzer Pebesma, Thomas Mailund, Tomasz Kalinowski.</p>
 </div>
 
 <div class="pkgdown">

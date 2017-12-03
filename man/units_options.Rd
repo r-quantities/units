@@ -4,7 +4,8 @@
 \alias{units_options}
 \title{set one or more units global options}
 \usage{
-units_options(..., sep, group, negative_power, parse)
+units_options(..., sep, group, negative_power, parse, set_units_mode,
+  auto_convert_names_to_symbols)
 }
 \arguments{
 \item{...}{ignored}
@@ -16,6 +17,10 @@ units_options(..., sep, group, negative_power, parse)
 \item{negative_power}{logical, default FALSE; should denominators have negative power, or follow a division symbol?}
 
 \item{parse}{logical, default \code{TRUE}; should the units be made into an expression (so we get subscripts)? Setting to \code{FALSE} may be useful if \link{parse} fails, e.g. if the unit contains symbols that assume a particular encoding}
+
+\item{set_units_mode}{character; either \code{"symbols"} or \code{"standard"}; see \link{set_units}}
+
+\item{auto_convert_names_to_symbols}{logical: should names, such as \code{degree_C} be converted to their usual symbol?}
 }
 \description{
 set units global options, mostly related how units are printed and plotted
