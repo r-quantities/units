@@ -1,5 +1,7 @@
 # version 0.5-0
 
+* deal with trigonometric functions for units degree; return units rad on inverse trigonometric functions.
+
 * Unit creation has been significantly refactored. `units<-` now accepts strings
 or quoted language objects on the right hand side, powered by new S3 methods for
 `as_units`. All valid unit symbols and unit names recognized by package 'udunits2' are 

@@ -33,6 +33,9 @@ test_that("we can call math functions on units", {
   expect_equal(class(y), "numeric")
   
   expect_equal(sin(set_units(1, rad)), set_units(sin(1)))
+  expect_equal(sin(set_units(90, degree)), sin(set_units(pi/2, rad)))
+  expect_equal(units(acos(set_units(-1))), units(make_units(rad)))
+  expect_equal(set_units(acos(set_units(-1)), degree), set_units(180, degree))
 })
 
 # FIXME: I am not too sure about this one... the log(unit) is not a format
