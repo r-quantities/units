@@ -24,14 +24,14 @@ Math.units = function(x, ...) {
   rad = units(make_unit("rad"))
   deg = units(make_unit("degree"))
   if (!OK && (units(x) == rad || units(x) == deg)) {
-    OK <- switch(.Generic, "sin" = , "cos" = , "tan" = TRUE, FALSE)
+    OK <- switch(.Generic, sin =, cos =, tan =, sinpi =, cospi =, tanpi = TRUE, FALSE)
     if (OK) {
 	  units(x) <- "rad" # convert deg -> rad
 	  x <- set_units(x) # result has unit 1
 	}
   }
   if (!OK && units(x) == unitless) {
-    OK <- switch(.Generic, "asin" = , "acos" = , "atan" = TRUE, FALSE)
+    OK <- switch(.Generic, asin =, acos =, atan = TRUE, FALSE)
     if (OK)
 	  units(x) <- "rad" # unit of the answer (also unitless)
   }
