@@ -10,7 +10,7 @@ apt_packages:
 r:
   - release
   - oldrel
-  - devel
+#  - devel
 
 after_success:
   - Rscript -e 'covr::codecov()'
