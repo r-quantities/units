@@ -33,11 +33,12 @@ Ops.symbolic_units <- function(e1, e2) {
   
   eq <- switch(.Generic, "==" = , "!=" = TRUE, FALSE)
   if (eq) {
-    if (.Generic == "==") return(.same_units(e1, e2))
-    else return(!.same_units(e1, e2))
-  }
-  
-  stop(paste("operation", .Generic, "not allowed for symbolic operators")) # nocov
+    if (.Generic == "==") 
+      .same_units(e1, e2)
+    else 
+      !.same_units(e1, e2)
+  } else
+    stop(paste("operation", .Generic, "not allowed for symbolic operators")) # nocov
 }
 
 #' The "unit" type for vectors that are actually dimension-less.
