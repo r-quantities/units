@@ -116,16 +116,6 @@ all.equal.units = function(target, current, ...) {
   all.equal(unclass(target), unclass(current), ...)
 }
 
-#' type_sum for tidy tibble printing
-#' 
-#' type_sum for tidy tibble printing
-#' @param x object of class units
-#' @param ... ignored
-#' @export
-type_sum.units <- function(x, ...) {
-  "units"
-}
-
 #' seq method for units objects
 #' @param from see \link[base]{seq}
 #' @param to see \link[base]{seq}
@@ -157,12 +147,16 @@ seq.units = function(from, to, by = ((to - from)/(length.out - 1)),
   set_units(NextMethod(), uuu, mode = "standard")
 }
 
-##' @export
-#as.data.frame.units = function(x, ...) {
-#	unitsx = units(x)
-#	x = unclass(x) # FIXME: names are not passed on for single vectors, e.g. as.data.frame(u[,1])
-#	ret = as.data.frame(x)
-#	structure(lapply(ret, function(y) set_units(y, unitsx)),
-#		row.names = 1:nrow(ret), 
-#		class = "data.frame")
-#}
+#' @importFrom pillar type_sum
+#' @export
+type_sum.units <- function(x, ...) {
+  paste0("[", as.character(units(x)), "]")
+}
+
+#' @importFrom pillar pillar_shaft
+#' @export
+pillar_shaft.units <- function(x, ...) {
+  u_char <- as.character(units(x))
+  out <- paste(format(unclass(x), ...), pillar::style_subtle(u_char))
+  pillar::new_pillar_shaft_simple(out, align = "right", min_width = 8)
+}

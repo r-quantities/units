@@ -35,7 +35,7 @@ test_that("We can use diff on a units object", {
 
 test_that("type_sum is available for units objects", {
   library(tibble)
-  expect_equal(type_sum(as_units("m")), "units")
+  expect_equal(type_sum(as_units("m")), "[m]")
 })
 
 test_that("parse_unit works", {
