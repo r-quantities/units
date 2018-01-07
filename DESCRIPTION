@@ -13,6 +13,7 @@ Suggests:
     measurements,
     xml2,
     tibble,
+	pillar,
     knitr,
     testthat,
 	ggforce,

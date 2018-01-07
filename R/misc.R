@@ -147,14 +147,23 @@ seq.units = function(from, to, by = ((to - from)/(length.out - 1)),
   set_units(NextMethod(), uuu, mode = "standard")
 }
 
+#' type_sum function for units
+#' @name tibble
+#' @param x see \link[pillar]{type_sum}
+#' @param ... see \link[pillar]{type_sum}
+#' @param 
 #' @export
 type_sum.units <- function(x, ...) {
   paste0("[", as.character(units(x)), "]")
 }
 
+#' pillar_shaft function for units
+#' @name tibble
 #' @export
 pillar_shaft.units <- function(x, ...) {
   u_char <- as.character(units(x))
+  if (! requireNamespace("pillar", quietly = TRUE))
+    stop("package pillar not available: install first?")
   out <- paste(format(unclass(x), ...), pillar::style_subtle(u_char))
   pillar::new_pillar_shaft_simple(out, align = "right", min_width = 8)
 }
