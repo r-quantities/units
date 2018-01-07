@@ -147,13 +147,11 @@ seq.units = function(from, to, by = ((to - from)/(length.out - 1)),
   set_units(NextMethod(), uuu, mode = "standard")
 }
 
-#' @importFrom pillar type_sum
 #' @export
 type_sum.units <- function(x, ...) {
   paste0("[", as.character(units(x)), "]")
 }
 
-#' @importFrom pillar pillar_shaft
 #' @export
 pillar_shaft.units <- function(x, ...) {
   u_char <- as.character(units(x))

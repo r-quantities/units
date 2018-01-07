@@ -7,8 +7,7 @@ Authors@R: c(person("Edzer", "Pebesma", role = c("aut", "cre"), email = "edzer.p
 Depends:
     R (>= 3.0.0)
 Imports:
-    udunits2 (>= 0.13),
-	pillar
+    udunits2 (>= 0.13)
 Suggests:
     NISTunits,
     measurements,
