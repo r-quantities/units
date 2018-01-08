@@ -8,6 +8,8 @@
 
 
 .get_ud_xml_dir <- function() {
+  ud.is.parseable("m") # make sure udunits2::.onLoad() has run, 
+  # which sets the environment varialbe UDUNITS2_XML_PATH
   udunits2_dir <- dirname(Sys.getenv("UDUNITS2_XML_PATH"))
   if (udunits2_dir == "")
     udunits2_dir <- dirname(system.file("share/udunits2.xml", package="udunits2"))
