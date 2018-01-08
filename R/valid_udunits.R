@@ -10,7 +10,7 @@
 .get_ud_xml_dir <- function() {
   udunits2_dir <- dirname(Sys.getenv("UDUNITS2_XML_PATH"))
   if (udunits2_dir == "")
-    udunits2_dir <- system.file("share/udunits2.xml", package="udunits2")
+    udunits2_dir <- dirname(system.file("share/udunits2.xml", package="udunits2"))
   
   if (!nzchar(udunits2_dir))
     warning(
