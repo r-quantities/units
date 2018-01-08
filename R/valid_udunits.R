@@ -8,9 +8,15 @@
 
 
 .get_ud_xml_dir <- function() {
+  ud.is.parseable("m") # make sure udunits2::.onLoad() has run, 
+  # which sets the environment varialbe UDUNITS2_XML_PATH
   udunits2_dir <- dirname(Sys.getenv("UDUNITS2_XML_PATH"))
   if (udunits2_dir == "")
-    udunits2_dir <- "/usr/share/xml/udunits"
+    udunits2_dir <- dirname(system.file("share/udunits2.xml", package="udunits2"))
+  
+  if (!nzchar(udunits2_dir))
+    warning(
+      "Failed to read udunits system database: udunits2 will not work properly.\nPlease set the UDUNITS2_XML_PATH environment variable before attempting to read the units database")
   udunits2_dir
 }
 
@@ -208,6 +214,9 @@ valid_udunits <- function(quiet = FALSE) {
   if(!requireNamespace("xml2"))
     stop("Package 'xml2' is required.")
   
+  if(!nzchar(.get_ud_xml_dir())) 
+    return(invisible())
+  
   if(!quiet) 
     .message_where_udunits_db()
   
@@ -221,6 +230,9 @@ valid_udunits <- function(quiet = FALSE) {
 #' @name valid_udunits
 #' @export
 valid_udunits_prefixes <- function(quiet = FALSE) {
+  
+  if(!nzchar(.get_ud_xml_dir())) 
+    return(invisible())
   
   if(!quiet) 
     .message_where_udunits_db()
