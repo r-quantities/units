@@ -1,9 +1,3 @@
-NULL
-#' @import utils
-#' @import stats
-#' @import udunits2
-NULL
-
 # Helper functions for testing if we can convert and how using either
 # user-defined conversion functions or udunits.
 are_convertible <- function(from, to) {
