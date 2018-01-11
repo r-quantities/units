@@ -1,0 +1,2 @@
+PKG_CPPFLAGS = 
+PKG_LIBS = -ludunits2 -lexpat  -lexpat  -ludunits2

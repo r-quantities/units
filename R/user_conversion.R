@@ -24,6 +24,7 @@ install_symbolic_unit <- function(chr, warn = TRUE) {
               "Installation not necessary and is not performed")
     return(invisible(FALSE))
   }
+  R_ut_new_dimensionless_unit(chr)
   assign(chr, NULL, envir =  user_defined_units)
 }
 

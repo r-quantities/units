@@ -50,6 +50,12 @@ LogicalVector udunits_init(CharacterVector path, bool warn_on_failure = false) {
   return ret;
 }
 
+// [[Rcpp::export]]
+LogicalVector udunits_exit(LogicalVector lo) {
+	ut_free_system(sys);
+  	return lo;
+}
+
 LogicalVector R_ut_has_system(List foo) {
   LogicalVector ret(1);
   if (sys != NULL)
@@ -61,19 +67,32 @@ LogicalVector R_ut_has_system(List foo) {
 
 typedef std::vector<void *> ut_vec;
 
-void finalize_ut(ut_vec *v) {
-	for (int i = 0; i < v->size(); i++)
-		ut_free((ut_unit *) ((*v)[i]));
+void finalizeUT(ut_vec *ptr) {
+	if (ptr->size() != 1)
+		stop("ut_vec has size different from 1");
+	ut_free((ut_unit *) (*ptr)[0]);
+	// deleting ptr should be automatic
 }
 
-// typedef XPtr<ut_vec,PreserveStorage,finalize_ut> XPtrUT;
-typedef XPtr<ut_vec> XPtrUT;
+typedef XPtr<ut_vec,PreserveStorage,finalizeUT> XPtrUT;
+
+// wrap a ut_unit pointer in an XPtr
+XPtrUT ut_wrap(ut_unit *u) {
+	ut_vec *v = new ut_vec;
+	v->push_back(u);
+	XPtrUT p(v);
+	return p;
+}
+
+// fetch the ut_unit pointer from an XPtr wrapper
+ut_unit *ut_unwrap(SEXP u) {
+	XPtrUT ptr(u);
+	return ((ut_unit *) (*ptr)[0]);
+}
 
 // [[Rcpp::export]]
-XPtr< std::vector<void *> > R_ut_parse(CharacterVector name) {
-	ut_vec *v = new ut_vec;
-	Rcout << name[0] << std::endl;
-	ut_unit *u = ut_parse(sys, name[0], enc);
+XPtrUT R_ut_parse(CharacterVector name) {
+	ut_unit *u = ut_parse(sys, ut_trim(name[0], enc), enc);
     if (u == NULL) {
 		switch (ut_get_status()) {
 			case UT_BAD_ARG:
@@ -84,29 +103,166 @@ XPtr< std::vector<void *> > R_ut_parse(CharacterVector name) {
 		}
 	}
 	// error checking ...
-	v->push_back(u);
-	XPtrUT p(v);
-	return(p);
+	return ut_wrap(u);
 }
 
 // [[Rcpp::export]]
-CharacterVector R_ut_format(SEXP p, bool names = false, bool definition = false) {
-	XPtr< std::vector<void *> > ptr(p);
-	int opt = enc;
+XPtrUT R_ut_get_dimensionless_unit_one(CharacterVector name) {
+	return ut_wrap(ut_get_dimensionless_unit_one(sys));
+}
+// [[Rcpp::export]]
+LogicalVector R_ut_are_convertible(SEXP a, SEXP b) {
+	int i = ut_are_convertible(ut_unwrap(a), ut_unwrap(b));
+	return i != 0;
+}
+
+// [[Rcpp::export]]
+NumericVector R_convert_doubles(SEXP from, SEXP to, NumericVector val) {
+	if (! ut_are_convertible(ut_unwrap(from), ut_unwrap(to)))
+		stop("units are not convertible");
+	cv_converter *cv = ut_get_converter(ut_unwrap(from), ut_unwrap(to));
+	NumericVector out(val.size());
+	cv_convert_doubles(cv, &(val[0]), val.size(), &(out[0]));
+	cv_free(cv);
+	return out;
+}
+
+// [[Rcpp::export]]
+LogicalVector R_ut_new_dimensionless_unit(CharacterVector name) {
+  ut_unit *u = ut_new_dimensionless_unit(sys); 
+  if (ut_map_name_to_unit(name[0], enc, u) != UT_SUCCESS)
+    handle_error("R_ut_new_dimensionless");
+  LogicalVector l;
+  return l;
+}
+
+// [[Rcpp::export]]
+LogicalVector R_ut_scale(CharacterVector nw, CharacterVector old, NumericVector d) {
+  if (d.size() != 1)
+  	stop("d should have size 1");
+  ut_unit *u_old = ut_parse(sys, ut_trim(old[0], enc), enc);
+  ut_unit *u_new = ut_scale(d[0], u_old);
+  if (ut_map_name_to_unit(nw[0], enc, u_new) != UT_SUCCESS)
+    handle_error("R_ut_add_scale");
+  LogicalVector l;
+  return l;
+}
+
+// [[Rcpp::export]]
+LogicalVector R_ut_offset(CharacterVector nw, CharacterVector old, NumericVector d) {
+  if (d.size() != 1)
+  	stop("d should have size 1");
+  ut_unit *u_old = ut_parse(sys, ut_trim(old[0], enc), enc);
+  ut_unit *u_new = ut_offset(u_old, d[0]);
+  if (ut_map_name_to_unit(nw[0], enc, u_new) != UT_SUCCESS)
+    handle_error("R_ut_offset");
+  LogicalVector l;
+  return l;
+}
+
+// [[Rcpp::export]]
+XPtrUT R_ut_divide(SEXP numer, SEXP denom) {
+	return ut_wrap(ut_divide(ut_unwrap(numer), ut_unwrap(denom)));
+}
+
+// [[Rcpp::export]]
+XPtrUT R_ut_multiply(SEXP a, SEXP b) {
+	return ut_wrap(ut_multiply(ut_unwrap(a), ut_unwrap(b)));
+}
+
+// [[Rcpp::export]]
+XPtrUT R_ut_invert(SEXP a) {
+	return ut_wrap(ut_invert(ut_unwrap(a)));
+}
+
+// [[Rcpp::export]]
+XPtrUT R_ut_raise(SEXP a, IntegerVector i) {
+	if (i.length() != 1)
+		stop("i should have length 1");
+	return ut_wrap(ut_raise(ut_unwrap(a), i[0]));
+}
+
+// [[Rcpp::export]]
+XPtrUT R_ut_root(SEXP a, IntegerVector i) {
+	if (i.length() != 1)
+		stop("i should have length 1");
+	return ut_wrap(ut_root(ut_unwrap(a), i[0]));
+}
+
+// [[Rcpp::export]]
+XPtrUT R_ut_log(SEXP a, NumericVector base) {
+	if (base.length() != 1)
+		stop("base should have length 1");
+	if (base[0] <= 0)
+		stop("base should be positive");
+	return ut_wrap(ut_log(base[0], ut_unwrap(a)));
+}
+
+// [[Rcpp::export]]
+CharacterVector R_ut_format(SEXP p, bool names = false, bool definition = false, 
+		bool ascii = false) {
+	int opt;
+	if (! ascii)
+		opt = enc;
+	else
+		opt = UT_ASCII;
 	if (names)
 		opt = opt | UT_NAMES;
 	if (definition)
 		opt = opt | UT_DEFINITION;
 	char buf[256];
-	int i = ut_format((ut_unit *) (*ptr)[0], buf, 256, opt);
-	if (i == -1) {
+	int len = ut_format(ut_unwrap(p), buf, 256, opt);
+	if (len == -1) {
 		switch (ut_get_status()) {
 			UT_BAD_ARG:
 			UT_CANT_FORMAT:
-					handle_error("R_ut_format");
-					break;
+				handle_error("R_ut_format");
+				break;
 			default:;
 		}
-	}
+	} else if (len == 256)
+		handle_error("buffer of 256 bytes too small!");
 	return CharacterVector::create(buf);
+}
+
+// [[Rcpp::export]]
+CharacterVector R_ut_set_encoding(CharacterVector enc_str) {
+	const char *e = enc_str[0];
+	if (strcmp(e, "utf8") == 0)
+		enc = UT_UTF8;
+	else if (strcmp(e, "ascii") == 0)
+		enc = UT_ASCII;
+	else if (strcmp(e, "ascii") == 0)
+		enc = UT_ASCII;
+	else if (strcmp(e, "iso-8859-1") == 0 || strcmp(e, "latin1") == 0)
+		enc = UT_LATIN1;
+	else
+		stop("Valid encoding string parameters are ('utf8'|'ascii'|'iso-8859-1','latin1')");
+	return enc_str;
+}
+
+// [[Rcpp::export]]
+CharacterVector R_ut_get_symbol(CharacterVector ustr) {
+	ut_unit *u = ut_parse(sys, ut_trim(ustr[0], enc), enc);
+	if (u == NULL)
+		handle_error("R_ut_get_name");
+	const char *s = ut_get_symbol(u, enc);
+	ut_free(u);
+	if (s == NULL)
+		return CharacterVector::create("");
+	else
+		return CharacterVector::create(s);
+}
+
+// [[Rcpp::export]]
+CharacterVector R_ut_get_name(CharacterVector ustr) {
+	ut_unit *u = ut_parse(sys, ut_trim(ustr[0], enc), enc);
+	if (u == NULL)
+		handle_error("R_ut_get_name");
+	const char *s = ut_get_name(u, enc);
+	ut_free(u);
+	if (s == NULL)
+		return CharacterVector::create("");
+	else
+		return CharacterVector::create(s);
 }

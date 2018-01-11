@@ -78,7 +78,7 @@
 #' make_units(ohm)
 #' # Note, if the printing of non-ascii characters is garbled, then you may
 #' # need to specify the encoding on your system manually like this:
-#' # udunits2::ud.set.encoding("latin1")
+#' # ud.set.encoding("latin1")
 #' # not all unit names get converted to symbols under different encodings
 #'
 #' ## Arithmetic operations and units
@@ -198,7 +198,7 @@ is_udunits_time <- function(s) {
 #'   case, automatic unit simplification may not work properly when performing
 #'   operations on unit objects, but unit conversion and other Math operations
 #'   should still give correct results so long as the unit string supplied
-#'   returns \code{TRUE} for \code{udunits2::ud.is.parsable()}.
+#'   returns \code{TRUE} for \code{ud.is.parsable()}.
 #'
 #'   The second type of unit string accepted is one with implicit exponents. In
 #'   this format, \code{/}, \code{*}, and \code{^}, may not be present in the
@@ -288,7 +288,7 @@ units_eval_env$lb <- function(x) base::log(x, base = 2)
 #' @rdname as_units
 #'
 #' @param check_is_valid throw an error if all the unit symbols are not either
-#'   recognized by udunits2 via \code{udunits2::ud.is.parseable()}, or a custom
+#'   recognized by udunits2 via \code{ud.is.parseable()}, or a custom
 #'   user defined via \code{install_symbolic_unit()}. If \code{FALSE}, no check
 #'   for validity is performed.
 #'   
