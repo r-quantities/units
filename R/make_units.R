@@ -105,7 +105,7 @@
 #' 
 #' # Note, install_symbolic_unit() does not add any support for unit
 #' # conversion, or arithmetic operations that require unit conversion. See
-#' # ?install_conversion_function for how to define relationships for user 
+#' # ?install_conversion_constant for defining relationships between user 
 #' # defined units.
 #'
 #' ## set_units()
@@ -275,7 +275,7 @@ pc_and <- function(..., sep = "") {
 }
 
 is_valid_unit_symbol <- function(chr) {
-  ud.is.parseable(chr) || is_user_defined_unit(chr)
+  ud.is.parseable(chr)
 }
 
 units_eval_env <- new.env(parent = baseenv())
@@ -302,7 +302,7 @@ units_eval_env$lb <- function(x) base::log(x, base = 2)
 #'   individually, such that each symbol must be recognized by the udunits
 #'   database (checked by \code{ud.is.parseable()}, \emph{or} be a custom,
 #'   user-defined unit symbol that was defined either by
-#'   \code{install_symbolic_unit()} or \code{install_conversion_function()}. To
+#'   \code{install_symbolic_unit()} or \code{install_conversion_constant()}. To
 #'   see which symbols and names are currently recognized by the udunits
 #'   database, see \code{udunits_symbols()}.
 #'

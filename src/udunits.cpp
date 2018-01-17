@@ -1,5 +1,5 @@
 /*
-  modified from: https://github.com/pacificclimate/Rudunits2
+  part of this was modified from: https://github.com/pacificclimate/Rudunits2
 
   (c) James Hiebert <hiebert@uvic.ca>
   Pacific Climate Impacts Consortium
@@ -9,11 +9,13 @@
 */
 
 #include "Rcpp.h"
+
 using namespace Rcpp;
 
 #include <R.h>
 #include <udunits2.h>
 #include <stdio.h> /* FILENAME_MAX */
+#include "units.h"
 
 ut_system *sys = NULL;
 static ut_encoding enc;
@@ -65,7 +67,7 @@ LogicalVector R_ut_has_system(List foo) {
   return ret;
 }
 
-typedef std::vector<void *> ut_vec;
+// typedef std::vector<void *> ut_vec;
 
 void finalizeUT(ut_vec *ptr) {
 	if (ptr->size() != 1)
@@ -74,7 +76,7 @@ void finalizeUT(ut_vec *ptr) {
 	// deleting ptr should be automatic
 }
 
-typedef XPtr<ut_vec,PreserveStorage,finalizeUT> XPtrUT;
+// typedef XPtr<ut_vec,PreserveStorage,finalizeUT> XPtrUT;
 
 // wrap a ut_unit pointer in an XPtr
 XPtrUT ut_wrap(ut_unit *u) {
@@ -211,7 +213,9 @@ CharacterVector R_ut_format(SEXP p, bool names = false, bool definition = false,
 	if (definition)
 		opt = opt | UT_DEFINITION;
 	char buf[256];
+	ut_set_error_message_handler(ut_ignore);
 	int len = ut_format(ut_unwrap(p), buf, 256, opt);
+	ut_set_error_message_handler((ut_error_message_handler) r_error_fn);
 	if (len == -1) {
 		switch (ut_get_status()) {
 			UT_BAD_ARG:
@@ -220,6 +224,7 @@ CharacterVector R_ut_format(SEXP p, bool names = false, bool definition = false,
 				break;
 			default:;
 		}
+		buf[0] = '\0'; // "": dont' return rubbish
 	} else if (len == 256)
 		handle_error("buffer of 256 bytes too small!");
 	return CharacterVector::create(buf);

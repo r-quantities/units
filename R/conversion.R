@@ -1,13 +1,12 @@
 # Helper functions for testing if we can convert and how using either
 # user-defined conversion functions or udunits.
 are_convertible <- function(from, to) {
-  user_are_convertible(from, to) || ud.are.convertible(from, to)
+  ud.are.convertible(from, to)
 }
 
 convert <- function(value, from, to) {
   value <- unclass(value)
-  if (user_are_convertible(from, to)) user_convert(value, from, to)
-  else if (ud.are.convertible(from, to)) ud.convert(value, from, to)
+  if (ud.are.convertible(from, to)) ud.convert(value, from, to)
   else NA
 }
 

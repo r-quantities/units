@@ -163,7 +163,7 @@ pillar_shaft.units <- function(x, ...) {
   u_char <- as.character(units(x))
   if (! requireNamespace("pillar", quietly = TRUE))
     stop("package pillar not available: install first?")
-  out <- paste(format(unclass(x), ...), pillar::style_subtle(u_char))
-  #out <- format(unclass(x), ...)
+  #out <- paste(format(unclass(x), ...), pillar::style_subtle(u_char))
+  out <- format(unclass(x), ...)
   pillar::new_pillar_shaft_simple(out, align = "right", min_width = 8)
 }
