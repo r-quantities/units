@@ -3,6 +3,5 @@
 
 using namespace Rcpp;
 
-typedef std::vector<void *> ut_vec;
-void finalizeUT(ut_vec *ptr);
-typedef XPtr<ut_vec,PreserveStorage,finalizeUT,true> XPtrUT;
+void finalizeUT(ut_unit *ptr);
+typedef XPtr<ut_unit,PreserveStorage,finalizeUT,true> XPtrUT;

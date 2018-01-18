@@ -70,27 +70,22 @@ LogicalVector R_ut_has_system(List foo) {
 
 // typedef std::vector<void *> ut_vec;
 
-void finalizeUT(ut_vec *ptr) {
-	if (ptr->size() != 1)
-		stop("ut_vec has size different from 1");
-	ut_free((ut_unit *) ((*ptr)[0]));
-	delete ptr;
+void finalizeUT(ut_unit *ptr) {
+	ut_free(ptr);
 }
 
-// typedef XPtr<ut_vec,PreserveStorage,finalizeUT> XPtrUT;
+// typedef XPtr<ut_unit,PreserveStorage,finalizeUT> XPtrUT;
 
 // wrap a ut_unit pointer in an XPtr
 XPtrUT ut_wrap(ut_unit *u) {
-	ut_vec *v = new ut_vec;
-	v->push_back(u);
-	XPtrUT p(v);
+	XPtrUT p(u);
 	return p;
 }
 
 // fetch the ut_unit pointer from an XPtr wrapper
 ut_unit *ut_unwrap(SEXP u) {
 	XPtrUT ptr(u);
-	return ((ut_unit *) (*ptr)[0]);
+	return ((ut_unit *) ptr);
 }
 
 // [[Rcpp::export]]
