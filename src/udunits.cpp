@@ -12,15 +12,14 @@
 
 using namespace Rcpp;
 
+extern "C" {
 #include <R.h>
 #include <udunits2.h>
-#include <stdio.h> /* FILENAME_MAX */
 #include "units.h"
 
 ut_system *sys = NULL;
 static ut_encoding enc = UT_UTF8;
 
-extern "C" {
 #include "io.h"
 }
 

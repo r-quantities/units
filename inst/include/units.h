@@ -5,4 +5,4 @@ using namespace Rcpp;
 
 typedef std::vector<void *> ut_vec;
 void finalizeUT(ut_vec *ptr);
-typedef XPtr<ut_vec,PreserveStorage,finalizeUT> XPtrUT;
+typedef XPtr<ut_vec,PreserveStorage,finalizeUT,true> XPtrUT;
