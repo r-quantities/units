@@ -5,9 +5,8 @@ are_convertible <- function(from, to) {
 }
 
 convert <- function(value, from, to) {
-  value <- unclass(value)
-  if (ud.are.convertible(from, to)) ud.convert(value, from, to)
-  else NA
+  stopifnot(ud.are.convertible(from, to))
+  ud.convert(unclass(value), from, to)
 }
 
 #' Set measurement units on a numeric vector
@@ -67,7 +66,7 @@ convert <- function(value, from, to) {
   str2 <- as.character(value)
 
   if (are_convertible(str1, str2)) 
-    structure(convert(x, str1, str2), units = value, class = "units")
+    structure(convert(x, str1, str2), units = value, dim = dim(x), class = "units")
   else
     stop(paste("cannot convert", units(x), "into", value), call. = FALSE)
 }

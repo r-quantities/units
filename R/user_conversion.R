@@ -21,11 +21,11 @@ install_symbolic_unit <- function(chr, warn = TRUE) {
   #assign(chr, NULL, envir =  user_defined_units)
 }
 
-#' Install a conversion constant between user-defined units.
+#' Install a conversion constant or offset between user-defined units.
 #' 
 #' @description Tells the \code{units} package how to convert between units that
 #'   have a linear relationship, i.e. can be related on the form \eqn{y = \alpha
-#'   x}.
+#'   x} (constant) or \eqn{y = \alpha + x} (offset).
 #'   
 #' @param from    String for the symbol of the unit being converted from.
 #' @param to      String for the symbol of the unit being converted to; must be a non-existing unit name.
@@ -35,7 +35,7 @@ install_symbolic_unit <- function(chr, warn = TRUE) {
 #'   through a linear function, that is, you can convert from one to the other 
 #'   as \eqn{y = \alpha x}. Using this function, you specify that you
 #'   can go from values of type \code{from} to values of type \code{to} by 
-#'   multiplying by a constant.
+#'   multiplying by a constant, or adding a constant.
 #'   
 #' @examples 
 #' 
@@ -51,4 +51,17 @@ install_symbolic_unit <- function(chr, warn = TRUE) {
 install_conversion_constant <- function(from, to, const) {
   stopifnot(is.finite(const), const != 0.0)
   R_ut_scale(as.character(to), as.character(from), 1.0 / as.double(const))
+}
+
+#' @export
+#' @name install_conversion_constant 
+#' @examples
+#' install_conversion_offset("meter", "newmeter", 1)
+#' m = set_units(1:3, meter)
+#' n = set_units(1:3, newmeter)
+#' m + n
+#' n + m
+install_conversion_offset <- function(from, to, const) {
+  stopifnot(is.finite(const), const != 0.0)
+  R_ut_offset(as.character(to), as.character(from), as.double(const))
 }

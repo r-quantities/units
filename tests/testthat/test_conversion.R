@@ -119,8 +119,7 @@ test_that("m + m*s is an error", {
 test_that("we can convert between units that are not simply a scalar from each other", {
   m <- 0 * as_units("degC")
   units(m) <- as_units("degK")
-  #FIXME: expect_equal(as.numeric(m), udunits2::ud.convert(0, "degC", "degK"))  
-  #expect_equal(as.character(units(m)), "degK")
+  expect_equal(as.numeric(m), units:::ud.convert(0, "degC", "degK"))  
   expect_equal(as.character(units(m)), "K")
   
   temp <- 75 * as_units('degF')
@@ -130,3 +129,9 @@ test_that("we can convert between units that are not simply a scalar from each o
   expect_equal(units(result), unitless)
 })
 
+
+test_that("dim propagates", {
+  y = x = set_units(matrix(1:4,2), m)
+  units(y) = make_unit("mm")
+  expect_equal(dim(x), dim(y))
+})

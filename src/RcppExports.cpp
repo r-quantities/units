@@ -77,7 +77,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // R_ut_new_dimensionless_unit
-LogicalVector R_ut_new_dimensionless_unit(CharacterVector name);
+XPtrUT R_ut_new_dimensionless_unit(CharacterVector name);
 RcppExport SEXP _units_R_ut_new_dimensionless_unit(SEXP nameSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -88,7 +88,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // R_ut_scale
-LogicalVector R_ut_scale(CharacterVector nw, CharacterVector old, NumericVector d);
+XPtrUT R_ut_scale(CharacterVector nw, CharacterVector old, NumericVector d);
 RcppExport SEXP _units_R_ut_scale(SEXP nwSEXP, SEXP oldSEXP, SEXP dSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -101,7 +101,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // R_ut_offset
-LogicalVector R_ut_offset(CharacterVector nw, CharacterVector old, NumericVector d);
+XPtrUT R_ut_offset(CharacterVector nw, CharacterVector old, NumericVector d);
 RcppExport SEXP _units_R_ut_offset(SEXP nwSEXP, SEXP oldSEXP, SEXP dSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;

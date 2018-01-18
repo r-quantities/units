@@ -18,7 +18,7 @@ using namespace Rcpp;
 #include "units.h"
 
 ut_system *sys = NULL;
-static ut_encoding enc;
+static ut_encoding enc = UT_UTF8;
 
 extern "C" {
 #include "io.h"
@@ -54,7 +54,9 @@ LogicalVector udunits_init(CharacterVector path, bool warn_on_failure = false) {
 
 // [[Rcpp::export]]
 LogicalVector udunits_exit(LogicalVector lo) {
-	ut_free_system(sys);
+	if (sys != NULL)
+		ut_free_system(sys);
+	sys = NULL;
   	return lo;
 }
 
@@ -72,8 +74,8 @@ LogicalVector R_ut_has_system(List foo) {
 void finalizeUT(ut_vec *ptr) {
 	if (ptr->size() != 1)
 		stop("ut_vec has size different from 1");
-	ut_free((ut_unit *) (*ptr)[0]);
-	// deleting ptr should be automatic
+	ut_free((ut_unit *) ((*ptr)[0]));
+	delete ptr;
 }
 
 // typedef XPtr<ut_vec,PreserveStorage,finalizeUT> XPtrUT;
@@ -130,36 +132,35 @@ NumericVector R_convert_doubles(SEXP from, SEXP to, NumericVector val) {
 }
 
 // [[Rcpp::export]]
-LogicalVector R_ut_new_dimensionless_unit(CharacterVector name) {
+XPtrUT R_ut_new_dimensionless_unit(CharacterVector name) {
   ut_unit *u = ut_new_dimensionless_unit(sys); 
   if (ut_map_name_to_unit(name[0], enc, u) != UT_SUCCESS)
     handle_error("R_ut_new_dimensionless");
-  LogicalVector l;
-  return l;
+  return ut_wrap(u);
 }
 
 // [[Rcpp::export]]
-LogicalVector R_ut_scale(CharacterVector nw, CharacterVector old, NumericVector d) {
+XPtrUT R_ut_scale(CharacterVector nw, CharacterVector old, NumericVector d) {
   if (d.size() != 1)
   	stop("d should have size 1");
   ut_unit *u_old = ut_parse(sys, ut_trim(old[0], enc), enc);
   ut_unit *u_new = ut_scale(d[0], u_old);
   if (ut_map_name_to_unit(nw[0], enc, u_new) != UT_SUCCESS)
     handle_error("R_ut_add_scale");
-  LogicalVector l;
-  return l;
+  ut_free(u_old);
+  return ut_wrap(u_new);
 }
 
 // [[Rcpp::export]]
-LogicalVector R_ut_offset(CharacterVector nw, CharacterVector old, NumericVector d) {
+XPtrUT R_ut_offset(CharacterVector nw, CharacterVector old, NumericVector d) {
   if (d.size() != 1)
   	stop("d should have size 1");
   ut_unit *u_old = ut_parse(sys, ut_trim(old[0], enc), enc);
   ut_unit *u_new = ut_offset(u_old, d[0]);
   if (ut_map_name_to_unit(nw[0], enc, u_new) != UT_SUCCESS)
     handle_error("R_ut_offset");
-  LogicalVector l;
-  return l;
+  ut_free(u_old);
+  return ut_wrap(u_new);
 }
 
 // [[Rcpp::export]]

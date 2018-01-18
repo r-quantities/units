@@ -2,9 +2,13 @@
 % Please edit documentation in R/user_conversion.R
 \name{install_conversion_constant}
 \alias{install_conversion_constant}
-\title{Install a conversion constant between user-defined units.}
+\alias{install_conversion_constant}
+\alias{install_conversion_offset}
+\title{Install a conversion constant or offset between user-defined units.}
 \usage{
 install_conversion_constant(from, to, const)
+
+install_conversion_offset(from, to, const)
 }
 \arguments{
 \item{from}{String for the symbol of the unit being converted from.}
@@ -16,14 +20,14 @@ install_conversion_constant(from, to, const)
 \description{
 Tells the \code{units} package how to convert between units that
   have a linear relationship, i.e. can be related on the form \eqn{y = \alpha
-  x}.
+  x} (constant) or \eqn{y = \alpha + x} (offset).
 }
 \details{
 This function handles the very common case where units are related 
   through a linear function, that is, you can convert from one to the other 
   as \eqn{y = \alpha x}. Using this function, you specify that you
   can go from values of type \code{from} to values of type \code{to} by 
-  multiplying by a constant.
+  multiplying by a constant, or adding a constant.
 }
 \examples{
 
@@ -35,4 +39,9 @@ oranges <- 1 * as_units("orange")
 apples + oranges
 oranges + apples
 
+install_conversion_offset("meter", "newmeter", 1)
+m = set_units(1:3, meter)
+n = set_units(1:3, newmeter)
+m + n
+n + m
 }
