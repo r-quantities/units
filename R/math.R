@@ -19,10 +19,10 @@
 Math.units = function(x, ...) {
   OK <- switch(.Generic, "abs" = , "sign" = , "floor" = , "ceiling" = , "log" = ,
                "trunc" = , "round" = , "signif" = , "cumsum" = , 
-               "cummax" = , "cummin" = TRUE, FALSE)
+               "cummax" = , "cummin" = , "sqrt" = TRUE, FALSE)
 
-  rad = units(make_unit("rad"))
-  deg = units(make_unit("degree"))
+  rad = units(as_units("rad"))
+  deg = units(as_units("degree"))
   if (!OK && (units(x) == rad || units(x) == deg)) {
     OK <- switch(.Generic, sin =, cos =, tan =, sinpi =, cospi =, tanpi = TRUE, FALSE)
     if (OK) {
@@ -57,7 +57,9 @@ Math.units = function(x, ...) {
         stop(paste("log with base", dts$base, "not supported"))
       .as.units(NextMethod(.Generic), units(symbolic_unit(u, check_is_valid = FALSE)))
       # nocov end
-    } else
+    } else if (.Generic == "sqrt") {
+	  x ^ 0.5
+	} else
       .as.units(NextMethod(.Generic), units(x))
   }
 }
