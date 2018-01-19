@@ -131,34 +131,34 @@ Ops.units <- function(e1, e2) {
     .as.units(NextMethod(), u)
 }
 
-#' matrix multiplication
-#' @name matmult
-#' @param x numeric matrix or vector
-#' @param y numeric matrix or vector
-#' @export
-#' @details see \code{"\link[base]{\%*\%}"} for the base function, reimplemented
-#'   as default method
-`%*%` = function(x, y) UseMethod("%*%")
+##' matrix multiplication
+##' @name matmult
+##' @param x numeric matrix or vector
+##' @param y numeric matrix or vector
+##' @export
+##' @details see \code{"\link[base]{\%*\%}"} for the base function, reimplemented
+##'   as default method
+#`%*%` = function(x, y) UseMethod("%*%")
 
-#' @name matmult
-#' @export
-`%*%.default` = function(x, y) {
-	if (inherits(y, "units"))
-		`%*%.units`(x, y)
-	else
-		base::`%*%`(x, y)
-}
+##' @name matmult
+##' @export
+#`%*%.default` = function(x, y) {
+#	if (inherits(y, "units"))
+#		`%*%.units`(x, y)
+#	else
+#		base::`%*%`(x, y)
+#}
 
-#' @name matmult
-#' @export
-#' @examples
-#' a = set_units(1:5, m)
-#' a %*% a
-#' a %*% t(a)
-#' a %*% set_units(1:5, 1)
-#' set_units(1:5, 1) %*% a
-`%*%.units` = function(x, y) {
-	ret = `%*%.default`(unclass(x), unclass(y))
-	units(ret) = .multiply_symbolic_units(1, units(x), units(y))
-	ret
-}
+##' @name matmult
+##' @export
+##' @examples
+##' a = set_units(1:5, m)
+##' a %*% a
+##' a %*% t(a)
+##' a %*% set_units(1:5, 1)
+##' set_units(1:5, 1) %*% a
+#`%*%.units` = function(x, y) {
+#	ret = `%*%.default`(unclass(x), unclass(y))
+#	units(ret) = .multiply_symbolic_units(1, units(x), units(y))
+#	ret
+#}
