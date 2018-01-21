@@ -266,3 +266,12 @@ CharacterVector R_ut_get_name(CharacterVector ustr) {
 	else
 		return CharacterVector::create(s);
 }
+
+// https://github.com/r-quantities/units/issues/89#issuecomment-359251623
+// [[Rcpp::export]]
+XPtrUT R_ut_map_name_to_unit( CharacterVector name, SEXP inunit) {
+  ut_unit *unit = ut_unwrap(inunit);
+  if (ut_map_name_to_unit(name[0], enc, unit) != UT_SUCCESS)
+    handle_error("R_ut_map_name_to_unit");
+  return ut_wrap(unit);
+}

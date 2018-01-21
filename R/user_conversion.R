@@ -11,7 +11,7 @@
 #' @export
 #' @rdname install_symbolic_unit
 install_symbolic_unit <- function(chr, warn = TRUE) {
-  if(ud.is.parseable(chr)) {
+  if(ud_is_parseable(chr)) {
     if (warn) 
       warning(sQuote(chr), " is already a valid unit recognized by udunits.\n",
               "Installation not necessary and is not performed")

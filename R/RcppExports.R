@@ -77,3 +77,7 @@ R_ut_get_name <- function(ustr) {
     .Call('_units_R_ut_get_name', PACKAGE = 'units', ustr)
 }
 
+R_ut_map_name_to_unit <- function(name, inunit) {
+    .Call('_units_R_ut_map_name_to_unit', PACKAGE = 'units', name, inunit)
+}
+

@@ -78,7 +78,7 @@
 #' make_units(ohm)
 #' # Note, if the printing of non-ascii characters is garbled, then you may
 #' # need to specify the encoding on your system manually like this:
-#' # ud.set.encoding("latin1")
+#' # ud_set_encoding("latin1")
 #' # not all unit names get converted to symbols under different encodings
 #'
 #' ## Arithmetic operations and units
@@ -155,7 +155,7 @@ are_exponents_implicit <- function(s) {
 }
 
 is_udunits_time <- function(s) {
-  ud.is.parseable(s) && ud.are.convertible(s, "seconds since 1970-01-01")
+  ud_is_parseable(s) && ud_are_convertible(s, "seconds since 1970-01-01")
 }
 
 
@@ -198,7 +198,7 @@ is_udunits_time <- function(s) {
 #'   case, automatic unit simplification may not work properly when performing
 #'   operations on unit objects, but unit conversion and other Math operations
 #'   should still give correct results so long as the unit string supplied
-#'   returns \code{TRUE} for \code{ud.is.parsable()}.
+#'   returns \code{TRUE} for \code{ud_is_parsable()}.
 #'
 #'   The second type of unit string accepted is one with implicit exponents. In
 #'   this format, \code{/}, \code{*}, and \code{^}, may not be present in the
@@ -275,7 +275,7 @@ pc_and <- function(..., sep = "") {
 }
 
 is_valid_unit_symbol <- function(chr) {
-  ud.is.parseable(chr)
+  ud_is_parseable(chr)
 }
 
 units_eval_env <- new.env(parent = baseenv())
@@ -288,7 +288,7 @@ units_eval_env$lb <- function(x) base::log(x, base = 2)
 #' @rdname as_units
 #'
 #' @param check_is_valid throw an error if all the unit symbols are not either
-#'   recognized by udunits2 via \code{ud.is.parseable()}, or a custom
+#'   recognized by udunits2 via \code{ud_is_parseable()}, or a custom
 #'   user defined via \code{install_symbolic_unit()}. If \code{FALSE}, no check
 #'   for validity is performed.
 #'   
@@ -300,7 +300,7 @@ units_eval_env$lb <- function(x) base::log(x, base = 2)
 #'
 #'   In \code{as_units()}, each of the symbols in the unit expression is treated
 #'   individually, such that each symbol must be recognized by the udunits
-#'   database (checked by \code{ud.is.parseable()}, \emph{or} be a custom,
+#'   database (checked by \code{ud_is_parseable()}, \emph{or} be a custom,
 #'   user-defined unit symbol that was defined either by
 #'   \code{install_symbolic_unit()} or \code{install_conversion_constant()}. To
 #'   see which symbols and names are currently recognized by the udunits
@@ -364,8 +364,8 @@ symbolic_unit <- function(chr, check_is_valid = TRUE) {
   }
   
   auto_convert <- units_options("auto_convert_names_to_symbols")
-  if (auto_convert && ud.is.parseable(chr)) {
-    sym <- ud.get.symbol(chr)
+  if (auto_convert && ud_is_parseable(chr)) {
+    sym <- ud_get_symbol(chr)
     if (nzchar(sym)) 
       chr <- sym
   }

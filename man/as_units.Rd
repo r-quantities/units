@@ -36,7 +36,7 @@ make_units(bare_expression, check_is_valid = TRUE)
 syntax (reserved R syntax words like \code{in} must be backticked)}
 
 \item{check_is_valid}{throw an error if all the unit symbols are not either
-recognized by udunits2 via \code{ud.is.parseable()}, or a custom
+recognized by udunits2 via \code{ud_is_parseable()}, or a custom
 user defined via \code{install_symbolic_unit()}. If \code{FALSE}, no check
 for validity is performed.}
 
@@ -106,7 +106,7 @@ By default, unit names are automatically substituted with unit names
   case, automatic unit simplification may not work properly when performing
   operations on unit objects, but unit conversion and other Math operations
   should still give correct results so long as the unit string supplied
-  returns \code{TRUE} for \code{ud.is.parsable()}.
+  returns \code{TRUE} for \code{ud_is_parsable()}.
 
   The second type of unit string accepted is one with implicit exponents. In
   this format, \code{/}, \code{*}, and \code{^}, may not be present in the
@@ -129,7 +129,7 @@ By default, unit names are automatically substituted with unit names
 
   In \code{as_units()}, each of the symbols in the unit expression is treated
   individually, such that each symbol must be recognized by the udunits
-  database (checked by \code{ud.is.parseable()}, \emph{or} be a custom,
+  database (checked by \code{ud_is_parseable()}, \emph{or} be a custom,
   user-defined unit symbol that was defined either by
   \code{install_symbolic_unit()} or \code{install_conversion_constant()}. To
   see which symbols and names are currently recognized by the udunits
@@ -194,7 +194,7 @@ make_units(kilogram)
 make_units(ohm)
 # Note, if the printing of non-ascii characters is garbled, then you may
 # need to specify the encoding on your system manually like this:
-# ud.set.encoding("latin1")
+# ud_set_encoding("latin1")
 # not all unit names get converted to symbols under different encodings
 
 ## Arithmetic operations and units

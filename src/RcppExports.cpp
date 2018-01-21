@@ -231,6 +231,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// R_ut_map_name_to_unit
+XPtrUT R_ut_map_name_to_unit(CharacterVector name, SEXP inunit);
+RcppExport SEXP _units_R_ut_map_name_to_unit(SEXP nameSEXP, SEXP inunitSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< CharacterVector >::type name(nameSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type inunit(inunitSEXP);
+    rcpp_result_gen = Rcpp::wrap(R_ut_map_name_to_unit(name, inunit));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_units_udunits_init", (DL_FUNC) &_units_udunits_init, 2},
@@ -252,6 +264,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_units_R_ut_set_encoding", (DL_FUNC) &_units_R_ut_set_encoding, 1},
     {"_units_R_ut_get_symbol", (DL_FUNC) &_units_R_ut_get_symbol, 1},
     {"_units_R_ut_get_name", (DL_FUNC) &_units_R_ut_get_name, 1},
+    {"_units_R_ut_map_name_to_unit", (DL_FUNC) &_units_R_ut_map_name_to_unit, 2},
     {NULL, NULL, 0}
 };
 

@@ -8,7 +8,7 @@
 
 
 .get_ud_xml_dir <- function() {
-  ud.is.parseable("m") # make sure udunits2 has booted
+  ud_is_parseable("m") # make sure udunits2 has booted
   # which sets the environment varialbe UDUNITS2_XML_PATH
   udunits2_dir <- dirname(Sys.getenv("UDUNITS2_XML_PATH"))
   if (udunits2_dir == "")

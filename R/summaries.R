@@ -14,7 +14,7 @@ Summary.units = function(..., na.rm = FALSE) {
     for (i in 2:length(args)) {
       if (!inherits(args[[i]], "units"))
         stop(paste("argument", i, "is not of class units"))
-      if (!ud.are.convertible(units(args[[i]]), u))
+      if (!ud_are_convertible(units(args[[i]]), u))
         stop(paste("argument", i, 
                    "has units that are not convertible to that of the first argument"))
       args[[i]] = set_units(args[[i]], u, mode = "standard") # convert to first unit

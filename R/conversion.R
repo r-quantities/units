@@ -1,12 +1,12 @@
 # Helper functions for testing if we can convert and how using either
 # user-defined conversion functions or udunits.
 are_convertible <- function(from, to) {
-  ud.are.convertible(from, to)
+  ud_are_convertible(from, to)
 }
 
 convert <- function(value, from, to) {
-  stopifnot(ud.are.convertible(from, to))
-  ud.convert(unclass(value), from, to)
+  stopifnot(ud_are_convertible(from, to))
+  ud_convert(unclass(value), from, to)
 }
 
 #' Set measurement units on a numeric vector
