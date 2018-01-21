@@ -15,6 +15,10 @@ if test [ -n "$udunits2_include_path" ] ; then
 else
    if test [ -n "${UDUNITS2_INCLUDE}" ] ; then
       UD_CPPFLAGS="-I${UDUNITS2_INCLUDE}"
+   else # Fedora?
+      if test [ -d "/usr/include/udunits2" ] ; then    
+         UD_CPPFLAGS="-I/usr/include/udunits2"
+	  fi
    fi
 fi
 
@@ -31,9 +35,6 @@ else
 fi
 
 AC_CHECK_LIB(expat,XML_ParserCreate,[],[],${LIBS})
-if test "${ac_cv_lib_expat_XML_ParserCreate}" == yes; then
-   LIBS="${LIBS} -lexpat "
-fi
 
 CPPFLAGS="${UD_CPPFLAGS} ${CPPFLAGS}"
 
@@ -54,8 +55,6 @@ if test "${UD_ERROR}" != ""  ; then
     echo "     It is required for this package."
     exit 1
 fi
-
-LIBS="${LIBS} -ludunits2"
 
 AC_SUBST([LIBS])
 AC_SUBST([UD_CPPFLAGS])
