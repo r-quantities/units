@@ -2,8 +2,12 @@
 .Rhistory
 .RData
 .Ruserdata
+# Autotools
 config.*
 Makevars
+autom4te.cache
+autoscan.log
+configure.scan
 # Compiled Object files
 *.slo
 *.lo
