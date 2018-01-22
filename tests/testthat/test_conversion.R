@@ -135,3 +135,15 @@ test_that("dim propagates", {
   units(y) = make_unit("mm")
   expect_equal(dim(x), dim(y))
 })
+
+test_that("conversion to dimensionless with prefix works (g/kg)", {
+	a_orig <- a <- 1:10
+	units(a) = as_units("mg/kg")
+	expect_equal(as.numeric(a), a_orig/1e6)
+	units(a) = as_units("kg/mg")
+	expect_equal(a, a_orig)
+	units(a) = as_units("g/g")
+	expect_equal(a, a_orig)
+	units(a) = as_units("kg/g")
+	expect_equal(a, a_orig * 1000)
+})
