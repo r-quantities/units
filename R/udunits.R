@@ -21,5 +21,4 @@ ud_convert = function(value, from, to) {
 
 ud_set_encoding = function(enc) {
 	R_ut_set_encoding(as.character(enc))
-	return()
 }

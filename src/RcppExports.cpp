@@ -7,26 +7,22 @@
 using namespace Rcpp;
 
 // udunits_init
-LogicalVector udunits_init(CharacterVector path, bool warn_on_failure);
-RcppExport SEXP _units_udunits_init(SEXP pathSEXP, SEXP warn_on_failureSEXP) {
+void udunits_init(CharacterVector path);
+RcppExport SEXP _units_udunits_init(SEXP pathSEXP) {
 BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< CharacterVector >::type path(pathSEXP);
-    Rcpp::traits::input_parameter< bool >::type warn_on_failure(warn_on_failureSEXP);
-    rcpp_result_gen = Rcpp::wrap(udunits_init(path, warn_on_failure));
-    return rcpp_result_gen;
+    udunits_init(path);
+    return R_NilValue;
 END_RCPP
 }
 // udunits_exit
-LogicalVector udunits_exit(LogicalVector lo);
-RcppExport SEXP _units_udunits_exit(SEXP loSEXP) {
+void udunits_exit();
+RcppExport SEXP _units_udunits_exit() {
 BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< LogicalVector >::type lo(loSEXP);
-    rcpp_result_gen = Rcpp::wrap(udunits_exit(lo));
-    return rcpp_result_gen;
+    udunits_exit();
+    return R_NilValue;
 END_RCPP
 }
 // R_ut_parse
@@ -199,14 +195,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // R_ut_set_encoding
-CharacterVector R_ut_set_encoding(CharacterVector enc_str);
+void R_ut_set_encoding(std::string enc_str);
 RcppExport SEXP _units_R_ut_set_encoding(SEXP enc_strSEXP) {
 BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< CharacterVector >::type enc_str(enc_strSEXP);
-    rcpp_result_gen = Rcpp::wrap(R_ut_set_encoding(enc_str));
-    return rcpp_result_gen;
+    Rcpp::traits::input_parameter< std::string >::type enc_str(enc_strSEXP);
+    R_ut_set_encoding(enc_str);
+    return R_NilValue;
 END_RCPP
 }
 // R_ut_get_symbol
@@ -245,8 +240,8 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_units_udunits_init", (DL_FUNC) &_units_udunits_init, 2},
-    {"_units_udunits_exit", (DL_FUNC) &_units_udunits_exit, 1},
+    {"_units_udunits_init", (DL_FUNC) &_units_udunits_init, 1},
+    {"_units_udunits_exit", (DL_FUNC) &_units_udunits_exit, 0},
     {"_units_R_ut_parse", (DL_FUNC) &_units_R_ut_parse, 1},
     {"_units_R_ut_get_dimensionless_unit_one", (DL_FUNC) &_units_R_ut_get_dimensionless_unit_one, 1},
     {"_units_R_ut_are_convertible", (DL_FUNC) &_units_R_ut_are_convertible, 2},

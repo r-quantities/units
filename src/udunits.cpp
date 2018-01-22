@@ -24,49 +24,22 @@ static ut_encoding enc = UT_UTF8;
 }
 
 // [[Rcpp::export]]
-LogicalVector udunits_init(CharacterVector path, bool warn_on_failure = false) {
-
-  LogicalVector ret(1);
+void udunits_init(CharacterVector path) {
   ut_set_error_message_handler((ut_error_message_handler) r_error_fn);
-  if (sys != NULL)
-    ut_free_system(sys);
-  
-  sys = NULL;
+  ut_free_system(sys);
   ut_set_error_message_handler(ut_ignore);
   for (int i = 0; i < path.size(); i++) {
-    sys = ut_read_xml(path[i]);
-    if (sys != NULL)
-      break;
+    if ((sys = ut_read_xml(path[i])) != NULL)
+      return;
   }
-  if (sys == NULL)
-    sys = ut_read_xml(NULL);
+  sys = ut_read_xml(NULL);
   ut_set_error_message_handler((ut_error_message_handler) r_error_fn);
-  if (sys == NULL) {
-    if (warn_on_failure)
-      handle_error("udunit_init");
-    ret[0] = false;
-  } else
-    ret[0] = true;
-  enc = UT_UTF8;
-  return ret;
+  if (sys == NULL)
+    handle_error("udunit_init");
 }
 
 // [[Rcpp::export]]
-LogicalVector udunits_exit(LogicalVector lo) {
-  if (sys != NULL)
-    ut_free_system(sys);
-  sys = NULL;
-  return lo;
-}
-
-LogicalVector R_ut_has_system(List foo) {
-  LogicalVector ret(1);
-  if (sys != NULL)
-    ret(0) = true;
-  else 
-    ret(0) = false;
-  return ret;
-}
+void udunits_exit() { ut_free_system(sys); }
 
 // typedef std::vector<void *> ut_vec;
 
@@ -198,7 +171,8 @@ XPtrUT R_ut_log(SEXP a, NumericVector base) {
 
 // [[Rcpp::export]]
 CharacterVector R_ut_format(SEXP p, bool names = false, bool definition = false, 
-    bool ascii = false) {
+                            bool ascii = false)
+{
   int opt;
   if (! ascii)
     opt = enc;
@@ -227,17 +201,15 @@ CharacterVector R_ut_format(SEXP p, bool names = false, bool definition = false,
 }
 
 // [[Rcpp::export]]
-CharacterVector R_ut_set_encoding(CharacterVector enc_str) {
-  const char *e = enc_str[0];
-  if (strcmp(e, "utf8") == 0)
+void R_ut_set_encoding(std::string enc_str) {
+  if (enc_str.compare("utf8") == 0)
     enc = UT_UTF8;
-  else if (strcmp(e, "ascii") == 0)
+  else if (enc_str.compare("ascii") == 0)
     enc = UT_ASCII;
-  else if (strcmp(e, "iso-8859-1") == 0 || strcmp(e, "latin1") == 0)
+  else if (enc_str.compare("iso-8859-1") == 0 || enc_str.compare("latin1") == 0)
     enc = UT_LATIN1;
   else
     stop("Valid encoding string parameters are ('utf8'|'ascii'|'iso-8859-1','latin1')");
-  return enc_str;
 }
 
 // [[Rcpp::export]]

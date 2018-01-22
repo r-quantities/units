@@ -5,7 +5,7 @@
 NULL
 
 .onLoad = function(libname, pkgname) {
-	udunits_init(character(0), TRUE)
+	udunits_init(character(0))
 }
 
 .onAttach <- function(libname, pkgname) {
@@ -18,5 +18,5 @@ NULL
 }
 
 .onUnLoad = function(libname, pkgname) {
-	udunits_exit(logical(0))
+	udunits_exit()
 }
