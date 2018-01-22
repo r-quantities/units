@@ -39,7 +39,10 @@ void udunits_init(CharacterVector path) {
 }
 
 // [[Rcpp::export]]
-void udunits_exit() { ut_free_system(sys); }
+void udunits_exit() { 
+  ut_free_system(sys);
+  sys = NULL;
+}
 
 // typedef std::vector<void *> ut_vec;
 
