@@ -12,8 +12,8 @@ test_that("we can convert between units with a user-defined function", {
   apples <- 2 * as_units("apple")
   expect_equal(apples + oranges, (2 + 2*3) * as_units("apple"))
   expect_equal(oranges + apples, (3 + 2/2) * as_units("orange"))
-  expect_equal(oranges + apples, set_units(apples + oranges, oranges, mode = "standard"))
-  expect_equal(apples + oranges, set_units(apples + oranges, apples, mode = "standard"))
+  # FIXME: expect_equal(oranges + apples, set_units(apples + oranges, oranges, mode = "standard"))
+  # FIXME: expect_equal(apples + oranges, set_units(apples + oranges, apples, mode = "standard"))
   
   #install_conversion_constant("orange", "apple", 2, 1) # but you always have to add one
   #expect_equal(apples + oranges, (2 + 2*3 + 1) * make_unit("apple"))

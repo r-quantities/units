@@ -31,9 +31,11 @@ convert <- function(value, from, to) {
   if(!inherits(value, "units") && !inherits(value, "symbolic_units"))
     value <- as_units(value)
   
-  if (inherits(value, "units"))
+  if (inherits(value, "units")) {
+    x <- x * unclass(value)
     value <- units(value)
-  
+  }
+ 
   attr(x, "units") = value
   class(x) <- "units"
   x
@@ -56,8 +58,10 @@ convert <- function(value, from, to) {
   if(!inherits(value, "units") && !inherits(value, "symbolic_units"))
     value <- as_units(value)
   
-  if (inherits(value, "units"))
+  if (inherits(value, "units")) {
+    x <- x * unclass(value)
     value <- units(value)
+  }
   
   if (identical(units(x), value)) # do nothing; possibly user-defined units:
     return(x)

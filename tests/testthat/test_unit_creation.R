@@ -66,7 +66,8 @@ test_that("global options are respected", {
 
 test_that("various forms of unit creation and destruction work", {
 
-  ox <- x <- 1L:4L
+  #ox <- x <- 1L:4L # why should ints be preserved?
+  ox <- x <- as.numeric(1:4)
   
   units(x) <- "m/s"
   expect_s3_class(x,"units")
@@ -75,7 +76,7 @@ test_that("various forms of unit creation and destruction work", {
   expect_identical(x, ox)
   
   
-  ox <- x <- matrix(1L:4L, ncol = 2)
+  ox <- x <- matrix(ox, ncol = 2)
   
   units(x) <- "m/s"
   expect_s3_class(x,"units")
@@ -84,7 +85,7 @@ test_that("various forms of unit creation and destruction work", {
   expect_identical(x, ox)
   
   
-  ox <- y <- x <- 1L:4L
+  ox <- y <- x <- as.numeric(1:4)
   units(x) <- "m/s"
   
   expect_identical(x, set_units(y, m/s))
@@ -113,10 +114,10 @@ test_that("various forms of unit creation and destruction work", {
 })
 
 test_that("unitless objects can be created", {
-  unit <- 1
+  unit <- 1.0
   units(unit) <-  units:::unitless
   
-  xul <- x <- 2:5
+  xul <- x <- as.numeric(2:5)
   units(xul) <-  units:::unitless
   
   
