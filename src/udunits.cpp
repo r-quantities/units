@@ -25,17 +25,17 @@ static ut_encoding enc = UT_UTF8;
 
 // [[Rcpp::export]]
 void udunits_init(CharacterVector path) {
-  ut_set_error_message_handler((ut_error_message_handler) r_error_fn);
-  ut_free_system(sys);
   ut_set_error_message_handler(ut_ignore);
+  ut_free_system(sys);
   for (int i = 0; i < path.size(); i++) {
     if ((sys = ut_read_xml(path[i])) != NULL)
-      return;
+      break;
   }
-  sys = ut_read_xml(NULL);
+  if (sys == NULL)
+    sys = ut_read_xml(NULL);
   ut_set_error_message_handler((ut_error_message_handler) r_error_fn);
   if (sys == NULL)
-    handle_error("udunit_init");
+    handle_error("udunits_init");
 }
 
 // [[Rcpp::export]]
