@@ -2,3 +2,37 @@
 .Rhistory
 .RData
 .Ruserdata
+# Autotools
+config.*
+Makevars
+autom4te.cache
+autoscan.log
+configure.scan
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+*.gcda
+*.gcno
+*.gcov
+# Precompiled Headers
+*.gch
+*.pch
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+# Fortran module files
+*.mod
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+# Executables
+*.exe
+*.out
+*.app
+# OSX-specific
+.DS_Store
