@@ -44,9 +44,9 @@ else
    fi
 fi
 
-AC_CHECK_LIB(expat,XML_ParserCreate,[],[],${LIBS})
+AC_CHECK_LIB(expat, XML_ParserCreate, [],[], ${LIBS})
 if test "${ac_cv_lib_expat_XML_ParserCreate}" == yes; then
-   LIBS="${LIBS} -lexpat "
+   LIBS="${LIBS} -lexpat"
 fi
 
 AC_CHECK_HEADER(udunits2.h, [], [
