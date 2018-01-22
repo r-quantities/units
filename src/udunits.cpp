@@ -35,7 +35,7 @@ LogicalVector udunits_init(CharacterVector path, bool warn_on_failure = false) {
   ut_set_error_message_handler(ut_ignore);
   for (int i = 0; i < path.size(); i++) {
     sys = ut_read_xml(path[i]);
-  if (sys != NULL)
+    if (sys != NULL)
       break;
   }
   if (sys == NULL)
@@ -43,7 +43,7 @@ LogicalVector udunits_init(CharacterVector path, bool warn_on_failure = false) {
   ut_set_error_message_handler((ut_error_message_handler) r_error_fn);
   if (sys == NULL) {
     if (warn_on_failure)
-    handle_error("udunit_init");
+      handle_error("udunit_init");
     ret[0] = false;
   } else
     ret[0] = true;
@@ -56,7 +56,7 @@ LogicalVector udunits_exit(LogicalVector lo) {
   if (sys != NULL)
     ut_free_system(sys);
   sys = NULL;
-    return lo;
+  return lo;
 }
 
 LogicalVector R_ut_has_system(List foo) {
@@ -91,14 +91,14 @@ ut_unit *ut_unwrap(SEXP u) {
 // [[Rcpp::export]]
 XPtrUT R_ut_parse(CharacterVector name) {
   ut_unit *u = ut_parse(sys, ut_trim(name[0], enc), enc);
-    if (u == NULL) {
+  if (u == NULL) {
     switch (ut_get_status()) {
-      case UT_BAD_ARG:
-      case UT_SYNTAX:
-      case UT_UNKNOWN:
-      case UT_OS:
-        handle_error("R_ut_parse");
-      default:;
+    case UT_BAD_ARG:
+    case UT_SYNTAX:
+    case UT_UNKNOWN:
+    case UT_OS:
+      handle_error("R_ut_parse");
+    default:;
     }
   }
   // error checking ...
@@ -214,11 +214,11 @@ CharacterVector R_ut_format(SEXP p, bool names = false, bool definition = false,
   ut_set_error_message_handler((ut_error_message_handler) r_error_fn);
   if (len == -1) {
     switch (ut_get_status()) {
-      case UT_BAD_ARG:
-      case UT_CANT_FORMAT:
-        handle_error("R_ut_format");
-        break;
-      default:;
+    case UT_BAD_ARG:
+    case UT_CANT_FORMAT:
+      handle_error("R_ut_format");
+      break;
+    default:;
     }
     buf[0] = '\0'; // "": dont' return rubbish
   } else if (len == 256)
@@ -231,8 +231,6 @@ CharacterVector R_ut_set_encoding(CharacterVector enc_str) {
   const char *e = enc_str[0];
   if (strcmp(e, "utf8") == 0)
     enc = UT_UTF8;
-  else if (strcmp(e, "ascii") == 0)
-    enc = UT_ASCII;
   else if (strcmp(e, "ascii") == 0)
     enc = UT_ASCII;
   else if (strcmp(e, "iso-8859-1") == 0 || strcmp(e, "latin1") == 0)
