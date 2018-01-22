@@ -98,6 +98,7 @@ XPtrUT R_ut_parse(CharacterVector name) {
 			case UT_UNKNOWN:
 			case UT_OS:
 				handle_error("R_ut_parse");
+		  default:;
 		}
 	}
 	// error checking ...
@@ -213,8 +214,8 @@ CharacterVector R_ut_format(SEXP p, bool names = false, bool definition = false,
 	ut_set_error_message_handler((ut_error_message_handler) r_error_fn);
 	if (len == -1) {
 		switch (ut_get_status()) {
-			UT_BAD_ARG:
-			UT_CANT_FORMAT:
+			case UT_BAD_ARG:
+			case UT_CANT_FORMAT:
 				handle_error("R_ut_format");
 				break;
 			default:;
