@@ -5,19 +5,29 @@
   message("udunits system database read from " , udunits2_dir)
 }
 
+.get_ud_xml_dir <- function(warn = FALSE) {
+  paths = c(
+    Sys.getenv("UDUNITS2_XML_PATH"),
+    "/usr/local/share/udunits/udunits2.xml",
+    "/usr/share/udunits/udunits2.xml",
+    "/usr/share/xml/udunits/udunits2.xml",
+    "/usr/share/udunits/udunits2.xml")
 
+  fallback = system.file("share/udunits2.xml", package="units")
 
-.get_ud_xml_dir <- function() {
-  ud_is_parseable("m") # make sure udunits2 has booted
-  # which sets the environment varialbe UDUNITS2_XML_PATH
-  udunits2_dir <- dirname(Sys.getenv("UDUNITS2_XML_PATH"))
-  if (udunits2_dir == "")
-    udunits2_dir <- dirname(system.file("share/udunits2.xml", package="units"))
-  
-  if (!nzchar(udunits2_dir))
-    warning(
-      "Failed to read udunits system database: udunits2 will not work properly.\nPlease set the UDUNITS2_XML_PATH environment variable before attempting to read the units database")
-  udunits2_dir
+  w = which(file.exists(paths))
+  if (length(w) > 1 && warn)
+  	warning(paste("multiple udunits databases present:", paste(paths[w], collapse = " ")))
+  p = if (length(w) == 0)
+	fallback
+  else
+  	paths[w[1]]
+
+  if (!file.exists(p))
+    stop(
+      "Failed to identify udunits system database: units will not work properly.\nPlease set the UDUNITS2_XML_PATH environment variable before attempting to read the units database")
+  else 
+    dirname(p)
 }
 
 .read_ud_db_symbols <- function(dir, filename) {

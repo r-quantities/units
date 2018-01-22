@@ -3,12 +3,12 @@
 # This is setup code and all fails if we do not do it and use the units
 # in the list, so there are no explicit tests for this, thus the nocov
 
-.get_ud_xml_dir <- function() {
-  udunits2_dir <- dirname(Sys.getenv("UDUNITS2_XML_PATH"))
-  if (udunits2_dir == "")
-    udunits2_dir <- "/usr/share/xml/udunits"
-  udunits2_dir
-}
+#.get_ud_xml_dir <- function() {
+#  udunits2_dir <- dirname(Sys.getenv("UDUNITS2_XML_PATH"))
+#  if (udunits2_dir == "")
+#    udunits2_dir <- "/usr/share/xml/udunits"
+#  udunits2_dir
+#}
 
 .read_ud_db_symbols <- function(dir, filename) {
   if (! requireNamespace("xml2", quietly = TRUE))
