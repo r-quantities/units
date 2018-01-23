@@ -143,3 +143,25 @@ test_that("set_units default enforces NSE", {
   # is it bad if this works?
   # expect_error(set_units(1:3, "m/s"))
 })
+
+test_that("units composed of the same base unit don't cancel out", {
+  rt <- function(unit) as.character(units(as_units(unit)))
+  
+  test_cases <- c("mg/kg", "g/kg", "g/g", "g/ln(kg)",
+                  "ln(g)/kg", "ln(g)/g", "ln(g)/ln(g)")
+  
+  for(unit in test_cases)
+    expect_equal(rt(unit), unit)
+
+})
+
+test_that("units with an arbritary numeric constants throw error", {
+  rt <- function(unit) as.character(units(as_units(unit)))
+  
+  test_cases <- c("20 * m", "m * 20", "20 * g/g", "g/ln(kg)/22",
+                  "ln(g)/kg * 22", "ln(g)/g + 9", "ln(g)/ln(g) - 9")
+  
+  for(unit in test_cases)
+    expect_error(as_units(test_cases))
+  
+})

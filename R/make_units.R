@@ -289,7 +289,8 @@ units_eval_env$`/` <- function(x, y) {
     numerator = c(units(x)$numerator, units(y)$denominator), 
     denominator = c(units(y)$numerator, units(x)$denominator)), 
     class = "symbolic_units")
-  structure(1, units = units, class = "units")
+  val <- as.numeric(x) / as.numeric(y)  #if(is.finite(y <- as.numeric(y))) y else 1
+  structure(val, units = units, class = "units")
 }
 
 
@@ -347,12 +348,12 @@ See ?as_units for usage examples.")
           "Did you try to supply a value in a context where a bare expression was expected?"
         ), call. = FALSE ))
   
- if(as.numeric(unit) %not_in% c(1, 0)) # 0 if log() used.
+ if(as.numeric(unit) %not_in% c(1, 0, Inf, NaN)) # 0, Inf, NaN if log() used.
    stop(call. = FALSE,
 "In ", sQuote(deparse(x)), " the numeric multiplier ", sQuote(as.numeric(unit)), " is invalid.
 Use `install_conversion_constant()` to define a new unit that is a multiple of another unit.")
   
-  structure(as.numeric(unit), units = units(unit), class = "units")
+  structure(1, units = units(unit), class = "units")
 }
 
 
