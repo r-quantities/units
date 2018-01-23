@@ -73,8 +73,8 @@ XPtrUT R_ut_parse(CharacterVector name) {
     case UT_SYNTAX:
     case UT_UNKNOWN:
     case UT_OS:
+    default:
       handle_error("R_ut_parse");
-    default:;
     }
   }
   // error checking ...
