@@ -139,11 +139,19 @@ test_that("dim propagates", {
 test_that("conversion to dimensionless with prefix works (g/kg)", {
 	a_orig <- a <- 1:10
 	units(a) = as_units("mg/kg")
-	expect_equal(as.numeric(a), a_orig/1e6)
+	# why should assigning units change the numeric value?
+	expect_equal(as.numeric(a), a_orig)
+	
 	units(a) = as_units("kg/mg")
-	expect_equal(a, a_orig)
+	expect_equal(a, a_orig/1e12)
+	
 	units(a) = as_units("g/g")
-	expect_equal(a, a_orig)
+	expect_equal(a, a_orig/1e6)
+	
 	units(a) = as_units("kg/g")
-	expect_equal(a, a_orig * 1000)
+	expect_equal(a, a_orig / 1e9)
+	
+	# back to original
+	units(a) <- as_units("mg/kg")
+	expect_equal(as.numeric(a), a_orig)
 })

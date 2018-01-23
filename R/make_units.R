@@ -283,6 +283,15 @@ units_eval_env$ln <- function(x) base::log(x)
 units_eval_env$lg <- function(x) base::log(x, base = 10)
 units_eval_env$lb <- function(x) base::log(x, base = 2)
 
+units_eval_env$`/` <- function(x, y) {
+  # don't cancel units, just combine them
+  units <- structure(list(
+    numerator = c(units(x)$numerator, units(y)$denominator), 
+    denominator = c(units(y)$numerator, units(x)$denominator)), 
+    class = "symbolic_units")
+  structure(1, units = units, class = "units")
+}
+
 
 #' @export
 #' @rdname as_units
@@ -338,10 +347,10 @@ See ?as_units for usage examples.")
           "Did you try to supply a value in a context where a bare expression was expected?"
         ), call. = FALSE ))
   
-#  if(as.numeric(unit) %not_in% c(1, 0)) # 0 if log() used. 
-#    stop(call. = FALSE,
-#"In ", sQuote(deparse(x)), " the numeric multiplier ", sQuote(as.numeric(unit)), " is invalid. 
-#Use `install_conversion_constant()` to define a new unit that is a multiple of another unit.")
+ if(as.numeric(unit) %not_in% c(1, 0)) # 0 if log() used.
+   stop(call. = FALSE,
+"In ", sQuote(deparse(x)), " the numeric multiplier ", sQuote(as.numeric(unit)), " is invalid.
+Use `install_conversion_constant()` to define a new unit that is a multiple of another unit.")
   
   structure(as.numeric(unit), units = units(unit), class = "units")
 }
