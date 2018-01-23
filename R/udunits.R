@@ -1,5 +1,5 @@
 ud_are_convertible = function(u1, u2) {
-	R_ut_are_convertible(R_ut_parse(as.character(u1)), R_ut_parse(as.character(u2)))
+	R_ut_are_convertible(as.character(u1), as.character(u2))
 }
 
 ud_get_symbol = function(u) {
@@ -11,12 +11,11 @@ ud_get_symbol = function(u) {
 }
 
 ud_is_parseable = function(u) {
-	res <- try(R_ut_parse(u), silent = TRUE)
-	! inherits(res, "try-error")
+	R_ut_is_parseable(as.character(u))
 }
 
 ud_convert = function(value, from, to) {
-	R_convert_doubles(R_ut_parse(from), R_ut_parse(to), value)
+	R_ut_convert_doubles(as.character(from), as.character(to), value)
 }
 
 ud_set_encoding = function(enc) {
