@@ -87,8 +87,11 @@ XPtrUT R_ut_get_dimensionless_unit_one(CharacterVector name) {
 }
 // [[Rcpp::export]]
 LogicalVector R_ut_are_convertible(SEXP a, SEXP b) {
-  int i = ut_are_convertible(ut_unwrap(a), ut_unwrap(b));
-  return i != 0;
+  ut_unit *u1 = ut_unwrap(a);
+  ut_unit *u2 = ut_unwrap(b);
+  if (u1 == NULL || u2 == NULL)
+     return false;  	
+  return ut_are_convertible(u1, u2) != 0;
 }
 
 // [[Rcpp::export]]
