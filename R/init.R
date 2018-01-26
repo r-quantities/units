@@ -5,6 +5,7 @@
 NULL
 
 .onLoad = function(libname, pkgname) {
+  # can this be lozy loaded on first access attempt instead?
 	udunits_init(file.path(.get_ud_xml_dir(), "udunits2.xml"))
 }
 
