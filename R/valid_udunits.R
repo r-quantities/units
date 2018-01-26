@@ -9,7 +9,6 @@
   paths = c(
     Sys.getenv("UDUNITS2_XML_PATH"),
     "/usr/local/share/udunits/udunits2.xml",
-    "/usr/share/udunits/udunits2.xml",
     "/usr/share/xml/udunits/udunits2.xml",
     "/usr/share/udunits/udunits2.xml")
 
