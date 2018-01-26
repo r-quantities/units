@@ -6,11 +6,11 @@
 }
 
 .get_ud_xml_dir <- function(warn = FALSE) {
-  paths = c(
+  paths = unique(c(
     Sys.getenv("UDUNITS2_XML_PATH"),
     "/usr/local/share/udunits/udunits2.xml",
     "/usr/share/xml/udunits/udunits2.xml",
-    "/usr/share/udunits/udunits2.xml")
+    "/usr/share/udunits/udunits2.xml"))
 
   fallback = system.file("share/udunits2.xml", package="units")
 
