@@ -285,12 +285,29 @@ units_eval_env$lb <- function(x) base::log(x, base = 2)
 
 units_eval_env$`/` <- function(x, y) {
   # don't cancel units, just combine them
+  if (!inherits(x, "units") || !inherits(y, "units"))
+    return(x/y)
+  
   units <- structure(list(
-    numerator = c(units(x)$numerator, units(y)$denominator), 
-    denominator = c(units(y)$numerator, units(x)$denominator)), 
+    numerator =   c(units(x)$numerator,   units(y)$denominator), 
+    denominator = c(units(x)$denominator, units(y)$numerator)), 
     class = "symbolic_units")
-  val <- as.numeric(x) / as.numeric(y)  #if(is.finite(y <- as.numeric(y))) y else 1
+  val <- drop_units(x) / drop_units(y)  
+  
   structure(val, units = units, class = "units")
+}
+
+units_eval_env$`*` <- function(x, y) {
+  if (!inherits(x, "units") || !inherits(y, "units"))
+    return(x * y)
+  
+  units <- structure(list(
+    numerator   = c(units(x)$numerator,   units(y)$numerator),
+    denominator = c(units(x)$denominator, units(y)$denominator)
+  ), class = "symbolic_units")
+  val <- drop_units(x) * drop_units(y)
+  structure(val, units = units, class = "units")
+  
 }
 
 
