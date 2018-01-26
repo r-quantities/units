@@ -156,7 +156,6 @@ test_that("units composed of the same base unit don't cancel out", {
 })
 
 test_that("units with an arbritary numeric constants throw error", {
-  rt <- function(unit) as.character(units(as_units(unit)))
   
   test_cases <- c("20 * m", "m * 20", "20 * g/g", "g/ln(kg)/22",
                   "ln(g)/kg * 22", "ln(g)/g + 9", "ln(g)/ln(g) - 9")
@@ -164,4 +163,35 @@ test_that("units with an arbritary numeric constants throw error", {
   for(unit in test_cases)
     expect_error(as_units(test_cases))
   
+})
+
+
+
+test_that("variuos permutations of units are created properly", {
+  rt <- function(unit) as.character(units(as_units(unit)))
+ 
+  cases <- matrix(byrow = TRUE, ncol = 2, data = c(
+         "g/g"       , "g/g"     ,
+         "g*g/g"     , "g^2/g"   ,
+         "g^-1/g"    , "1/g^2"   ,
+         "g * g^-1"  , "g/g"     ,
+         "g^-1"      , "1/g"     ,
+         "1/g"       , "1/g"     ,
+         "g/(1/g)"   , "g^2"     ,
+         "1/g/g"     , "1/g^2"   
+  ))
+   
+  u_in <- cases[,1]
+  u_out <- cases[,2]
+  
+  for (r in 1:nrow(cases)) {
+    expect_equal(rt(u_in[r]), u_out[r])
+  }
+  
+   
+  # TODO units still cancel when parsing implicit exponents
+  # # ---- implicit exponents -----
+  # as_units("g  g-1") 
+  
+
 })
