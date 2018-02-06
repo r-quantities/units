@@ -2,7 +2,7 @@ context("Math functions")
 
 test_that("we can call math functions on units", {
   x <- 1:4 - 2.1
-  ux <- x * make_unit("m")
+  ux <- x * as_units("m")
   
   expect_equal(as.numeric(abs(ux)), abs(x))
   expect_equal(units(abs(ux)), units(ux))
@@ -32,6 +32,10 @@ test_that("we can call math functions on units", {
   expect_equal(y, cos(x))
   expect_equal(class(y), "numeric")
   
+  expect_equal(sin(set_units(1, rad)), set_units(sin(1)))
+  expect_equal(sin(set_units(90, degree)), sin(set_units(pi/2, rad)))
+  expect_equal(units(acos(set_units(-1))), units(make_units(rad)))
+  expect_equal(set_units(acos(set_units(-1)), degree), set_units(180, degree))
 })
 
 # FIXME: I am not too sure about this one... the log(unit) is not a format
@@ -45,14 +49,17 @@ test_that("we can call math functions on units", {
 
 test_that("we can take logarithms units", {
   x <- 1:4
-  ux <- x * make_unit("m")
+  ux <- x * as_units("m")
   
-  #expect_equal(as.numeric(log(ux)), log(x))
-  #expect_equal(units(log(ux)), "ln(m)")
-  
-  #expect_equal(as.numeric(log(ux, base = 2)), log(x, base = 2))
-  #expect_equal(units(log(ux, base = 2)), "lb(m)")
-  
-  #expect_equal(as.numeric(log(ux, base = 10)), log(x, base = 10))
-  #expect_equal(units(log(ux, base = 10)), "lg(m)")
+  expect_equal(as.numeric(log(ux)), log(x))
+  expect_equal(units(log(ux)), units(as_units("ln(m)")))
+  expect_equal(as.character(units(log(ux))), "ln(m)")
+
+  expect_equal(as.numeric(log(ux, base = 2)), log(x, base = 2))
+  expect_equal(units(log(ux, base = 2)), units(as_units("lb(m)")))
+  expect_equal(as.character(units(log(ux, base = 2))), "lb(m)")
+
+  expect_equal(as.numeric(log(ux, base = 10)), log(x, base = 10))
+  expect_equal(units(log(ux, base = 10)), units(as_units("lg(m)")))
+  expect_equal(as.character(units(log(ux, base = 10))), "lg(m)")
 })

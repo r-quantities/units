@@ -21,6 +21,6 @@ histogram for unit objects
 }
 \examples{
 units_options(parse = FALSE) # otherwise we break on the funny symbol!
-u = rnorm(100) * make_unit("°C")
+u = set_units(rnorm(100), degree_C)
 hist(u)
 }
