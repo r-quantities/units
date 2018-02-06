@@ -2,6 +2,66 @@
 # Using environments as hash tables...
 conversion_table <- new.env(parent = emptyenv())
 
+user_defined_units <- new.env(parent = emptyenv())
+
+
+#' Define new symbolic units
+#'
+#' Adding a symbolic unit allows it to be used in \code{as_units},
+#' \code{make_units} and \code{set_units}. No installation is performed if the
+#' unit is already known by udunits.
+#'
+#' @param chr a length 1 character vector that is the new unit name or symbol.
+#' @param warn warns if the supplied unit symbol is already a valid unit symbol
+#'   recognized by udunits.
+#'
+#' @export
+#' @rdname install_symbolic_unit
+install_symbolic_unit <- function(chr, warn = TRUE) {
+  if(ud.is.parseable(chr)) {
+    if (warn) 
+      warning(sQuote(chr), " is already a valid unit recognized by udunits.\n",
+              "Installation not necessary and is not performed")
+    return(invisible(FALSE))
+  }
+  assign(chr, NULL, envir =  user_defined_units)
+}
+
+
+get_user_defined_units <- function() {
+  names(user_defined_units)
+}
+
+is_user_defined_unit  <- function(chr) {
+  exists(chr, envir = user_defined_units)
+}
+
+
+
+#' @rdname install_symbolic_unit
+#' @param all if \code{TRUE}, uninstalls all user defined custom symbolic units
+#' @export
+uninstall_symbolic_unit <- function(chr, all = FALSE) {
+  if(all) {
+    chr <- ls(envir = user_defined_units)
+  } else if(!is_user_defined_unit(chr))
+    return(warning("unit ", sQuote(chr), " not defined. Nothing to remove"))
+  
+  rm(list = chr, envir = user_defined_units)
+}
+
+# install_symbolic_unit("foobar")
+# get_user_defined_units()
+# install_symbolic_unit("foobar2")
+# get_user_defined_units()
+# 
+# uninstall_symbolic_unit(all = T)
+# get_user_defined_units()
+# uninstall_symbolic_unit(all = T)
+# get_user_defined_units()
+
+
+
 get_conversion_function <- function(from, to) {
   if (!exists(from, conversion_table)) return(NULL)
   table <- get(from, conversion_table)
@@ -50,9 +110,11 @@ user_convert <- function(value, from, to) {
 #'   conversion.
 #'   
 #' @examples 
+#' install_symbolic_unit("apple")
+#' install_symbolic_unit("orange")
+#' apples <- 2 * as_units("apple")
+#' oranges <- 3 * as_units("orange")
 #' 
-#' apples <- 2 * make_unit("apple")
-#' oranges <- 3 * make_unit("orange")
 #' # one orange is worth two apples
 #' install_conversion_function("orange", "apple", function(x) 2 * x)
 #' install_conversion_function("apple", "orange", function(x) x / 2)
@@ -63,6 +125,8 @@ user_convert <- function(value, from, to) {
 #'   
 #' @export
 install_conversion_function <- function(from, to, f) {
+  install_symbolic_unit(to, warn = FALSE)
+  install_symbolic_unit(from, warn = FALSE)
   if (!exists(from, conversion_table)) {
     assign(from, new.env(parent = emptyenv()), conversion_table)
   }
@@ -93,10 +157,10 @@ install_conversion_function <- function(from, to, f) {
 #'   
 #' @examples 
 #' 
-#' apples <- 2 * make_unit("apple")
-#' oranges <- 1 * make_unit("orange")
 #' # one orange is worth two apples
 #' install_conversion_constant("orange", "apple", 2)
+#' apples <- 2 * as_units("apple")
+#' oranges <- 1 * as_units("orange")
 #' apples + oranges
 #' oranges + apples
 #' 

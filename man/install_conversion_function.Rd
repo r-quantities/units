@@ -40,9 +40,11 @@ This is the most general way of specifying conversion between
   conversion.
 }
 \examples{
+install_symbolic_unit("apple")
+install_symbolic_unit("orange")
+apples <- 2 * as_units("apple")
+oranges <- 3 * as_units("orange")
 
-apples <- 2 * make_unit("apple")
-oranges <- 3 * make_unit("orange")
 # one orange is worth two apples
 install_conversion_function("orange", "apple", function(x) 2 * x)
 install_conversion_function("apple", "orange", function(x) x / 2)
@@ -53,4 +55,3 @@ oranges + apples
 \seealso{
 \code{\link{install_conversion_constant}}
 }
-

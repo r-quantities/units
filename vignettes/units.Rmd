@@ -14,6 +14,10 @@ vignette: >
 knitr::opts_chunk$set(collapse = TRUE)
 ```
 
+```{r echo=FALSE}
+units:::units_options(negative_power = FALSE)
+```
+
 R has little support for physical measurement units.  The exception
 is formed by time differences: time differences objects of class
 `difftime` have a `units` attribute that can be modified:
@@ -31,61 +35,53 @@ d
 We see here that the `units` method is used to retrieve and modify the
 unit of time differences. 
 
-This idea can be generalized to other physical units. The
-`units` package, presented here, does this, and builds upon the
+The `units` package generalizes this idea to other physical units, building upon the
 [udunits2](https://cran.r-project.org/package=udunits2)
 R package, which in turn is build upon the
 [udunits2](https://www.unidata.ucar.edu/software/udunits/) C library.
 The `udunits2` library provides the following operations:
 
-* validating whether a string, such as `m/s` is a valid physical unit
-* verifying whether two strings such as `m/s` and `km/h` are convertible
+* validating whether an expression, such as `m/s` is a valid physical unit
+* verifying whether two units such as `m/s` and `km/h` are convertible
 * converting values between two convertible units 
 * providing names and symbols for specific units
 * handle different character encodings (utf8, ascii, iso-8859-1 and latin1)
 
-Th `units` R package uses R package udunits2 to extend
+The `units` R package uses R package
+[`udunits2`](https://cran.r-project.org/package=udunits2) to extend
 R with functionality for manipulating numeric vectors that have
 physical measurement units associated with them, in a similar way as
 `difftime` objects behave.
 
 ## Setting units, unit conversion
 
-Units must be defined before they are used. Units are defined from a string but by explicitly defining units before they are used we avoid having new units in use due to misspellings. A unit is defined using the `make_units` function
-
+Existing units are resolved from a database in the `units` package, called `ud_units`. We can see the first three elements of it by
 ```{r}
 library(units)
-m <- make_unit("m")
-s <- make_unit("s")
+ud_units[1:3]
 ```
-The objects created, 
+We can set units to numerical values by `set_units`:
 ```{r}
-m
-```
-represent a single value of the named quantity (``m'').  To obtain
-different quantities of named units, we use them in expressions
-such as 
-```{r}
-(a <- 1:10 * m/s)
+(a <- set_units(runif(10),  m/s))
 ```
 the result, e.g. 
 ```{r}
-a[10]
+set_units(10, m/s)
 ```
 literally means "10 times 1 m divided by 1 s". In writing, the "1"
 values are omitted, and the multiplication is implicit.
 
-The `units` package comes with a list of over 3000 predefined units, which
-can be used without calling `make_unit`. 
-One way of making this list available would be to attach it, but
-this leads to a number of name conflicts: `T` (for tesla) wound
-mask the value that otherwise refers to `TRUE`, .
-
-A cleaner approach is to use `with`, as in
+The `units` package comes with a list of over 3000 predefined units, 
 ```{r}
-rm(m) ; rm(s)
-with(ud_units, 1:10 * m/s)
+length(ud_units)
 ```
+
+We can retrieve a single unit from the `ud_units` database by
+```{r}
+with(ud_units, km/h)
+```
+
+### Unit conversion
 
 When conversion is meaningful, such as hours to seconds or meters to kilometers, conversion can be done explicitly by setting the units of a vector
 ```{r}
@@ -112,6 +108,8 @@ a + b # m/s + km/h -> m/s
 
 Currently, powers are only supported for integer powers, so using `a ** 2.5` would result in an error.
 
+
+### Unit simplification
 There are some basic simplification of units:
 ```{r}
 t <- with(ud_units, s)
@@ -185,23 +183,22 @@ From `difftime` to `units`:
 t1 = Sys.time() 
 t2 = t1 + 3600 
 d = t2 - t1
-du <- as.units(d)
+(du = as_units(d))
 ```
 vice versa:
 ```{r}
-dt = as.dt(du)
+(dt = as_difftime(du))
 class(dt)
-dt
 ```
 
 ## units in `matrix` objects
 ```{r}
-with(ud_units, matrix(1:4,2,2) * m/s)
-with(ud_units, matrix(1:4,2,2) * m/s * 4 * m/s)
+set_units(matrix(1:4,2,2), m/s)
+set_units(matrix(1:4,2,2), m/s * m/s)
 ```
 but
 ```{r}
-with(ud_units, (matrix(1:4,2,2) * m/s) %*% (4:3 * m/s))
+set_units(matrix(1:4,2,2), m/s) %*% set_units(4:3, m/s)
 ```
 strips units.
 
@@ -209,10 +206,9 @@ strips units.
 units in `data.frame` objects are printed, but do not appear in `summary`:.
 ```{r}
 set.seed(131)
-d <- with(ud_units,
-         data.frame(x = runif(4), 
-                    y = runif(4) * s, 
-                    z = 1:4 * m/s))
+d <- data.frame(x = runif(4), 
+                    y = set_units(runif(4), s), 
+                    z = set_units(1:4, m/s))
 d
 summary(d)
 d$yz = with(d, y * z)
@@ -222,28 +218,18 @@ d[1, "yz"]
 ## formatting
 
 Units are often written in the form `m2 s-1`, for square meter per second. This
-can be defined as unit, but is not interpreted by R:
+can be defined as unit, and also parsed by `as_units`:
 ```{r}
-(x = 1:10 * make_unit("m2 s-1"))
+(x = 1:10 * as_units("m2 s-1"))
 ```
 udunits understands such string, and can convert them
 ```{r}
 y = 1:10 * with(ud_units, m^2/s)
 x + y
 ```
-but R cannot simplify them:
-```{r}
-x/y
-```
-Instead, we can tell R to parse such a string, which then allows simplification:
-```{r}
-(z = 1:10 * parse_unit("m2 s-1"))
-z + y
-z / y
-```
 Printing units in this form is done by
 ```{r}
-as_cf(z)
+deparse_unit(x)
 ```
 
 ## plotting
@@ -281,7 +267,7 @@ More complex units can be plotted either with negative powers, or as divisions,
 by modifying one of `units`'s global options using `units_options`:
 
 ```{r}
-gallon = make_unit("gallon")
+gallon = as_units("gallon")
 consumption = mtcars$mpg * with(ud_units, mi/gallon)
 units(consumption) = with(ud_units, km/l)
 par(mar = mar)
@@ -297,4 +283,8 @@ units_options(negative_power = TRUE) # division becomes ^-1
 par(mar = mar)
 plot(displacement, consumption)
 plot(1/displacement, 1/consumption)
+```
+
+```{r echo=FALSE}
+units_options(negative_power = FALSE) # division becomes /
 ```

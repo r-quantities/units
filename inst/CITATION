@@ -1,0 +1,16 @@
+citHeader("To cite package units in publications use:")
+
+citEntry(entry="Article",
+  author       = personList(as.person("Edzer Pebesma"), as.person("Thomas Mailund"), as.person("James Hiebert")),
+  title        = "Measurement Units in {R}", 
+  journal      = "The R Journal",
+  year         = 2016,
+  volume       = 8,
+  number       = 2,
+  pages        = "486--494",
+  month        = "december",
+  url          = "https://journal.r-project.org/archive/2016-2/pebesma-mailund-hiebert.pdf",
+  textVersion = 
+   paste("Edzer Pebesma, Thomas Mailund and James Hiebert, 2016.  Measurement Units in R.",
+	"The R Journal, 8 (2), 486--494")
+)

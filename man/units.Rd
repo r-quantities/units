@@ -6,7 +6,7 @@
 \alias{units}
 \alias{units<-.units}
 \alias{units}
-\alias{set_units}
+\alias{units<-.logical}
 \alias{units}
 \alias{units.units}
 \title{Set measurement units on a numeric vector}
@@ -15,14 +15,14 @@
 
 \method{units}{units}(x) <- value
 
-set_units(x, value)
+\method{units}{logical}(x) <- value
 
 \method{units}{units}(x)
 }
 \arguments{
 \item{x}{numeric vector, or object of class \code{units}}
 
-\item{value}{object of class \code{units} or \code{symbolic_units}}
+\item{value}{object of class \code{units} or \code{symbolic_units}, or in the case of \code{set_units} expression with symbols that can be resolved in \link{ud_units} (see examples).}
 }
 \value{
 object of class \code{units}
@@ -36,9 +36,6 @@ Convert units
 
 retrieve measurement units from \code{units} object
 }
-\details{
-\code{set_units} is a pipe-friendly version of \code{units<-}.
-}
 \examples{
 x = 1:3
 class(x)
@@ -48,7 +45,4 @@ y = 2:5
 a <- with(ud_units, 1:3 * m/s)
 units(a) <- with(ud_units, km/h)
 a
-if (require(magrittr)) {
- 1:10 \%>\% set_units(with(ud_units, m)) \%>\% set_units(with(ud_units, km))
-}
 }

@@ -16,9 +16,9 @@
 #' @details \link{units_options} can be used to set and change the defaults for
 #'   \code{sep}, \code{group} and \code{doParse}.
 make_unit_label = function(lab, u,
-  		sep = get(".units.sep", envir=.units_options),
-  		group = get(".units.group", envir=.units_options),
-  		parse = get(".units.parse", envir = .units_options)) {
+  		sep = units_options("sep"),
+  		group = units_options("group"),
+  		parse = units_options("parse")) {
 
   if (parse) {
     str = paste0("group('", group[1], "',", 
@@ -61,7 +61,7 @@ make_unit_label = function(lab, u,
 #' units_options(sep = c("~~~", "~"), group = c("", ""))  # no brackets; extra space
 #' plot(weight, displacement)
 #' units_options(sep = c("~", "~~"), group = c("[", "]"))
-#' gallon = make_unit("gallon")
+#' gallon = as_units("gallon")
 #' consumption = mtcars$mpg * with(ud_units, mi/gallon)
 #' units(consumption) = with(ud_units, km/l)
 #' plot(displacement, consumption) # division in consumption
@@ -72,6 +72,7 @@ make_unit_label = function(lab, u,
 plot.units <- function(x, y, xlab = NULL, ylab = NULL, ...) {
   # We define the axis labels if they are not already provided and then let
   # the default plotting function take over...
+  xlab0 = paste(deparse(substitute(x), 500), collapse = "\\n")
   if (missing(y)) { # from xy.coords:
     if (is.null(ylab))
       ylab <- make_unit_label(deparse(substitute(x)), x)
@@ -82,7 +83,7 @@ plot.units <- function(x, y, xlab = NULL, ylab = NULL, ...) {
     return(NextMethod("plot", x, y, xlab = xlab, ylab = ylab))
   } 
   if (is.null(xlab)) {
-    xlab <- make_unit_label(deparse(substitute(x)), x)
+    xlab <- make_unit_label(xlab0, x)
   }
   if (is.null(ylab) && inherits(y, "units")) {
     ylab <- make_unit_label(deparse(substitute(y)), y)
@@ -102,14 +103,14 @@ plot.units <- function(x, y, xlab = NULL, ylab = NULL, ...) {
 #' @export
 #' @examples
 #' units_options(parse = FALSE) # otherwise we break on the funny symbol!
-#' u = rnorm(100) * make_unit("°C")
+#' u = set_units(rnorm(100), degree_C)
 #' hist(u)
 hist.units <- function(x, xlab = NULL, main = paste("Histogram of", xname), ...) {
   # We define the axis labels if they are not already provided and then let
   # the default plotting function take over...
   xname <- paste(deparse(substitute(x), 500), collapse = "\n")
   if (is.null(xlab)) {
-    xlab <- make_unit_label(deparse(substitute(x)), x)
+    xlab <- make_unit_label(xname, x)
   }
   NextMethod("hist", xlab = xlab, main = main)
 }
