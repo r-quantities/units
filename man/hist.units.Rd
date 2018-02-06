@@ -24,4 +24,3 @@ units_options(parse = FALSE) # otherwise we break on the funny symbol!
 u = rnorm(100) * make_unit("°C")
 hist(u)
 }
-

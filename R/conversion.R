@@ -105,14 +105,17 @@ as.units <- function(x, value = unitless) {
 #' @export
 #' @name as.units
 as.units.default <- function(x, value = unitless) {
-#  value.name = as.character(substitute(value))
-#  tr = try(ret <- get(value.name), silent = TRUE)
-#  if (inherits(tr, "try-error"))
-#  	value = with(ud_units, value)
-#  else
-#  	value = ret
-#  if (is.null(value))
-#  	stop(paste("unit", value.name, "not found: define with make_unit?"))
+
+  unit_name <- substitute(value)
+  if (is.symbol(unit_name)) {
+    unit_name <- as.character(unit_name)
+    if (!exists(unit_name, envir = parent.frame())) {
+      value <- units:: ud_units[[unit_name]]
+      if (is.null(value))
+        stop(paste("unit", unit_name, "not found: define with make_unit?"))
+    }
+  }
+  
   units(x) <- value
   x
 }

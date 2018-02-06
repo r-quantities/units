@@ -12,4 +12,3 @@ unitless
 The "unit" type for vectors that are actually dimension-less.
 }
 \keyword{datasets}
-

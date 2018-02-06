@@ -62,8 +62,6 @@
 #' List containing pre-defined units from the udunits2 package.
 #' 
 #' Lazy loaded when used
-#' 
-#' @export
-ud_units <- NULL
+"ud_units"
 
 # nocov end

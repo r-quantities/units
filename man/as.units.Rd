@@ -2,7 +2,9 @@
 % Please edit documentation in R/conversion.R
 \name{as.units}
 \alias{as.units}
+\alias{as.units}
 \alias{as.units.default}
+\alias{as.units}
 \alias{as.units.difftime}
 \title{convert object to a units object}
 \usage{
@@ -27,4 +29,3 @@ s = Sys.time()
 d  = s - (s+1)
 as.units(d)
 }
-

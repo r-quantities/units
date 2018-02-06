@@ -44,3 +44,7 @@ test_that("we can format units", {
   
   expect_equal(format(ux), paste(x, units(ux)))
 })
+test_that("summary works with NA values", {
+  x <- c(1, NA) * make_unit("g")
+  expect_equal(summary(x), summary(as.numeric(x)))
+})
