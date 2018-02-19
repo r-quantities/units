@@ -1,5 +1,4 @@
-![rq](https://user-images.githubusercontent.com/520851/32419488-b0a18c1e-c27a-11e7-8861-8d79e8697582.png)
-# Measurement Units for R
+# <img src="https://avatars1.githubusercontent.com/u/32303769?s=40&v=4"> Measurement Units for R
 
 [![Build Status](https://travis-ci.org/r-quantities/units.svg?branch=master)](https://travis-ci.org/r-quantities/units) 
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/r-quantities/units?branch=master&svg=true)](https://ci.appveyor.com/project/r-quantities/units)
