@@ -234,7 +234,11 @@ as_difftime <- function(x) {
 
 
 #' @export
-`[.units` <- function(x, i, j,..., drop = TRUE)
+`[.units` <- function(x, i, j, ..., drop = TRUE)
+  structure(NextMethod(), "units" = units(x), class = "units")
+
+#' @export
+`[[.units` <- function(x, i, j, ...)
   structure(NextMethod(), "units" = units(x), class = "units")
 
 #' @export
