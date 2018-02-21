@@ -1,20 +1,21 @@
 #' @export
 c.units <- function(..., recursive = FALSE) {
+  modified <- FALSE
   args <- list(...)
   u = units(args[[1]])
   for (i in seq_along(args)[-1]) {
     if (!inherits(args[[i]], "units"))
       stop(paste("argument", i, "is not of class units"))
+    if (units(args[[i]]) != u)
+      modified <- TRUE
     tr = try(units(args[[i]]) <- u)
     if (class(tr) == "try-error")
       stop(paste("argument", i, 
                  "has units that are not convertible to that of the first argument"))
   }
-  do.call(.c.units, c(args, recursive=recursive))
-}
-
-.c.units <- function(..., recursive) {
-  structure(NextMethod("c"), units = units(list(...)[[1]]), class = "units")
+  if (modified)
+    do.call(c, c(args, recursive=recursive))
+  else structure(NextMethod(), units = u, class = "units")
 }
 
 .as.units = function(x, value) {
