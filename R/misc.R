@@ -1,21 +1,28 @@
 #' @export
 c.units <- function(..., recursive = FALSE) {
-  modified <- FALSE
   args <- list(...)
-  u = units(args[[1]])
-  for (i in seq_along(args)[-1]) {
-    if (!inherits(args[[i]], "units"))
-      stop(paste("argument", i, "is not of class units"))
-    if (units(args[[i]]) != u)
-      modified <- TRUE
-    tr = try(units(args[[i]]) <- u)
-    if (class(tr) == "try-error")
-      stop(paste("argument", i, 
-                 "has units that are not convertible to that of the first argument"))
-  }
-  if (modified)
+  u <- units(args[[1]])
+  if (.convert_to_first_arg(args))
     do.call(c, c(args, recursive=recursive))
   else structure(NextMethod(), units = u, class = "units")
+}
+
+.convert_to_first_arg <- function(dots, env.=parent.frame()) {
+  dots <- deparse(substitute(dots))
+  modified <- FALSE
+  u <- units(env.[[dots]][[1]])
+  for (i in seq_along(env.[[dots]])[-1]) {
+    if (!inherits(env.[[dots]][[i]], "units"))
+      stop(paste("argument", i, "is not of class units"))
+    if (units(env.[[dots]][[i]]) == u)
+      next
+    if (!ud.are.convertible(units(env.[[dots]][[i]]), u))
+      stop(paste("argument", i, 
+                 "has units that are not convertible to that of the first argument"))
+    units(env.[[dots]][[i]]) <- u
+    modified <- TRUE
+  }
+  modified
 }
 
 .as.units = function(x, value) {
