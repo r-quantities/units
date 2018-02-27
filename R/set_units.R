@@ -22,7 +22,11 @@
 #' @export
 #' @rdname set_units
 #' @seealso \code{\link{as_units}}
-set_units <- function(x, value, ..., mode = units_options("set_units_mode")) {
+set_units <- function(x, value, ..., mode = units_options("set_units_mode"))
+  UseMethod("set_units")
+
+#' @export
+set_units.default <- function(x, value, ..., mode = units_options("set_units_mode")) {
   
   if (missing(value))
     value <- unitless
