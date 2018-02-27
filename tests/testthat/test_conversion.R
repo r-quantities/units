@@ -132,3 +132,7 @@ test_that("we can convert between units that are not simply a scalar from each o
   expect_equal(units(result), unitless)
 })
 
+test_that("a NULL value returns NULL", {
+  expect_null(as_units(NULL))
+})
+
