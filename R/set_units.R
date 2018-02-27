@@ -26,7 +26,7 @@ set_units <- function(x, value, ..., mode = units_options("set_units_mode"))
   UseMethod("set_units")
 
 #' @export
-set_units.default <- function(x, value, ..., mode = units_options("set_units_mode")) {
+set_units.numeric <- function(x, value, ..., mode = units_options("set_units_mode")) {
   
   if (missing(value))
     value <- unitless
@@ -43,3 +43,9 @@ set_units.default <- function(x, value, ..., mode = units_options("set_units_mod
   units(x) <- as_units(value, ...)
   x
 }
+
+#' @export
+set_units.logical <- set_units.numeric
+
+#' @export
+set_units.units <- set_units.numeric
