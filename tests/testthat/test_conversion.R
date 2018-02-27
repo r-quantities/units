@@ -108,6 +108,8 @@ test_that("we can subscript units", {
   y <- x * as_units("m")
   expect_equal(as.numeric(y[1]), x[1])
   expect_equal(class(y[1]), class(y))
+  expect_equal(as.numeric(y[[1]]), x[[1]])
+  expect_equal(class(y[[1]]), class(y))
 })
 
 test_that("m + m*s is an error", {

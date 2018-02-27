@@ -3,6 +3,7 @@
 S3method("%*%",default)
 S3method("%*%",units)
 S3method("[",units)
+S3method("[[",units)
 S3method("units<-",logical)
 S3method("units<-",numeric)
 S3method("units<-",units)
