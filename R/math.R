@@ -20,6 +20,9 @@ Math.units = function(x, ...) {
   if (.Generic == "sqrt")
     return(x^0.5)
   
+  if (.Generic == "sign")
+    return(as.numeric(NextMethod()))
+  
   OK <- switch(.Generic, "abs" = , "sign" = , "floor" = , "ceiling" = , "log" = ,
                "trunc" = , "round" = , "signif" = , "cumsum" = , 
                "cummax" = , "cummin" = TRUE, FALSE)
@@ -29,14 +32,14 @@ Math.units = function(x, ...) {
   if (!OK && (units(x) == rad || units(x) == deg)) {
     OK <- switch(.Generic, sin =, cos =, tan =, sinpi =, cospi =, tanpi = TRUE, FALSE)
     if (OK) {
-	  units(x) <- "rad" # convert deg -> rad
-	  x <- set_units(x) # result has unit 1
-	}
+      units(x) <- "rad" # convert deg -> rad
+      x <- set_units(x) # result has unit 1
+    }
   }
   if (!OK && units(x) == unitless) {
     OK <- switch(.Generic, asin =, acos =, atan = TRUE, FALSE)
     if (OK)
-	  units(x) <- "rad" # unit of the answer (also unitless)
+      units(x) <- "rad" # unit of the answer (also unitless)
   }
 
   if (!OK) {
