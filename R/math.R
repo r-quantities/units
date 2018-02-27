@@ -17,6 +17,9 @@
 #' cumsum(a)
 #' signif(a, 2)
 Math.units = function(x, ...) {
+  if (.Generic == "sqrt")
+    return(x^0.5)
+  
   OK <- switch(.Generic, "abs" = , "sign" = , "floor" = , "ceiling" = , "log" = ,
                "trunc" = , "round" = , "signif" = , "cumsum" = , 
                "cummax" = , "cummin" = TRUE, FALSE)
@@ -40,7 +43,7 @@ Math.units = function(x, ...) {
     warning(paste("Operation", .Generic, "not meaningful for units"))
     x = unclass(x)
     attr(x, "units") = NULL
-    NextMethod(.Generic)
+    NextMethod()
   } else {
     # nocov start
     # I'm disabling coverage testing for this part because I am not sure
@@ -55,10 +58,10 @@ Math.units = function(x, ...) {
         u = paste0("lb(",units(x),")")
       else
         stop(paste("log with base", dts$base, "not supported"))
-      .as.units(NextMethod(.Generic), units(symbolic_unit(u, check_is_valid = FALSE)))
+      .as.units(NextMethod(), units(symbolic_unit(u, check_is_valid = FALSE)))
       # nocov end
     } else
-      .as.units(NextMethod(.Generic), units(x))
+      .as.units(NextMethod(), units(x))
   }
 }
 

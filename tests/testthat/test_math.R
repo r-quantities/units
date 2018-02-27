@@ -10,6 +10,9 @@ test_that("we can call math functions on units", {
   expect_equal(as.numeric(sign(ux)), sign(x))
   expect_equal(units(sign(ux)), units(ux)) # FIXME: should this have a unit?
   
+  expect_equal(as.numeric(sqrt(ux^2)), sqrt(x^2))
+  expect_error(sqrt(ux), "units not divisible")
+  
   expect_equal(as.numeric(floor(ux)), floor(x))
   expect_equal(units(floor(ux)), units(ux))
   expect_equal(as.numeric(ceiling(ux)), ceiling(x))
