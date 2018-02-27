@@ -58,6 +58,7 @@ convert <- function(value, from, to) {
   if(!inherits(value, "units") && !inherits(value, "symbolic_units"))
     value <- as_units(value)
   
+  dimx = dim(x)
   if (inherits(value, "units")) {
     x <- x * unclass(value)
     value <- units(value)
@@ -70,7 +71,7 @@ convert <- function(value, from, to) {
   str2 <- as.character(value)
 
   if (are_convertible(str1, str2)) 
-    structure(convert(x, str1, str2), units = value, dim = dim(x), class = "units")
+    structure(convert(x, str1, str2), units = value, dim = dimx, class = "units")
   else
     stop(paste("cannot convert", units(x), "into", value), call. = FALSE)
 }
@@ -230,7 +231,11 @@ as_difftime <- function(x) {
 
 
 #' @export
-`[.units` <- function(x, i, j,..., drop = TRUE)
+`[.units` <- function(x, i, j, ..., drop = TRUE)
+  structure(NextMethod(), "units" = units(x), class = "units")
+
+#' @export
+`[[.units` <- function(x, i, j, ...)
   structure(NextMethod(), "units" = units(x), class = "units")
 
 #' @export

@@ -26,48 +26,27 @@ Summary.units = function(..., na.rm = FALSE) {
 }
 
 #' @export
-print.units <- function(x, digits = getOption("digits"), ...) # nocov start
-{
+print.units = function (x, ...) { # nocov start
   if (is.array(x) || length(x) > 1L) {
     cat("Units: ", as.character(attr(x, "units")), "\n", sep = "")
-    y <- unclass(x)
-    attr(y, "units") <- NULL
-    print(y)
-  } else { 
-    u = as.character(attr(x, "units"))
-    if (u == "")
-      u = "(Units: 1)"
-    cat(format(unclass(x), digits = digits), " ", u, "\n", sep = "")
+    x <- drop_units(x)
+    NextMethod()
+  } else {
+    cat(format(x, ...), "\n", sep="")
+    invisible(x)
   }
-  invisible(x)
 } # nocov end
-
-
-#' @export
-weighted.mean.units <- function(x, w, ...) 
-  structure(weighted.mean(unclass(x), w, ...), 
-            units = attr(x, "units"), class = "units")
-
 
 #' @export
 mean.units = function(x, ...) {
-  .as.units(mean(unclass(x), ...), units(x))
+  .as.units(NextMethod(), units(x))
 }
 
 #' @export
-median.units = function(x, na.rm = FALSE, ...) {
-}
+weighted.mean.units = mean.units
 
-median.units <- if (is.na(match("...", names(formals(median))))) {
-    function(x, na.rm = FALSE) {
-  		.as.units(median(unclass(x), na.rm = na.rm), units(x))
-    }
-} else {
-    function(x, na.rm = FALSE, ...) {
-  		.as.units(median(unclass(x), na.rm = na.rm, ...), units(x))
-    }
-}
-
+#' @export
+median.units = mean.units
 
 #' @export
 quantile.units = function(x, ...) {
@@ -76,7 +55,7 @@ quantile.units = function(x, ...) {
 
 #' @export
 format.units = function(x, ...) {
-  paste(format(unclass(x), ...), units(x))
+  paste(NextMethod(), units(x))
 }
 
 #' @export

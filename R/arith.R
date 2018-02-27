@@ -59,20 +59,24 @@ Ops.units <- function(e1, e2) {
   }
   
   if (prd) {
-    if (! inherits(e1, "units"))
-      e1 = set_units(e1) # TODO: or warn?
+    if (!inherits(e1, "units"))
+      e1 <- set_units(e1, 1) # TODO: or warn?
 
-    if (! inherits(e2, "units"))
-      e2 = set_units(e2) # TODO: or warn?
+    if (!inherits(e2, "units"))
+      e2 <- set_units(e2, 1) # TODO: or warn?
 
+    ve1 <- as.numeric(e1) ; ue1 <- units(e1)
+    ve2 <- as.numeric(e2) ; ue2 <- units(e2)
+    
     if (.Generic == "*") {
-      e1 <- .multiply_symbolic_units(unclass(e1), units(e1), units(e2))
-      e2 <- .multiply_symbolic_units(unclass(e2), units(e1), units(e2))
+      numerator <- sort(c(ue1$numerator, ue2$numerator))
+      denominator <- sort(c(ue1$denominator, ue2$denominator))
     } else {
-      e1 <- .divide_symbolic_units(unclass(e1), units(e1), units(e2))
-      e2 <- .divide_symbolic_units(unclass(e2), units(e1), units(e2))
+      numerator <- sort(c(ue1$numerator, ue2$denominator))
+      denominator <- sort(c(ue1$denominator, ue2$numerator))
     }
-    u <- units(e1)
+    value <- as.numeric(NextMethod())
+    return(.simplify_units(value, .symbolic_units(numerator, denominator)))
 
   } else if (pw) { # FIXME: I am not sure how to take powers of non-integers yet
 
@@ -100,7 +104,7 @@ Ops.units <- function(e1, e2) {
       if (round(e2) != e2) {
         stop("currently you can only take integer powers of units above 1")}
       u <- .symbolic_units(rep(units(e1)$numerator, e2),
-                                           rep(units(e1)$denominator, e2))
+                        rep(units(e1)$denominator, e2))
     } else if (e2 <= -1) {
       if (round(e2) != e2) {
         stop("currently you can only take integer powers of units below -1")}

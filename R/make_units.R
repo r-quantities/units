@@ -384,7 +384,10 @@ symbolic_unit <- function(chr, check_is_valid = TRUE) {
 #' @note Equivalent to \code{units(x) <- NULL}
 #' 
 #' @export
-drop_units <- function(x) {
+drop_units <- function(x) UseMethod("drop_units")
+
+#' @export
+drop_units.units <- function(x) {
   class(x) <- setdiff(class(x), "units")
   attr(x, "units") <- NULL
   x

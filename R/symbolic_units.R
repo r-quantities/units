@@ -20,7 +20,7 @@
 }
 
 .same_units <- function(e1, e2) {
-  all(e1$numerator == e2$numerator) && all(e1$denominator == e2$denominator)
+  identical(e1$numerator, e2$numerator) && identical(e1$denominator, e2$denominator)
 }
 
 # Inside the group generic functions we do have .Generic even if the diagnostics
@@ -86,7 +86,7 @@ as.character.symbolic_units <- function(x, ...,
   denominator <- x$denominator
   if (escape_units) {
     numerator <- unlist(Map(function(name) paste0("`", name, "`", sep = ""), numerator))
-    denoinator <- unlist(Map(function(name) paste0("`", name, "`", sep = ""), denominator))
+    denominator <- unlist(Map(function(name) paste0("`", name, "`", sep = ""), denominator))
   }
   
   if (length(numerator) == 0) {
@@ -128,7 +128,6 @@ as.character.symbolic_units <- function(x, ...,
   
   new_numerator <- drop_ones(sym_units$numerator)
   new_denominator <- drop_ones(sym_units$denominator)
-  
   delete_num <- c()
   for (i in seq_along(new_numerator)) {
     str1 <- new_numerator[i]
