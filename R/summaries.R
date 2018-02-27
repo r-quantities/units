@@ -19,8 +19,7 @@ Summary.units = function(..., na.rm = FALSE) {
 print.units = function (x, ...) { # nocov start
   if (is.array(x) || length(x) > 1L) {
     cat("Units: ", as.character(attr(x, "units")), "\n", sep = "")
-    x <- unclass(x)
-    attr(x, "units") <- NULL
+    x <- drop_units(x)
     NextMethod()
   } else {
     cat(format(x, ...), "\n", sep="")
