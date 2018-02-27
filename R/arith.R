@@ -32,23 +32,15 @@
 #' a %% a
 #' a %% set_units(2 )
 Ops.units <- function(e1, e2) {
+  if (missing(e2))
+    return(NextMethod())
 
-  unary = nargs() == 1
   eq  <- .Generic %in% c("+", "-", "==", "!=", "<", ">", "<=", ">=") # requiring identical units
   prd <- .Generic %in% c("*", "/", "%/%")                            # product-type
   pw  <- .Generic %in% c( "**", "^")                                 # power-type
   mod <- .Generic == "%%"                                            # modulo
   pm  <- .Generic %in% c("+", "-")                                   # addition-type
 
-  if (unary) {
-    if (! (.Generic %in% c("+", "-")))
-      stop("only unary + and - supported")
-    if (.Generic == "-")
-      return(e1 * set_units(-1.0))
-	else
-      return(e1)
-  }
-  
   if (! any(eq, prd, pw, mod))
     stop(paste("operation", .Generic, "not allowed"))
   
