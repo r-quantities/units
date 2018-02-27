@@ -9,10 +9,9 @@
 ### News
 Cite this package as _Edzer Pebesma, Thomas Mailund
 and James Hiebert, 2016.  Measurement Units in R.
-The R Journal, 8 (2), 486--494._ The citation is found
-[here](http://journal.r-project.org/archive/2016-2/pebesma-mailund-hiebert.pdf).
-The units vignette is derived from this manuscript, and is kept up
-to date with the package.
+The R Journal, 8 (2), 486--494._ This publication is found
+[here](https://journal.r-project.org/archive/2016/RJ-2016-061/index.html).
+The units [vignette](https://r-quantities.github.io/units/articles/measurement_units_in_R.html) is derived from this manuscript, but is kept up to date with the package.
 
 ### What it does
 
