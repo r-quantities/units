@@ -41,8 +41,7 @@ Math.units = function(x, ...) {
 
   if (!OK) {
     warning(paste("Operation", .Generic, "not meaningful for units"))
-    x = unclass(x)
-    attr(x, "units") = NULL
+    x <- drop_units(x)
     NextMethod()
   } else {
     # nocov start
