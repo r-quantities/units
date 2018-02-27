@@ -131,7 +131,6 @@ test_that("we can convert between units that are not simply a scalar from each o
   expect_equal(units(result), unitless)
 })
 
-
 test_that("dim propagates", {
   y = x = set_units(matrix(1:4,2), m)
   units(y) = make_unit("mm")
@@ -148,4 +147,8 @@ test_that("conversion to dimensionless with prefix works (g/kg)", {
 	expect_equal(a, a_orig)
 	units(a) = as_units("kg/g")
 	expect_equal(a, a_orig * 1000)
+})
+
+test_that("a NULL value returns NULL", {
+  expect_null(as_units(NULL))
 })

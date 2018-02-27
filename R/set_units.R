@@ -37,9 +37,6 @@ set_units.numeric <- function(x, value, ..., mode = units_options("set_units_mod
       stop("The only valid number defining a unit is '1', signifying a unitless unit")
   }
   
-  if (is.null(value))
-    return(drop_units(x))
-  
   units(x) <- as_units(value, ...)
   x
 }

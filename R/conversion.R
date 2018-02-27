@@ -135,6 +135,7 @@ as_units.symbolic_units <- function(x, value, ...) {
 #' @export
 #' @name as_units
 as_units.default <- function(x, value = unitless, ...) {
+  if (is.null(x)) return(x)
   units(x) <- value
   x
 }
