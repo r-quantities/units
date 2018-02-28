@@ -67,8 +67,7 @@ Ops.units <- function(e1, e2) {
       numerator <- sort(c(ue1$numerator, ue2$denominator))
       denominator <- sort(c(ue1$denominator, ue2$numerator))
     }
-    value <- as.numeric(NextMethod())
-    return(.simplify_units(value, .symbolic_units(numerator, denominator)))
+    return(.simplify_units(NextMethod(), .symbolic_units(numerator, denominator)))
 
   } else if (pw) { # FIXME: I am not sure how to take powers of non-integers yet
 
