@@ -80,7 +80,7 @@ plot.units <- function(x, y, xlab = NULL, ylab = NULL, ...) {
       xlab <- "Index"
 	y <- x
 	x <- seq_along(x)
-    return(NextMethod())
+    return(NextMethod(xlab=xlab, ylab=ylab))
   } 
   if (is.null(xlab)) {
     xlab <- make_unit_label(xlab0, x)
@@ -88,7 +88,7 @@ plot.units <- function(x, y, xlab = NULL, ylab = NULL, ...) {
   if (is.null(ylab) && inherits(y, "units")) {
     ylab <- make_unit_label(deparse(substitute(y)), y)
   }
-  NextMethod()
+  NextMethod(xlab=xlab, ylab=ylab)
 }
 
 #' histogram for unit objects
@@ -110,5 +110,5 @@ hist.units <- function(x, xlab = NULL, main = paste("Histogram of", xname), ...)
   if (is.null(xlab)) {
     xlab <- make_unit_label(xname, x)
   }
-  NextMethod()
+  NextMethod(xlab=xlab, main=main)
 }
