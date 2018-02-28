@@ -125,6 +125,7 @@ as.character.symbolic_units <- function(x, ...,
   # before removing matching units.
 
   drop_ones = function(u) u[ u != "1" ]
+  class(value) <- "units"
   
   new_numerator <- drop_ones(sym_units$numerator)
   new_denominator <- drop_ones(sym_units$denominator)
@@ -136,7 +137,8 @@ as.character.symbolic_units <- function(x, ...,
       str2 <- new_denominator[j]
 
       if (are_convertible(str1, str2)) {
-        value <- convert(value, str1, str2)
+        attr(value, "units") <- str1
+        units(value) <- str2
         delete_num <- c(delete_num, i)
         new_denominator <- new_denominator[-j]
         break
@@ -147,5 +149,5 @@ as.character.symbolic_units <- function(x, ...,
   if (length(delete_num) > 0)
     new_numerator <- new_numerator[-delete_num]
   
-  as_units(value, .symbolic_units(new_numerator, new_denominator))
+  as_units(drop_units(value), .symbolic_units(new_numerator, new_denominator))
 }
