@@ -133,8 +133,8 @@ test_that("%*%, %/% and %% work", {
   expect_equal(a %/% set_units(2, m), set_units(c(0,1,1,2,2)))
   expect_equal(a %% set_units(2, m), set_units(c(1,0,1,0,1), m))
   mat = set_units(matrix(1:5, 1), m)
-  #expect_equal(mat %*% t(mat), set_units(matrix(55), m^2))
-  #expect_equal(t(mat) %*% mat, set_units(t(unclass(mat)) %*% unclass(mat), m^2))
+  # expect_equal(mat %*% t(mat), set_units(matrix(55), m^2))
+  # expect_equal(t(mat) %*% mat, set_units(t(unclass(mat)) %*% unclass(mat), m^2))
 })
 
 test_that("The order of multiplication for basic units is commutative", {
