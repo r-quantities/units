@@ -17,6 +17,24 @@ convert <- function(value, from, to) {
   else NA
 }
 
+.convert_to_first_arg <- function(dots, env.=parent.frame()) {
+  dots <- deparse(substitute(dots))
+  modified <- FALSE
+  u <- units(env.[[dots]][[1]])
+  for (i in seq_along(env.[[dots]])[-1]) {
+    if (!inherits(env.[[dots]][[i]], "units"))
+      stop(paste("argument", i, "is not of class units"))
+    if (units(env.[[dots]][[i]]) == u)
+      next
+    if (!ud.are.convertible(units(env.[[dots]][[i]]), u))
+      stop(paste("argument", i, 
+                 "has units that are not convertible to that of the first argument"))
+    units(env.[[dots]][[i]]) <- u
+    modified <- TRUE
+  }
+  modified
+}
+
 #' Set measurement units on a numeric vector
 #'
 #' @param x numeric vector, or object of class \code{units}
@@ -74,7 +92,7 @@ convert <- function(value, from, to) {
   str2 <- as.character(value)
 
   if (are_convertible(str1, str2)) 
-    structure(convert(x, str1, str2), units = value, class = "units")
+    .as.units(convert(x, str1, str2), value)
   else
     stop(paste("cannot convert", units(x), "into", value), call. = FALSE)
 }
@@ -132,7 +150,7 @@ as_units.units <- function(x, value, ...) {
 as_units.symbolic_units <- function(x, value, ...) {
   if(!missing(value))
     warning("supplied value ignored")
-  structure(1L, units = x, class = "units")
+  .as.units(1L, x)
 }
 
 #' @export
@@ -236,11 +254,11 @@ as_difftime <- function(x) {
 
 #' @export
 `[.units` <- function(x, i, j, ..., drop = TRUE)
-  structure(NextMethod(), "units" = units(x), class = "units")
+  .as.units(NextMethod(), units(x))
 
 #' @export
 `[[.units` <- function(x, i, j, ...)
-  structure(NextMethod(), "units" = units(x), class = "units")
+  .as.units(NextMethod(), units(x))
 
 #' @export
 as.POSIXct.units = function (x, tz = "UTC", ...) {
