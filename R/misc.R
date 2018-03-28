@@ -177,3 +177,9 @@ pillar_shaft.units <- function(x, ...) {
   #out <- format(unclass(x), ...)
   pillar::new_pillar_shaft_simple(out, align = "right", min_width = 8)
 }
+
+#' @export
+str.units = function(object, ...) {
+	cat("Object of class units:\n")
+	str(unclass(object), ...)
+}
