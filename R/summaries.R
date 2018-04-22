@@ -12,7 +12,7 @@ Summary.units = function(..., na.rm = FALSE) {
   u <- units(args[[1]])
   if (.convert_to_first_arg(args))
     do.call(.Generic, c(args, na.rm = na.rm))
-  else structure(NextMethod(), units = u, class = "units")
+  else .as.units(NextMethod(), u)
 }
 
 #' @export
