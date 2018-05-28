@@ -137,7 +137,7 @@ as.character.symbolic_units <- function(x, ...,
       str2 <- new_denominator[j]
 
       if (are_convertible(str1, str2)) {
-        attr(value, "units") <- str1
+        attr(value, "units") <- units(as_units(str1))
         units(value) <- str2
         delete_num <- c(delete_num, i)
         new_denominator <- new_denominator[-j]
