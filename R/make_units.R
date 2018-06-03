@@ -332,11 +332,17 @@ See ?as_units for usage examples.")
   
   names(vars) <- vars
   tmp_env <- lapply(vars, symbolic_unit, check_is_valid = FALSE)
+ 
+  if (dont_simplify_here <- is.na(.units.simplify()))
+  	units_options(simplify = FALSE)
   
   unit <- tryCatch( eval(x, tmp_env, units_eval_env),
     error = function(e) stop( paste0( conditionMessage(e), "\n",
           "Did you try to supply a value in a context where a bare expression was expected?"
         ), call. = FALSE ))
+
+  if (dont_simplify_here)
+  	units_options(simplify = NA)
   
 #  if(as.numeric(unit) %not_in% c(1, 0)) # 0 if log() used. 
 #    stop(call. = FALSE,

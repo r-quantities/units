@@ -22,10 +22,13 @@ units_options(..., sep, group, negative_power, parse, set_units_mode,
 
 \item{auto_convert_names_to_symbols}{logical, default \code{TRUE}: should names, such as \code{degree_C} be converted to their usual symbol?}
 
-\item{simplify}{logical, default \code{TRUE}; simplify units in expressions?}
+\item{simplify}{logical, default \code{NA}; simplify units in expressions?}
 }
 \description{
 set units global options, mostly related how units are printed and plotted
+}
+\details{
+The default \code{NA} value for \code{simplify} means units are not simplified in \link{set_units} or \link{as_units}, but are simplified in arithmetical expressions.
 }
 \examples{
 units_options(sep = c("~~~", "~"), group = c("", "")) # more space, parenthesis

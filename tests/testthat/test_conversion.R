@@ -137,8 +137,15 @@ test_that("dim propagates", {
   expect_equal(dim(x), dim(y))
 })
 
-test_that("conversion to dimensionless with prefix works (g/kg)", {
+test_that("conversion of g/kg to dimensionless is not the default", {
 	a_orig <- a <- 1:10
+	units(a) = as_units("mg/kg")
+	expect_equal(as.numeric(a), a_orig)
+})
+
+test_that("conversion to dimensionless with prefix works (g/kg) if simplify=TRUE", {
+	a_orig <- a <- 1:10
+	units_options(simplify = TRUE)
 	units(a) = as_units("mg/kg")
 	expect_equal(as.numeric(a), a_orig/1e6)
 	units(a) = as_units("kg/mg")
@@ -147,6 +154,7 @@ test_that("conversion to dimensionless with prefix works (g/kg)", {
 	expect_equal(a, a_orig)
 	units(a) = as_units("kg/g")
 	expect_equal(a, a_orig * 1000)
+	units_options(simplify = NA)
 })
 
 test_that("a NULL value returns NULL", {

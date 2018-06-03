@@ -119,11 +119,12 @@ as.character.symbolic_units <- function(x, ...,
 
 .simplify_units <- function(value, sym_units) {
   
-  if (!get(".units.simplify", envir = .units_options)) {
+  if (isFALSE(.units.simplify())) {
   	value = as.numeric(value)
 	units(value) = sym_units
   	return(value)
   }
+
   # This is just a brute force implementation that takes each element in the
   # numerator and tries to find a value in the denominator that can be converted
   # to the same unit. It modifies "value" to rescale the nominator to the denomiator

@@ -10,7 +10,8 @@
 #' @param parse logical, default \code{TRUE}; should the units be made into an expression (so we get subscripts)? Setting to \code{FALSE} may be useful if \link{parse} fails, e.g. if the unit contains symbols that assume a particular encoding
 #' @param set_units_mode character; either \code{"symbols"} or \code{"standard"}; see \link{set_units}; default is \code{"symbols"}
 #' @param auto_convert_names_to_symbols logical, default \code{TRUE}: should names, such as \code{degree_C} be converted to their usual symbol?
-#' @param simplify logical, default \code{TRUE}; simplify units in expressions?
+#' @param simplify logical, default \code{NA}; simplify units in expressions? 
+#' @details The default \code{NA} value for \code{simplify} means units are not simplified in \link{set_units} or \link{as_units}, but are simplified in arithmetical expressions.
 #' @examples
 #' units_options(sep = c("~~~", "~"), group = c("", "")) # more space, parenthesis
 #' ## set defaults:
@@ -64,4 +65,8 @@ units_options(
 	parse = TRUE,
 	set_units_mode = "symbols",
 	auto_convert_names_to_symbols = TRUE,
-	simplify = TRUE) # set defaults
+	simplify = NA) # set defaults
+
+.units.simplify = function() {
+  get(".units.simplify", envir = .units_options)
+}
