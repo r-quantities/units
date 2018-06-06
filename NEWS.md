@@ -1,3 +1,11 @@
+# version 0.6-0
+
+* directly uses the udunits2 C library, instead of R package `udunits2`.
+
+* allows integration of user-defined units with existing units
+
+* drops `%*%`, no longer gives warning when loading
+
 # version 0.5-0
 
 * deal with trigonometric functions for units degree; return units rad on inverse trigonometric functions.

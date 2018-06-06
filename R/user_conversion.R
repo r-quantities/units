@@ -17,8 +17,7 @@ install_symbolic_unit <- function(chr, warn = TRUE) {
               "Installation not necessary and is not performed")
     return(invisible(FALSE))
   }
-  R_ut_new_dimensionless_unit(chr)
-  #assign(chr, NULL, envir =  user_defined_units)
+  invisible(R_ut_new_dimensionless_unit(chr))
 }
 
 #' Install a conversion constant or offset between user-defined units.
@@ -28,7 +27,7 @@ install_symbolic_unit <- function(chr, warn = TRUE) {
 #'   x} (constant) or \eqn{y = \alpha + x} (offset).
 #'   
 #' @param from    String for the symbol of the unit being converted from.
-#' @param to      String for the symbol of the unit being converted to; must be a non-existing unit name.
+#' @param to      String for the symbol of the unit being converted to. One of \code{from} and \code{to} must be an existing unit name.
 #' @param const   The constant \eqn{\alpha} in the conversion.
 #'   
 #' @details This function handles the very common case where units are related 
@@ -50,7 +49,12 @@ install_symbolic_unit <- function(chr, warn = TRUE) {
 #' @export
 install_conversion_constant <- function(from, to, const) {
   stopifnot(is.finite(const), const != 0.0)
-  R_ut_scale(as.character(to), as.character(from), 1.0 / as.double(const))
+  if (! (ud_is_parseable(from) || ud_is_parseable(to)))
+    stop("at least one of (from, to) must be a known unit")
+  if (ud_is_parseable(to))
+  	invisible(R_ut_scale(as.character(from), as.character(to), as.double(const)))
+  else
+    invisible(R_ut_scale(as.character(to), as.character(from), 1.0 / as.double(const)))
 }
 
 #' @export
@@ -62,6 +66,11 @@ install_conversion_constant <- function(from, to, const) {
 #' m + n
 #' n + m
 install_conversion_offset <- function(from, to, const) {
-  stopifnot(is.finite(const), const != 0.0)
-  R_ut_offset(as.character(to), as.character(from), as.double(const))
+  stopifnot(is.finite(const))
+  if (! (ud_is_parseable(from) || ud_is_parseable(to)))
+    stop("at least one of (from, to) must be a known unit")
+  if (ud_is_parseable(to))
+    invisible(R_ut_offset(as.character(from), as.character(to), -as.double(const)))
+  else
+    invisible(R_ut_offset(as.character(to), as.character(from), as.double(const)))
 }

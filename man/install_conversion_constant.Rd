@@ -13,7 +13,7 @@ install_conversion_offset(from, to, const)
 \arguments{
 \item{from}{String for the symbol of the unit being converted from.}
 
-\item{to}{String for the symbol of the unit being converted to; must be a non-existing unit name.}
+\item{to}{String for the symbol of the unit being converted to. One of \code{from} and \code{to} must be an existing unit name.}
 
 \item{const}{The constant \eqn{\alpha} in the conversion.}
 }
