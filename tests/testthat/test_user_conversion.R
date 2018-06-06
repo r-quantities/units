@@ -32,12 +32,12 @@ test_that("we can convert between units with a user-defined function", {
 })
 
 test_that("we can simplify via user-defined units", {
-  install_symbolic_unit("apple")
-  install_symbolic_unit("orange")
+  #install_symbolic_unit("apple")
+  #install_symbolic_unit("orange")
   
   apples <- 4 * as_units("apple")
   oranges <- 2 * as_units("orange")
-  install_conversion_constant("orange", "apple", 2) # one orange is worth two apples
+  #install_conversion_constant("orange", "apple", 2) # one orange is worth two apples
   
   expect_equal(apples / oranges, set_units(1))
   expect_equal(oranges / apples, set_units(1))
