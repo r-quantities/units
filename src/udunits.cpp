@@ -114,13 +114,20 @@ XPtrUT R_ut_new_dimensionless_unit(CharacterVector name) {
 }
 
 // [[Rcpp::export]]
+void R_ut_remove_unit(CharacterVector name) {
+  if (ut_unmap_name_to_unit(sys, name[0], enc) != UT_SUCCESS)
+    handle_error("R_ut_remove_unit");
+  return ;
+}
+
+// [[Rcpp::export]]
 XPtrUT R_ut_scale(CharacterVector nw, CharacterVector old, NumericVector d) {
   if (d.size() != 1)
     stop("d should have size 1");
   ut_unit *u_old = ut_parse(sys, ut_trim(old[0], enc), enc);
   ut_unit *u_new = ut_scale(d[0], u_old);
   if (ut_map_name_to_unit(nw[0], enc, u_new) != UT_SUCCESS)
-    handle_error("R_ut_add_scale");
+    handle_error("R_ut_scale");
   ut_free(u_old);
   return ut_wrap(u_new);
 }

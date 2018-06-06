@@ -83,6 +83,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// R_ut_remove_unit
+void R_ut_remove_unit(CharacterVector name);
+RcppExport SEXP _units_R_ut_remove_unit(SEXP nameSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< CharacterVector >::type name(nameSEXP);
+    R_ut_remove_unit(name);
+    return R_NilValue;
+END_RCPP
+}
 // R_ut_scale
 XPtrUT R_ut_scale(CharacterVector nw, CharacterVector old, NumericVector d);
 RcppExport SEXP _units_R_ut_scale(SEXP nwSEXP, SEXP oldSEXP, SEXP dSEXP) {
@@ -247,6 +257,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_units_R_ut_are_convertible", (DL_FUNC) &_units_R_ut_are_convertible, 2},
     {"_units_R_convert_doubles", (DL_FUNC) &_units_R_convert_doubles, 3},
     {"_units_R_ut_new_dimensionless_unit", (DL_FUNC) &_units_R_ut_new_dimensionless_unit, 1},
+    {"_units_R_ut_remove_unit", (DL_FUNC) &_units_R_ut_remove_unit, 1},
     {"_units_R_ut_scale", (DL_FUNC) &_units_R_ut_scale, 3},
     {"_units_R_ut_offset", (DL_FUNC) &_units_R_ut_offset, 3},
     {"_units_R_ut_divide", (DL_FUNC) &_units_R_ut_divide, 2},

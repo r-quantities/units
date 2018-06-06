@@ -13,9 +13,9 @@
 install_symbolic_unit <- function(chr, warn = TRUE) {
   if(ud_is_parseable(chr)) {
     if (warn) 
-      warning(sQuote(chr), " is already a valid unit recognized by udunits.\n",
+      warning(sQuote(chr), " is already a valid unit recognized by udunits: removing it.\n",
               "Installation not necessary and is not performed")
-    return(invisible(FALSE))
+	R_ut_remove_unit(chr)
   }
   invisible(R_ut_new_dimensionless_unit(chr))
 }

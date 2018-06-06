@@ -15,13 +15,14 @@ convert <- function(value, from, to) {
 #' @param value object of class \code{units} or \code{symbolic_units}, or in the case of \code{set_units} expression with symbols that can be resolved in \link{ud_units} (see examples).
 #'
 #' @return object of class \code{units}
+#' @details if \code{value} is of class \code{units} and has a value unequal to 1, this value is ignored unless \code{units_options("simplifiy")} is \code{TRUE}. If \code{simplify} is \code{TRUE}, \code{x} is multiplied by this value.
 #' @export
 #' @name units
 #'
 #' @examples
 #' x = 1:3
 #' class(x)
-#' units(x) <- with(ud_units, m/s) # valid
+#' units(x) <- as_units("m/s")
 #' class(x)
 #' y = 2:5
 `units<-.numeric` <- function(x, value) {
@@ -32,7 +33,8 @@ convert <- function(value, from, to) {
     value <- as_units(value)
   
   if (inherits(value, "units")) {
-    x <- x * unclass(value)
+    if (isTRUE(.units.simplify()))
+      x <- x * unclass(value)
     value <- units(value)
   }
  

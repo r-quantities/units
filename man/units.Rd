@@ -36,10 +36,13 @@ Convert units
 
 retrieve measurement units from \code{units} object
 }
+\details{
+if \code{value} is of class \code{units} and has a value unequal to 1, this value is ignored unless \code{units_options("simplifiy")} is \code{TRUE}. If \code{simplify} is \code{TRUE}, \code{x} is multiplied by this value.
+}
 \examples{
 x = 1:3
 class(x)
-units(x) <- with(ud_units, m/s) # valid
+units(x) <- as_units("m/s")
 class(x)
 y = 2:5
 a <- with(ud_units, 1:3 * m/s)
