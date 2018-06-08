@@ -32,6 +32,7 @@ Description: Support for measurement units in R vectors, matrices
 	incompatibility. Compatible with the POSIXct, Date and difftime 
 	classes. Uses the UNIDATA udunits library and unit database for 
 	unit compatibility checking and conversion.
+SystemRequirements: udunits-2
 License: GPL-2
 URL: https://github.com/r-quantities/units/
 BugReports: https://github.com/r-quantities/units/issues/
