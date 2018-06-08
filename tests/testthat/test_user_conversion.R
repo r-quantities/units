@@ -3,7 +3,7 @@ context("User-defined unit conversion")
 test_that("we can convert between units with a user-defined function", {
   expect_error(as_units("apple"))
   expect_error(as_units("orange"))
-  #install_symbolic_unit("apple") -> will be defined by install_conversion_constant
+  #install_symbolic_unit("apple") -> needs to be defined by install_conversion_constant
   install_symbolic_unit("orange")
   oranges <- 3 * as_units("orange")
   expect_error(apples + oranges) # obviously
@@ -32,13 +32,10 @@ test_that("we can convert between units with a user-defined function", {
 })
 
 test_that("we can simplify via user-defined units", {
-  #install_symbolic_unit("apple")
-  #install_symbolic_unit("orange")
-  
+  remove_symbolic_unit("apple")
+  install_conversion_constant("orange", "apple", 2) # one orange is worth two apples
   apples <- 4 * as_units("apple")
   oranges <- 2 * as_units("orange")
-  #install_conversion_constant("orange", "apple", 2) # one orange is worth two apples
-  
   expect_equal(apples / oranges, set_units(1))
   expect_equal(oranges / apples, set_units(1))
 })
