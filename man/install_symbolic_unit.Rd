@@ -2,12 +2,15 @@
 % Please edit documentation in R/user_conversion.R
 \name{install_symbolic_unit}
 \alias{install_symbolic_unit}
+\alias{remove_symbolic_unit}
 \title{Define new symbolic units}
 \usage{
 install_symbolic_unit(chr, warn = TRUE)
+
+remove_symbolic_unit(chr)
 }
 \arguments{
-\item{chr}{a length 1 character vector that is the new unit name or symbol.}
+\item{chr}{a length 1 character vector that is the unit name or symbol.}
 
 \item{warn}{warns if the supplied unit symbol is already a valid unit symbol
 recognized by udunits.}
@@ -16,4 +19,11 @@ recognized by udunits.}
 Adding a symbolic unit allows it to be used in \code{as_units},
 \code{make_units} and \code{set_units}. No installation is performed if the
 unit is already known by udunits.
+}
+\details{
+\code{install_symbolic_unit} installs a new dimensionless unit; these are directly compatible to any other dimensionless unit. To install a new unit that is a scaled or shifted version of an existing unit, use \code{install_conversion_constatn} or \code{install_conversion_offset} directly.
+}
+\examples{
+install_symbolic_unit("person")
+set_units(1, rad) + set_units(1, person) # that is how dimensionless units work!
 }

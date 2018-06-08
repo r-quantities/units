@@ -4,20 +4,30 @@
 #' \code{make_units} and \code{set_units}. No installation is performed if the
 #' unit is already known by udunits.
 #'
-#' @param chr a length 1 character vector that is the new unit name or symbol.
+#' @param chr a length 1 character vector that is the unit name or symbol.
 #' @param warn warns if the supplied unit symbol is already a valid unit symbol
 #'   recognized by udunits.
 #'
+#' @details \code{install_symbolic_unit} installs a new dimensionless unit; these are directly compatible to any other dimensionless unit. To install a new unit that is a scaled or shifted version of an existing unit, use \code{install_conversion_constatn} or \code{install_conversion_offset} directly.
 #' @export
 #' @rdname install_symbolic_unit
+#' @examples
+#' install_symbolic_unit("person")
+#' set_units(1, rad) + set_units(1, person) # that is how dimensionless units work!
 install_symbolic_unit <- function(chr, warn = TRUE) {
   if(ud_is_parseable(chr)) {
     if (warn) 
-      warning(sQuote(chr), " is already a valid unit recognized by udunits: removing it.\n",
-              "Installation not necessary and is not performed")
-	R_ut_remove_unit(chr)
+      warning(sQuote(chr), 
+	    " is already a valid unit recognized by udunits; removing and reinstalling.")
+    remove_symbolic_unit(chr)
   }
   invisible(R_ut_new_dimensionless_unit(chr))
+}
+
+#' @export
+#' @rdname install_symbolic_unit
+remove_symbolic_unit <- function(chr) {
+	R_ut_remove_unit(chr)
 }
 
 #' Install a conversion constant or offset between user-defined units.
