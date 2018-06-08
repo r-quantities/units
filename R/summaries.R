@@ -55,7 +55,7 @@ quantile.units = function(x, ...) {
 
 #' @export
 format.units = function(x, ...) {
-  paste(NextMethod(), units(x))
+  setNames(paste(NextMethod(), units(x)), names(x))
 }
 
 #' @export
