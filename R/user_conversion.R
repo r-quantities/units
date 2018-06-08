@@ -59,8 +59,8 @@ remove_symbolic_unit <- function(chr) {
 #' @export
 install_conversion_constant <- function(from, to, const) {
   stopifnot(is.finite(const), const != 0.0)
-  if (! (ud_is_parseable(from) || ud_is_parseable(to)))
-    stop("at least one of (from, to) must be a known unit")
+  if (! xor(ud_is_parseable(from), ud_is_parseable(to)))
+    stop("exactly one of (from, to) must be a known unit")
   if (ud_is_parseable(to))
   	invisible(R_ut_scale(as.character(from), as.character(to), as.double(const)))
   else
@@ -77,8 +77,8 @@ install_conversion_constant <- function(from, to, const) {
 #' n + m
 install_conversion_offset <- function(from, to, const) {
   stopifnot(is.finite(const))
-  if (! (ud_is_parseable(from) || ud_is_parseable(to)))
-    stop("at least one of (from, to) must be a known unit")
+  if (! xor(ud_is_parseable(from), ud_is_parseable(to)))
+    stop("exactly one of (from, to) must be a known unit")
   if (ud_is_parseable(to))
     invisible(R_ut_offset(as.character(from), as.character(to), -as.double(const)))
   else

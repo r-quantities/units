@@ -1,10 +1,18 @@
 # version 0.6-0
 
-* directly uses the udunits2 C library, instead of R package `udunits2`.
+* `install_symbolic_unit` now adds a dimensionless unit, integrated in the units system, meaning that prefixes on it work as well; #71
 
-* allows integration of user-defined units with existing units
+* `install_conversion_constant` and `install_conversion_offset` nown install a new unit that is a function of an existing udunits unit.; #71, #84
+
+* unit simplification can now be user-controlled by `units_options`; #89
+
+* `set_units(15, mg/kg)` is now no longer simplified to 1e-9 unitless; #89
+
+* directly uses the udunits2 C library; drop dependence on R package `udunits2`, fixing R package `udunits2` memory leaks; #135
 
 * drops `%*%`, no longer gives warning when loading
+
+# version 0.5-1
 
 # version 0.5-0
 
