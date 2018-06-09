@@ -39,3 +39,11 @@ test_that("we can simplify via user-defined units", {
   expect_equal(apples / oranges, set_units(1))
   expect_equal(oranges / apples, set_units(1))
 })
+
+test_that("removing units works", {
+  expect_error(remove_symbolic_unit("foo"))
+  expect_silent(install_symbolic_unit("foo"))
+  expect_silent(remove_symbolic_unit("foo"))
+  expect_error(remove_symbolic_unit("foo"))
+  expect_silent(remove_symbolic_unit("g")) # removes symbol
+})

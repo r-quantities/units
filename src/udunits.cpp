@@ -115,8 +115,14 @@ XPtrUT R_ut_new_dimensionless_unit(CharacterVector name) {
 
 // [[Rcpp::export]]
 void R_ut_remove_unit(CharacterVector name) {
-  if (ut_unmap_name_to_unit(sys, name[0], enc) != UT_SUCCESS)
-    handle_error("R_ut_remove_unit");
+  if (ut_get_unit_by_name(sys, name[0])) {
+    if (ut_unmap_name_to_unit(sys, name[0], enc) != UT_SUCCESS)
+      handle_error("R_ut_remove_unit");
+  } else if (ut_get_unit_by_symbol(sys, name[0])) {
+    if (ut_unmap_symbol_to_unit(sys, name[0], enc) != UT_SUCCESS)
+      handle_error("R_ut_remove_unit");
+  } else
+    stop("unknown unit name or symbol");
   return ;
 }
 
