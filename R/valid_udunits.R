@@ -12,7 +12,7 @@
     "/usr/share/xml/udunits/udunits2.xml",
     "/usr/share/udunits/udunits2.xml")
 
-  fallback = system.file("share", "udunits2.xml", package="units")
+  fallback = system.file("share/udunits/udunits2.xml", package="units")
 
   w = which(file.exists(paths))
   if (length(w) > 1 && warn)
