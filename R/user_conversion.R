@@ -8,9 +8,10 @@
 #' @param warn warns if the supplied unit symbol is already a valid unit symbol
 #'   recognized by udunits.
 #'
-#' @details \code{install_symbolic_unit} installs a new dimensionless unit; these are directly compatible to any other dimensionless unit. To install a new unit that is a scaled or shifted version of an existing unit, use \code{install_conversion_constatn} or \code{install_conversion_offset} directly.
+#' @details \code{install_symbolic_unit} installs a new dimensionless unit; these are directly compatible to any other dimensionless unit. To install a new unit that is a scaled or shifted version of an existing unit, use \code{install_conversion_constant} or \code{install_conversion_offset} directly.
 #' @export
 #' @rdname install_symbolic_unit
+#' @seealso \code{\link{install_conversion_constant}}, \code{\link{install_conversion_offset}}
 #' @examples
 #' install_symbolic_unit("person")
 #' set_units(1, rad) + set_units(1, person) # that is how dimensionless units work!
@@ -57,6 +58,7 @@ remove_symbolic_unit <- function(chr) {
 #' oranges + apples
 #' 
 #' @export
+#' @seealso \code{\link{install_symbolic_unit}}, \code{\link{remove_symbolic_unit}}
 install_conversion_constant <- function(from, to, const) {
   stopifnot(is.finite(const), const != 0.0)
   if (! xor(ud_is_parseable(from), ud_is_parseable(to)))
