@@ -21,9 +21,12 @@ Adding a symbolic unit allows it to be used in \code{as_units},
 unit is already known by udunits.
 }
 \details{
-\code{install_symbolic_unit} installs a new dimensionless unit; these are directly compatible to any other dimensionless unit. To install a new unit that is a scaled or shifted version of an existing unit, use \code{install_conversion_constatn} or \code{install_conversion_offset} directly.
+\code{install_symbolic_unit} installs a new dimensionless unit; these are directly compatible to any other dimensionless unit. To install a new unit that is a scaled or shifted version of an existing unit, use \code{install_conversion_constant} or \code{install_conversion_offset} directly.
 }
 \examples{
 install_symbolic_unit("person")
 set_units(1, rad) + set_units(1, person) # that is how dimensionless units work!
+}
+\seealso{
+\code{\link{install_conversion_constant}}, \code{\link{install_conversion_offset}}
 }
