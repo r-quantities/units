@@ -45,3 +45,6 @@ n = set_units(1:3, newmeter)
 m + n
 n + m
 }
+\seealso{
+\code{\link{install_symbolic_unit}}, \code{\link{remove_symbolic_unit}}
+}
