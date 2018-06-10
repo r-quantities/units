@@ -7,11 +7,12 @@
 [![Downloads](http://cranlogs.r-pkg.org/badges/units?color=brightgreen)](http://www.r-pkg.org/pkg/units)
 
 ### News
-Cite this package as _Edzer Pebesma, Thomas Mailund
-and James Hiebert, 2016.  Measurement Units in R.
-The R Journal, 8 (2), 486--494._ This publication is found
-[here](https://journal.r-project.org/archive/2016/RJ-2016-061/index.html).
-The units [vignette](https://r-quantities.github.io/units/articles/measurement_units_in_R.html) is derived from this manuscript, but is kept up to date with the package.
+Cite this package as _Edzer Pebesma, Thomas Mailund and James
+Hiebert, 2016.  Measurement Units in R.  [The R Journal, 8 (2),
+486--494.](https://journal.r-project.org/archive/2016/RJ-2016-061/index.html)_.
+The main units
+[vignette](https://r-quantities.github.io/units/articles/measurement_units_in_R.html)
+derives from this manuscript and is kept up to date with the package development.
 
 ### What it does
 
