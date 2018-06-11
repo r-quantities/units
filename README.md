@@ -60,13 +60,20 @@ The installation of the development version from GitHub requires, e.g., the `rem
 remotes::install_github("r-quantities/units")
 ```
 
-If the installation fails due to a missing udunits2 system library, either install it e.g. by
+If the installation fails due to a missing udunits2 system library, either install it e.g. on Ubuntu or Debian by
 
 ```
 sudo apt-get install libudunits2-dev
 ```
-
-or equivalent in your distribution, or install it from the sources by downloading `udunits-2.2.20.tar.gz` from [ftp://ftp.unidata.ucar.edu/pub/udunits/](ftp://ftp.unidata.ucar.edu/pub/udunits/), and executing the following commands in the download directory:
+on CentOS7 with
+```
+sudo yum install udunits2-devel
+```
+or on MacOS with
+```
+brew install udunits
+```
+or equivalent in your distribution. Alternatively, install it from the sources by downloading `udunits-2.2.20.tar.gz` from [ftp://ftp.unidata.ucar.edu/pub/udunits/](ftp://ftp.unidata.ucar.edu/pub/udunits/), and executing the following commands in the download directory:
 
 ```
 tar zxf udunits-2.2.20.tar.gz
