@@ -20,13 +20,10 @@ Math.units = function(x, ...) {
   if (.Generic == "sqrt")
     return(x^0.5)
   
-  if (.Generic == "sign")
-    return(as.numeric(NextMethod()))
-  
   OK <- switch(.Generic, "abs" = , "sign" = , "floor" = , "ceiling" = , "log" = ,
                "trunc" = , "round" = , "signif" = , "cumsum" = , 
-               "cummax" = , "cummin" = , "sqrt" = TRUE, FALSE)
-
+               "cummax" = , "cummin" = TRUE, FALSE)
+  
   rad = units(as_units("rad"))
   deg = units(as_units("degree"))
   if (!OK && (units(x) == rad || units(x) == deg)) {
@@ -41,7 +38,7 @@ Math.units = function(x, ...) {
     if (OK)
       units(x) <- "rad" # unit of the answer (also unitless)
   }
-
+  
   if (!OK) {
     warning(paste("Operation", .Generic, "not meaningful for units"))
     x <- drop_units(x)
@@ -62,10 +59,7 @@ Math.units = function(x, ...) {
         stop(paste("log with base", dts$base, "not supported"))
       .as.units(NextMethod(), units(symbolic_unit(u, check_is_valid = FALSE)))
       # nocov end
-    } else if (.Generic == "sqrt") {
-	  x ^ 0.5
-	} else
-      .as.units(NextMethod(.Generic), units(x))
+    } else
+      .as.units(NextMethod(), units(x))
   }
 }
-
