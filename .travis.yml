@@ -11,8 +11,8 @@ addons:
     packages:
       - libudunits2-dev
 
-r_github_packages:
-  - r-lib/covr
+r_packages:
+  - covr
 
 after_success:
   - Rscript -e 'covr::codecov()'
