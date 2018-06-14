@@ -8,21 +8,11 @@ Summary.units = function(..., na.rm = FALSE) {
   if (!OK)
     stop(paste("Summary operation", .Generic, "not allowed"))
   
-  args = list(...)
-  u = units(args[[1]])
-  if (length(args) > 1) {
-    for (i in 2:length(args)) {
-      if (!inherits(args[[i]], "units"))
-        stop(paste("argument", i, "is not of class units"))
-      if (!ud_are_convertible(units(args[[i]]), u))
-        stop(paste("argument", i, 
-                   "has units that are not convertible to that of the first argument"))
-      args[[i]] = set_units(args[[i]], u, mode = "standard") # convert to first unit
-    }
-  }
-  args = lapply(args, unclass)
-  # as_units(do.call(.Generic, args), u)
-  as_units(do.call(.Generic, c(args, na.rm = na.rm)), u)
+  args <- list(...)
+  u <- units(args[[1]])
+  if (.convert_to_first_arg(args))
+    do.call(.Generic, c(args, na.rm = na.rm))
+  else structure(NextMethod(), units = u, class = "units")
 }
 
 #' @export
