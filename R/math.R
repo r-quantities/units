@@ -20,6 +20,9 @@ Math.units = function(x, ...) {
   if (.Generic == "sqrt")
     return(x^0.5)
   
+  if (.Generic == "sign")	
+    return(as.numeric(NextMethod()))
+  
   OK <- switch(.Generic, "abs" = , "sign" = , "floor" = , "ceiling" = , "log" = ,
                "trunc" = , "round" = , "signif" = , "cumsum" = , 
                "cummax" = , "cummin" = TRUE, FALSE)
