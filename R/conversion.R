@@ -62,7 +62,7 @@ convert <- function(value, from, to) {
   
   dimx = dim(x)
   if (inherits(value, "units")) {
-    x <- x * unclass(value)
+    x <- .as.units(unclass(x) * unclass(value), units(x))
     value <- units(value)
   }
   
