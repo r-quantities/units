@@ -5,7 +5,7 @@
 \title{set one or more units global options}
 \usage{
 units_options(..., sep, group, negative_power, parse, set_units_mode,
-  auto_convert_names_to_symbols, simplify)
+  auto_convert_names_to_symbols, simplify, allow_mixed)
 }
 \arguments{
 \item{...}{ignored}
@@ -23,6 +23,8 @@ units_options(..., sep, group, negative_power, parse, set_units_mode,
 \item{auto_convert_names_to_symbols}{logical, default \code{TRUE}: should names, such as \code{degree_C} be converted to their usual symbol?}
 
 \item{simplify}{logical, default \code{NA}; simplify units in expressions?}
+
+\item{allow_mixed}{logical; if \code{TRUE}, combining mixed units creates a \code{mixed_units} object, if \code{FALSE} it generates an error}
 }
 \description{
 set units global options, mostly related how units are printed and plotted

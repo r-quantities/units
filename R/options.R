@@ -11,13 +11,15 @@
 #' @param set_units_mode character; either \code{"symbols"} or \code{"standard"}; see \link{set_units}; default is \code{"symbols"}
 #' @param auto_convert_names_to_symbols logical, default \code{TRUE}: should names, such as \code{degree_C} be converted to their usual symbol?
 #' @param simplify logical, default \code{NA}; simplify units in expressions? 
+#' @param allow_mixed logical; if \code{TRUE}, combining mixed units creates a \code{mixed_units} object, if \code{FALSE} it generates an error
 #' @details The default \code{NA} value for \code{simplify} means units are not simplified in \link{set_units} or \link{as_units}, but are simplified in arithmetical expressions.
 #' @examples
 #' units_options(sep = c("~~~", "~"), group = c("", "")) # more space, parenthesis
 #' ## set defaults:
 #' units_options(sep = c("~", "~"), group = c("[", "]"), negative_power = FALSE, parse = TRUE)
 #' @export
-units_options = function(..., sep, group, negative_power, parse, set_units_mode, auto_convert_names_to_symbols, simplify) {
+units_options = function(..., sep, group, negative_power, parse, set_units_mode, auto_convert_names_to_symbols, simplify,
+		allow_mixed) {
 	# op = as.list(units:::.units_options)
 	if (!missing(sep)) {
 	    stopifnot(is.character(sep) && length(sep) == 2)
@@ -47,6 +49,10 @@ units_options = function(..., sep, group, negative_power, parse, set_units_mode,
 		stopifnot(is.logical(simplify))
 		assign(".units.simplify", simplify, envir = .units_options)
 	}
+	if (!missing(allow_mixed)) {
+		stopifnot(is.logical(allow_mixed))
+		assign(".units.allow_mixed", allow_mixed, envir = .units_options)
+	}
 
 	dots = list(...)
 	if (length(dots)) {
@@ -65,7 +71,8 @@ units_options(
 	parse = TRUE,
 	set_units_mode = "symbols",
 	auto_convert_names_to_symbols = TRUE,
-	simplify = NA) # set defaults
+	simplify = NA,
+	allow_mixed = FALSE) # set defaults
 
 .units.simplify = function() {
   get(".units.simplify", envir = .units_options)

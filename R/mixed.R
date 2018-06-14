@@ -1,14 +1,40 @@
 # constructor function:
+#' Create or convert to a mixed units list-column
+#' @param x numeric, or vector of class \code{units}
+#' @param values character vector with units encodings, or list with symbolic units of class \code{mixed_symbolic_units}
+#' @param value see values
+#' @param ... ignored
+#' @details if \code{x} is of class \code{units}, \code{values} should be missing or of class \code{mixed_symbolic_units}; if \code{x} is numeric, \code{values} should be a character vector the length of \code{x}.
+#' @examples
+#' a <- 1:4
+#' u <- c("m/s", "km/h", "mg/L", "g")
+#' mixed_units(a, u)
+#' units(a) = as_units("m/s")
+#' mixed_units(a) # converts to mixed representation
 #' @export
-mixed_units = function(values, units) { # FIXME: make generic
-	if (missing(units) && inherits(values, "units"))
-		mixed_units(as.numeric(values), units(units))
-	else {
-		stopifnot(length(values) == length(units), is.character(units), is.numeric(values))
-		m = mapply(set_units, values, units, mode = "standard", SIMPLIFY = FALSE)
-		structure(m, class = "mixed_units")
-	}
+mixed_units <- function(x, values, ...) UseMethod("mixed_units")
+
+#' @export
+mixed_units.units = function(x, values, ...) { 
+	stopifnot(missing(values))
+	u = as.character(units(x))
+	mixed_units(as.numeric(x), rep(u, length(x)))
 }
+
+
+#' @export
+mixed_units.numeric = function(x, values, ...) { 
+	stopifnot(length(x) == length(values), is.character(values), is.numeric(x))
+	m = mapply(set_units, x, values, mode = "standard", SIMPLIFY = FALSE)
+	structure(m, class = "mixed_units")
+}
+
+#' @export
+#' @name mixed_units
+`mixed_units<-` = function(x, value) {
+	mixed_units(x, value)
+}
+
 
 #' @export
 format.mixed_units = function(x, ...) {
@@ -19,10 +45,9 @@ format.mixed_units = function(x, ...) {
 `[.mixed_units` = function(x, i, ...) {
 	structure(unclass(x)[i], class = "mixed_units")
 }
-
-#' @export
-`mixed_units<-` = function(x, value) {
-	mixed_units(x, value)
+c.mixed_units = function(...) {
+	args = list(...)
+	structure(do.call(c, lapply(args, unclass)), class = "mixed_units")
 }
 
 #' @export

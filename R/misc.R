@@ -1,36 +1,33 @@
 #' @export
-c.units <- function(..., recursive = FALSE) {
+c.units <- function(..., recursive = FALSE, allow_mixed = units_options("allow_mixed")) {
   args <- list(...)
   u <- units(args[[1]])
-  if (.convert_to_first_arg(args))
-    do.call(c, c(args, recursive=recursive))
-  else structure(NextMethod(), units = u, class = "units")
+  if (length(args) == 1)
+  	.as.units(NextMethod(), u)
+  else if (.units_are_convertible(args[-1], u))
+  	.convert_combine(args, u)
+  else if (allow_mixed)
+    do.call(c, lapply(args, mixed_units))
+  else
+  	stop("units are not convertible, and cannot be mixed; try setting units_options(allow_mixed = TRUE)?")
 }
 
-.convert_to_first_arg <- function(dots, env.=parent.frame()) {
-  dots <- deparse(substitute(dots))
-  modified <- FALSE
-  u <- units(env.[[dots]][[1]])
-  for (i in seq_along(env.[[dots]])[-1]) {
-    if (!inherits(env.[[dots]][[i]], "units"))
-      stop(paste("argument", i, "is not of class units"))
-    if (units(env.[[dots]][[i]]) == u)
-      next
-    if (!ud_are_convertible(units(env.[[dots]][[i]]), u))
-      stop(paste("argument", i, 
-                 "has units that are not convertible to that of the first argument"))
-    units(env.[[dots]][[i]]) <- u
-    modified <- TRUE
-  }
-  modified
+.units_are_convertible = function(x, u) {
+	for (i in seq_along(x))
+		if (! ud_are_convertible(units(x[[i]]), u))
+			return(FALSE)
+	TRUE
+}
+
+.convert_combine = function(args, u) {
+	args = lapply(args, set_units, value = u, mode = "standard")
+	.as.units(do.call(c, lapply(args, drop_units)), u)
 }
 
 .as.units = function(x, value) {
-  x = unclass(x)
-  class(x) = "units"
-  attr(x, "units") = value
-  x
+  structure(x, units = value, class = "units")
 }
+
 
 #' @export
 diff.units = function(x, ...) { 
