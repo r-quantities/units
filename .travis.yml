@@ -1,16 +1,18 @@
-language: r
-
-sudo: true
-
+language: R
+sudo: false
 cache: packages
-
-apt_packages:
-  - libudunits2-dev
-
 r:
   - release
   - devel
-#  - oldrel
+  #- oldrel
+
+addons:
+  apt:
+    packages:
+      - libudunits2-dev
+
+r_github_packages:
+  - r-lib/covr
 
 after_success:
   - Rscript -e 'covr::codecov()'
