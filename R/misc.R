@@ -163,7 +163,7 @@ seq.units = function(from, to, by = ((to - from)/(length.out - 1)),
 #' @param ... see \link[pillar]{type_sum}
 #' @export
 type_sum.units <- function(x, ...) {
-  paste0("[", as.character(units(x)), "]")
+  paste0("[", as.character(units(x)), "]") # FIXME: use units_options() for this
 }
 
 #' pillar_shaft function for units
