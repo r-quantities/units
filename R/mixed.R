@@ -34,9 +34,10 @@ set_units.mixed_units = function(x, value, ..., mode = "standard") {
 }
 
 #' @export
-as_units.mixed_units = function(x, value = units(x[[1]])) {
-	set_units(do.call(c, x), value, mode = "standard")
+as_units.mixed_units = function(x, ...) {
+	set_units(do.call(c, x), value = units(x[[1]]), mode = "standard")
 }
+
 
 #' @export
 units.mixed_units = function(x) {
@@ -44,7 +45,7 @@ units.mixed_units = function(x) {
 }
 
 #' @export
-as.character.mixed_symbolic_units = function(x) {
+as.character.mixed_symbolic_units = function(x, ...) {
 	sapply(x, as.character)
 }
 
