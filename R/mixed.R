@@ -1,3 +1,8 @@
+.as.mixed_units = function(x) {
+	stopifnot(is.list(unclass(x)))
+	structure(x, class = "mixed_units")
+}
+
 # constructor function:
 #' Create or convert to a mixed units list-column
 #' @param x numeric, or vector of class \code{units}
@@ -14,6 +19,7 @@
 #' @export
 mixed_units <- function(x, values, ...) UseMethod("mixed_units")
 
+
 #' @export
 mixed_units.units = function(x, values, ...) { 
 	stopifnot(missing(values))
@@ -26,14 +32,13 @@ mixed_units.units = function(x, values, ...) {
 mixed_units.numeric = function(x, values, ...) { 
 	#stopifnot(length(x) == length(values), is.character(values), is.numeric(x))
 	stopifnot(is.character(values), is.numeric(x))
-	structure(mapply(set_units, x, values, mode = "standard", SIMPLIFY = FALSE), 
-		class = "mixed_units")
+	.as.mixed_units(mapply(set_units, x, values, mode = "standard", SIMPLIFY = FALSE))
 }
 
 #' @export
 #' @name mixed_units
-`mixed_units<-` = function(x, value) {
-	mixed_units(x, value)
+`units<-.mixed_units` = function(x, value) {
+	set_units(x, value)
 }
 
 
@@ -44,18 +49,19 @@ format.mixed_units = function(x, ...) {
 
 #' @export
 `[.mixed_units` = function(x, i, ...) {
-	structure(unclass(x)[i], class = "mixed_units")
+	.as.mixed_units(unclass(x)[i])
 }
 c.mixed_units = function(...) {
 	args = list(...)
-	structure(do.call(c, lapply(args, unclass)), class = "mixed_units")
+	.as.mixed_units(do.call(c, lapply(args, unclass)))
 }
 
 #' @export
 set_units.mixed_units = function(x, value, ..., mode = "standard") {
 	if (! is.character(value))
 		stop("use character string to denote target unit") # FIXME: rlang::quo stuff needed here?
-	do.call(c, lapply(x, set_units, value = value, mode = mode, ...))
+	#do.call(c, lapply(x, set_units, value = value, mode = mode, ...))
+	.as.mixed_units(mapply(set_units, x, value, mode = mode, SIMPLIFY = FALSE))
 }
 
 #' @export
@@ -75,6 +81,16 @@ as.character.mixed_symbolic_units = function(x, ...) {
 }
 
 #' @export
+print.mixed_units = function(x, ...) {
+	cat("Mixed units: ")
+	tbl = table(as.character(units(x)))
+	tbl = paste(names(tbl), " (", as.numeric(tbl), ")", sep = "")
+	cat(paste(tbl, collapse = ", "), "\n")
+	cat(paste(format(x, ...), collapse = ", "), "\n")
+}
+
+
+#' @export
 drop_units.mixed_units = function(x) {
 	sapply(x, drop_units)
 }
@@ -85,12 +101,14 @@ Ops.mixed_units = function(e1, e2) {
 		e2 = mixed_units(e2)
     ret = switch(.Generic,
 			"==" = mapply(function(x, y) { x == y }, e1, e2, SIMPLIFY = TRUE),
-			"*"  = mapply(function(x, y) { x * y  }, e1, e2, SIMPLIFY = FALSE)
-			# etc.
+			"!=" = mapply(function(x, y) { x != y }, e1, e2, SIMPLIFY = TRUE),
+			"*"  = mapply(function(x, y) { x * y  }, e1, e2, SIMPLIFY = FALSE),
+			"/"  = mapply(function(x, y) { x / y  }, e1, e2, SIMPLIFY = FALSE),
+			"+"  = mapply(function(x, y) { x + y  }, e1, e2, SIMPLIFY = FALSE),
+			"-"  = mapply(function(x, y) { x - y  }, e1, e2, SIMPLIFY = FALSE),
+			stop(paste("operation", .Generic, "not supported"))
 		)
 	if (is.list(ret))
-		ret = structure(ret, class = "mixed_units")
+		ret = .as.mixed_units(ret)
 	ret
 }
-
-

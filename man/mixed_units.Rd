@@ -3,12 +3,12 @@
 \name{mixed_units}
 \alias{mixed_units}
 \alias{mixed_units}
-\alias{mixed_units<-}
+\alias{units<-.mixed_units}
 \title{Create or convert to a mixed units list-column}
 \usage{
 mixed_units(x, values, ...)
 
-mixed_units(x) <- value
+\method{units}{mixed_units}(x) <- value
 }
 \arguments{
 \item{x}{numeric, or vector of class \code{units}}
