@@ -156,7 +156,16 @@ seq.units = function(from, to, by = ((to - from)/(length.out - 1)),
 #' @param ... see \link[pillar]{type_sum}
 #' @export
 type_sum.units <- function(x, ...) {
-  paste0("[", as.character(units(x)), "]") # FIXME: use units_options() for this
+  #structure(paste0("[", as.character(units(x)), "]"), # FIXME: use units_options() for this
+  structure(paste0(as.character(units(x))), # FIXME: use units_options() for this
+    class = "type_sum_units")
+}
+#' @export
+#' @name tibble
+format_type_sum.type_sum_units <- function(x) {
+  if (! requireNamespace("pillar", quietly = TRUE))
+    stop("package pillar not available: install first?")
+  pillar::style_subtle(x)
 }
 
 #' pillar_shaft function for units

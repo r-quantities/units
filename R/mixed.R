@@ -112,3 +112,24 @@ Ops.mixed_units = function(e1, e2) {
 		ret = .as.mixed_units(ret)
 	ret
 }
+
+#' @name tibble
+#' @export
+type_sum.mixed_units <- function(x, ...) {
+  "mixed_units" 
+}
+
+#' @name tibble
+#' @export
+pillar_shaft.mixed_units <- function(x, ...) {
+  if (! requireNamespace("pillar", quietly = TRUE))
+    stop("package pillar not available: install first?")
+  out <- format(x, ...)
+  pillar::new_pillar_shaft_simple(out, align = "right", min_width = 6)
+}
+
+#' @export
+str.mixed_units = function(object, ...) {
+	cat("Object of class mixed_units:\n")
+	str(unclass(object), ...)
+}
