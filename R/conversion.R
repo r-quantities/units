@@ -73,7 +73,7 @@ convert <- function(value, from, to) {
   str2 <- as.character(value)
 
   if (are_convertible(str1, str2)) 
-    structure(convert(x, str1, str2), units = value, dim = dimx, class = "units")
+    .as.units(convert(x, str1, str2), value, dim = dimx)
   else
     stop(paste("cannot convert", units(x), "into", value), call. = FALSE)
 }
@@ -131,7 +131,7 @@ as_units.units <- function(x, value, ...) {
 as_units.symbolic_units <- function(x, value, ...) {
   if(!missing(value))
     warning("supplied value ignored")
-  structure(1L, units = x, class = "units")
+  .as.units(1L, x)
 }
 
 #' @export
@@ -235,11 +235,11 @@ as_difftime <- function(x) {
 
 #' @export
 `[.units` <- function(x, i, j, ..., drop = TRUE)
-  structure(NextMethod(), "units" = units(x), class = "units")
+  .as.units(NextMethod(), units(x))
 
 #' @export
 `[[.units` <- function(x, i, j, ...)
-  structure(NextMethod(), "units" = units(x), class = "units")
+  .as.units(NextMethod(), units(x))
 
 #' @export
 as.POSIXct.units = function (x, tz = "UTC", ...) {

@@ -24,10 +24,6 @@ c.units <- function(..., recursive = FALSE, allow_mixed = units_options("allow_m
 	.as.units(do.call(c, lapply(args, drop_units)), u)
 }
 
-.as.units = function(x, value) {
-  structure(x, units = value, class = "units")
-}
-
 
 #' @export
 diff.units = function(x, ...) { 

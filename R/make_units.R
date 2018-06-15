@@ -1,3 +1,11 @@
+# helper function:
+.as.units = function(x, value, dim) {
+  if (missing(dim))
+    structure(x, units = value, class = "units")
+  else
+    structure(x, units = value, dim = dim, class = "units")
+}
+
 #' Unit creation
 #'
 #' A number of functions are provided for creating unit objects. 
@@ -314,7 +322,7 @@ as_units.call <- function(x, check_is_valid = TRUE, ...) {
   
   if(missing(x) || identical(x, quote(expr =)) || 
      identical(x, 1) || identical(x, 1L))
-    return(structure(1, units = unitless, class = "units"))
+    return(.as.units(1, unitless))
   
   stopifnot(is.language(x))
   
@@ -348,7 +356,7 @@ See ?as_units for usage examples.")
 #"In ", sQuote(deparse(x)), " the numeric multiplier ", sQuote(as.numeric(unit)), " is invalid. 
 #Use `install_conversion_constant()` to define a new unit that is a multiple of another unit.")
   
-  structure(as.numeric(unit), units = units(unit), class = "units")
+  .as.units(as.numeric(unit), units(unit))
 }
 
 
@@ -375,7 +383,7 @@ symbolic_unit <- function(chr, check_is_valid = TRUE) {
       chr <- sym
   }
   
-  structure(1, units = .symbolic_units(chr), class = "units")
+  .as.units(1, .symbolic_units(chr))
 }
 
 

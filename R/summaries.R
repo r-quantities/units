@@ -5,15 +5,17 @@
 #' @export
 Summary.units = function(..., na.rm = FALSE) {
   OK <- switch(.Generic, "sum" = , "min" = , "max" = , "range" = TRUE, FALSE)
-  if (!OK)
+  if (! OK)
     stop(paste("Summary operation", .Generic, "not allowed"))
   
   args <- list(...)
-  u <- units(args[[1]])
-  if (.convert_to_first_arg(args))
-    do.call(.Generic, c(args, na.rm = na.rm))
-  else structure(NextMethod(), units = u, class = "units")
+  if (length(args) > 1) {
+    args <- do.call(c, args) # turns args into a single units vector
+    do.call(.Generic, c(list(args), na.rm = na.rm)) # concatenate, convert if necessary, re-call with length 1 arg
+  } else
+	.as.units(NextMethod(), units(args[[1]]))
 }
+
 
 #' @export
 print.units = function (x, ...) { # nocov start

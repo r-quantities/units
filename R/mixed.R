@@ -24,9 +24,10 @@ mixed_units.units = function(x, values, ...) {
 
 #' @export
 mixed_units.numeric = function(x, values, ...) { 
-	stopifnot(length(x) == length(values), is.character(values), is.numeric(x))
-	m = mapply(set_units, x, values, mode = "standard", SIMPLIFY = FALSE)
-	structure(m, class = "mixed_units")
+	#stopifnot(length(x) == length(values), is.character(values), is.numeric(x))
+	stopifnot(is.character(values), is.numeric(x))
+	structure(mapply(set_units, x, values, mode = "standard", SIMPLIFY = FALSE), 
+		class = "mixed_units")
 }
 
 #' @export
@@ -54,7 +55,6 @@ c.mixed_units = function(...) {
 set_units.mixed_units = function(x, value, ..., mode = "standard") {
 	if (! is.character(value))
 		stop("use character string to denote target unit") # FIXME: rlang::quo stuff needed here?
-	#stopifnot(length(value) == 1)
 	do.call(c, lapply(x, set_units, value = value, mode = mode, ...))
 }
 
