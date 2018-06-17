@@ -32,17 +32,17 @@ void udunits_init(CharacterVector path) {
       break;
   }
   if (sys == NULL)
-    sys = ut_read_xml(NULL);
+    sys = ut_read_xml(NULL); // #nocov
   ut_set_error_message_handler((ut_error_message_handler) r_error_fn);
   if (sys == NULL)
-    handle_error("udunits_init");
+    handle_error("udunits_init"); // #nocov
 }
 
 // [[Rcpp::export]]
-void udunits_exit() { 
+void udunits_exit() {  // #nocov start
   ut_free_system(sys);
   sys = NULL;
-}
+}                      // #nocov end
 
 // typedef std::vector<void *> ut_vec;
 
@@ -90,7 +90,7 @@ LogicalVector R_ut_are_convertible(SEXP a, SEXP b) {
   ut_unit *u1 = ut_unwrap(a);
   ut_unit *u2 = ut_unwrap(b);
   if (u1 == NULL || u2 == NULL)
-     return false;  	
+     return false;  	// #nocov
   return ut_are_convertible(u1, u2) != 0;
 }
 
@@ -109,7 +109,7 @@ NumericVector R_convert_doubles(SEXP from, SEXP to, NumericVector val) {
 XPtrUT R_ut_new_dimensionless_unit(CharacterVector name) {
   ut_unit *u = ut_new_dimensionless_unit(sys); 
   if (ut_map_name_to_unit(name[0], enc, u) != UT_SUCCESS)
-    handle_error("R_ut_new_dimensionless");
+    handle_error("R_ut_new_dimensionless"); // #nocov
   return ut_wrap(u);
 }
 
@@ -117,10 +117,10 @@ XPtrUT R_ut_new_dimensionless_unit(CharacterVector name) {
 void R_ut_remove_unit(CharacterVector name) {
   if (ut_get_unit_by_name(sys, name[0])) {
     if (ut_unmap_name_to_unit(sys, name[0], enc) != UT_SUCCESS)
-      handle_error("R_ut_remove_unit");
+      handle_error("R_ut_remove_unit"); // #nocov
   } else if (ut_get_unit_by_symbol(sys, name[0])) {
     if (ut_unmap_symbol_to_unit(sys, name[0], enc) != UT_SUCCESS)
-      handle_error("R_ut_remove_unit");
+      handle_error("R_ut_remove_unit"); // #nocov
   } else
     stop("unknown unit name or symbol");
   return ;
@@ -129,11 +129,11 @@ void R_ut_remove_unit(CharacterVector name) {
 // [[Rcpp::export]]
 XPtrUT R_ut_scale(CharacterVector nw, CharacterVector old, NumericVector d) {
   if (d.size() != 1)
-    stop("d should have size 1");
+    stop("d should have size 1"); // #nocov
   ut_unit *u_old = ut_parse(sys, ut_trim(old[0], enc), enc);
   ut_unit *u_new = ut_scale(d[0], u_old);
   if (ut_map_name_to_unit(nw[0], enc, u_new) != UT_SUCCESS)
-    handle_error("R_ut_scale");
+    handle_error("R_ut_scale"); // #nocov
   ut_free(u_old);
   return ut_wrap(u_new);
 }
@@ -141,11 +141,11 @@ XPtrUT R_ut_scale(CharacterVector nw, CharacterVector old, NumericVector d) {
 // [[Rcpp::export]]
 XPtrUT R_ut_offset(CharacterVector nw, CharacterVector old, NumericVector d) {
   if (d.size() != 1)
-    stop("d should have size 1");
+    stop("d should have size 1"); // #nocov
   ut_unit *u_old = ut_parse(sys, ut_trim(old[0], enc), enc);
   ut_unit *u_new = ut_offset(u_old, d[0]);
   if (ut_map_name_to_unit(nw[0], enc, u_new) != UT_SUCCESS)
-    handle_error("R_ut_offset");
+    handle_error("R_ut_offset"); // #nocov
   ut_free(u_old);
   return ut_wrap(u_new);
 }
@@ -205,7 +205,7 @@ CharacterVector R_ut_format(SEXP p, bool names = false, bool definition = false,
   ut_set_error_message_handler(ut_ignore);
   int len = ut_format(ut_unwrap(p), buf, 256, opt);
   ut_set_error_message_handler((ut_error_message_handler) r_error_fn);
-  if (len == -1) {
+  if (len == -1) { // #nocov start
     switch (ut_get_status()) {
     case UT_BAD_ARG:
     case UT_CANT_FORMAT:
@@ -213,9 +213,9 @@ CharacterVector R_ut_format(SEXP p, bool names = false, bool definition = false,
       break;
     default:;
     }
-    buf[0] = '\0'; // "": dont' return rubbish
+    buf[0] = '\0'; // "": dont' return rubbish 
   } else if (len == 256)
-    handle_error("buffer of 256 bytes too small!");
+    handle_error("buffer of 256 bytes too small!"); // #nocov end
   return CharacterVector::create(buf);
 }
 
@@ -235,7 +235,7 @@ void R_ut_set_encoding(std::string enc_str) {
 CharacterVector R_ut_get_symbol(CharacterVector ustr) {
   ut_unit *u = ut_parse(sys, ut_trim(ustr[0], enc), enc);
   if (u == NULL)
-    handle_error("R_ut_get_name");
+    handle_error("R_ut_get_symbol"); // #nocov -- never reached
   const char *s = ut_get_symbol(u, enc);
   ut_free(u);
   if (s == NULL)
@@ -248,20 +248,20 @@ CharacterVector R_ut_get_symbol(CharacterVector ustr) {
 CharacterVector R_ut_get_name(CharacterVector ustr) {
   ut_unit *u = ut_parse(sys, ut_trim(ustr[0], enc), enc);
   if (u == NULL)
-    handle_error("R_ut_get_name");
+    handle_error("R_ut_get_name"); // #nocov -- never reached
   const char *s = ut_get_name(u, enc);
   ut_free(u);
   if (s == NULL)
     return CharacterVector::create("");
   else
-    return CharacterVector::create(s);
+    return CharacterVector::create(s); // #nocov
 }
 
 // https://github.com/r-quantities/units/issues/89#issuecomment-359251623
 // [[Rcpp::export]]
-XPtrUT R_ut_map_name_to_unit( CharacterVector name, SEXP inunit) {
+XPtrUT R_ut_map_name_to_unit( CharacterVector name, SEXP inunit) { // #nocov start
   ut_unit *unit = ut_unwrap(inunit);
   if (ut_map_name_to_unit(name[0], enc, unit) != UT_SUCCESS)
     handle_error("R_ut_map_name_to_unit");
   return ut_wrap(unit);
-}
+} // #nocov end

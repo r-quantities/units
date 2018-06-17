@@ -30,6 +30,6 @@ void handle_error(const char *calling_function) {
   error("Error in function %s: %s", calling_function, ut_status_strings[stat]);
 }
 
-void r_error_fn(const char* fmt, va_list args) {
+void r_error_fn(const char* fmt, va_list args) { // #nocov start
 	Rvprintf(fmt, args);
-}
+} // #nocov end
