@@ -39,10 +39,10 @@ void udunits_init(CharacterVector path) {
 }
 
 // [[Rcpp::export]]
-void udunits_exit() { 
-  ut_free_system(sys); // #nocov
-  sys = NULL;          // #nocov
-}
+void udunits_exit() {  // #nocov start
+  ut_free_system(sys);
+  sys = NULL;
+}                      // #nocov end
 
 // typedef std::vector<void *> ut_vec;
 
@@ -254,14 +254,14 @@ CharacterVector R_ut_get_name(CharacterVector ustr) {
   if (s == NULL)
     return CharacterVector::create("");
   else
-    return CharacterVector::create(s);
+    return CharacterVector::create(s); // #nocov
 }
 
 // https://github.com/r-quantities/units/issues/89#issuecomment-359251623
 // [[Rcpp::export]]
-XPtrUT R_ut_map_name_to_unit( CharacterVector name, SEXP inunit) {
-  ut_unit *unit = ut_unwrap(inunit); // #nocov start
+XPtrUT R_ut_map_name_to_unit( CharacterVector name, SEXP inunit) { // #nocov start
+  ut_unit *unit = ut_unwrap(inunit);
   if (ut_map_name_to_unit(name[0], enc, unit) != UT_SUCCESS)
     handle_error("R_ut_map_name_to_unit");
-  return ut_wrap(unit); // #nocov end
-}
+  return ut_wrap(unit);
+} // #nocov end

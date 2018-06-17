@@ -24,6 +24,7 @@ test_that("udunits low-level functions work", {
   expect_error(units:::R_ut_log(a, c(2, 10.0)), "length 1")
   expect_error(units:::R_ut_log(a, -10.0), "positive")
   expect_silent(units:::R_ut_format(a))
+  expect_silent(units:::R_ut_format(a, ascii = TRUE))
   expect_silent(units:::R_ut_format(sq, names = TRUE))
   expect_silent(units:::R_ut_format(sq, definition = TRUE))
   expect_silent(units:::R_ut_set_encoding("ascii"))
