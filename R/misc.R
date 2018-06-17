@@ -156,9 +156,9 @@ seq.units = function(from, to, by = ((to - from)/(length.out - 1)),
 #' @param ... see \link[pillar]{type_sum}
 #' @export
 type_sum.units <- function(x, ...) {
-  #structure(paste0("[", as.character(units(x)), "]"), # FIXME: use units_options() for this
+  gr = units_options("group")
   # see https://github.com/r-lib/pillar/issues/73 : currently the [ and ] mess up things.
-  structure(paste0(as.character(units(x))), # FIXME: use units_options() for this
+  structure(paste0(gr[1], as.character(units(x)), gr[2]),
     class = "type_sum_units")
 }
 #' @export
