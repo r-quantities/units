@@ -236,7 +236,7 @@ as_units.character <- function(x,
     implicit_exponents <- are_exponents_implicit(x)
   
   if(implicit_exponents)
-    return(.parse_unit_with_implicit_exponents(x))
+    x <- convert_implicit_to_explicit_exponents(x)
   
   x <- backtick(x)
   o <- try(expr <- parse(text = x)[[1]], silent = TRUE)
@@ -250,6 +250,14 @@ as_units.character <- function(x,
   as_units.call(expr, check_is_valid = check_is_valid)
 }
 
+
+convert_implicit_to_explicit_exponents <- function(x) {
+  if (length(grep(c("[*/]"), x)) > 0)
+    stop("If 'implicit_exponents = TRUE', strings cannot contain `*' or `/'")
+  x <- gsub("\\b([^\\d-]+)([-]?\\d+)\\b", "\\1^(\\2)", x, perl =TRUE)
+  x <- gsub("\\s+", " * ", trimws(x), perl = TRUE)
+  x
+}
 
 #  ----- as_units.call helpers ------ 
 
