@@ -141,11 +141,11 @@ XPtrUT R_ut_scale(CharacterVector nw, CharacterVector old, NumericVector d) {
 // [[Rcpp::export]]
 XPtrUT R_ut_offset(CharacterVector nw, CharacterVector old, NumericVector d) {
   if (d.size() != 1)
-    stop("d should have size 1");
+    stop("d should have size 1"); // #nocov
   ut_unit *u_old = ut_parse(sys, ut_trim(old[0], enc), enc);
   ut_unit *u_new = ut_offset(u_old, d[0]);
   if (ut_map_name_to_unit(nw[0], enc, u_new) != UT_SUCCESS)
-    handle_error("R_ut_offset");
+    handle_error("R_ut_offset"); // #nocov
   ut_free(u_old);
   return ut_wrap(u_new);
 }
@@ -205,7 +205,7 @@ CharacterVector R_ut_format(SEXP p, bool names = false, bool definition = false,
   ut_set_error_message_handler(ut_ignore);
   int len = ut_format(ut_unwrap(p), buf, 256, opt);
   ut_set_error_message_handler((ut_error_message_handler) r_error_fn);
-  if (len == -1) {
+  if (len == -1) { // #nocov start
     switch (ut_get_status()) {
     case UT_BAD_ARG:
     case UT_CANT_FORMAT:
@@ -213,9 +213,9 @@ CharacterVector R_ut_format(SEXP p, bool names = false, bool definition = false,
       break;
     default:;
     }
-    buf[0] = '\0'; // "": dont' return rubbish
+    buf[0] = '\0'; // "": dont' return rubbish 
   } else if (len == 256)
-    handle_error("buffer of 256 bytes too small!");
+    handle_error("buffer of 256 bytes too small!"); // #nocov end
   return CharacterVector::create(buf);
 }
 

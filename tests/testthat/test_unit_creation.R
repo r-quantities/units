@@ -60,6 +60,12 @@ test_that("global options are respected", {
   
   #units_options(op)
   expect_equal("g", rt("grams"))
+
+  o = units_options("set_units_mode")
+  g = set_units(1, g)
+  units_options(set_units_mode = "standard")
+  expect_equal(set_units(1, "g"), g)
+  units_options(set_units_mode = o)
   
 })
 

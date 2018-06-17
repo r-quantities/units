@@ -29,6 +29,10 @@ test_that("we can convert between units with a user-defined function", {
   install_conversion_constant("apple", "banana", 1/3) # one apple only gives you a third banana
   bananas <- 6 * as_units("banana")
   expect_equal(bananas + 3 * apples, (6 + 3 * 2 / 3) * as_units("banana"))
+
+  install_symbolic_unit("aaa")
+  install_conversion_offset("aaa", "bbb", 2) # bbb is aaa + 2
+  expect_warning(install_symbolic_unit("aaa"), "is already a valid unit")
 })
 
 test_that("we can simplify via user-defined units", {
