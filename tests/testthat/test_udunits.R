@@ -41,4 +41,6 @@ test_that("udunits database can be read", {
   expect_message(units:::.message_where_udunits_db(), "udunits")
   expect_message(valid_udunits(), "udunits")
   expect_message(valid_udunits_prefixes(), "udunits")
+  # expect_identical(units:::.construct_ud_units(), ud_units) # NOT TRUE -- *ppv not in ud_units?
+  expect_silent(units:::.construct_ud_units())
 })

@@ -67,10 +67,13 @@
   expand_with_prefixes <- function(symbol) paste(ud_prefixes, symbol, sep = "")
   symbols <- unique(c(ud_symbols,
                       unlist(Map(expand_with_prefixes, ud_symbols), use.names = FALSE)))
-  ud_units <- Map(as_units, symbols)
+  #ud_units <- Map(make_units, symbols)
+  ud_units <- lapply(symbols, as_units, force_single_symbol = TRUE, check_is_valid = FALSE)
   names(ud_units) <- symbols
   ud_units
 }
+# but this gives Y' Y" etc which are NOT recognized by as_units()
+
 # Use this to generate the data -- to avoid Travis problems the result
 # is stored as package data
 #ud_units <- .construct_ud_units()
