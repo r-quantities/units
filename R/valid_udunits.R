@@ -67,19 +67,26 @@
   expand_with_prefixes <- function(symbol) paste(ud_prefixes, symbol, sep = "")
   symbols <- unique(c(ud_symbols,
                       unlist(Map(expand_with_prefixes, ud_symbols), use.names = FALSE)))
-  ud_units <- Map(make_unit, symbols)
+  ud_units <- Map(as_units, symbols)
   names(ud_units) <- symbols
   ud_units
 }
+# Use this to generate the data -- to avoid Travis problems the result
+# is stored as package data
+#ud_units <- .construct_ud_units()
+#devtools::use_data(ud_units)
 
+#' List containing pre-defined units from the udunits2 package.
+#' 
+#' Lazy loaded when used
+#' @export
+ud_units <- NULL
 
 `%|%` <- function(x, y) ifelse(is.na(x), y, x)
 
 `%empty%` <-  function(x, y) if(length(x)==0) y else x
 
 pcc <- function(...) paste0(..., collapse = ", ")
-
-
 
 .read_ud_db <- function(dir, filename) {
   if (! requireNamespace("xml2", quietly = TRUE))
@@ -192,7 +199,7 @@ pcc <- function(...) paste0(..., collapse = ", ")
 #' The returned dataframe is constructed at runtime by reading the xml database
 #' that powers unit conversion in [package:udunits2]. Inspect this dataframe to
 #' determine what inputs are accepted by \code{as_units} (and the other
-#' functions it powers: \code{make_units} , \code{set_units} , \code{units<-}).
+#' functions it powers: \code{as_units} , \code{set_units} , \code{units<-}).
 #' 
 #' Any entry listed under \code{symbol} , \code{symbol_aliases} , \code{
 #' name_singular} , \code{name_singular_aliases} , \code{name_plural} , or
@@ -274,7 +281,3 @@ valid_udunits_prefixes <- function(quiet = FALSE) {
   class(df) <- c( "tbl_df", "tbl", "data.frame")
   df
 }
-
-
-
-

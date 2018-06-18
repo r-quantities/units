@@ -24,7 +24,7 @@ a data frame with columns \code{symbol} , \code{symbol_aliases} ,
 The returned dataframe is constructed at runtime by reading the xml database
 that powers unit conversion in [package:udunits2]. Inspect this dataframe to
 determine what inputs are accepted by \code{as_units} (and the other
-functions it powers: \code{make_units} , \code{set_units} , \code{units<-}).
+functions it powers: \code{as_units} , \code{set_units} , \code{units<-}).
 }
 \details{
 Any entry listed under \code{symbol} , \code{symbol_aliases} , \code{
