@@ -44,4 +44,7 @@ test_that("mixed units work", {
 
    print(tibble::tibble(m))
    str(m)
+   units_options(allow_mixed = TRUE)
+   m = c(set_units(1:3, km), set_units(4:6, g))
+   units_options(allow_mixed = FALSE)
 })

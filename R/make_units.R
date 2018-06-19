@@ -242,9 +242,9 @@ as_units.character <- function(x,
   o <- try(expr <- parse(text = x)[[1]], silent = TRUE)
   
   if(inherits(o, "try-error")) {
-    warning("Could not parse expression: ", sQuote(x), 
-      ". Returning as a single symbolic unit()", call. = FALSE)
-    return(symbolic_unit(x, check_is_valid = check_is_valid))
+    warning("Could not parse expression: ", sQuote(x),          # nocov
+      ". Returning as a single symbolic unit()", call. = FALSE) # nocov
+    return(symbolic_unit(x, check_is_valid = check_is_valid))   # nocov
   }
 
   as_units.call(expr, check_is_valid = check_is_valid)
