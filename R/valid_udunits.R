@@ -37,14 +37,15 @@
   unlist(Map(function(node) as.character(xml2::xml_contents(node)), symbols))
 }
 
-.read_ud_db_scales <- function(dir, filename) {
-  if (! requireNamespace("xml2", quietly = TRUE))
-    stop("package xml2 required to create ud_units database")
-  database <- xml2::read_xml(file.path(dir, filename))
-  symbols <- xml2::xml_find_all(database, ".//value")
-  symbols
-  unlist(Map(function(node) as.numeric(as.character(xml2::xml_contents(node))), symbols))
-}
+## EP: it seems this is used nowhere
+#.read_ud_db_scales <- function(dir, filename) {
+#  if (! requireNamespace("xml2", quietly = TRUE))
+#    stop("package xml2 required to create ud_units database")
+#  database <- xml2::read_xml(file.path(dir, filename))
+#  symbols <- xml2::xml_find_all(database, ".//value")
+#  symbols
+#  unlist(Map(function(node) as.numeric(as.character(xml2::xml_contents(node))), symbols))
+#}
 
 .get_ud_symbols <- function() {
   udunits2_dir <- .get_ud_xml_dir()
