@@ -39,9 +39,9 @@ test_that("mixed units work", {
    expect_s3_class(units(m), "mixed_symbolic_units")
    expect_that(format(m), is.character)
    expect_that(as.character(units(m)), is.character)
-   print(units(m))
+   print(m)
    expect_equal(drop_units(m), sapply(m, as.numeric))
 
-   tibble::tibble(m)
+   print(tibble::tibble(m))
    str(m)
 })
