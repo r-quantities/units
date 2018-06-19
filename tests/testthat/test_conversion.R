@@ -160,3 +160,12 @@ test_that("conversion to dimensionless with prefix works (g/kg) if simplify=TRUE
 test_that("a NULL value returns NULL", {
   expect_null(as_units(NULL))
 })
+
+test_that("as.data.frame.units works", {
+  expect_silent(as.data.frame(set_units(matrix(1:9,3), m)))
+})
+
+test_that("units.symbolic_units works", {
+  m = set_units(1, m)
+  expect_equal(units(m), units(units(m)))
+})

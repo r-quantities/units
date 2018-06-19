@@ -56,3 +56,8 @@ test_that("we can compare units", {
   expect_equal(units(e1) == units(e2), FALSE)
   expect_equal(units(e1) != units(e2), TRUE)
 })
+
+test_that("symbolic_unit works", {
+  expect_error(units:::symbolic_unit("qqq"))
+  expect_silent(units:::symbolic_unit("m"))
+})

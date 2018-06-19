@@ -111,3 +111,20 @@ test_that("seq works", {
   seq(set_units(10, m), set_units(19, m))
   seq(set_units(10, m), set_units(.02, km))
 })
+
+test_that("tibble printing works", {
+  tibble::tibble(a = set_units(1/1:3, m/s))
+})
+
+test_that("str works", {
+  str(set_units(1/1:3, m/s))
+})
+
+test_that("onload/unload work", {
+  units:::.onUnLoad()
+  units:::.onLoad()
+})
+
+test_that("deprecations work", {
+  expect_warning(parse_unit("m"))
+})

@@ -275,7 +275,7 @@ pc_and <- function(..., sep = "") {
     paste0( paste0(x[-lx], collapse = ", "), ", and ", x[lx])
 }
 
-`%not_in%` <- function(x, table) match(x, table, nomatch = 0L) == 0L
+#`%not_in%` <- function(x, table) match(x, table, nomatch = 0L) == 0L
 
 .msg_units_not_recognized <- function(unrecognized_symbols, full_expr) {
     

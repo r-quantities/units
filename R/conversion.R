@@ -78,10 +78,10 @@ convert <- function(value, from, to) {
     stop(paste("cannot convert", units(x), "into", value), call. = FALSE)
 }
 
-unit_ambiguous = function(value) {
-  msg = paste("ambiguous argument:", value, "is interpreted by its name, not by its value")
-  warning(msg, call. = FALSE)
-}
+#unit_ambiguous = function(value) {
+#  msg = paste("ambiguous argument:", value, "is interpreted by its name, not by its value")
+#  warning(msg, call. = FALSE)
+#}
 
 
 #' @name units
