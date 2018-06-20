@@ -29,6 +29,10 @@ R_ut_new_dimensionless_unit <- function(name) {
     .Call('_units_R_ut_new_dimensionless_unit', PACKAGE = 'units', name)
 }
 
+R_ut_new_base_unit <- function(name) {
+    .Call('_units_R_ut_new_base_unit', PACKAGE = 'units', name)
+}
+
 R_ut_remove_unit <- function(name) {
     invisible(.Call('_units_R_ut_remove_unit', PACKAGE = 'units', name))
 }

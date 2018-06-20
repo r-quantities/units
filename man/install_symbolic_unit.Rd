@@ -5,15 +5,17 @@
 \alias{remove_symbolic_unit}
 \title{Define new symbolic units}
 \usage{
-install_symbolic_unit(chr, warn = TRUE)
+install_symbolic_unit(name, warn = TRUE, dimensionless = TRUE)
 
-remove_symbolic_unit(chr)
+remove_symbolic_unit(name)
 }
 \arguments{
-\item{chr}{a length 1 character vector that is the unit name or symbol.}
+\item{name}{a length 1 character vector that is the unit name or symbol.}
 
 \item{warn}{warns if the supplied unit symbol is already a valid unit symbol
 recognized by udunits.}
+
+\item{dimensionless}{logical; if \code{TRUE}, a new dimensionless unit is created, if \code{FALSE} a new base unit is created. Dimensionless units are convertible to other dimensionless units (such as \code{rad}), new base units are not convertible to other existing units.}
 }
 \description{
 Adding a symbolic unit allows it to be used in \code{as_units},

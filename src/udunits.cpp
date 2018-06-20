@@ -109,7 +109,15 @@ NumericVector R_convert_doubles(SEXP from, SEXP to, NumericVector val) {
 XPtrUT R_ut_new_dimensionless_unit(CharacterVector name) {
   ut_unit *u = ut_new_dimensionless_unit(sys); 
   if (ut_map_name_to_unit(name[0], enc, u) != UT_SUCCESS)
-    handle_error("R_ut_new_dimensionless"); // #nocov
+    handle_error("R_ut_new_dimensionless_unit"); // #nocov
+  return ut_wrap(u);
+}
+
+// [[Rcpp::export]]
+XPtrUT R_ut_new_base_unit(CharacterVector name) {
+  ut_unit *u = ut_new_base_unit(sys); 
+  if (ut_map_name_to_unit(name[0], enc, u) != UT_SUCCESS)
+    handle_error("R_ut_new_base_unit"); // #nocov
   return ut_wrap(u);
 }
 

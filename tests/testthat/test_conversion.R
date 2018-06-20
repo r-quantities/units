@@ -169,3 +169,9 @@ test_that("units.symbolic_units works", {
   m = set_units(1, m)
   expect_equal(units(m), units(units(m)))
 })
+
+test_that("new base units work", {
+  install_symbolic_unit("person", dimensionless = FALSE)
+  expect_equal(set_units(1, person) + set_units(1, kperson), set_units(1001, person))
+  expect_error(set_units(1, person) + set_units(1, rad), "cannot convert")
+})
