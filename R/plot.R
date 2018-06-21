@@ -118,6 +118,8 @@ hist.units <- function(x, xlab = NULL, main = paste("Histogram of", xname), ...)
 #' boxplot for unit objects
 #' @param x object of class units, for which we want to plot the boxplot
 #' @param ... parameters passed on to \link{boxplot.default}
+#' @param horizontal logical indicating if the boxplots should be horizontal; 
+#' default FALSE means vertical boxes.
 #' @export
 #' @examples
 #' units_options(parse = FALSE) # otherwise we break on the funny symbol!
