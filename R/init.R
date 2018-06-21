@@ -1,5 +1,6 @@
 #' @import utils
 #' @import stats
+#' @import graphics
 #' @importFrom Rcpp evalCpp
 #' @useDynLib units
 NULL
