@@ -160,3 +160,28 @@ test_that("conversion to dimensionless with prefix works (g/kg) if simplify=TRUE
 test_that("a NULL value returns NULL", {
   expect_null(as_units(NULL))
 })
+
+test_that("errors are correctly coerced to a data frame", {
+  a <- 1:10
+  b <- a * as_units("m")
+  
+  expect_equal(as.data.frame(b)$b, b)
+  x <- data.frame(a, b)
+  expect_equal(x$a, a)
+  expect_equal(x$b, b)
+  x <- cbind(x, a, data.frame(b))
+  expect_equal(x[[3]], a)
+  expect_equal(x[[4]], b)
+  x <- rbind(x, a[1:4], x[1,])
+  expect_equal(x[[1]], c(a, 1, 1))
+  expect_equal(x[[2]], c(b, c(2, 1) * as_units("m")))
+  expect_equal(x[[3]], c(a, 3, 1))
+  expect_equal(x[[4]], c(b, c(4, 1) * as_units("m")))
+})
+
+test_that("units are correctly coerced to a list", {
+  x <- 1:10 * as_units("m")
+  y <- as.list(x)
+  expect_is(y, "list")
+  expect_true(all(sapply(seq_along(y), function(i) all.equal(y[[i]], x[i]))))
+})
