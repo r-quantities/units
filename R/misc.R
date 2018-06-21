@@ -14,20 +14,14 @@ c.units <- function(..., recursive = FALSE, allow_mixed = units_options("allow_m
 
 .units_are_convertible = function(x, u) {
 	for (i in seq_along(x))
-		if (length(x[[i]]) && !ud_are_convertible(units(x[[i]]), u))
+		if (! ud_are_convertible(units(x[[i]]), u))
 			return(FALSE)
 	TRUE
 }
 
 .convert_combine = function(args, u) {
 	args = lapply(args, set_units, value = u, mode = "standard")
-	drop_u = function(x) {
-		if (length(x) > 0)
-			drop_units(x) 
-		else
-			numeric(0)
-	}
-	.as.units(do.call(c, lapply(args, drop_u)), u)
+	.as.units(do.call(c, lapply(args, drop_units)), u)
 }
 
 

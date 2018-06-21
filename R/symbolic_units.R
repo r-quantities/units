@@ -90,8 +90,12 @@ as.character.symbolic_units <- function(x, ...,
   }
   
   if (length(numerator) == 0) {
-    if (! neg_power)
-	  num_str <- "1" # 1/cm^2/h
+    if (! neg_power) {
+	  num_str <- if (length(denominator) > 0)
+	      "1" # 1/cm^2/h
+		else
+		  ""
+	}
   } else {
     num_str <- .pretty_print_sequence(numerator, "*", FALSE, plot_sep)
   }
