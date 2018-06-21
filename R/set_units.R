@@ -46,8 +46,3 @@ set_units.logical <- set_units.numeric
 
 #' @export
 set_units.units <- set_units.numeric
-
-#' @export
-set_units.NULL <- function(x, value, ..., mode) {
-	set_units(numeric(0), unitless, mode = "standard")
-}
