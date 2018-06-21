@@ -49,6 +49,8 @@ if test "${ac_cv_lib_expat_XML_ParserCreate}" == yes; then
    LIBS="${LIBS} -lexpat"
 fi
 
+CPPFLAGS="${UD_CPPFLAGS} ${CPPFLAGS}"
+
 AC_CHECK_HEADER(udunits2.h, [], [
 AC_CHECK_HEADER(udunits2/udunits2.h, 
                 UD_CPPFLAGS="${UD_CPPFLAGS} -I/usr/include/udunits2", 
