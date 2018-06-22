@@ -19,8 +19,9 @@ Summary.units = function(..., na.rm = FALSE) {
 
 #' @export
 print.units = function (x, ...) { # nocov start
+  gr = units_options("group")
   if (is.array(x) || length(x) > 1L) {
-    cat("Units: ", as.character(attr(x, "units")), "\n", sep = "")
+    cat("Units: ", paste0(gr[1], as.character(attr(x, "units")), gr[2]), "\n", sep = "")
     x <- drop_units(x)
     NextMethod()
   } else {
@@ -47,7 +48,10 @@ quantile.units = function(x, ...) {
 
 #' @export
 format.units = function(x, ...) {
-  setNames(paste(NextMethod(), units(x)), names(x))
+  if (units(x) == unitless) 
+    setNames(paste(NextMethod(), "[]"), names(x))
+  else
+    setNames(paste(NextMethod(), units(x)), names(x))
 }
 
 #' @export
