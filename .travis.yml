@@ -13,6 +13,11 @@ addons:
 
 r_github_packages:
   - r-lib/covr@v3.0.1
+  - r-quantities/errors
+
+script:
+  - git clone https://github.com/r-quantities/quantities.git
+  - bash quantities/scripts/check_with_quantities.sh
 
 after_success:
   - Rscript -e 'covr::codecov()'
