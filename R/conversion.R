@@ -49,16 +49,22 @@ convert <- function(value, from, to) {
 #' @export
 #' 
 #' @examples
-#' a <- with(ud_units, 1:3 * m/s)
+#' a <- set_units(1:3, m/s)
 #' units(a) <- with(ud_units, km/h)
+#' a
+#' # convert to a mixed_units object:
+#' units(a) = c("m/s", "km/h", "km/h")
 #' a
 `units<-.units` <- function(x, value) {
   
   if(is.null(value))
     return(drop_units(x))
   
-  if(!inherits(value, "units") && !inherits(value, "symbolic_units"))
+  if(!inherits(value, "units") && !inherits(value, "symbolic_units")) {
+	if ((is.character(value) && length(value) > 1))
+	  return(set_units(mixed_units(x), value))
     value <- as_units(value)
+  }
   
   dimx = dim(x)
   if (inherits(value, "units")) {
