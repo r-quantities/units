@@ -184,12 +184,18 @@ as_units.difftime <- function(x, value, ...) {
 }
 
 #' @export
-as.data.frame.units <- function(x, ...) {
-	df = as.data.frame(unclass(x), ...)
+as.data.frame.units <- function(x, row.names = NULL, optional = FALSE, ...) {
+	df = as.data.frame(unclass(x), row.names, optional, ...)
+	if (!optional && ncol(df) == 1)
+	  colnames(df) <- deparse(substitute(x))
 	for (i in seq_along(df))
 		units(df[[i]]) = units(x)
 	df
 }
+
+#' @export
+as.list.units <- function(x, ...)
+  mapply(set_units, unclass(x), x, mode="standard", SIMPLIFY=FALSE)
 
 #' convert units object into difftime object
 #'
