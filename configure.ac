@@ -54,30 +54,24 @@ CPPFLAGS="${UD_CPPFLAGS} ${CPPFLAGS}"
 AC_CHECK_HEADER(udunits2.h, [], [
 AC_CHECK_HEADER(udunits2/udunits2.h, 
                 UD_CPPFLAGS="${UD_CPPFLAGS} -I/usr/include/udunits2", 
-                UD_ERROR="udunits2.h not found") ])
+                UD_ERROR="udunits2.h was not found") ])
 
 AC_CHECK_LIB(udunits2, ut_read_xml, 
              LIBS="${LIBS} -ludunits2",
-             UD_ERROR="libudunits2.so not found")
+             UD_ERROR="libudunits2.so was not found")
 
 if test "${UD_ERROR}" != ""  ; then AC_MSG_FAILURE([
 --------------------------------------------------------------------------------
-  ${UD_ERROR}!
-  
-  If the udunits2 library is installed in a non-standard location, use:
-  
+  Configuration failed because ${UD_ERROR}. Try installing:
+    * deb: libudunits2-dev (Debian, Ubuntu...)
+    * rpm: udunits2-devel (Fedora, EPEL...)
+    * brew: udunits (OSX)
+  If udunits2 is already installed in a non-standard location, use:
     --configure-args='--with-udunits2-lib=/usr/local/lib'
-    
-  for example, if the library was not found, and/or
-  
+  if the library was not found, and/or:
     --configure-args='--with-udunits2-include=/usr/include/udunits2'
-    
-  if the header was not found, replacing paths with appropriate values for your
-  installation. You can alternatively use the UDUNITS2_INCLUDE and UDUNITS2_LIBS
-  environment variables.
-  
-  If udunits2 is not installed, please install it.
-  It is required for this package.
+  if the header was not found, replacing paths with appropriate values.
+  You can alternatively set UDUNITS2_INCLUDE and UDUNITS2_LIBS manually.
 --------------------------------------------------------------------------------
 ]) fi
 
