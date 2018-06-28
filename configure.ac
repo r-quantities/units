@@ -63,8 +63,8 @@ AC_CHECK_LIB(udunits2, ut_read_xml,
 if test "${UD_ERROR}" != ""  ; then AC_MSG_FAILURE([
 --------------------------------------------------------------------------------
   Configuration failed because ${UD_ERROR}. Try installing:
-    * deb: libudunits2-dev (Debian, Ubuntu...)
-    * rpm: udunits2-devel (Fedora, EPEL...)
+    * deb: libudunits2-dev (Debian, Ubuntu, ...)
+    * rpm: udunits2-devel (Fedora, EPEL, ...)
     * brew: udunits (OSX)
   If udunits2 is already installed in a non-standard location, use:
     --configure-args='--with-udunits2-lib=/usr/local/lib'
