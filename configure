@@ -3810,7 +3810,7 @@ ac_fn_cxx_check_header_mongrel "$LINENO" "udunits2/udunits2.h" "ac_cv_header_udu
 if test "x$ac_cv_header_udunits2_udunits2_h" = xyes; then :
   UD_CPPFLAGS="${UD_CPPFLAGS} -I/usr/include/udunits2"
 else
-  UD_ERROR="udunits2.h not found"
+  UD_ERROR="udunits2.h was not found"
 fi
 
 
@@ -3857,7 +3857,7 @@ $as_echo "$ac_cv_lib_udunits2_ut_read_xml" >&6; }
 if test "x$ac_cv_lib_udunits2_ut_read_xml" = xyes; then :
   LIBS="${LIBS} -ludunits2"
 else
-  UD_ERROR="libudunits2.so not found"
+  UD_ERROR="libudunits2.so was not found"
 fi
 
 
@@ -3865,22 +3865,16 @@ if test "${UD_ERROR}" != ""  ; then { { $as_echo "$as_me:${as_lineno-$LINENO}: e
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
 as_fn_error $? "
 --------------------------------------------------------------------------------
-  ${UD_ERROR}!
-
-  If the udunits2 library is installed in a non-standard location, use:
-
+  Configuration failed because ${UD_ERROR}. Try installing:
+    * deb: libudunits2-dev (Debian, Ubuntu, ...)
+    * rpm: udunits2-devel (Fedora, EPEL, ...)
+    * brew: udunits (OSX)
+  If udunits2 is already installed in a non-standard location, use:
     --configure-args='--with-udunits2-lib=/usr/local/lib'
-
-  for example, if the library was not found, and/or
-
+  if the library was not found, and/or:
     --configure-args='--with-udunits2-include=/usr/include/udunits2'
-
-  if the header was not found, replacing paths with appropriate values for your
-  installation. You can alternatively use the UDUNITS2_INCLUDE and UDUNITS2_LIBS
-  environment variables.
-
-  If udunits2 is not installed, please install it.
-  It is required for this package.
+  if the header was not found, replacing paths with appropriate values.
+  You can alternatively set UDUNITS2_INCLUDE and UDUNITS2_LIBS manually.
 --------------------------------------------------------------------------------
 
 See \`config.log' for more details" "$LINENO" 5; } fi
