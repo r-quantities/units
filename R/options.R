@@ -13,7 +13,7 @@ assign(".units.unitless_symbol", NA, envir = .units_options)
 #' set one or more units global options
 #' 
 #' set units global options, mostly related how units are printed and plotted
-#' @param ... ignored
+#' @param ... named options (character) for which the value is queried
 #' @param sep character length two; default \code{c("~", "~")}; space separator between variable and units, and space separator between two different units
 #' @param group character length two; start and end group, may be two empty strings, a parenthesis pair, or square brackets; default: square brackets.
 #' @param negative_power logical, default \code{FALSE}; should denominators have negative power, or follow a division symbol?
@@ -23,11 +23,16 @@ assign(".units.unitless_symbol", NA, envir = .units_options)
 #' @param simplify logical, default \code{NA}; simplify units in expressions? 
 #' @param allow_mixed logical; if \code{TRUE}, combining mixed units creates a \code{mixed_units} object, if \code{FALSE} it generates an error
 #' @param unitless_symbol character; set the symbol to use for unitless (1) units
-#' @details The default \code{NA} value for \code{simplify} means units are not simplified in \link{set_units} or \link{as_units}, but are simplified in arithmetical expressions.
+#' @details This sets or gets units options. Set them by using named arguments, get them by passing the option name.
+#' 
+#' The default \code{NA} value for \code{simplify} means units are not simplified in \link{set_units} or \link{as_units}, but are simplified in arithmetical expressions.
+#' @return in case options are set, invisibly a named list with the option values that are being set; if an option is queried, the current option value.
 #' @examples
-#' units_options(sep = c("~~~", "~"), group = c("", "")) # more space, parenthesis
-#' ## set defaults:
+#' old = units_options(sep = c("~~~", "~"), group = c("", "")) # more space, parenthesis
+#' old
+#' ## set back to defaults:
 #' units_options(sep = c("~", "~"), group = c("[", "]"), negative_power = FALSE, parse = TRUE)
+#' units_options("group")
 #' @export
 units_options = function(..., sep, group, negative_power, parse, set_units_mode, auto_convert_names_to_symbols, simplify,
 		allow_mixed, unitless_symbol) {
