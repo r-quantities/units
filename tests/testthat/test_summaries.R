@@ -42,7 +42,7 @@ test_that("we can format units", {
   x <- 1:4
   ux <- x * as_units("m")
   
-  expect_equal(format(ux), paste(x, units(ux)))
+  expect_equal(format(ux), c("1 [m]", "2 [m]", "3 [m]", "4 [m]"))
 })
 test_that("summary works with NA values", {
   x <- c(1, NA) * as_units("g")
