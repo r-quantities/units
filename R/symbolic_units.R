@@ -94,7 +94,7 @@ as.character.symbolic_units <- function(x, ...,
 	  num_str <- if (length(denominator) > 0)
 	      "1" # 1/cm^2/h
 		else
-		  ""
+		  units_options("unitless_symbol")
 	}
   } else {
     num_str <- .pretty_print_sequence(numerator, "*", FALSE, plot_sep)

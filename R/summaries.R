@@ -48,8 +48,8 @@ quantile.units = function(x, ...) {
 
 #' @export
 format.units = function(x, ...) {
-  if (units(x) == unitless) 
-    setNames(paste(NextMethod(), "[]"), names(x))
+  if (units(x) == unitless && units_options("unitless_symbol") == "")
+    setNames(paste(NextMethod(), paste(units_options("group"), collapse = "")), names(x))
   else
     setNames(paste(NextMethod(), units(x)), names(x))
 }

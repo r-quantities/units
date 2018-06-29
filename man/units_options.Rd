@@ -5,7 +5,7 @@
 \title{set one or more units global options}
 \usage{
 units_options(..., sep, group, negative_power, parse, set_units_mode,
-  auto_convert_names_to_symbols, simplify, allow_mixed)
+  auto_convert_names_to_symbols, simplify, allow_mixed, unitless_symbol)
 }
 \arguments{
 \item{...}{ignored}
@@ -25,6 +25,8 @@ units_options(..., sep, group, negative_power, parse, set_units_mode,
 \item{simplify}{logical, default \code{NA}; simplify units in expressions?}
 
 \item{allow_mixed}{logical; if \code{TRUE}, combining mixed units creates a \code{mixed_units} object, if \code{FALSE} it generates an error}
+
+\item{unitless_symbol}{character; set the symbol to use for unitless (1) units}
 }
 \description{
 set units global options, mostly related how units are printed and plotted
