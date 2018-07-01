@@ -35,6 +35,8 @@ convert <- function(value, from, to) {
   if (inherits(value, "units")) {
     if (isTRUE(.units.simplify()))
       x <- x * unclass(value)
+	else if (any(unclass(value) != 1.0))
+	  warning(paste("numeric value", unclass(value), "is ignored in unit assignment"))
     value <- units(value)
   }
  
