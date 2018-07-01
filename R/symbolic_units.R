@@ -125,7 +125,7 @@ as.character.symbolic_units <- function(x, ...,
 .simplify_units <- function(value, sym_units) {
   
   simplify = .units.simplify()
-  if (!is.na(simplify) && !simplify) {
+  if (!is.na(simplify) && !simplify) { # isFALSE(simplify)
   	value = as.numeric(value)
 	units(value) = sym_units
   	return(value)
