@@ -248,6 +248,8 @@ set_units(1:5, make_units(m/s), mode = "standard")
 # To remove units use
 units(x) <- NULL
 # or
+set_units(x, NULL)
+# or
 drop_units(y)
 }
 \seealso{

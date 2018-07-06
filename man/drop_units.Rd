@@ -2,20 +2,38 @@
 % Please edit documentation in R/make_units.R
 \name{drop_units}
 \alias{drop_units}
-\title{drop units}
+\title{Drop Units}
 \usage{
 drop_units(x)
 }
 \arguments{
-\item{x}{a units object}
+\item{x}{an object with units metadata.}
 }
 \value{
 the numeric without any units attributes, while preserving other
-  attributes like dimensions or other classes.
+attributes like dimensions or other classes.
 }
 \description{
-drop units
+Drop units attribute and class.
 }
-\note{
-Equivalent to \code{units(x) <- NULL}
+\details{
+Equivalent to \code{units(x) <- NULL}, or the pipe-friendly version
+\code{set_units(x, NULL)}, but \code{drop_units} will fail if the object has
+no units metadata. Use the alternatives if you want this operation to succeed
+regardless of the object type.
+}
+\examples{
+x <- 1
+y <- set_units(x, m/s)
+
+# this succeeds
+drop_units(y)
+set_units(y, NULL)
+set_units(x, NULL)
+
+\dontrun{
+# this fails
+drop_units(x)
+}
+
 }

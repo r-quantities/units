@@ -140,6 +140,8 @@
 #' # To remove units use
 #' units(x) <- NULL
 #' # or
+#' set_units(x, NULL)
+#' # or
 #' drop_units(y)
 make_units <- function(bare_expression, check_is_valid = TRUE) {
   as_units.call(substitute(bare_expression), check_is_valid = check_is_valid)
@@ -395,16 +397,35 @@ symbolic_unit <- function(chr, check_is_valid = TRUE) {
 }
 
 
-#' drop units
+#' Drop Units
 #' 
-#' @param x a units object
+#' Drop units attribute and class.
+#' 
+#' @param x an object with units metadata.
 #' 
 #' @return the numeric without any units attributes, while preserving other
-#'   attributes like dimensions or other classes.
+#' attributes like dimensions or other classes.
 #'   
-#' @note Equivalent to \code{units(x) <- NULL}
+#' @details Equivalent to \code{units(x) <- NULL}, or the pipe-friendly version
+#' \code{set_units(x, NULL)}, but \code{drop_units} will fail if the object has
+#' no units metadata. Use the alternatives if you want this operation to succeed
+#' regardless of the object type.
 #' 
 #' @export
+#' @examples
+#' x <- 1
+#' y <- set_units(x, m/s)
+#' 
+#' # this succeeds
+#' drop_units(y)
+#' set_units(y, NULL)
+#' set_units(x, NULL)
+#' 
+#' \dontrun{
+#' # this fails
+#' drop_units(x)
+#' }
+#' 
 drop_units <- function(x) UseMethod("drop_units")
 
 #' @export
