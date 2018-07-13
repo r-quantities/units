@@ -26,11 +26,9 @@ AC_ARG_WITH([udunits2-include],
 		[udunits2_include_path=$withval])
 if test [ -n "$udunits2_include_path" ] ; then
    UD_CPPFLAGS="-I${udunits2_include_path}"
-   CPPFLAGS="$CPPFLAGS $UD_CPPFLAGS"
 else
    if test [ -n "${UDUNITS2_INCLUDE}" ] ; then
       UD_CPPFLAGS="-I${UDUNITS2_INCLUDE}"
-      CPPFLAGS="$CPPFLAGS $UD_CPPFLAGS"
    fi
 fi
 
