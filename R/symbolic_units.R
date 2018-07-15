@@ -139,8 +139,8 @@ to_base <- function(x) {  # https://github.com/r-quantities/units/issues/132
   	return(value)
   }
 
-  if (isTRUE(units_options("convert_to_base")))
-    return(to_base(value))
+#  if (isTRUE(units_options("convert_to_base")))
+#    return(to_base(value))
 
   # This is just a brute force implementation that takes each element in the
   # numerator and tries to find a value in the denominator that can be converted
