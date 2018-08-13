@@ -169,7 +169,7 @@ unit conversion; all but 5 from its 896 functions are of the form
 `NISTxxxTOyyy` where `xxx` and `yyy` refer to two
 different units. For instance, converting from W m$^{-2}$ to W inch$^{-2}$
 is done by
-```{r}
+```{r, eval=requireNamespace("NISTunits", quietly=TRUE)}
 library(NISTunits)
 NISTwattPerSqrMeterTOwattPerSqrInch(1:5)
 ```
