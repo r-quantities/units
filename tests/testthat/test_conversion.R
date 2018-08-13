@@ -61,6 +61,7 @@ test_that("we can convert between two units that can be converted", {
   x <- y <- 1:4 * m
   units(x) <- km
   expect_equal(as.numeric(y), 1000 * as.numeric(x))
+  skip_if_not_installed("magrittr")
   library(magrittr)
   y %>% set_units(km) -> z
   expect_equal(x, z)
