@@ -356,7 +356,7 @@ par(mar = par("mar") + c(0, .3, 0, 0))
 with(mtcars, plot(1/displacement, 1/consumption))
 ```
 
-```{r fig=TRUE, height=3.8, width=7}
+```{r fig=TRUE, height=3.8, width=7, eval=requireNamespace("ggforce", quietly=TRUE)}
 library(ggforce)
 if (utils::packageVersion("ggplot2") > "2.2.1")
   ggplot(mtcars) + geom_point(aes(x = 1/displacement, y = 1/consumption))
