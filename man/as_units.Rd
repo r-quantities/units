@@ -2,9 +2,7 @@
 % Please edit documentation in R/conversion.R, R/make_units.R
 \name{as_units}
 \alias{as_units}
-\alias{as_units}
 \alias{as_units.default}
-\alias{as_units}
 \alias{as_units.difftime}
 \alias{make_units}
 \alias{as_units.character}
@@ -53,10 +51,6 @@ A new unit object that can be used in arithmetic, unit conversion or
   unit assignment.
 }
 \description{
-convert object to a units object
-
-difftime objects to units
-
 A number of functions are provided for creating unit objects. 
 \itemize{
     \item \code{as_units}, a generic with methods for a
