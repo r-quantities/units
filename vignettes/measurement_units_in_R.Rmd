@@ -138,7 +138,7 @@ a collection of tools to make working with physical measurements
 easier. It converts between metric and imperial units, or calculates
 a dimension's unknown value from other dimensions' measurements. It
 does this by the `conv_unit` function:
-```{r}
+```{r, eval=requireNamespace("measurements", quietly=TRUE)}
 library(measurements)
 conv_unit(2.54, "cm", "inch")
 conv_unit(c("101 44.32","3 19.453"), "deg_dec_min", "deg_min_sec")
@@ -149,13 +149,13 @@ but uses for instance `kph` instead of `km_per_hour`, and then
 than systematic composition.  Object
 `conv_unit_options` contains all 173 supported units, categorized by
 the physical dimension they describe:
-```{r}
+```{r, eval=requireNamespace("measurements", quietly=TRUE)}
 names(conv_unit_options)
 conv_unit_options$volume
 ```
 Function `conv_dim` allows for the conversion of units in products or ratios,
 e.g.
-```{r}
+```{r, eval=requireNamespace("measurements", quietly=TRUE)}
 conv_dim(x = 100, x_unit = "m", trans = 3, trans_unit = "ft_per_sec", y_unit = "min")
 ```
 computes how many minutes it takes to travel 100 meters at 3 feet per second.
