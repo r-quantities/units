@@ -19,7 +19,7 @@ Suggests:
     measurements,
     xml2,
     tibble,
-	pillar,
+	pillar (>= 1.3.0),
     knitr,
     testthat,
 	ggforce,

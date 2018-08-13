@@ -336,6 +336,9 @@ as_units.call <- function(x, check_is_valid = TRUE, ...) {
      identical(x, 1) || identical(x, 1L))
     return(.as.units(1, unitless))
   
+  if (is.vector(x) && any(is.na(x)))
+  	stop("a missing value for units is not allowed")
+
   stopifnot(is.language(x))
   
   vars <- all.vars(x)

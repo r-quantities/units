@@ -33,6 +33,8 @@ convert <- function(value, from, to) {
     value <- as_units(value)
   
   if (inherits(value, "units")) {
+	if (any(is.na(value)))
+	  stop("a missing value for units is not allowed")
     if (isTRUE(.units.simplify()))
       x <- x * unclass(value)
 	else if (any(unclass(value) != 1.0))
