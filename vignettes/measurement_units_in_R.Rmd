@@ -191,28 +191,28 @@ The R package [udunits2](https://cran.r-project.org/package=udunits2)
 functions in the udunits2 C library.
 
 The functions provided by [udunits2](https://cran.r-project.org/package=udunits2) are
-```{r}
+```{r, eval=requireNamespace("udunits2", quietly=TRUE)}
 library(udunits2)
 ls(2)
 ```
 Dropping the `ud` prefix,
 `is.parseable` verifies whether a unit is parseable
-```{r}
+```{r, eval=requireNamespace("udunits2", quietly=TRUE)}
 ud.is.parseable("m/s")
 ud.is.parseable("q")
 ```
 `are.convertible` specifies whether two units are convertible
-```{r}
+```{r, eval=requireNamespace("udunits2", quietly=TRUE)}
 ud.are.convertible("m/s", "km/h")
 ud.are.convertible("m/s", "s")
 ```
 `convert` converts units that are convertible, and throws an error otherwise
-```{r}
+```{r, eval=requireNamespace("udunits2", quietly=TRUE)}
 ud.convert(1:3, "m/s", "km/h")
 ```
 and `get.name`, `get.symbol` and `set.encoding` get name, get symbol
 or modify encoding of the character unit arguments.
-```{r}
+```{r, eval=requireNamespace("udunits2", quietly=TRUE)}
 ud.get.name("kg")
 ud.get.symbol("kilogram")
 ud.set.encoding("utf8")
@@ -224,7 +224,7 @@ and [NISTunits](https://cran.r-project.org/package=NISTunits),
 [udunits2](https://cran.r-project.org/package=udunits2) parses
 units as expressions, and bases its logic upon the convertibility
 of expressions, rather than the comparison of fixed strings:
-```{r}
+```{r, eval=requireNamespace("udunits2", quietly=TRUE)}
 m100_a = paste(rep("m", 100), collapse = "*")
 dm100_b = "dm^100"
 ud.is.parseable(m100_a)
