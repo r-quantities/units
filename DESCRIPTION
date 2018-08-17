@@ -12,7 +12,7 @@ Depends:
 Imports:
 	Rcpp
 LinkingTo:
-	Rcpp
+	Rcpp (>= 0.12.10)
 Suggests:
 	udunits2,
     NISTunits,
