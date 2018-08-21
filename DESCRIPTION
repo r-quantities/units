@@ -8,7 +8,7 @@ Authors@R: c(person("Edzer", "Pebesma", role = c("aut", "cre"), email = "edzer.p
 		person("Iñaki", "Ucar", role = "ctb", email = "iucar@fedoraproject.org", comment = c(ORCID = "0000-0001-6403-5550"))
 		)
 Depends:
-    R (>= 3.0.0)
+    R (>= 3.0.2)
 Imports:
 	Rcpp
 LinkingTo:
