@@ -1,3 +1,7 @@
+# version 0.6-1
+
+* `NA` values for units now trigger a proper error message; #163
+
 # version 0.6-0
 
 * print units as [unit] more consistently, e.g. for single unit and in data.frames; #132
