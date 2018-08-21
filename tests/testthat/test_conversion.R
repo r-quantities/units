@@ -61,6 +61,7 @@ test_that("we can convert between two units that can be converted", {
   x <- y <- 1:4 * m
   units(x) <- km
   expect_equal(as.numeric(y), 1000 * as.numeric(x))
+  skip_if_not_installed("magrittr")
   library(magrittr)
   y %>% set_units(km) -> z
   expect_equal(x, z)
@@ -161,9 +162,9 @@ test_that("a NULL value returns NULL", {
   expect_null(as_units(NULL))
 })
 
-test_that("as.data.frame.units works", {
-  expect_silent(as.data.frame(set_units(matrix(1:9,3), m)))
-})
+#test_that("as.data.frame.units works", {
+#  expect_silent(as.data.frame(set_units(matrix(1:9,3), m)))
+#})
 
 test_that("units.symbolic_units works", {
   m = set_units(1, m)
@@ -199,4 +200,9 @@ test_that("units are correctly coerced to a list", {
   y <- as.list(x)
   expect_is(y, "list")
   expect_true(all(sapply(seq_along(y), function(i) all.equal(y[[i]], x[i]))))
+})
+
+test_that("NA as units generate warnings", {
+  expect_error(set_units(NA_real_, NA_character_, mode="standard"), "a missing value for units is not allowed")
+  expect_error(set_units(NA_real_, NA, mode="standard"), "a missing value for units is not allowed")
 })

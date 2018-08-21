@@ -3,19 +3,15 @@
 \name{tibble}
 \alias{tibble}
 \alias{type_sum.units}
-\alias{tibble}
 \alias{format_type_sum.type_sum_units}
-\alias{tibble}
 \alias{pillar_shaft.units}
-\alias{tibble}
 \alias{type_sum.mixed_units}
-\alias{tibble}
 \alias{pillar_shaft.mixed_units}
 \title{type_sum function for units}
 \usage{
 type_sum.units(x, ...)
 
-format_type_sum.type_sum_units(x)
+format_type_sum.type_sum_units(x, width, ...)
 
 pillar_shaft.units(x, ...)
 
@@ -27,6 +23,8 @@ pillar_shaft.mixed_units(x, ...)
 \item{x}{see \link[pillar]{type_sum}}
 
 \item{...}{see \link[pillar]{type_sum}}
+
+\item{width}{ignored}
 }
 \description{
 type_sum function for units

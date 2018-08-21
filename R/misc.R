@@ -118,7 +118,8 @@ type_sum.units <- function(x, ...) {
 }
 #' @export
 #' @name tibble
-format_type_sum.type_sum_units <- function(x) {
+#' @param width ignored
+format_type_sum.type_sum_units <- function(x, width, ...) {
   if (! requireNamespace("pillar", quietly = TRUE))
     stop("package pillar not available: install first?")
   pillar::style_subtle(x)

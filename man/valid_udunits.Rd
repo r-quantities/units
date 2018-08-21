@@ -2,7 +2,6 @@
 % Please edit documentation in R/valid_udunits.R
 \name{valid_udunits}
 \alias{valid_udunits}
-\alias{valid_udunits}
 \alias{valid_udunits_prefixes}
 \title{Get information about valid units}
 \usage{
@@ -37,8 +36,10 @@ Note, this is primarily intended for interactive use, the exact format of the
 returned dataframe may change in the future.
 }
 \examples{
-valid_udunits()
-valid_udunits_prefixes()
-if(interactive())
-  View(valid_udunits())
+if (requireNamespace("xml2", quietly = TRUE)) {
+  valid_udunits()
+  valid_udunits_prefixes()
+  if(interactive())
+    View(valid_udunits())
+}
 }

@@ -8,6 +8,7 @@ assign(".units.auto_convert_names_to_symbols", NA, envir = .units_options)
 assign(".units.simplify", NA, envir = .units_options)
 assign(".units.allow_mixed", NA, envir = .units_options)
 assign(".units.unitless_symbol", NA, envir = .units_options)
+assign(".units.convert_to_base", NA, envir = .units_options)
 
 
 #' set one or more units global options
@@ -23,6 +24,7 @@ assign(".units.unitless_symbol", NA, envir = .units_options)
 #' @param simplify logical, default \code{NA}; simplify units in expressions? 
 #' @param allow_mixed logical; if \code{TRUE}, combining mixed units creates a \code{mixed_units} object, if \code{FALSE} it generates an error
 #' @param unitless_symbol character; set the symbol to use for unitless (1) units
+#' @param convert_to_base logical; if \code{TRUE}, convert units to (SI) base units
 #' @details This sets or gets units options. Set them by using named arguments, get them by passing the option name.
 #' 
 #' The default \code{NA} value for \code{simplify} means units are not simplified in \link{set_units} or \link{as_units}, but are simplified in arithmetical expressions.
@@ -35,7 +37,7 @@ assign(".units.unitless_symbol", NA, envir = .units_options)
 #' units_options("group")
 #' @export
 units_options = function(..., sep, group, negative_power, parse, set_units_mode, auto_convert_names_to_symbols, simplify,
-		allow_mixed, unitless_symbol) {
+		allow_mixed, unitless_symbol, convert_to_base) {
 	# op = as.list(units:::.units_options)
 	ret = list()
 	if (!missing(sep)) {
@@ -83,6 +85,11 @@ units_options = function(..., sep, group, negative_power, parse, set_units_mode,
 		ret$unitless_symbol = get(".units.unitless_symbol", envir = .units_options)
 		assign(".units.unitless_symbol", unitless_symbol, envir = .units_options)
 	}
+	if (!missing(convert_to_base)) {
+		stopifnot(is.logical(convert_to_base))
+		ret$convert_to_base = get(".units.convert_to_base", envir = .units_options)
+		assign(".units.convert_to_base", convert_to_base, envir = .units_options)
+	}
 
 	dots = list(...)
 	if (length(dots)) {
@@ -105,7 +112,8 @@ units_options(
 	auto_convert_names_to_symbols = TRUE,
 	simplify = NA,
 	allow_mixed = FALSE,
-	unitless_symbol = "1") # set defaults
+	unitless_symbol = "1",
+	convert_to_base = FALSE) # set defaults
 
 .units.simplify = function() {
   get(".units.simplify", envir = .units_options)

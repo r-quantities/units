@@ -122,6 +122,14 @@ as.character.symbolic_units <- function(x, ...,
     paste(num_str, denom_str, sep = sep)
 }
 
+to_base <- function(x) {  # https://github.com/r-quantities/units/issues/132
+  u_str = as.character(units(x))
+  u = R_ut_parse(u_str)
+  ft = R_ut_format(u, ascii = TRUE)
+  new = as_units(strsplit(ft, " ")[[1]][2])
+  set_units(x, new, mode = "standard")
+}
+
 .simplify_units <- function(value, sym_units) {
   
   simplify = .units.simplify()
@@ -131,9 +139,12 @@ as.character.symbolic_units <- function(x, ...,
   	return(value)
   }
 
+#  if (isTRUE(units_options("convert_to_base")))
+#    return(to_base(value))
+
   # This is just a brute force implementation that takes each element in the
   # numerator and tries to find a value in the denominator that can be converted
-  # to the same unit. It modifies "value" to rescale the nominator to the denomiator
+  # to the same unit. It modifies "value" to rescale the nominator to the denominator
   # before removing matching units.
 
   drop_ones = function(u) u[ u != "1" ]

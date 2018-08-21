@@ -2,9 +2,7 @@
 % Please edit documentation in R/conversion.R, R/make_units.R
 \name{as_units}
 \alias{as_units}
-\alias{as_units}
 \alias{as_units.default}
-\alias{as_units}
 \alias{as_units.difftime}
 \alias{make_units}
 \alias{as_units.character}
@@ -53,10 +51,6 @@ A new unit object that can be used in arithmetic, unit conversion or
   unit assignment.
 }
 \description{
-convert object to a units object
-
-difftime objects to units
-
 A number of functions are provided for creating unit objects. 
 \itemize{
     \item \code{as_units}, a generic with methods for a
@@ -145,9 +139,10 @@ x <- y <- 1:4
 units(x) <- "m/s"  # meters / second
 
 # Alternatively, the easiest pipe-friendly way to set units:
-if(require(magrittr)) 
+if(requireNamespace("magrittr", quietly = TRUE)) {
+  library(magrittr)
   y \%>\% set_units(m/s)
-
+} 
 
 # these are different ways of creating the same unit:
 # meters per second squared, i.e, acceleration
@@ -226,10 +221,11 @@ make_units(cells/ml)
 
 ## set_units()
 # set_units is a pipe friendly version of `units<-`. 
-if (require(magrittr)) {
- 1:5 \%>\% set_units(N/m^2)
- # first sets to m, then converts to km
- 1:5 \%>\% set_units(m) \%>\% set_units(km)
+if(requireNamespace("magrittr", quietly = TRUE)) {
+  library(magrittr)
+  1:5 \%>\% set_units(N/m^2)
+  # first sets to m, then converts to km
+  1:5 \%>\% set_units(m) \%>\% set_units(km)
 }
 
 # set_units has two modes of operation. By default, it operates with 

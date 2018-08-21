@@ -5,7 +5,8 @@
 \title{set one or more units global options}
 \usage{
 units_options(..., sep, group, negative_power, parse, set_units_mode,
-  auto_convert_names_to_symbols, simplify, allow_mixed, unitless_symbol)
+  auto_convert_names_to_symbols, simplify, allow_mixed, unitless_symbol,
+  convert_to_base)
 }
 \arguments{
 \item{...}{named options (character) for which the value is queried}
@@ -27,6 +28,8 @@ units_options(..., sep, group, negative_power, parse, set_units_mode,
 \item{allow_mixed}{logical; if \code{TRUE}, combining mixed units creates a \code{mixed_units} object, if \code{FALSE} it generates an error}
 
 \item{unitless_symbol}{character; set the symbol to use for unitless (1) units}
+
+\item{convert_to_base}{logical; if \code{TRUE}, convert units to (SI) base units}
 }
 \value{
 in case options are set, invisibly a named list with the option values that are being set; if an option is queried, the current option value.

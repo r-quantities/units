@@ -2,7 +2,6 @@
 % Please edit documentation in R/misc.R
 \name{deparse_unit}
 \alias{deparse_unit}
-\alias{deparse_unit}
 \alias{as_cf}
 \title{deparse unit to string in product power form (e.g. km m-2 s-1)}
 \usage{

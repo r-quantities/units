@@ -226,12 +226,14 @@ pcc <- function(...) paste0(..., collapse = ", ")
 #'
 #' @name valid_udunits
 #' @examples
-#' valid_udunits()
-#' valid_udunits_prefixes()
-#' if(interactive())
-#'   View(valid_udunits())
+#' if (requireNamespace("xml2", quietly = TRUE)) {
+#'   valid_udunits()
+#'   valid_udunits_prefixes()
+#'   if(interactive())
+#'     View(valid_udunits())
+#' }
 valid_udunits <- function(quiet = FALSE) {
-  if(!requireNamespace("xml2"))
+  if(!requireNamespace("xml2", quietly = TRUE))
     stop("Package 'xml2' is required.")
   
   if(!nzchar(.get_ud_xml_dir())) 

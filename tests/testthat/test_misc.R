@@ -34,8 +34,8 @@ test_that("We can use diff on a units object", {
 })
 
 test_that("type_sum is available for units objects", {
-  library(tibble)
-  expect_s3_class(type_sum(as_units("m")), "type_sum_units")
+  skip_if_not_installed("pillar")
+  expect_s3_class(pillar::type_sum(as_units("m")), "type_sum_units")
 })
 
 test_that("parse_unit works", {
@@ -113,6 +113,7 @@ test_that("seq works", {
 })
 
 test_that("tibble printing works", {
+  skip_if_not_installed("tibble")
   print(tibble::tibble(a = set_units(1/1:3, m/s)))
 })
 
