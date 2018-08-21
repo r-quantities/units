@@ -37,10 +37,11 @@
 #' units(x) <- "m/s"  # meters / second
 #' 
 #' # Alternatively, the easiest pipe-friendly way to set units:
-#' if(require(magrittr)) 
+#' if(requireNamespace("magrittr", quietly = TRUE)) {
+#'   library(magrittr)
 #'   y %>% set_units(m/s)
-#' 
-#' 
+#' } 
+#'
 #' # these are different ways of creating the same unit:
 #' # meters per second squared, i.e, acceleration
 #' x1 <- make_units(m/s^2)
@@ -118,10 +119,11 @@
 #'
 #' ## set_units()
 #' # set_units is a pipe friendly version of `units<-`. 
-#' if (require(magrittr)) {
-#'  1:5 %>% set_units(N/m^2)
-#'  # first sets to m, then converts to km
-#'  1:5 %>% set_units(m) %>% set_units(km)
+#' if(requireNamespace("magrittr", quietly = TRUE)) {
+#'   library(magrittr)
+#'   1:5 %>% set_units(N/m^2)
+#'   # first sets to m, then converts to km
+#'   1:5 %>% set_units(m) %>% set_units(km)
 #' }
 #' 
 #' # set_units has two modes of operation. By default, it operates with 
@@ -139,6 +141,8 @@
 #' 
 #' # To remove units use
 #' units(x) <- NULL
+#' # or
+#' set_units(x, NULL)
 #' # or
 #' drop_units(y)
 make_units <- function(bare_expression, check_is_valid = TRUE) {
@@ -398,16 +402,35 @@ symbolic_unit <- function(chr, check_is_valid = TRUE) {
 }
 
 
-#' drop units
+#' Drop Units
 #' 
-#' @param x a units object
+#' Drop units attribute and class.
+#' 
+#' @param x an object with units metadata.
 #' 
 #' @return the numeric without any units attributes, while preserving other
-#'   attributes like dimensions or other classes.
+#' attributes like dimensions or other classes.
 #'   
-#' @note Equivalent to \code{units(x) <- NULL}
+#' @details Equivalent to \code{units(x) <- NULL}, or the pipe-friendly version
+#' \code{set_units(x, NULL)}, but \code{drop_units} will fail if the object has
+#' no units metadata. Use the alternatives if you want this operation to succeed
+#' regardless of the object type.
 #' 
 #' @export
+#' @examples
+#' x <- 1
+#' y <- set_units(x, m/s)
+#' 
+#' # this succeeds
+#' drop_units(y)
+#' set_units(y, NULL)
+#' set_units(x, NULL)
+#' 
+#' \dontrun{
+#' # this fails
+#' drop_units(x)
+#' }
+#' 
 drop_units <- function(x) UseMethod("drop_units")
 
 #' @export

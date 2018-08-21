@@ -139,9 +139,10 @@ x <- y <- 1:4
 units(x) <- "m/s"  # meters / second
 
 # Alternatively, the easiest pipe-friendly way to set units:
-if(require(magrittr)) 
+if(requireNamespace("magrittr", quietly = TRUE)) {
+  library(magrittr)
   y \%>\% set_units(m/s)
-
+} 
 
 # these are different ways of creating the same unit:
 # meters per second squared, i.e, acceleration
@@ -220,10 +221,11 @@ make_units(cells/ml)
 
 ## set_units()
 # set_units is a pipe friendly version of `units<-`. 
-if (require(magrittr)) {
- 1:5 \%>\% set_units(N/m^2)
- # first sets to m, then converts to km
- 1:5 \%>\% set_units(m) \%>\% set_units(km)
+if(requireNamespace("magrittr", quietly = TRUE)) {
+  library(magrittr)
+  1:5 \%>\% set_units(N/m^2)
+  # first sets to m, then converts to km
+  1:5 \%>\% set_units(m) \%>\% set_units(km)
 }
 
 # set_units has two modes of operation. By default, it operates with 
@@ -241,6 +243,8 @@ set_units(1:5, make_units(m/s), mode = "standard")
 
 # To remove units use
 units(x) <- NULL
+# or
+set_units(x, NULL)
 # or
 drop_units(y)
 }
