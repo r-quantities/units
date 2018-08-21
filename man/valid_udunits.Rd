@@ -2,7 +2,6 @@
 % Please edit documentation in R/valid_udunits.R
 \name{valid_udunits}
 \alias{valid_udunits}
-\alias{valid_udunits}
 \alias{valid_udunits_prefixes}
 \title{Get information about valid units}
 \usage{

@@ -3,7 +3,6 @@
 \name{plot.units}
 \alias{plot.units}
 \alias{make_unit_label}
-\alias{plot.units}
 \title{create axis label with appropriate labels}
 \usage{
 make_unit_label(lab, u, sep = units_options("sep"),

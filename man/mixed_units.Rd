@@ -2,7 +2,6 @@
 % Please edit documentation in R/mixed.R
 \name{mixed_units}
 \alias{mixed_units}
-\alias{mixed_units}
 \alias{units<-.mixed_units}
 \title{Create or convert to a mixed units list-column}
 \usage{
