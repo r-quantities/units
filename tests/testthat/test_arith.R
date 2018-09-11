@@ -53,7 +53,8 @@ test_that("we can take powers of units", {
   expect_error(ux ^ 1.3)
   expect_error(ux ^ 0.3)
   expect_error(ux ^ ux)
-  expect_error(ux ^ x)
+  # expect_error(ux ^ x) --> see below: gives mixed_units
+  expect_silent(ux ^ x)
   
   expect_equal(as.numeric(ux ** -2), x ** -2)
   expect_equal(as.numeric(ux ^ -2), x ^ -2)
@@ -156,4 +157,10 @@ test_that("Division gets the right scaling and units", {
   
   expect_true(units(a / b) != units(b / a))
   expect_equal(a / b, 1/(b / a))
+})
+
+test_that("we obtain mixed units when taking powers of multiple integers", {
+  a = set_units(1:4, m)
+  p = 4:1
+  expect_equal(a ^ p, c(set_units(1, m^4), set_units(8, m^3), set_units(9, m^2), set_units(4, m),  allow_mixed=TRUE))
 })

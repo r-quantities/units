@@ -74,8 +74,16 @@ Ops.units <- function(e1, e2) {
     if (identical(units(e1), set_units(1)))
       return(set_units(unclass(e1) ^ e2, set_units(1)))
 
-    if (inherits(e2, "units") || length(e2) > 1L)
-      stop("power operation only allowed with length-one numeric power")
+    if (inherits(e2, "units"))
+      stop("power operation only allowed with numeric power")
+
+    if (length(e2) > 1L) {
+	  if (length(unique(e2)) == 1) # all identical
+	    e2 = e2[1]
+	  else # return mixed units:
+	    return(.as.mixed_units(mapply("^", e1, e2, SIMPLIFY=FALSE)))
+    }
+
     # if (round(e2) != e2)
     #   stop("currently you can only take integer powers of units")
     
