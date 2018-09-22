@@ -131,7 +131,7 @@ to_base <- function(x) {  # https://github.com/r-quantities/units/issues/132
 }
 
 .simplify_units <- function(value, sym_units) {
-  
+
   simplify = .units.simplify()
   if (!is.na(simplify) && !simplify) { # isFALSE(simplify)
   	value = as.numeric(value)
@@ -141,7 +141,7 @@ to_base <- function(x) {  # https://github.com/r-quantities/units/issues/132
 
 #  if (isTRUE(units_options("convert_to_base")))
 #    return(to_base(value))
-
+  
   # This is just a brute force implementation that takes each element in the
   # numerator and tries to find a value in the denominator that can be converted
   # to the same unit. It modifies "value" to rescale the nominator to the denominator

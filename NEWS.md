@@ -1,5 +1,7 @@
 # version 0.6-1
 
+* vectors with mixed units are now supported; #145
+
 * `NA` values for units now trigger a proper error message; #163
 
 # version 0.6-0
@@ -12,7 +14,7 @@
 
 * `install_symbolic_unit` now adds a dimensionless unit, integrated in the units system, meaning that prefixes on it work as well; #71
 
-* `install_conversion_constant` and `install_conversion_offset` nown install a new unit that is a function of an existing udunits unit.; #71, #84
+* `install_conversion_constant` and `install_conversion_offset` now install a new unit that is a function of an existing udunits unit.; #71, #84
 
 * unit simplification can now be user-controlled by `units_options`; #89
 
