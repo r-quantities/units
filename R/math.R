@@ -47,13 +47,11 @@ Math.units = function(x, ...) {
     x <- drop_units(x)
     NextMethod()
   } else {
-    # nocov start
     if (.Generic %in% c("log", "log1p")) {
       base <- if (missing(...)) exp(1) else c(...)[1]
       uptr <- R_ut_parse(as.character(units(x)))
       u <- R_ut_format(R_ut_log(uptr, base), ascii=TRUE)
       .as.units(NextMethod(), units(symbolic_unit(u)))
-      # nocov end
     } else
       .as.units(NextMethod(), units(x))
   }

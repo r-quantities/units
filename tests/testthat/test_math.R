@@ -41,28 +41,28 @@ test_that("we can call math functions on units", {
   expect_equal(set_units(acos(set_units(-1)), degree), set_units(180, degree))
 })
 
-# FIXME: I am not too sure about this one... the log(unit) is not a format
-# that the conversion code can deal with and we cannot directly *make* units
-# of log types without first making them and then taking logs... I think it ought
-# to either work both when creating new units and taking logs, or not work at all
-# for consistency...
-#
-# It also seems a bit strange to only allow three selected bases just to be able
-# to give the units a name. And if we can take logs why can't we exponentiate?
-
 test_that("we can take logarithms units", {
   x <- 1:4
   ux <- x * as_units("m")
   
+  expect_equal(as.numeric(log2(ux)), log2(x))
+  expect_equal(units(log2(ux)), units(as_units("lb(re 1 m)", force_single_symbol=TRUE)))
+  
+  expect_equal(as.numeric(log(ux, 2)), log(x, 2))
+  expect_equal(units(log(ux, 2)), units(as_units("lb(re 1 m)", force_single_symbol=TRUE)))
+  
+  expect_equal(as.numeric(log10(ux)), log10(x))
+  expect_equal(units(log10(ux)), units(as_units("lg(re 1 m)", force_single_symbol=TRUE)))
+  
+  expect_equal(as.numeric(log(ux, 10)), log(x, 10))
+  expect_equal(units(log(ux, 10)), units(as_units("lg(re 1 m)", force_single_symbol=TRUE)))
+  
+  expect_equal(as.numeric(log1p(ux)), log1p(x))
+  expect_equal(units(log1p(ux)), units(as_units("ln(re 1 m)", force_single_symbol=TRUE)))
+  
   expect_equal(as.numeric(log(ux)), log(x))
-  expect_equal(units(log(ux)), units(as_units("ln(m)")))
-  expect_equal(as.character(units(log(ux))), "ln(m)")
-
-  expect_equal(as.numeric(log(ux, base = 2)), log(x, base = 2))
-  expect_equal(units(log(ux, base = 2)), units(as_units("lb(m)")))
-  expect_equal(as.character(units(log(ux, base = 2))), "lb(m)")
-
-  expect_equal(as.numeric(log(ux, base = 10)), log(x, base = 10))
-  expect_equal(units(log(ux, base = 10)), units(as_units("lg(m)")))
-  expect_equal(as.character(units(log(ux, base = 10))), "lg(m)")
+  expect_equal(units(log(ux)), units(as_units("ln(re 1 m)", force_single_symbol=TRUE)))
+  
+  expect_equal(as.numeric(log(ux, exp(2))), log(x, exp(2)))
+  expect_equal(units(log(ux, exp(2))), units(as_units("0.5 ln(re 1 m)", force_single_symbol=TRUE)))
 })
