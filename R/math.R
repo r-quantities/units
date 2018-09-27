@@ -24,7 +24,7 @@ Math.units = function(x, ...) {
     return(as.numeric(NextMethod()))
   
   OK <- switch(.Generic, "abs" = , "sign" = , "floor" = , "ceiling" = , "log" = ,
-               "trunc" = , "round" = , "signif" = , "cumsum" = , 
+               "log1p" =, "trunc" = , "round" = , "signif" = , "cumsum" = , 
                "cummax" = , "cummin" = TRUE, FALSE)
   
   rad = units(as_units("rad"))
@@ -48,7 +48,7 @@ Math.units = function(x, ...) {
     NextMethod()
   } else {
     # nocov start
-    if (.Generic == "log") {
+    if (.Generic %in% c("log", "log1p")) {
       base <- if (missing(...)) exp(1) else c(...)[1]
       u <- R_ut_format(R_ut_log(R_ut_parse(as.character(units(x))), base))
       .as.units(NextMethod(), units(symbolic_unit(u)))
