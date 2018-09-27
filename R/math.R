@@ -66,3 +66,11 @@ Math.units = function(x, ...) {
       .as.units(NextMethod(), units(x))
   }
 }
+
+#' @export
+#' @method log10 units
+log10.units <- function(x) log(x, 10)
+
+#' @export
+#' @method log2 units
+log2.units <- function(x) log(x, 2)
