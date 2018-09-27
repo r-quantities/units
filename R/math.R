@@ -48,19 +48,10 @@ Math.units = function(x, ...) {
     NextMethod()
   } else {
     # nocov start
-    # I'm disabling coverage testing for this part because I am not sure
-    # how it should even be implemented...
     if (.Generic == "log") {
-      dts = list(...)
-      if (is.null(dts$base) || dts$base == exp(1)) # missing or equal to default:
-        u = paste0("ln(",units(x),")")
-      else if (dts$base == 10)
-        u = paste0("lg(",units(x),")")
-      else if (dts$base == 2)
-        u = paste0("lb(",units(x),")")
-      else
-        stop(paste("log with base", dts$base, "not supported"))
-      .as.units(NextMethod(), units(symbolic_unit(u, check_is_valid = FALSE)))
+      base <- if (missing(...)) exp(1) else c(...)[1]
+      u <- R_ut_format(R_ut_log(R_ut_parse(as.character(units(x))), base))
+      .as.units(NextMethod(), units(symbolic_unit(u)))
       # nocov end
     } else
       .as.units(NextMethod(), units(x))
