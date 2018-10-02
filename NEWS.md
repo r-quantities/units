@@ -1,3 +1,7 @@
+# version 0.6-2
+
+* fix support for logarithms and decibels; #177 addressing #176
+
 # version 0.6-1
 
 * `NA` values for units now trigger a proper error message; #163
