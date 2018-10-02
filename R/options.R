@@ -1,15 +1,25 @@
 .units_options <- new.env(FALSE, parent = globalenv())
-assign(".units.sep", NA, envir = .units_options)
-assign(".units.group", NA, envir = .units_options)
-assign(".units.negative_power", NA, envir = .units_options)
-assign(".units.parse", NA, envir = .units_options)
-assign(".units.set_units_mode", NA, envir = .units_options)
-assign(".units.auto_convert_names_to_symbols", NA, envir = .units_options)
-assign(".units.simplify", NA, envir = .units_options)
-assign(".units.allow_mixed", NA, envir = .units_options)
-assign(".units.unitless_symbol", NA, envir = .units_options)
-assign(".units.convert_to_base", NA, envir = .units_options)
 
+.default_options <- list(
+  sep = c("~", "~"),
+  group = c("[", "]"),
+  negative_power = FALSE,
+  parse = TRUE,
+  set_units_mode = "symbols",
+  auto_convert_names_to_symbols = TRUE,
+  simplify = NA,
+  allow_mixed = FALSE,
+  unitless_symbol = "1",
+  convert_to_base = FALSE,
+  define_bel = TRUE
+)
+
+.setopt <- function(option) {
+  name <- paste0(".units.", substitute(option))
+  last <- mget(name, envir = .units_options, ifnotfound = NA)[[1]]
+  assign(name, option, envir = .units_options)
+  last
+}
 
 #' set one or more units global options
 #' 
@@ -25,6 +35,7 @@ assign(".units.convert_to_base", NA, envir = .units_options)
 #' @param allow_mixed logical; if \code{TRUE}, combining mixed units creates a \code{mixed_units} object, if \code{FALSE} it generates an error
 #' @param unitless_symbol character; set the symbol to use for unitless (1) units
 #' @param convert_to_base logical; if \code{TRUE}, convert units to (SI) base units
+#' @param define_bel logical; default \code{TRUE} defines the unit \code{B} (i.e., the \emph{bel}, widely used with the \emph{deci-} prefix as \code{dB}, \emph{decibel}) as an alias of \code{lg(re 1)}.
 #' @details This sets or gets units options. Set them by using named arguments, get them by passing the option name.
 #' 
 #' The default \code{NA} value for \code{simplify} means units are not simplified in \link{set_units} or \link{as_units}, but are simplified in arithmetical expressions.
@@ -37,58 +48,55 @@ assign(".units.convert_to_base", NA, envir = .units_options)
 #' units_options("group")
 #' @export
 units_options = function(..., sep, group, negative_power, parse, set_units_mode, auto_convert_names_to_symbols, simplify,
-		allow_mixed, unitless_symbol, convert_to_base) {
+		allow_mixed, unitless_symbol, convert_to_base, define_bel) {
 	# op = as.list(units:::.units_options)
 	ret = list()
 	if (!missing(sep)) {
-	    stopifnot(is.character(sep) && length(sep) == 2)
-		ret$sep = get(".units.sep", envir = .units_options)
-		assign(".units.sep", sep, envir = .units_options)
+		stopifnot(is.character(sep) && length(sep) == 2)
+		ret$sep = .setopt(sep)
 	}
 	if (!missing(group)) {
-	    stopifnot(is.character(group) && length(group) == 2 && all(nchar(group) <= 1))
-		ret$group = get(".units.group", envir = .units_options)
-		assign(".units.group", group, envir = .units_options)
+		stopifnot(is.character(group) && length(group) == 2 && all(nchar(group) <= 1))
+		ret$group = .setopt(group)
 	}
 	if (!missing(negative_power)) {
 		stopifnot(is.logical(negative_power))
-		ret$negative_power = get(".units.negative_power", envir = .units_options)
-		assign(".units.negative_power", negative_power, envir=.units_options)
+		ret$negative_power = .setopt(negative_power)
 	}
 	if (!missing(parse)) {
 		stopifnot(is.logical(parse))
-		ret$parse = get(".units.parse", envir = .units_options)
-		assign(".units.parse", parse, envir = .units_options)
+		ret$parse = .setopt(parse)
 	}
 	if (!missing(set_units_mode)) {
 		stopifnot(is.character(set_units_mode) && length(set_units_mode) == 1)
-		ret$set_units_mode = get(".units.set_units_mode", envir = .units_options)
-		assign(".units.set_units_mode", set_units_mode, envir=.units_options)
+		ret$set_units_mode = .setopt(set_units_mode)
 	}
 	if (!missing(auto_convert_names_to_symbols)) {
 		stopifnot(is.logical(auto_convert_names_to_symbols))
-		ret$auto_convert_names_to_symbols = get(".units.auto_convert_names_to_symbols", envir = .units_options)
-		assign(".units.auto_convert_names_to_symbols", auto_convert_names_to_symbols, envir = .units_options)
+		ret$auto_convert_names_to_symbols = .setopt(auto_convert_names_to_symbols)
 	}
 	if (!missing(simplify)) {
 		stopifnot(is.logical(simplify))
-		ret$simplify = get(".units.simplify", envir = .units_options)
-		assign(".units.simplify", simplify, envir = .units_options)
+		ret$simplify = .setopt(simplify)
 	}
 	if (!missing(allow_mixed)) {
 		stopifnot(is.logical(allow_mixed))
-		ret$allow_mixed = get(".units.allow_mixed", envir = .units_options)
-		assign(".units.allow_mixed", allow_mixed, envir = .units_options)
+		ret$allow_mixed = .setopt(allow_mixed)
 	}
 	if (!missing(unitless_symbol)) {
 		stopifnot(is.character(unitless_symbol), length(unitless_symbol) == 1)
-		ret$unitless_symbol = get(".units.unitless_symbol", envir = .units_options)
-		assign(".units.unitless_symbol", unitless_symbol, envir = .units_options)
+		ret$unitless_symbol = .setopt(unitless_symbol)
 	}
 	if (!missing(convert_to_base)) {
 		stopifnot(is.logical(convert_to_base))
-		ret$convert_to_base = get(".units.convert_to_base", envir = .units_options)
-		assign(".units.convert_to_base", convert_to_base, envir = .units_options)
+		ret$convert_to_base = .setopt(convert_to_base)
+	}
+	if (!missing(define_bel)) {
+	  stopifnot(is.logical(define_bel))
+	  ret$define_bel = .setopt(define_bel)
+	  try(remove_symbolic_unit("B"), silent = TRUE)
+	  if (define_bel)
+	    install_conversion_constant("lg(re 1)", "B", 1)
 	}
 
 	dots = list(...)
@@ -102,18 +110,6 @@ units_options = function(..., sep, group, negative_power, parse, set_units_mode,
 	} else
 		invisible(ret)
 }
-
-units_options(
-	sep = c("~", "~"), 
-	group = c("[", "]"), 
-	negative_power = FALSE, 
-	parse = TRUE,
-	set_units_mode = "symbols",
-	auto_convert_names_to_symbols = TRUE,
-	simplify = NA,
-	allow_mixed = FALSE,
-	unitless_symbol = "1",
-	convert_to_base = FALSE) # set defaults
 
 .units.simplify = function() {
   get(".units.simplify", envir = .units_options)

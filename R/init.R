@@ -6,7 +6,8 @@
 NULL
 
 .onLoad = function(libname, pkgname) {
-	udunits_init(file.path(.get_ud_xml_dir(), "udunits2.xml"))
+  udunits_init(file.path(.get_ud_xml_dir(), "udunits2.xml"))
+  do.call(units_options, .default_options)
 }
 
 .onAttach <- function(libname, pkgname) {
