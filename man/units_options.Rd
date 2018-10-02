@@ -31,7 +31,7 @@ units_options(..., sep, group, negative_power, parse, set_units_mode,
 
 \item{convert_to_base}{logical; if \code{TRUE}, convert units to (SI) base units}
 
-\item{define_bel}{logical; default \code{TRUE} defines the unit \code{B} (i.e., the \emph{bel}, widely used with the \emph{deci-} prefix as \code{dB}, \emph{decibel}) as an alias of \code{lg(re 1)}.}
+\item{define_bel}{logical; if \code{TRUE}, define the unit \code{B} (i.e., the \emph{bel}, widely used with the \emph{deci-} prefix as \code{dB}, \emph{decibel}) as an alias of \code{lg(re 1)}. \code{TRUE} by default, unless \code{B} is already defined in the existing XML database.}
 }
 \value{
 in case options are set, invisibly a named list with the option values that are being set; if an option is queried, the current option value.

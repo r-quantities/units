@@ -7,6 +7,8 @@ NULL
 
 .onLoad = function(libname, pkgname) {
   udunits_init(file.path(.get_ud_xml_dir(), "udunits2.xml"))
+  if (ud_is_parseable("B"))
+    .default_options$define_bel <- FALSE
   do.call(units_options, .default_options)
 }
 
