@@ -66,3 +66,15 @@ test_that("we can take logarithms units", {
   expect_equal(as.numeric(log(ux, exp(2))), log(x, exp(2)))
   expect_equal(units(log(ux, exp(2))), units(as_units("0.5 ln(re 1 m)", force_single_symbol=TRUE)))
 })
+
+test_that("decibel is available", {
+  expect_true(units:::ud_is_parseable("B"))
+  units_options(define_bel=FALSE)
+  expect_false(units:::ud_is_parseable("B"))
+  units_options(define_bel=TRUE)
+  expect_true(units:::ud_is_parseable("B"))
+  
+  x <- set_units(set_units(100, 1), dB)
+  expect_equal(as.numeric(x), 20)
+  expect_equal(as.character(units(x)), "dB")
+})
