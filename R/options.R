@@ -10,7 +10,6 @@
   simplify = NA,
   allow_mixed = FALSE,
   unitless_symbol = "1",
-  convert_to_base = FALSE,
   define_bel = TRUE
 )
 
@@ -34,7 +33,6 @@
 #' @param simplify logical, default \code{NA}; simplify units in expressions? 
 #' @param allow_mixed logical; if \code{TRUE}, combining mixed units creates a \code{mixed_units} object, if \code{FALSE} it generates an error
 #' @param unitless_symbol character; set the symbol to use for unitless (1) units
-#' @param convert_to_base logical; if \code{TRUE}, convert units to (SI) base units
 #' @param define_bel logical; if \code{TRUE}, define the unit \code{B} (i.e., the \emph{bel}, widely used with the \emph{deci-} prefix as \code{dB}, \emph{decibel}) as an alias of \code{lg(re 1)}. \code{TRUE} by default, unless \code{B} is already defined in the existing XML database.
 #' @details This sets or gets units options. Set them by using named arguments, get them by passing the option name.
 #' 
@@ -48,7 +46,7 @@
 #' units_options("group")
 #' @export
 units_options = function(..., sep, group, negative_power, parse, set_units_mode, auto_convert_names_to_symbols, simplify,
-		allow_mixed, unitless_symbol, convert_to_base, define_bel) {
+		allow_mixed, unitless_symbol, define_bel) {
 	# op = as.list(units:::.units_options)
 	ret = list()
 	if (!missing(sep)) {
@@ -86,10 +84,6 @@ units_options = function(..., sep, group, negative_power, parse, set_units_mode,
 	if (!missing(unitless_symbol)) {
 		stopifnot(is.character(unitless_symbol), length(unitless_symbol) == 1)
 		ret$unitless_symbol = .setopt(unitless_symbol)
-	}
-	if (!missing(convert_to_base)) {
-		stopifnot(is.logical(convert_to_base))
-		ret$convert_to_base = .setopt(convert_to_base)
 	}
 	if (!missing(define_bel)) {
 	  stopifnot(is.logical(define_bel))
