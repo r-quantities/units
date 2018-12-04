@@ -114,13 +114,11 @@ Ops.mixed_units = function(e1, e2) {
 }
 
 #' @name tibble
-#' @export
 type_sum.mixed_units <- function(x, ...) {
   "mixed_units" 
 }
 
 #' @name tibble
-#' @export
 pillar_shaft.mixed_units <- function(x, ...) {
   if (! requireNamespace("pillar", quietly = TRUE))
     stop("package pillar not available: install first?")
