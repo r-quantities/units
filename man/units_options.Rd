@@ -6,7 +6,7 @@
 \usage{
 units_options(..., sep, group, negative_power, parse, set_units_mode,
   auto_convert_names_to_symbols, simplify, allow_mixed, unitless_symbol,
-  convert_to_base)
+  convert_to_base, define_bel)
 }
 \arguments{
 \item{...}{named options (character) for which the value is queried}
@@ -30,6 +30,8 @@ units_options(..., sep, group, negative_power, parse, set_units_mode,
 \item{unitless_symbol}{character; set the symbol to use for unitless (1) units}
 
 \item{convert_to_base}{logical; if \code{TRUE}, convert units to (SI) base units}
+
+\item{define_bel}{logical; if \code{TRUE}, define the unit \code{B} (i.e., the \emph{bel}, widely used with the \emph{deci-} prefix as \code{dB}, \emph{decibel}) as an alias of \code{lg(re 1)}. \code{TRUE} by default, unless \code{B} is already defined in the existing XML database.}
 }
 \value{
 in case options are set, invisibly a named list with the option values that are being set; if an option is queried, the current option value.

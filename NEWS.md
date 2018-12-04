@@ -1,3 +1,8 @@
+# version 0.6-2
+
+* fix support for logarithms and decibels; #177 addressing #176
+* add delayed S3 registration mechanism for R >= 3.6.0
+
 # version 0.6-1
 
 * vectors with mixed units are now supported; #145

@@ -109,14 +109,25 @@ seq.units = function(from, to, by = ((to - from)/(length.out - 1)),
 #' @name tibble
 #' @param x see \link[pillar]{type_sum}
 #' @param ... see \link[pillar]{type_sum}
-#' @export
+#' @rawNamespace if(getRversion() >= "3.6.0") {
+#'   S3method(pillar::type_sum, units)
+#'   S3method(pillar::type_sum, mixed_units)
+#'   S3method(pillar::pillar_shaft, units)
+#'   S3method(pillar::pillar_shaft, mixed_units)
+#'   S3method(pillar::format_type_sum, type_sum_units)
+#' } else {
+#'   export(type_sum.units)
+#'   export(type_sum.mixed_units)
+#'   export(pillar_shaft.units)
+#'   export(pillar_shaft.mixed_units)
+#'   export(format_type_sum.type_sum_units)
+#' }
 type_sum.units <- function(x, ...) {
   gr = units_options("group")
   # see https://github.com/r-lib/pillar/issues/73 : currently the [ and ] mess up things.
   structure(paste0(gr[1], as.character(units(x)), gr[2]),
     class = "type_sum_units")
 }
-#' @export
 #' @name tibble
 #' @param width ignored
 format_type_sum.type_sum_units <- function(x, width, ...) {
@@ -127,7 +138,6 @@ format_type_sum.type_sum_units <- function(x, width, ...) {
 
 #' pillar_shaft function for units
 #' @name tibble
-#' @export
 pillar_shaft.units <- function(x, ...) {
   u_char <- as.character(units(x))
   if (! requireNamespace("pillar", quietly = TRUE))

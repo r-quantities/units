@@ -1,5 +1,5 @@
 Package: units
-Version: 0.6-1
+Version: 0.6-2
 Title: Measurement Units for R Vectors
 Authors@R: c(person("Edzer", "Pebesma", role = c("aut", "cre"), email = "edzer.pebesma@uni-muenster.de", comment = c(ORCID = "0000-0001-8049-7069")),
 		person("Thomas", "Mailund", role = "aut", email = "mailund@birc.au.dk"),
@@ -36,5 +36,5 @@ SystemRequirements: udunits-2
 License: GPL-2
 URL: https://github.com/r-quantities/units/
 BugReports: https://github.com/r-quantities/units/issues/
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
 Encoding: UTF-8
