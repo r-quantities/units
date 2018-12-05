@@ -1,3 +1,5 @@
+# version 0.6-3
+
 # version 0.6-2
 
 * fix support for logarithms and decibels; #177 addressing #176
