@@ -6,6 +6,7 @@ output:
     toc: true
     theme: united
 bibliography: measurement_units_in_R.bib
+link-citations: yes
 vignette: >
   %\VignetteIndexEntry{Measurement units in R}
   %\VignetteEngine{knitr::rmarkdown}
