@@ -57,8 +57,8 @@ Ops.units <- function(e1, e2) {
     if (!inherits(e2, "units"))
       e2 <- set_units(e2, 1) # TODO: or warn?
 
-    ve1 <- as.numeric(e1) ; ue1 <- units(e1)
-    ve2 <- as.numeric(e2) ; ue2 <- units(e2)
+    ve1 <- unclass(e1) ; ue1 <- units(e1)
+    ve2 <- unclass(e2) ; ue2 <- units(e2)
     
     if (.Generic == "*") {
       numerator <- sort(c(ue1$numerator, ue2$numerator))

@@ -24,7 +24,7 @@ mixed_units <- function(x, values, ...) UseMethod("mixed_units")
 mixed_units.units = function(x, values, ...) { 
 	stopifnot(missing(values))
 	u = as.character(units(x))
-	mixed_units(as.numeric(x), rep(u, length(x)))
+	mixed_units(unclass(x), rep(u, length(x)))
 }
 
 
