@@ -1,5 +1,7 @@
 # version 0.6-3
 
+* don't force `as.numeric` when unnecessary; #182 addressing #181
+
 # version 0.6-2
 
 * fix support for logarithms and decibels; #177 addressing #176
