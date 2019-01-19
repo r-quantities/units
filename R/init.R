@@ -11,7 +11,9 @@ NULL
     .default_options$define_bel <- FALSE
   do.call(units_options, .default_options)
   
-  native <- ifelse(l10n_info()[[2]], "UTF-8", ifelse(l10n_info()[[3]], "latin1", "unknown"))
+  native <- if (!l10n_info()[["MBCS"]]) "ascii"
+  else if (l10n_info()[["Latin-1"]]) "latin1"
+  else "utf8"
   ud_set_encoding(native)
 }
 
