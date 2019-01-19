@@ -10,6 +10,9 @@ NULL
   if (ud_is_parseable("B"))
     .default_options$define_bel <- FALSE
   do.call(units_options, .default_options)
+  
+  native <- ifelse(l10n_info()[[2]], "UTF-8", ifelse(l10n_info()[[3]], "latin1", "unknown"))
+  ud_set_encoding(native)
 }
 
 .onAttach <- function(libname, pkgname) {
