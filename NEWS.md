@@ -1,5 +1,7 @@
 # version 0.6-3
 
+* improve platform dependent encodings handling; #183
+
 * don't force `as.numeric` when unnecessary; #182 addressing #181
 
 # version 0.6-2
