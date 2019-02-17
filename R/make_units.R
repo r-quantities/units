@@ -440,3 +440,12 @@ drop_units.units <- function(x) {
   x
 }
 
+#' @export
+drop_units.data.frame <- function(.data){
+  for(i in seq_along(.data)){
+    if(inherits(.data[[i]], "units")){
+      .data[[i]] <- drop_units(.data[[i]])
+    }
+  }
+  .data
+}
