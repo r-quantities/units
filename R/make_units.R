@@ -289,9 +289,11 @@ pc_and <- function(..., sep = "") {
   is_are <- if (length(unrecognized_symbols) > 1L) "are" else "is" 
   
   paste0("In ", sQuote(full_expr), ", ", 
-    pc_and(sQuote(unrecognized_symbols)), " ", is_are, " not recognized by udunits.\n",
-    "See a table of valid unit symbols and names with valid_udunits().\n", 
-    "Add custom user-defined units with install_symbolic_unit().")
+    pc_and(sQuote(unrecognized_symbols)), " ", is_are, " not recognized by udunits.\n\n",
+    "See a table of valid unit symbols and names with valid_udunits().\n",
+    "Custom user-defined units can be added with install_symbolic_unit().\n\n",
+    "See a table of valid unit prefixes with valid_udunits_prefixes().\n",
+    "Prefixes will automatically work with any user-defined unit.")
 }
 
 is_valid_unit_symbol <- function(chr) {
