@@ -22,6 +22,6 @@ NULL
     packageStartupMessage(msg)
 }
 
-.onUnLoad = function(libname, pkgname) {
+.onUnload = function(libname, pkgname) {
 	udunits_exit()
 }
