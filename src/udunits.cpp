@@ -8,20 +8,18 @@
   Functions to support the R interface to the udunits (API version 2) library
 */
 
-#include "Rcpp.h"
+extern "C" {
+#include "io.h"
+}
+
+#include <udunits2.h>
+#include <Rcpp.h>
 
 using namespace Rcpp;
-
-extern "C" {
-#include <R.h>
-#include <udunits2.h>
-#include "units.h"
+typedef XPtr<ut_unit, PreserveStorage, ut_free, true> XPtrUT;
 
 ut_system *sys = NULL;
 static ut_encoding enc = UT_UTF8;
-
-#include "io.h"
-}
 
 // [[Rcpp::export]]
 void udunits_init(CharacterVector path) {
@@ -43,14 +41,6 @@ void udunits_exit() {  // #nocov start
   ut_free_system(sys);
   sys = NULL;
 }                      // #nocov end
-
-// typedef std::vector<void *> ut_vec;
-
-void finalizeUT(ut_unit *ptr) {
-  ut_free(ptr);
-}
-
-// typedef XPtr<ut_unit,PreserveStorage,finalizeUT> XPtrUT;
 
 // wrap a ut_unit pointer in an XPtr
 XPtrUT ut_wrap(ut_unit *u) {
