@@ -4,6 +4,8 @@
 
 * don't force `as.numeric` when unnecessary; #182 addressing #181
 
+* fix valgrind issues on CRAN and tidy up tests; #193 addressing #192
+
 # version 0.6-2
 
 * fix support for logarithms and decibels; #177 addressing #176
