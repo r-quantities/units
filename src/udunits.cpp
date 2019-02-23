@@ -10,9 +10,9 @@
 
 extern "C" {
 #include "io.h"
+#include <udunits2.h>
 }
 
-#include <udunits2.h>
 #include <Rcpp.h>
 
 using namespace Rcpp;
