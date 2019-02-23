@@ -1,3 +1,4 @@
+#include <R.h>
 #include <udunits2.h>
 #include "io.h"
 

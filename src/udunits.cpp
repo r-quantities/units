@@ -8,12 +8,12 @@
   Functions to support the R interface to the udunits (API version 2) library
 */
 
+#include <Rcpp.h>
+#include <udunits2.h>
+
 extern "C" {
 #include "io.h"
-#include <udunits2.h>
 }
-
-#include <Rcpp.h>
 
 using namespace Rcpp;
 typedef XPtr<ut_unit, PreserveStorage, ut_free, true> XPtrUT;
