@@ -1,7 +1,5 @@
 #include <R.h>
 #include <udunits2.h>
-#include <stdio.h> /* FILENAME_MAX */
-
 #include "io.h"
 
 /* From the enum comments in udunits2.h */

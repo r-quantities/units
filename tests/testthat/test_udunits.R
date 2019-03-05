@@ -10,8 +10,9 @@ test_that("udunits low-level functions work", {
   b <- units:::R_ut_parse("g")
   expect_error(units:::R_convert_doubles(a, b, 1:10), "not convertible")
 
-  u = units:::R_ut_offset("kg", "g10", 10)
-  expect_equal(set_units(set_units(1, kg), g10), set_units(11, g10))
+  u = units:::R_ut_offset("foo", "kg", -10)
+  expect_equal(set_units(set_units(1, kg), foo), set_units(11, foo))
+  remove_symbolic_unit("foo")
 
   expect_silent(units:::R_ut_divide(a, b))
   expect_silent(units:::R_ut_multiply(a, b))

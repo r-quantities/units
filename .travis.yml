@@ -12,7 +12,7 @@ addons:
       - libudunits2-dev
 
 r_github_packages:
-  - r-lib/covr@v3.0.1
+  - r-lib/covr
   - r-quantities/errors
 
 script:

@@ -28,5 +28,4 @@ plot(u, type = 'l')
 hist(u)
 boxplot(u)
 
-units_options(sep = c("~~~", "~"), group = c("", "")) # more space, no brackets
-units_options(sep = c("~", "~"), group = c("[", "]"), negative_power = FALSE, parse = TRUE)
+do.call(units_options, units:::.default_options)
