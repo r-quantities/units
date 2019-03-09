@@ -9,7 +9,12 @@
 */
 
 #include <Rcpp.h>
-#include <udunits2.h>
+
+#if UDUNITS2_DIR != 0
+# include <udunits2/udunits2.h>
+#else
+# include <udunits2.h>
+#endif
 
 extern "C" {
 #include "io.h"
