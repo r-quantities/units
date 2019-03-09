@@ -1,4 +1,4 @@
-PKG_CPPFLAGS = -I../windows/udunits-2.2.20/include
+PKG_CPPFLAGS = -DUDUNITS2_DIR=0 -I../windows/udunits-2.2.20/include
 PKG_LIBS = -L../windows/udunits-2.2.20/lib${R_ARCH} \
 	-ludunits2 -lexpat
 
