@@ -1,3 +1,5 @@
+#define UDUNITS2_DIR @UDUNITS2_DIR@
+
 #include <udunits2.h>
 #include "Rcpp.h"
 
