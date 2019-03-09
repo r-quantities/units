@@ -1,4 +1,3 @@
-#define UDUNITS2_DIR @UDUNITS2_DIR@
 #if UDUNITS2_DIR != 0
 # include <udunits2/udunits2.h>
 #else
