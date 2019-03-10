@@ -26,11 +26,11 @@ R_convert_doubles <- function(from, to, val) {
 }
 
 R_ut_new_dimensionless_unit <- function(name) {
-    .Call('_units_R_ut_new_dimensionless_unit', PACKAGE = 'units', name)
+    invisible(.Call('_units_R_ut_new_dimensionless_unit', PACKAGE = 'units', name))
 }
 
 R_ut_new_base_unit <- function(name) {
-    .Call('_units_R_ut_new_base_unit', PACKAGE = 'units', name)
+    invisible(.Call('_units_R_ut_new_base_unit', PACKAGE = 'units', name))
 }
 
 R_ut_remove_unit <- function(name) {
@@ -38,11 +38,11 @@ R_ut_remove_unit <- function(name) {
 }
 
 R_ut_scale <- function(nw, old, d) {
-    .Call('_units_R_ut_scale', PACKAGE = 'units', nw, old, d)
+    invisible(.Call('_units_R_ut_scale', PACKAGE = 'units', nw, old, d))
 }
 
 R_ut_offset <- function(nw, old, d) {
-    .Call('_units_R_ut_offset', PACKAGE = 'units', nw, old, d)
+    invisible(.Call('_units_R_ut_offset', PACKAGE = 'units', nw, old, d))
 }
 
 R_ut_divide <- function(numer, denom) {

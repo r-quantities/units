@@ -24,9 +24,9 @@ install_symbolic_unit <- function(name, warn = TRUE, dimensionless = TRUE) {
     remove_symbolic_unit(name)
   }
   if (dimensionless)
-  	invisible(R_ut_new_dimensionless_unit(name))
+  	R_ut_new_dimensionless_unit(name)
   else
-  	invisible(R_ut_new_base_unit(name))
+  	R_ut_new_base_unit(name)
 }
 
 #' @export
@@ -68,9 +68,9 @@ install_conversion_constant <- function(from, to, const) {
   if (! xor(ud_is_parseable(from), ud_is_parseable(to)))
     stop("exactly one of (from, to) must be a known unit")
   if (ud_is_parseable(to))
-  	invisible(R_ut_scale(as.character(from), as.character(to), as.double(const)))
+  	R_ut_scale(as.character(from), as.character(to), as.double(const))
   else
-    invisible(R_ut_scale(as.character(to), as.character(from), 1.0 / as.double(const)))
+    R_ut_scale(as.character(to), as.character(from), 1.0 / as.double(const))
 }
 
 #' @export
@@ -86,7 +86,7 @@ install_conversion_offset <- function(from, to, const) {
   if (! xor(ud_is_parseable(from), ud_is_parseable(to)))
     stop("exactly one of (from, to) must be a known unit")
   if (ud_is_parseable(to))
-    invisible(R_ut_offset(as.character(from), as.character(to), -as.double(const)))
+    R_ut_offset(as.character(from), as.character(to), -as.double(const))
   else
-    invisible(R_ut_offset(as.character(to), as.character(from), as.double(const)))
+    R_ut_offset(as.character(to), as.character(from), as.double(const))
 }
