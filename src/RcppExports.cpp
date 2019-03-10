@@ -72,25 +72,23 @@ BEGIN_RCPP
 END_RCPP
 }
 // R_ut_new_dimensionless_unit
-SEXP R_ut_new_dimensionless_unit(CharacterVector name);
+void R_ut_new_dimensionless_unit(CharacterVector name);
 RcppExport SEXP _units_R_ut_new_dimensionless_unit(SEXP nameSEXP) {
 BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< CharacterVector >::type name(nameSEXP);
-    rcpp_result_gen = Rcpp::wrap(R_ut_new_dimensionless_unit(name));
-    return rcpp_result_gen;
+    R_ut_new_dimensionless_unit(name);
+    return R_NilValue;
 END_RCPP
 }
 // R_ut_new_base_unit
-SEXP R_ut_new_base_unit(CharacterVector name);
+void R_ut_new_base_unit(CharacterVector name);
 RcppExport SEXP _units_R_ut_new_base_unit(SEXP nameSEXP) {
 BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< CharacterVector >::type name(nameSEXP);
-    rcpp_result_gen = Rcpp::wrap(R_ut_new_base_unit(name));
-    return rcpp_result_gen;
+    R_ut_new_base_unit(name);
+    return R_NilValue;
 END_RCPP
 }
 // R_ut_remove_unit
@@ -104,29 +102,27 @@ BEGIN_RCPP
 END_RCPP
 }
 // R_ut_scale
-SEXP R_ut_scale(CharacterVector nw, CharacterVector old, NumericVector d);
+void R_ut_scale(CharacterVector nw, CharacterVector old, NumericVector d);
 RcppExport SEXP _units_R_ut_scale(SEXP nwSEXP, SEXP oldSEXP, SEXP dSEXP) {
 BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< CharacterVector >::type nw(nwSEXP);
     Rcpp::traits::input_parameter< CharacterVector >::type old(oldSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type d(dSEXP);
-    rcpp_result_gen = Rcpp::wrap(R_ut_scale(nw, old, d));
-    return rcpp_result_gen;
+    R_ut_scale(nw, old, d);
+    return R_NilValue;
 END_RCPP
 }
 // R_ut_offset
-SEXP R_ut_offset(CharacterVector nw, CharacterVector old, NumericVector d);
+void R_ut_offset(CharacterVector nw, CharacterVector old, NumericVector d);
 RcppExport SEXP _units_R_ut_offset(SEXP nwSEXP, SEXP oldSEXP, SEXP dSEXP) {
 BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< CharacterVector >::type nw(nwSEXP);
     Rcpp::traits::input_parameter< CharacterVector >::type old(oldSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type d(dSEXP);
-    rcpp_result_gen = Rcpp::wrap(R_ut_offset(nw, old, d));
-    return rcpp_result_gen;
+    R_ut_offset(nw, old, d);
+    return R_NilValue;
 END_RCPP
 }
 // R_ut_divide

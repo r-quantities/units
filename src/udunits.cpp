@@ -23,7 +23,7 @@ extern "C" {
 using namespace Rcpp;
 typedef XPtr<ut_unit, PreserveStorage, ut_free, true> XPtrUT;
 
-ut_system *sys = NULL;
+static ut_system *sys = NULL;
 static ut_encoding enc = UT_UTF8;
 
 // [[Rcpp::export]]
@@ -101,19 +101,19 @@ NumericVector R_convert_doubles(SEXP from, SEXP to, NumericVector val) {
 }
 
 // [[Rcpp::export]]
-SEXP R_ut_new_dimensionless_unit(CharacterVector name) {
+void R_ut_new_dimensionless_unit(CharacterVector name) {
   ut_unit *u = ut_new_dimensionless_unit(sys); 
   if (ut_map_name_to_unit(name[0], enc, u) != UT_SUCCESS)
     handle_error("R_ut_new_dimensionless_unit"); // #nocov
-  return ut_wrap(u);
+  ut_free(u);
 }
 
 // [[Rcpp::export]]
-SEXP R_ut_new_base_unit(CharacterVector name) {
+void R_ut_new_base_unit(CharacterVector name) {
   ut_unit *u = ut_new_base_unit(sys); 
   if (ut_map_name_to_unit(name[0], enc, u) != UT_SUCCESS)
     handle_error("R_ut_new_base_unit"); // #nocov
-  return ut_wrap(u);
+  ut_free(u);
 }
 
 // [[Rcpp::export]]
@@ -133,27 +133,27 @@ void R_ut_remove_unit(CharacterVector name) {
 }
 
 // [[Rcpp::export]]
-SEXP R_ut_scale(CharacterVector nw, CharacterVector old, NumericVector d) {
+void R_ut_scale(CharacterVector nw, CharacterVector old, NumericVector d) {
   if (d.size() != 1)
     stop("d should have size 1"); // #nocov
   ut_unit *u_old = ut_parse(sys, ut_trim(old[0], enc), enc);
   ut_unit *u_new = ut_scale(d[0], u_old);
   if (ut_map_name_to_unit(nw[0], enc, u_new) != UT_SUCCESS)
     handle_error("R_ut_scale"); // #nocov
+  ut_free(u_new);
   ut_free(u_old);
-  return ut_wrap(u_new);
 }
 
 // [[Rcpp::export]]
-SEXP R_ut_offset(CharacterVector nw, CharacterVector old, NumericVector d) {
+void R_ut_offset(CharacterVector nw, CharacterVector old, NumericVector d) {
   if (d.size() != 1)
     stop("d should have size 1"); // #nocov
   ut_unit *u_old = ut_parse(sys, ut_trim(old[0], enc), enc);
   ut_unit *u_new = ut_offset(u_old, d[0]);
   if (ut_map_name_to_unit(nw[0], enc, u_new) != UT_SUCCESS)
     handle_error("R_ut_offset"); // #nocov
+  ut_free(u_new);
   ut_free(u_old);
-  return ut_wrap(u_new);
 }
 
 // [[Rcpp::export]]
