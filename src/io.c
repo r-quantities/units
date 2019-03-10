@@ -1,5 +1,11 @@
 #include <R.h>
-#include <udunits2.h>
+
+#if UDUNITS2_DIR != 0
+# include <udunits2/udunits2.h>
+#else
+# include <udunits2.h>
+#endif
+
 #include "io.h"
 
 /* From the enum comments in udunits2.h */

@@ -622,6 +622,7 @@ ac_includes_default="\
 #endif"
 
 ac_subst_vars='LTLIBOBJS
+UDUNITS2_DIR
 UD_CPPFLAGS
 ac_ct_CC
 CFLAGS
@@ -3791,19 +3792,18 @@ CPPFLAGS="${UD_CPPFLAGS} ${CPPFLAGS}"
 
 ac_fn_cxx_check_header_mongrel "$LINENO" "udunits2.h" "ac_cv_header_udunits2_h" "$ac_includes_default"
 if test "x$ac_cv_header_udunits2_h" = xyes; then :
-
+  UDUNITS2_DIR=0
 else
 
-ac_fn_cxx_check_header_mongrel "$LINENO" "udunits2/udunits2.h" "ac_cv_header_udunits2_udunits2_h" "$ac_includes_default"
+  ac_fn_cxx_check_header_mongrel "$LINENO" "udunits2/udunits2.h" "ac_cv_header_udunits2_udunits2_h" "$ac_includes_default"
 if test "x$ac_cv_header_udunits2_udunits2_h" = xyes; then :
-  UD_CPPFLAGS="${UD_CPPFLAGS} -I/usr/include/udunits2"
+  UDUNITS2_DIR=1
 else
   UD_ERROR="udunits2.h was not found"
 fi
 
 
 fi
-
 
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for ut_read_xml in -ludunits2" >&5
@@ -3868,6 +3868,7 @@ as_fn_error $? "
 See \`config.log' for more details" "$LINENO" 5; } fi
 
 UD_CPPFLAGS="${UD_CPPFLAGS} ${CPPFLAGS}"
+
 
 
 ac_config_files="$ac_config_files src/Makevars"
