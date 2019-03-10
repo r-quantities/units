@@ -6,6 +6,8 @@ r:
   - devel
   #- oldrel
 
+warnings_are_errors: true
+
 addons:
   apt:
     packages:
