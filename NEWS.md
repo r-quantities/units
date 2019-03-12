@@ -6,6 +6,8 @@
 
 * fix valgrind issues on CRAN and tidy up tests; #193 addressing #192
 
+* new method `drop_units` for data frames; #191 addressing #187
+
 # version 0.6-2
 
 * fix support for logarithms and decibels; #177 addressing #176

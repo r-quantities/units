@@ -418,6 +418,9 @@ symbolic_unit <- function(chr, check_is_valid = TRUE) {
 #' no units metadata. Use the alternatives if you want this operation to succeed
 #' regardless of the object type.
 #' 
+#' A \code{data.frame} method is also provided, which checks every column and
+#' drops units if any.
+#' 
 #' @export
 #' @examples
 #' x <- 1
@@ -433,8 +436,13 @@ symbolic_unit <- function(chr, check_is_valid = TRUE) {
 #' drop_units(x)
 #' }
 #' 
+#' df <- data.frame(x=x, y=y)
+#' df
+#' drop_units(df)
+#' 
 drop_units <- function(x) UseMethod("drop_units")
 
+#' @name drop_units
 #' @export
 drop_units.units <- function(x) {
   class(x) <- setdiff(class(x), "units")
@@ -442,3 +450,12 @@ drop_units.units <- function(x) {
   x
 }
 
+#' @name drop_units
+#' @export
+drop_units.data.frame <- function(x) {
+  for (i in seq_along(x)) {
+    if (inherits(x[[i]], "units"))
+      x[[i]] <- drop_units(x[[i]])
+  }
+  x
+}
