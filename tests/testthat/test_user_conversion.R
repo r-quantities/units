@@ -33,15 +33,26 @@ test_that("we can convert between units with a user-defined function", {
   install_symbolic_unit("aaa")
   install_conversion_offset("aaa", "bbb", 2) # bbb is aaa + 2
   expect_warning(install_symbolic_unit("aaa"), "is already a valid unit")
+  
+  # restore
+  remove_symbolic_unit("orange")
+  remove_symbolic_unit("apple")
+  remove_symbolic_unit("banana")
+  remove_symbolic_unit("aaa")
+  remove_symbolic_unit("bbb")
 })
 
 test_that("we can simplify via user-defined units", {
-  remove_symbolic_unit("apple")
+  install_symbolic_unit("orange")
   install_conversion_constant("orange", "apple", 2) # one orange is worth two apples
   apples <- 4 * as_units("apple")
   oranges <- 2 * as_units("orange")
   expect_equal(apples / oranges, set_units(1))
   expect_equal(oranges / apples, set_units(1))
+  
+  # restore
+  remove_symbolic_unit("orange")
+  remove_symbolic_unit("apple")
 })
 
 test_that("removing units works", {
@@ -49,5 +60,4 @@ test_that("removing units works", {
   expect_silent(install_symbolic_unit("foo"))
   expect_silent(remove_symbolic_unit("foo"))
   expect_error(remove_symbolic_unit("foo"))
-  expect_silent(remove_symbolic_unit("g")) # removes symbol
 })

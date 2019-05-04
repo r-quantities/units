@@ -101,6 +101,25 @@ test_that("various forms of unit creation and destruction work", {
   expect_identical(ox, set_units(x, NULL, mode = "standard"))
   
   
+  ox <- x <- as.numeric(1:4)
+  
+  units(x) <- "m/s"
+  expect_s3_class(x, "units")
+  
+  x <- drop_units(x)
+  expect_identical(x, ox)
+  expect_error(drop_units(x))
+  
+  
+  ox <- x <- data.frame(x=1:4, y=1:4)
+  
+  units(x[[1]]) <- "m/s"
+  expect_s3_class(x[[1]], "units")
+  
+  x <- drop_units(x)
+  expect_identical(x, ox)
+  
+  
   meter <- units:::symbolic_unit("m")
   
   expect_identical(meter, make_units(m))

@@ -289,9 +289,11 @@ pc_and <- function(..., sep = "") {
   is_are <- if (length(unrecognized_symbols) > 1L) "are" else "is" 
   
   paste0("In ", sQuote(full_expr), ", ", 
-    pc_and(sQuote(unrecognized_symbols)), " ", is_are, " not recognized by udunits.\n",
-    "See a table of valid unit symbols and names with valid_udunits().\n", 
-    "Add custom user-defined units with install_symbolic_unit().")
+    pc_and(sQuote(unrecognized_symbols)), " ", is_are, " not recognized by udunits.\n\n",
+    "See a table of valid unit symbols and names with valid_udunits().\n",
+    "Custom user-defined units can be added with install_symbolic_unit().\n\n",
+    "See a table of valid unit prefixes with valid_udunits_prefixes().\n",
+    "Prefixes will automatically work with any user-defined unit.")
 }
 
 is_valid_unit_symbol <- function(chr) {
@@ -416,6 +418,9 @@ symbolic_unit <- function(chr, check_is_valid = TRUE) {
 #' no units metadata. Use the alternatives if you want this operation to succeed
 #' regardless of the object type.
 #' 
+#' A \code{data.frame} method is also provided, which checks every column and
+#' drops units if any.
+#' 
 #' @export
 #' @examples
 #' x <- 1
@@ -431,8 +436,13 @@ symbolic_unit <- function(chr, check_is_valid = TRUE) {
 #' drop_units(x)
 #' }
 #' 
+#' df <- data.frame(x=x, y=y)
+#' df
+#' drop_units(df)
+#' 
 drop_units <- function(x) UseMethod("drop_units")
 
+#' @name drop_units
 #' @export
 drop_units.units <- function(x) {
   class(x) <- setdiff(class(x), "units")
@@ -440,3 +450,12 @@ drop_units.units <- function(x) {
   x
 }
 
+#' @name drop_units
+#' @export
+drop_units.data.frame <- function(x) {
+  for (i in seq_along(x)) {
+    if (inherits(x[[i]], "units"))
+      x[[i]] <- drop_units(x[[i]])
+  }
+  x
+}

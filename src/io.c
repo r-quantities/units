@@ -1,6 +1,10 @@
 #include <R.h>
-#include <udunits2.h>
-#include <stdio.h> /* FILENAME_MAX */
+
+#if UDUNITS2_DIR != 0
+# include <udunits2/udunits2.h>
+#else
+# include <udunits2.h>
+#endif
 
 #include "io.h"
 

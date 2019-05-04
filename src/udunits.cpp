@@ -8,20 +8,23 @@
   Functions to support the R interface to the udunits (API version 2) library
 */
 
-#include "Rcpp.h"
+#include <Rcpp.h>
 
-using namespace Rcpp;
+#if UDUNITS2_DIR != 0
+# include <udunits2/udunits2.h>
+#else
+# include <udunits2.h>
+#endif
 
 extern "C" {
-#include <R.h>
-#include <udunits2.h>
-#include "units.h"
-
-ut_system *sys = NULL;
-static ut_encoding enc = UT_UTF8;
-
 #include "io.h"
 }
+
+using namespace Rcpp;
+typedef XPtr<ut_unit, PreserveStorage, ut_free, true> XPtrUT;
+
+static ut_system *sys = NULL;
+static ut_encoding enc = UT_UTF8;
 
 // [[Rcpp::export]]
 void udunits_init(CharacterVector path) {
@@ -44,16 +47,8 @@ void udunits_exit() {  // #nocov start
   sys = NULL;
 }                      // #nocov end
 
-// typedef std::vector<void *> ut_vec;
-
-void finalizeUT(ut_unit *ptr) {
-  ut_free(ptr);
-}
-
-// typedef XPtr<ut_unit,PreserveStorage,finalizeUT> XPtrUT;
-
 // wrap a ut_unit pointer in an XPtr
-XPtrUT ut_wrap(ut_unit *u) {
+SEXP ut_wrap(ut_unit *u) {
   XPtrUT p(u);
   return p;
 }
@@ -65,7 +60,7 @@ ut_unit *ut_unwrap(SEXP u) {
 }
 
 // [[Rcpp::export]]
-XPtrUT R_ut_parse(CharacterVector name) {
+SEXP R_ut_parse(CharacterVector name) {
   ut_unit *u = ut_parse(sys, ut_trim(name[0], enc), enc);
   if (u == NULL) {
     switch (ut_get_status()) {
@@ -82,7 +77,7 @@ XPtrUT R_ut_parse(CharacterVector name) {
 }
 
 // [[Rcpp::export]]
-XPtrUT R_ut_get_dimensionless_unit_one(CharacterVector name) {
+SEXP R_ut_get_dimensionless_unit_one(CharacterVector name) {
   return ut_wrap(ut_get_dimensionless_unit_one(sys));
 }
 // [[Rcpp::export]]
@@ -106,19 +101,19 @@ NumericVector R_convert_doubles(SEXP from, SEXP to, NumericVector val) {
 }
 
 // [[Rcpp::export]]
-XPtrUT R_ut_new_dimensionless_unit(CharacterVector name) {
+void R_ut_new_dimensionless_unit(CharacterVector name) {
   ut_unit *u = ut_new_dimensionless_unit(sys); 
   if (ut_map_name_to_unit(name[0], enc, u) != UT_SUCCESS)
     handle_error("R_ut_new_dimensionless_unit"); // #nocov
-  return ut_wrap(u);
+  ut_free(u);
 }
 
 // [[Rcpp::export]]
-XPtrUT R_ut_new_base_unit(CharacterVector name) {
+void R_ut_new_base_unit(CharacterVector name) {
   ut_unit *u = ut_new_base_unit(sys); 
   if (ut_map_name_to_unit(name[0], enc, u) != UT_SUCCESS)
     handle_error("R_ut_new_base_unit"); // #nocov
-  return ut_wrap(u);
+  ut_free(u);
 }
 
 // [[Rcpp::export]]
@@ -138,60 +133,60 @@ void R_ut_remove_unit(CharacterVector name) {
 }
 
 // [[Rcpp::export]]
-XPtrUT R_ut_scale(CharacterVector nw, CharacterVector old, NumericVector d) {
+void R_ut_scale(CharacterVector nw, CharacterVector old, NumericVector d) {
   if (d.size() != 1)
     stop("d should have size 1"); // #nocov
   ut_unit *u_old = ut_parse(sys, ut_trim(old[0], enc), enc);
   ut_unit *u_new = ut_scale(d[0], u_old);
   if (ut_map_name_to_unit(nw[0], enc, u_new) != UT_SUCCESS)
     handle_error("R_ut_scale"); // #nocov
+  ut_free(u_new);
   ut_free(u_old);
-  return ut_wrap(u_new);
 }
 
 // [[Rcpp::export]]
-XPtrUT R_ut_offset(CharacterVector nw, CharacterVector old, NumericVector d) {
+void R_ut_offset(CharacterVector nw, CharacterVector old, NumericVector d) {
   if (d.size() != 1)
     stop("d should have size 1"); // #nocov
   ut_unit *u_old = ut_parse(sys, ut_trim(old[0], enc), enc);
   ut_unit *u_new = ut_offset(u_old, d[0]);
   if (ut_map_name_to_unit(nw[0], enc, u_new) != UT_SUCCESS)
     handle_error("R_ut_offset"); // #nocov
+  ut_free(u_new);
   ut_free(u_old);
-  return ut_wrap(u_new);
 }
 
 // [[Rcpp::export]]
-XPtrUT R_ut_divide(SEXP numer, SEXP denom) {
+SEXP R_ut_divide(SEXP numer, SEXP denom) {
   return ut_wrap(ut_divide(ut_unwrap(numer), ut_unwrap(denom)));
 }
 
 // [[Rcpp::export]]
-XPtrUT R_ut_multiply(SEXP a, SEXP b) {
+SEXP R_ut_multiply(SEXP a, SEXP b) {
   return ut_wrap(ut_multiply(ut_unwrap(a), ut_unwrap(b)));
 }
 
 // [[Rcpp::export]]
-XPtrUT R_ut_invert(SEXP a) {
+SEXP R_ut_invert(SEXP a) {
   return ut_wrap(ut_invert(ut_unwrap(a)));
 }
 
 // [[Rcpp::export]]
-XPtrUT R_ut_raise(SEXP a, IntegerVector i) {
+SEXP R_ut_raise(SEXP a, IntegerVector i) {
   if (i.length() != 1)
     stop("i should have length 1");
   return ut_wrap(ut_raise(ut_unwrap(a), i[0]));
 }
 
 // [[Rcpp::export]]
-XPtrUT R_ut_root(SEXP a, IntegerVector i) {
+SEXP R_ut_root(SEXP a, IntegerVector i) {
   if (i.length() != 1)
     stop("i should have length 1");
   return ut_wrap(ut_root(ut_unwrap(a), i[0]));
 }
 
 // [[Rcpp::export]]
-XPtrUT R_ut_log(SEXP a, NumericVector base) {
+SEXP R_ut_log(SEXP a, NumericVector base) {
   if (base.length() != 1)
     stop("base should have length 1");
   if (base[0] <= 0)
@@ -270,7 +265,7 @@ CharacterVector R_ut_get_name(CharacterVector ustr) {
 
 // https://github.com/r-quantities/units/issues/89#issuecomment-359251623
 // [[Rcpp::export]]
-XPtrUT R_ut_map_name_to_unit( CharacterVector name, SEXP inunit) { // #nocov start
+SEXP R_ut_map_name_to_unit( CharacterVector name, SEXP inunit) { // #nocov start
   ut_unit *unit = ut_unwrap(inunit);
   if (ut_map_name_to_unit(name[0], enc, unit) != UT_SUCCESS)
     handle_error("R_ut_map_name_to_unit");

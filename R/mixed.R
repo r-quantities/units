@@ -89,7 +89,7 @@ print.mixed_units = function(x, ...) {
 	cat(paste(format(x, ...), collapse = ", "), "\n")
 }
 
-
+#' @name drop_units
 #' @export
 drop_units.mixed_units = function(x) {
 	sapply(x, drop_units)

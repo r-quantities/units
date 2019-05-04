@@ -2,9 +2,9 @@ context("Unit conversion")
 
 test_that("we can convert numbers to unit-less units", {
   x <- as_units(1:4)
-  expect_that(length(x), equals(4))
-  expect_that(class(x), equals("units"))
-  expect_that(as.numeric(x), equals(1:4))
+  expect_equal(length(x), 4)
+  expect_equal(class(x), "units")
+  expect_equal(as.numeric(x), 1:4)
   
   y <- 1:4
   units(y) <- unitless
@@ -14,9 +14,9 @@ test_that("we can convert numbers to unit-less units", {
 test_that("we can convert numbers to physical units", {
   m <- as_units("m")
   x <- 1:4 * m
-  expect_that(length(x), equals(4))
-  expect_that(class(x), equals("units"))
-  expect_that(as.character(units(x)), equals("m"))
+  expect_equal(length(x), 4)
+  expect_equal(class(x), "units")
+  expect_equal(as.character(units(x)), "m")
   expect_equal(as.numeric(x), 1:4)
   
   y <- 1:4
@@ -24,9 +24,9 @@ test_that("we can convert numbers to physical units", {
   expect_equal(x, y)
   
   z <- 1:4 / m
-  expect_that(length(z), equals(4))
-  expect_that(class(z), equals("units"))
-  expect_that(as.character(units(z)), equals("1/m"))
+  expect_equal(length(z), 4)
+  expect_equal(class(z), "units")
+  expect_equal(as.character(units(z)), "1/m")
   expect_equal(as.numeric(z), 1:4)
 })
 
@@ -44,7 +44,7 @@ test_that("we can convert NA values to physical units", {
 
   x <- NA
   units(x) <- m
-  expect_that(as.character(units(x)), equals('m'))
+  expect_equal(as.character(units(x)), 'm')
 
   x <- rep(NA,5)
   s <- as_units("s")
@@ -175,6 +175,9 @@ test_that("new base units work", {
   install_symbolic_unit("person", dimensionless = FALSE)
   expect_equal(set_units(1, person) + set_units(1, kperson), set_units(1001, person))
   expect_error(set_units(1, person) + set_units(1, rad), "cannot convert")
+  
+  # restore
+  remove_symbolic_unit("person")
 })
 
 test_that("errors are correctly coerced to a data frame", {

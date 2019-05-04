@@ -29,16 +29,16 @@ test_that("mixed units work", {
    expect_s3_class(m[1:3] / mixed_units(set_units(1, mm)), "mixed_units")
    expect_s3_class(m[1:3] + mixed_units(set_units(1, mm)), "mixed_units")
    expect_s3_class(m[1:3] - mixed_units(set_units(1, mm)), "mixed_units")
-   expect_that(m[1:3] == mixed_units(set_units(1, mm)), is.logical)
-   expect_that(m[1:3] != mixed_units(set_units(1, mm)), is.logical)
+   expect_is(m[1:3] == mixed_units(set_units(1, mm)), "logical")
+   expect_is(m[1:3] != mixed_units(set_units(1, mm)), "logical")
    expect_error(m[1:3] ^ mixed_units(set_units(1, mm)))
 
 # this breaks -- seems to be an s3 limitation:
    expect_error(m[1:3] * set_units(1, mm))
 
    expect_s3_class(units(m), "mixed_symbolic_units")
-   expect_that(format(m), is.character)
-   expect_that(as.character(units(m)), is.character)
+   expect_is(format(m), "character")
+   expect_is(as.character(units(m)), "character")
    print(m)
    expect_equal(drop_units(m), sapply(m, as.numeric))
 

@@ -6,13 +6,30 @@
 [![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html) [![CRAN](http://www.r-pkg.org/badges/version/units)](https://cran.r-project.org/package=units) 
 [![Downloads](http://cranlogs.r-pkg.org/badges/units?color=brightgreen)](http://www.r-pkg.org/pkg/units)
 
-### News
-Cite this package as _Edzer Pebesma, Thomas Mailund and James
-Hiebert, 2016.  Measurement Units in R.  [The R Journal, 8 (2),
-486--494.](https://journal.r-project.org/archive/2016/RJ-2016-061/index.html)_.
+Support for measurement units in R vectors, matrices
+and arrays: automatic propagation, conversion, derivation
+and simplification of units; raising errors in case of unit
+incompatibility. Compatible with the POSIXct, Date and difftime 
+classes. Uses the UNIDATA udunits library and unit database for 
+unit compatibility checking and conversion.
+
+### Documentation
+
+Documentation is provided in an R Journal publication. Cite this package as:
+
+- Edzer Pebesma, Thomas Mailund and James Hiebert (2016). "Measurement Units in R."
+  _The R Journal_, 8 (2), 486--494. 
+  DOI: [10.32614/RJ-2016-061](https://doi.org/10.32614/RJ-2016-061)
+
 The main units
 [vignette](https://r-quantities.github.io/units/articles/measurement_units_in_R.html)
 derives from this manuscript and is kept up to date with the package development.
+
+- Blog posts: [first](http://r-spatial.org/r/2016/06/10/units.html),
+  [second](http://r-spatial.org/r/2016/08/16/units2.html),
+  [third](http://r-spatial.org/r/2016/09/29/plot_units.html).
+- The [udunits2 R package](https://github.com/pacificclimate/Rudunits2) GitHub page.
+- The UNIDATA [udunits2](https://github.com/Unidata/UDUNITS-2) library at GitHub.
 
 ### What it does
 
@@ -39,12 +56,6 @@ spd1 * set_units(10, s) # unit simplification
 spd1 + set_units(10, s) # error checking
 #   cannot convert s into m/s
 ```
-
-* blog posts: [first](http://r-spatial.org/r/2016/06/10/units.html), [second](http://r-spatial.org/r/2016/08/16/units2.html), [third](http://r-spatial.org/r/2016/09/29/plot_units.html)
-* [package vignette](https://cran.r-project.org/web/packages/units/vignettes/units.html)
-* The [R Journal publication](https://journal.r-project.org/archive/2016-2/pebesma-mailund-hiebert.pdf), which has been [updated to recent package developments](https://r-quantities.github.io/units/articles/measurement_units_in_R.html)
-* the [udunits2 R package](https://github.com/pacificclimate/Rudunits2) github page
-* the UNIDATA [udunits2](https://github.com/Unidata/UDUNITS-2) library at github
 
 ### Installation
 
