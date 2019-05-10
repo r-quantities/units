@@ -37,10 +37,9 @@ mean.units = function(x, ...) {
 
 #' @export
 weighted.mean.units = function(x, w = set_units(rep(1, length(x))), ...) {
-  uw = w
   if (inherits(w, "units"))
     w = drop_units(w)
-  .as.units(NextMethod(), units(x * uw[1]))
+  .as.units(NextMethod(), units(x))
 }
 
 #' @export
