@@ -31,11 +31,13 @@ test_that("we can compute means and medians and quantiles", {
   x <- 1:4
   ux <- x * as_units("m")
   w <- x / 5:8
+  uw <- w * as_units("g")
   
   expect_equal(as.numeric(mean(ux)), mean(x))
   expect_equal(as.numeric(median(ux)), median(x))
   expect_equivalent(as.numeric(quantile(ux)), quantile(x))
-  expect_equal(as.numeric(weighted.mean(ux)), weighted.mean(x))
+  expect_equal(as.numeric(weighted.mean(ux, w)), weighted.mean(x, w))
+  expect_equal(as.numeric(weighted.mean(ux, uw)), weighted.mean(x, w))
 })
 
 test_that("we can format units", {
