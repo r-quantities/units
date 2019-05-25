@@ -2,6 +2,8 @@
 
 * fix support for weights with units in `weighted.mean`; #205
 
+* invalid names for new units now trigger a proper error message; #209 addressing #208
+
 # version 0.6-3
 
 * improve platform dependent encodings handling; #183
