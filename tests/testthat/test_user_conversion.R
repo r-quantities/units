@@ -61,3 +61,17 @@ test_that("removing units works", {
   expect_silent(remove_symbolic_unit("foo"))
   expect_error(remove_symbolic_unit("foo"))
 })
+
+test_that("new units' format is checked for possible issues", {
+  wrong_formats <- c(
+    " 2asdf", "asdf2 ", 
+    "as+df", "as-df", "as*df", "as/df", "as^df",
+    "as df")
+  for (i in wrong_formats) {
+    expect_error(install_symbolic_unit(i))
+    expect_error(install_conversion_constant(i, "m", 2))
+    expect_error(install_conversion_constant("m", i, 2))
+    expect_error(install_conversion_offset(i, "m", 2))
+    expect_error(install_conversion_offset("m", i, 2))
+  }
+})
