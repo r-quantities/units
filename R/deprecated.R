@@ -9,7 +9,7 @@
 #' @rdname deprecated
 make_unit <- function(chr) {
   .Deprecated("as_units", msg = "make_unit() is deprecated. Please use as_units()")
-  if (! is_valid_unit_symbol(chr))
+  if (!ud_is_parseable(chr))
     warning(paste(sQuote(chr), "is not a valid unit symbol recognized by udunits"), call.=FALSE)
   as_units.character(chr, force_single_symbol = TRUE, check_is_valid = FALSE)
 }
