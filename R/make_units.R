@@ -296,10 +296,6 @@ pc_and <- function(..., sep = "") {
     "Prefixes will automatically work with any user-defined unit.")
 }
 
-is_valid_unit_symbol <- function(chr) {
-  ud_is_parseable(chr)
-}
-
 units_eval_env <- new.env(parent = baseenv())
 units_eval_env$ln <- function(x) base::log(x)
 units_eval_env$lg <- function(x) base::log(x, base = 10)
@@ -350,7 +346,7 @@ as_units.call <- function(x, check_is_valid = TRUE, ...) {
 See ?as_units for usage examples.")
   
   if (check_is_valid) {
-    valid <- vapply(vars, is_valid_unit_symbol, logical(1L))
+    valid <- vapply(vars, ud_is_parseable, logical(1L))
     if (!all(valid))
       stop(.msg_units_not_recognized(vars[!valid], x), call. = FALSE)
   }
@@ -388,7 +384,7 @@ symbolic_unit <- function(chr, check_is_valid = TRUE) {
   
   stopifnot(is.character(chr), length(chr) == 1)
   
-  if (check_is_valid && !is_valid_unit_symbol(chr)) {
+  if (check_is_valid && !ud_is_parseable(chr)) {
     msg <- paste(sQuote(chr), "is not a unit recognized by udunits or a user-defined unit")
     stop(msg, call. = FALSE)
   }

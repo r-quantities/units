@@ -17,6 +17,7 @@
 #' install_symbolic_unit("person")
 #' set_units(1, rad) + set_units(1, person) # that is how dimensionless units work!
 install_symbolic_unit <- function(name, warn = TRUE, dimensionless = TRUE) {
+  check_unit_format(name)
   if(ud_is_parseable(name)) {
     if (warn) 
       warning(sQuote(name), 
@@ -68,9 +69,9 @@ install_conversion_constant <- function(from, to, const) {
   if (! xor(ud_is_parseable(from), ud_is_parseable(to)))
     stop("exactly one of (from, to) must be a known unit")
   if (ud_is_parseable(to))
-  	R_ut_scale(as.character(from), as.character(to), as.double(const))
+    R_ut_scale(check_unit_format(from), to, as.double(const))
   else
-    R_ut_scale(as.character(to), as.character(from), 1.0 / as.double(const))
+    R_ut_scale(check_unit_format(to), from, 1.0 / as.double(const))
 }
 
 #' @export
@@ -86,7 +87,24 @@ install_conversion_offset <- function(from, to, const) {
   if (! xor(ud_is_parseable(from), ud_is_parseable(to)))
     stop("exactly one of (from, to) must be a known unit")
   if (ud_is_parseable(to))
-    R_ut_offset(as.character(from), as.character(to), -as.double(const))
+    R_ut_offset(check_unit_format(from), to, -as.double(const))
   else
-    R_ut_offset(as.character(to), as.character(from), as.double(const))
+    R_ut_offset(check_unit_format(to), from, as.double(const))
+}
+
+check_unit_format <- function(x) {
+  cond <- c(
+    # leading and trailing numbers
+    grepl("^[[:space:]]*[0-9]+", x), grepl("[0-9]+[[:space:]]*$", x),
+    # arithmetic operators
+    grepl("\\+|\\-|\\*|\\/|\\^", x),
+    # intermediate spaces
+    grepl("[[:alnum:][:punct:]]+[[:space:]]+[[:alnum:][:punct:]]+", x)
+  )
+  if (any(cond))
+    stop("the following elements are not allowed in new unit names/symbols:\n",
+         "  - leading or trailing numbers\n",
+         "  - arithmetic operators\n",
+         "  - intermediate white spaces")
+  x
 }
