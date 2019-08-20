@@ -39,6 +39,7 @@ test_that("udunits low-level functions work", {
 })
 
 test_that("udunits database can be read", {
+  skip_if_not_installed("xml2")
   expect_message(units:::.message_where_udunits_db(), "udunits")
   expect_message(valid_udunits(), "udunits")
   expect_message(valid_udunits_prefixes(), "udunits")
