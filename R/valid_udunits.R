@@ -68,17 +68,30 @@
   expand_with_prefixes <- function(symbol) paste(ud_prefixes, symbol, sep = "")
   symbols <- unique(c(ud_symbols,
                       unlist(Map(expand_with_prefixes, ud_symbols), use.names = FALSE)))
-  #ud_units <- Map(make_units, symbols)
   ud_units <- lapply(symbols, as_units, force_single_symbol = TRUE, check_is_valid = FALSE)
   names(ud_units) <- symbols
+  class(ud_units) <- "units database"
   ud_units
 }
 # but this gives Y' Y" etc which are NOT recognized by as_units()
 
 # Use this to generate the data -- to avoid Travis problems the result
 # is stored as package data
-#ud_units <- .construct_ud_units()
-#devtools::use_data(ud_units)
+#ud_units <- units:::.construct_ud_units()
+#usethis::use_data(ud_units, internal=TRUE, overwrite=TRUE)
+
+#' @export
+`with.units database` <- function(data, expr, ...) {
+  if (all(!unlist(l10n_info()))) # ISO8859-15
+    data <- subset(data, Encoding(names(data)) != "UTF-8")
+  eval(substitute(expr), data, enclos = parent.frame())
+}
+
+#' @export
+`print.units database` <- function(x, ...) {
+  cat("Units database, containing", length(x), "units:\n")
+  cat(" ", paste(names(x)[1:9], collapse=", "), "...\n")
+}
 
 #' List containing pre-defined units from the udunits2 package.
 #' 
