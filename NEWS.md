@@ -1,3 +1,5 @@
+# version 0.6-5
+
 # version 0.6-4
 
 * fix support for weights with units in `weighted.mean`; #205
