@@ -85,6 +85,7 @@ test_that("rep.units works", {
 })
 
 test_that("set_units works with symbols in character data, and resolves names", {
+  skip_on_cran()
   deg = paste0(enc2native(intToUtf8(176)), "C")
   expect_equal(set_units(1:2, deg, mode = "standard"),        set_units(1:2, "degree_C", mode = "standard"))
   expect_equal(set_units(1:2, deg, mode = "standard"),        set_units(1:2, "degree_Celsius", mode = "standard"))
