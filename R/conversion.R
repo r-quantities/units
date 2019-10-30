@@ -1,14 +1,3 @@
-# Helper functions for testing if we can convert and how using either
-# user-defined conversion functions or udunits.
-are_convertible <- function(from, to) {
-  ud_are_convertible(from, to)
-}
-
-convert <- function(value, from, to) {
-  stopifnot(ud_are_convertible(from, to))
-  ud_convert(unclass(value), from, to)
-}
-
 #' Set measurement units on a numeric vector
 #'
 #' @param x numeric vector, or object of class \code{units}
@@ -83,8 +72,8 @@ convert <- function(value, from, to) {
   str1 <- as.character(units(x))
   str2 <- as.character(value)
 
-  if (are_convertible(str1, str2)) 
-    .as.units(convert(x, str1, str2), value, dim = dimx)
+  if (ud_are_convertible(str1, str2))
+    .as.units(ud_convert(unclass(x), str1, str2), value, dim = dimx)
   else
     stop(paste("cannot convert", units(x), "into", value), call. = FALSE)
 }

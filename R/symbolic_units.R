@@ -123,11 +123,9 @@ as.character.symbolic_units <- function(x, ...,
 }
 
 .simplify_units <- function(value, sym_units) {
-
-  simplify = .units.simplify()
-  if (!is.na(simplify) && !simplify) { # isFALSE(simplify)
+  if (isFALSE(.units.simplify())) {
   	value = unclass(value)
-	units(value) = sym_units
+	  units(value) = sym_units
   	return(value)
   }
 
@@ -148,7 +146,7 @@ as.character.symbolic_units <- function(x, ...,
     for (j in seq_along(new_denominator)) {
       str2 <- new_denominator[j]
 
-      if (are_convertible(str1, str2)) {
+      if (ud_are_convertible(str1, str2)) {
         attr(value, "units") <- units(as_units(str1))
         units(value) <- str2
         delete_num <- c(delete_num, i)
