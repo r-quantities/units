@@ -152,9 +152,6 @@ str.units = function(object, ...) {
   gr <- units_options("group")
   unit_string <- paste0(gr[1], as.character(attr(object, "units")), gr[2])
   object <- drop_units(object)  # Required for NextMethod() output to look nice
-  # Capture output of NextMethod() so we can clean it up (see
-  # https://stackoverflow.com/questions/52556576/capture-output-of-next-method
-  # and the source of capture.output())
   file <- textConnection("rval", "w", local = TRUE)
   sink(file)
   on.exit(sink())
