@@ -149,6 +149,17 @@ pillar_shaft.units <- function(x, ...) {
 
 #' @export
 str.units = function(object, ...) {
-	cat("Object of class units:\n")
-	str(unclass(object), ...)
+  gr <- units_options("group")
+  unit_string <- paste0(gr[1], as.character(attr(object, "units")), gr[2])
+  object <- drop_units(object)  # Required for NextMethod() output to look nice
+  # Capture output of NextMethod() so we can clean it up (see
+  # https://stackoverflow.com/questions/52556576/capture-output-of-next-method
+  # and the source of capture.output())
+  file <- textConnection("rval", "w", local = TRUE)
+  sink(file)
+  on.exit(sink())
+  NextMethod()
+  sink()
+  on.exit()
+  cat(paste0(" Units: ", unit_string, rval, "\n"))
 }
