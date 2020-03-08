@@ -151,12 +151,6 @@ pillar_shaft.units <- function(x, ...) {
 str.units = function(object, ...) {
   gr <- units_options("group")
   unit_string <- paste0(gr[1], as.character(attr(object, "units")), gr[2])
-  object <- drop_units(object)  # Required for NextMethod() output to look nice
-  file <- textConnection("rval", "w", local = TRUE)
-  sink(file)
-  on.exit(sink())
-  NextMethod()
-  sink()
-  on.exit()
-  cat(paste0(" Units: ", unit_string, rval, "\n"))
+  cat(paste0(" Units: ", unit_string))
+  str(drop_units(object), ...)
 }

@@ -90,18 +90,12 @@ print.mixed_units = function(x, ...) {
 }
 
 #' @export
-str.mixed_units = function(x, ...) {
-  tbl <- table(as.character(units(x)))
+str.mixed_units = function(object, ...) {
+  tbl <- table(as.character(units(object)))
   tbl <- paste(names(tbl), " (", as.numeric(tbl), ")", sep = "")
   tbl_str <- paste(tbl, collapse = ", ")
-  file <- textConnection("rval", "w", local = TRUE)
-  sink(file)
-  on.exit(sink())
-  NextMethod()
-  sink()
-  on.exit()
-  cat(" Mixed units:", tbl_str, "\n")
-  cat(rval[2:length(rval)], sep = "\n")
+  cat("Mixed units:", tbl_str, "\n")
+  cat(capture.output(str(unclass(object), ...))[-1], sep="\n")
 }
 
 #' @name drop_units
