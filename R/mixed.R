@@ -89,6 +89,15 @@ print.mixed_units = function(x, ...) {
 	cat(paste(format(x, ...), collapse = ", "), "\n")
 }
 
+#' @export
+str.mixed_units = function(object, ...) {
+  tbl <- table(as.character(units(object)))
+  tbl <- paste(names(tbl), " (", as.numeric(tbl), ")", sep = "")
+  tbl_str <- paste(tbl, collapse = ", ")
+  cat("Mixed units:", tbl_str, "\n")
+  cat(capture.output(str(unclass(object), ...))[-1], sep="\n")
+}
+
 #' @name drop_units
 #' @export
 drop_units.mixed_units = function(x) {
@@ -124,10 +133,4 @@ pillar_shaft.mixed_units <- function(x, ...) {
     stop("package pillar not available: install first?")
   out <- format(x, ...)
   pillar::new_pillar_shaft_simple(out, align = "right", min_width = 6)
-}
-
-#' @export
-str.mixed_units = function(object, ...) {
-	cat("Object of class mixed_units:\n")
-	str(unclass(object), ...)
 }

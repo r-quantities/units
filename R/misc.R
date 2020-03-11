@@ -149,6 +149,8 @@ pillar_shaft.units <- function(x, ...) {
 
 #' @export
 str.units = function(object, ...) {
-	cat("Object of class units:\n")
-	str(unclass(object), ...)
+  gr <- units_options("group")
+  unit_string <- paste0(gr[1], as.character(attr(object, "units")), gr[2])
+  cat(paste0(" Units: ", unit_string))
+  str(drop_units(object), ...)
 }

@@ -1,4 +1,10 @@
+# version 0.6-6
+
+* prettier `str` print for units and mixed units; #228 addressing #227
+
 # version 0.6-5
+
+* skip test on CRAN to avoid issues with strict latin1 environments
 
 # version 0.6-4
 
