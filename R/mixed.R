@@ -1,6 +1,6 @@
 .as.mixed_units = function(x) {
 	stopifnot(is.list(unclass(x)))
-	structure(x, class = "mixed_units")
+	structure(x, class = c("mixed_units", "list"))
 }
 
 # constructor function:

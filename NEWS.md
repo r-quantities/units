@@ -2,6 +2,8 @@
 
 * prettier `str` print for units and mixed units; #228 addressing #227
 
+* add compatibility with upcoming tibble v3.0.0; #225
+
 # version 0.6-5
 
 * skip test on CRAN to avoid issues with strict latin1 environments
