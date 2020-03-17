@@ -123,8 +123,10 @@ as.character.symbolic_units <- function(x, ...,
 }
 
 .simplify_units <- function(value, sym_units) {
-  simplify = .units.simplify()	
-  if (!is.na(simplify) && !simplify) { # isFALSE(.units.simplify()) Requires R >= 3.5
+  # from R >= 3.5
+  isFALSE <- function(x) is.logical(x) && length(x) == 1L && !is.na(x) && !x
+
+  if (isFALSE(.units.simplify())) {
   	value = unclass(value)
 	  units(value) = sym_units
   	return(value)
