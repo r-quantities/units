@@ -2,6 +2,8 @@
 
 * port `isFALSE` to fix regression in old R versions; #230 addressing #229
 
+* fix replacement operation for `units` objects; #233 addressing #232
+
 # version 0.6-6
 
 * prettier `str` print for units and mixed units; #228 addressing #227

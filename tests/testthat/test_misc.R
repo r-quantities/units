@@ -1,5 +1,26 @@
 context("Misc. utility functions")
 
+test_that("We can replace parts if they have an equivalent unit", {
+  x <- 1:4 * as_units("km")
+  y <- c(3000, 4000) * as_units("m")
+  z <- 5000 * as_units("m")
+  x[3:4] <- y
+  x[[5]] <- z
+
+  expect_length(x, 5)
+  expect_equal(as.numeric(x), 1:5)
+  expect_equal(as.character(units(x)), "km")
+})
+
+test_that("We can't replace parts if they have different unit", {
+  x <- 1:4 * as_units("km")
+  y <- c(3000, 4000) * as_units("s")
+  z <- 5000 * as_units("s")
+
+  expect_error(x[3:4] <- y)
+  expect_error(x[[5]] <- z)
+})
+
 test_that("We can concatenate units if they have the same unit", {
   x <- 1:4 * as_units("m")
   y <- 5:8 * as_units("m")
