@@ -4,7 +4,9 @@
 \name{unitless}
 \alias{unitless}
 \title{The "unit" type for vectors that are actually dimension-less.}
-\format{An object of class \code{symbolic_units} of length 2.}
+\format{
+An object of class \code{symbolic_units} of length 2.
+}
 \usage{
 unitless
 }

@@ -1,4 +1,13 @@
 #' @export
+`[<-.units` <- function(x, ..., value) {
+  units(value) <- units(x)
+  NextMethod()
+}
+
+#' @export
+`[[<-.units` <- `[<-.units`
+
+#' @export
 c.units <- function(..., recursive = FALSE, allow_mixed = units_options("allow_mixed")) {
   args <- list(...)
   args[sapply(args, is.null)] <- NULL # remove NULLs
