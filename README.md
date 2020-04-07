@@ -1,10 +1,13 @@
 # <img src="https://avatars1.githubusercontent.com/u/32303769?s=40&v=4"> Measurement Units for R
 
+<!-- badges: start -->
+[![R CMD Check via {tic}](https://github.com/r-quantities/units/workflows/R%20CMD%20Check%20via%20{tic}/badge.svg?branch=master)](https://github.com/r-quantities/units/actions)
 [![Build Status](https://travis-ci.org/r-quantities/units.svg?branch=master)](https://travis-ci.org/r-quantities/units) 
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/r-quantities/units?branch=master&svg=true)](https://ci.appveyor.com/project/edzer/units)
 [![Coverage Status](https://img.shields.io/codecov/c/github/r-quantities/units/master.svg)](https://codecov.io/github/r-quantities/units?branch=master)
 [![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html) [![CRAN](http://www.r-pkg.org/badges/version/units)](https://cran.r-project.org/package=units) 
 [![Downloads](http://cranlogs.r-pkg.org/badges/units?color=brightgreen)](http://www.r-pkg.org/pkg/units)
+<!-- badges: end -->
 
 Support for measurement units in R vectors, matrices
 and arrays: automatic propagation, conversion, derivation

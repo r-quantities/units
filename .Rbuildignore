@@ -9,3 +9,4 @@ README.md
 ^\.github$
 ^clang-.*
 ^tic\.R$
+^configure\.ac$
