@@ -5,3 +5,7 @@
 docs
 README.md
 ^quantities$
+^\.ccache$
+^\.github$
+^clang-.*
+^tic\.R$
