@@ -38,6 +38,8 @@ jobs:
       TIC_DEPLOY_KEY: ${{ secrets.TIC_DEPLOY_KEY }}
       # prevent rgl issues because no X11 display is available
       RGL_USE_NULL: true
+      # accounnt for udunits2 linking
+      UDUNITS2_LIBS: /usr/local/lib      
       # if you use bookdown or blogdown, replace "PKGDOWN" by the respective
       # capitalized term. This also might need to be done in tic.R
       BUILD_PKGDOWN: ${{ matrix.config.pkgdown }} 
