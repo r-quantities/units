@@ -3,6 +3,5 @@
 .travis.yml
 ^appveyor\.yml$
 ^\.github$
-docs
 README.md
 ^quantities$
