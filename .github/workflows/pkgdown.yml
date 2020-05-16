@@ -1,6 +1,6 @@
 on:
   release:
-  types: [published, created, edited]
+    types: [published, created, edited]
 
 name: pkgdown
 
