@@ -77,3 +77,11 @@ jobs:
       if: ${{ success() && runner.os == 'Linux' && matrix.config.r == 'release' }}
       run: covr::codecov()
       shell: Rscript {0}
+
+    - name: Dispatch quantities
+      if: ${{ success() && runner.os == 'Linux' && matrix.config.r == 'release' }}
+      uses: peter-evans/repository-dispatch@v1
+      with:
+        token: ${{ secrets.QUANTITIES_TOKEN }}
+        repository: r-quantities/quantities
+        event-type: units
