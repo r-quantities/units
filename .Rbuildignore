@@ -2,6 +2,6 @@
 ^\.Rproj\.user$
 .travis.yml
 ^appveyor\.yml$
-docs
+^\.github$
 README.md
 ^quantities$
