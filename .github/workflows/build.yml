@@ -79,7 +79,7 @@ jobs:
       shell: Rscript {0}
 
     - name: Dispatch quantities
-      if: ${{ success() && github.ref == 'master' && runner.os == 'Linux' && matrix.config.r == 'release' }}
+      if: ${{ success() && github.ref == 'refs/heads/master' && runner.os == 'Linux' && matrix.config.r == 'release' }}
       uses: peter-evans/repository-dispatch@v1
       with:
         token: ${{ secrets.QUANTITIES_TOKEN }}
