@@ -1,6 +1,6 @@
 # <img src="https://avatars1.githubusercontent.com/u/32303769?s=40&v=4"> Measurement Units for R
 
-[![Build Status](https://github.com/r-quantities/units/workflows/build/badge.svg)]((https://github.com/r-quantities/units/actions))
+[![Build Status](https://github.com/r-quantities/units/workflows/build/badge.svg)](https://github.com/r-quantities/units/actions)
 [![Coverage Status](https://img.shields.io/codecov/c/github/r-quantities/units/master.svg)](https://codecov.io/github/r-quantities/units?branch=master)
 [![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html) [![CRAN](http://www.r-pkg.org/badges/version/units)](https://cran.r-project.org/package=units) 
 [![Downloads](http://cranlogs.r-pkg.org/badges/units?color=brightgreen)](http://www.r-pkg.org/pkg/units)
