@@ -50,11 +50,11 @@ jobs:
 
     - name: Install Linux dependencies
       if: ${{ runner.os == 'Linux' }}
-      run: sudo apt install libudunits2-dev
+      run: sudo apt install checkbashisms libudunits2-dev
 
     - name: Install macOS dependencies
       if: ${{ runner.os == 'macOS' }}
-      run: brew install automake udunits
+      run: brew install automake checkbashisms udunits
 
     - name: Install dependencies
       run: |
