@@ -50,7 +50,7 @@ jobs:
 
     - name: Install Linux dependencies
       if: ${{ runner.os == 'Linux' }}
-      run: sudo apt-get install devscripts libudunits2-dev
+      run: sudo apt-get install devscripts libcurl4-openssl-dev libudunits2-dev
 
     - name: Install macOS dependencies
       if: ${{ runner.os == 'macOS' }}
