@@ -54,7 +54,7 @@ jobs:
 
     - name: Install macOS dependencies
       if: ${{ runner.os == 'macOS' }}
-      run: brew install automake checkbashisms udunits
+      run: brew install automake udunits
 
     - name: Install dependencies
       run: |
