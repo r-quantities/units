@@ -15,6 +15,8 @@ NULL
   else if (l10n_info()[["Latin-1"]]) "latin1"
   else "ascii"
   ud_set_encoding(native)
+  
+  register_all_s3_methods()
 }
 
 .onAttach <- function(libname, pkgname) {
