@@ -42,3 +42,18 @@ test_that("can combine units vectors", {
   df_exp = tibble::tibble(x = tibble::tibble(x = exp))
   expect_identical(vctrs::vec_c(df1, df2), df_exp)
 })
+
+test_that("can slice units vectors", {
+  x = set_units(1:3, "cm")
+  exp = list(set_units(1L, "cm"), set_units(2L, "cm"), set_units(3L, "cm"))
+  expect_identical(vctrs::vec_chop(x), exp)
+
+  # Recursive case
+  df = tibble::tibble(tibble::tibble(x = x))
+  exp = list(
+    tibble::tibble(x = set_units(1L, "cm")),
+    tibble::tibble(x = set_units(2L, "cm")),
+    tibble::tibble(x = set_units(3L, "cm"))
+  )
+  expect_identical(vctrs::vec_chop(df), exp)
+})

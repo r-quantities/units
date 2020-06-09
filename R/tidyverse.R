@@ -31,6 +31,19 @@ format_type_sum.type_sum_units <- function(x, width, ...) {
   pillar::style_subtle(x)
 }
 
+
+# vctrs proxying and restoration -------------------------------------
+
+vec_proxy.units = function(x, ...) {
+  x
+}
+vec_restore.units = function(x, to, ...) {
+  set_units(x, units(to), mode = "standard")
+}
+
+
+# vctrs coercion -----------------------------------------------------
+
 vec_ptype2.units.units = function(x, y, ..., x_arg = "", y_arg = "") {
   x_units = units(x)
   y_units = units(y)
@@ -65,6 +78,7 @@ vec_cast.units.units = function(x, to, ..., x_arg = "", to_arg = "") {
   set_units(out, to_units, mode = "standard")
 }
 
+
 #nocov start
 register_all_s3_methods <- function() {
   register_s3_method("pillar::type_sum", "units")
@@ -72,6 +86,8 @@ register_all_s3_methods <- function() {
   register_s3_method("pillar::pillar_shaft", "units")
   register_s3_method("pillar::pillar_shaft", "mixed_units")
   register_s3_method("pillar::format_type_sum", "type_sum_units")
+  register_s3_method("vctrs::vec_proxy", "units")
+  register_s3_method("vctrs::vec_restore", "units")
   register_s3_method("vctrs::vec_ptype2", "units.units")
   register_s3_method("vctrs::vec_cast", "units.units")
 }
