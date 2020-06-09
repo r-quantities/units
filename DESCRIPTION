@@ -24,7 +24,8 @@ Suggests:
     testthat,
 	ggforce,
 	rmarkdown,
-    magrittr
+    magrittr,
+    vctrs (>= 0.3.1)
 VignetteBuilder: knitr
 Description: Support for measurement units in R vectors, matrices
 	and arrays: automatic propagation, conversion, derivation

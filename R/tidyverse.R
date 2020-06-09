@@ -31,6 +31,40 @@ format_type_sum.type_sum_units <- function(x, width, ...) {
   pillar::style_subtle(x)
 }
 
+vec_ptype2.units.units = function(x, y, ..., x_arg = "", y_arg = "") {
+  x_units = units(x)
+  y_units = units(y)
+
+  if (!ud_are_convertible(x_units, y_units))
+    vctrs::stop_incompatible_type(x, y, x_arg = x_arg, y_arg = y_arg)
+
+  x_bare = drop_units(x)
+  y_bare = drop_units(y)
+  common = vctrs::vec_ptype2(x_bare, y_bare, ..., x_arg = x_arg, y_arg = y_arg)
+
+  # Use left-hand side units
+  set_units(common, x_units, mode = "standard")
+}
+
+vec_cast.units.units = function(x, to, ..., x_arg = "", to_arg = "") {
+  x_units = units(x)
+  to_units = units(to)
+
+  if (!ud_are_convertible(x_units, to_units))
+    vctrs::stop_incompatible_cast(x, to, x_arg = x_arg, to_arg = to_arg)
+
+  # Convert to target units before converting base type. Unit
+  # conversion might change the type and so must happen first.
+  out = set_units(x, to_units, mode = "standard")
+
+  out_bare = drop_units(out)
+  to_bare = drop_units(to)
+  out = vctrs::vec_cast(out_bare, to_bare, ..., x_arg = x_arg, to_arg = to_arg)
+
+  # Set target units again
+  set_units(out, to_units, mode = "standard")
+}
+
 #nocov start
 register_all_s3_methods <- function() {
   register_s3_method("pillar::type_sum", "units")
@@ -38,6 +72,8 @@ register_all_s3_methods <- function() {
   register_s3_method("pillar::pillar_shaft", "units")
   register_s3_method("pillar::pillar_shaft", "mixed_units")
   register_s3_method("pillar::format_type_sum", "type_sum_units")
+  register_s3_method("vctrs::vec_ptype2", "units.units")
+  register_s3_method("vctrs::vec_cast", "units.units")
 }
 
 register_s3_method <- function(generic, class, fun=NULL) {
