@@ -4,7 +4,7 @@
 
 * fix replacement operation for `units` objects; #233 addressing #232
 
-* fix compatibility with dplyr 1.0
+* fix compatibility with dplyr 1.0; #247 addressing #239
 
 # version 0.6-6
 
