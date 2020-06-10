@@ -4,6 +4,8 @@
 
 * fix replacement operation for `units` objects; #233 addressing #232
 
+* fix compatibility with dplyr 1.0
+
 # version 0.6-6
 
 * prettier `str` print for units and mixed units; #228 addressing #227
