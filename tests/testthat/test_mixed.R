@@ -42,8 +42,6 @@ test_that("mixed units work", {
    print(m)
    expect_equal(drop_units(m), sapply(m, as.numeric))
 
-   skip_if_not_installed("tibble")
-   print(tibble::tibble(m))
    str(m)
    units_options(allow_mixed = TRUE)
    m = c(set_units(1:3, km), set_units(4:6, g))

@@ -10,24 +10,17 @@ type_sum.mixed_units <- function(x, ...) {
 }
 
 pillar_shaft.units <- function(x, ...) {
-  u_char <- as.character(units(x))
-  if (! requireNamespace("pillar", quietly = TRUE))
-    stop("package pillar not available: install first?")
-  #out <- paste(format(unclass(x), ...), pillar::style_subtle(u_char))
   out <- format(unclass(x), ...)
   pillar::new_pillar_shaft_simple(out, align = "right", min_width = 8)
 }
 
 pillar_shaft.mixed_units <- function(x, ...) {
-  if (! requireNamespace("pillar", quietly = TRUE))
-    stop("package pillar not available: install first?")
-  out <- format(x, ...)
+  u_char <- pillar::style_subtle(sapply(x, function(unit) format(unit[0])))
+  out <- paste0(format(unclass(x), ...), u_char)
   pillar::new_pillar_shaft_simple(out, align = "right", min_width = 6)
 }
 
 format_type_sum.type_sum_units <- function(x, width, ...) {
-  if (! requireNamespace("pillar", quietly = TRUE))
-    stop("package pillar not available: install first?")
   pillar::style_subtle(x)
 }
 

@@ -10,23 +10,22 @@ Authors@R: c(person("Edzer", "Pebesma", role = c("aut", "cre"), email = "edzer.p
 Depends:
     R (>= 3.0.2)
 Imports:
-	Rcpp
+	  Rcpp
 LinkingTo:
-	Rcpp (>= 0.12.10)
+	  Rcpp (>= 0.12.10)
 Suggests:
-    dplyr (>= 1.0.0),
-	udunits2,
+	  udunits2,
     NISTunits,
     measurements,
     xml2,
-    tibble,
-	pillar (>= 1.3.0),
+    magrittr,
+	  pillar (>= 1.3.0),
+	  dplyr (>= 1.0.0),
+    vctrs (>= 0.3.1),
     knitr,
     testthat,
-	ggforce,
-	rmarkdown,
-    magrittr,
-    vctrs (>= 0.3.1)
+	  ggforce,
+	  rmarkdown
 VignetteBuilder: knitr
 Description: Support for measurement units in R vectors, matrices
 	and arrays: automatic propagation, conversion, derivation

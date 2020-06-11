@@ -1,5 +1,22 @@
+context("tidyverse")
 
-skip_if_not_installed("vctrs")
+test_that("pillar methods are available for units objects", {
+  skip_if_not_installed("pillar")
+  
+  x = set_units(1:3, km)
+  m = c(x, set_units(4:6, g), allow_mixed = TRUE)
+  
+  expect_equal(unclass(pillar::type_sum(x)), "[km]")
+  expect_s3_class(pillar::type_sum(x), "type_sum_units")
+  expect_equal(pillar::type_sum(m), "mixed_units")
+  
+  expect_equal(as.character(pillar::pillar_shaft(x[1])), "1")
+  expect_equal(as.character(pillar::pillar_shaft(m[1])),
+               paste0(1, pillar::style_subtle(" [km]")))
+})
+
+skip_if_not_installed("vctrs", "0.3.1")
+skip_if_not_installed("dplyr", "1.0.0")
 
 test_that("units have coercion methods", {
   x = set_units(1:3, "cm")
@@ -37,9 +54,9 @@ test_that("can combine units vectors", {
   expect_identical(vctrs::vec_c(x, y), exp)
 
   # Recursive case
-  df1 = tibble::tibble(x = tibble::tibble(x = x))
-  df2 = tibble::tibble(x = tibble::tibble(x = y))
-  df_exp = tibble::tibble(x = tibble::tibble(x = exp))
+  df1 = dplyr::tibble(x = dplyr::tibble(x = x))
+  df2 = dplyr::tibble(x = dplyr::tibble(x = y))
+  df_exp = dplyr::tibble(x = dplyr::tibble(x = exp))
   expect_identical(vctrs::vec_c(df1, df2), df_exp)
 })
 
@@ -49,17 +66,14 @@ test_that("can slice units vectors", {
   expect_identical(vctrs::vec_chop(x), exp)
 
   # Recursive case
-  df = tibble::tibble(tibble::tibble(x = x))
+  df = dplyr::tibble(dplyr::tibble(x = x))
   exp = list(
-    tibble::tibble(x = set_units(1L, "cm")),
-    tibble::tibble(x = set_units(2L, "cm")),
-    tibble::tibble(x = set_units(3L, "cm"))
+    dplyr::tibble(x = set_units(1L, "cm")),
+    dplyr::tibble(x = set_units(2L, "cm")),
+    dplyr::tibble(x = set_units(3L, "cm"))
   )
   expect_identical(vctrs::vec_chop(df), exp)
 })
-
-
-skip_if_not_installed("dplyr")
 
 `%>%` <- dplyr::`%>%`
 
