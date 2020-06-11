@@ -114,48 +114,6 @@ seq.units = function(from, to, by = ((to - from)/(length.out - 1)),
   set_units(NextMethod(), uuu, mode = "standard")
 }
 
-#' type_sum function for units
-#' @name tibble
-#' @param x see \link[pillar]{type_sum}
-#' @param ... see \link[pillar]{type_sum}
-#' @rawNamespace if(getRversion() >= "3.6.0") {
-#'   S3method(pillar::type_sum, units)
-#'   S3method(pillar::type_sum, mixed_units)
-#'   S3method(pillar::pillar_shaft, units)
-#'   S3method(pillar::pillar_shaft, mixed_units)
-#'   S3method(pillar::format_type_sum, type_sum_units)
-#' } else {
-#'   export(type_sum.units)
-#'   export(type_sum.mixed_units)
-#'   export(pillar_shaft.units)
-#'   export(pillar_shaft.mixed_units)
-#'   export(format_type_sum.type_sum_units)
-#' }
-type_sum.units <- function(x, ...) {
-  gr = units_options("group")
-  # see https://github.com/r-lib/pillar/issues/73 : currently the [ and ] mess up things.
-  structure(paste0(gr[1], as.character(units(x)), gr[2]),
-    class = "type_sum_units")
-}
-#' @name tibble
-#' @param width ignored
-format_type_sum.type_sum_units <- function(x, width, ...) {
-  if (! requireNamespace("pillar", quietly = TRUE))
-    stop("package pillar not available: install first?")
-  pillar::style_subtle(x)
-}
-
-#' pillar_shaft function for units
-#' @name tibble
-pillar_shaft.units <- function(x, ...) {
-  u_char <- as.character(units(x))
-  if (! requireNamespace("pillar", quietly = TRUE))
-    stop("package pillar not available: install first?")
-  #out <- paste(format(unclass(x), ...), pillar::style_subtle(u_char))
-  out <- format(unclass(x), ...)
-  pillar::new_pillar_shaft_simple(out, align = "right", min_width = 8)
-}
-
 #' @export
 str.units = function(object, ...) {
   gr <- units_options("group")

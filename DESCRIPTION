@@ -14,6 +14,7 @@ Imports:
 LinkingTo:
 	Rcpp (>= 0.12.10)
 Suggests:
+    dplyr (>= 1.0.0),
 	udunits2,
     NISTunits,
     measurements,
@@ -24,7 +25,8 @@ Suggests:
     testthat,
 	ggforce,
 	rmarkdown,
-    magrittr
+    magrittr,
+    vctrs (>= 0.3.1)
 VignetteBuilder: knitr
 Description: Support for measurement units in R vectors, matrices
 	and arrays: automatic propagation, conversion, derivation
