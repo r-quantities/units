@@ -79,3 +79,24 @@
 }
 # but this gives Y' Y" etc which are NOT recognized by as_units()
 ################################################################################
+
+#' Pre-defined units from UDUNITS2
+#'
+#' Lazy-loaded when used.
+#'
+#' @format A list of class \code{units database}.
+#' @export
+ud_units <- NULL
+
+#' @export
+`with.units database` <- function(data, expr, ...) {
+  if (all(!unlist(l10n_info()))) # ISO8859-15
+    data <- subset(data, Encoding(names(data)) != "UTF-8")
+  eval(substitute(expr), data, enclos = parent.frame())
+}
+
+#' @export
+`print.units database` <- function(x, ...) {
+  cat("Units database, containing", length(x), "units:\n")
+  cat(" ", paste(names(x)[1:9], collapse=", "), "...\n")
+}

@@ -20,10 +20,10 @@ a data frame with columns \code{symbol} , \code{symbol_aliases} ,
   \code{comment} , \code{dimensionless} and \code{source_xml}
 }
 \description{
-The returned dataframe is constructed at runtime by reading the xml database
-that powers unit conversion in [package:udunits2]. Inspect this dataframe to
-determine what inputs are accepted by \code{as_units} (and the other
-functions it powers: \code{as_units} , \code{set_units} , \code{units<-}).
+These functions require the \pkg{xml2} package, and return data frames with
+complete information about pre-defined units from UDUNITS2. Inspect this data
+frames to determine what inputs are accepted by \code{as_units} (and the
+other functions it powers: \code{as_units}, \code{set_units} , \code{units<-}).
 }
 \details{
 Any entry listed under \code{symbol} , \code{symbol_aliases} , \code{
@@ -33,7 +33,7 @@ name_singular} , \code{name_singular_aliases} , \code{name_plural} , or
 as specified by \code{valid_udunits_prefixes()} .
 
 Note, this is primarily intended for interactive use, the exact format of the
-returned dataframe may change in the future.
+returned data frames may change in the future.
 }
 \examples{
 if (requireNamespace("xml2", quietly = TRUE)) {

@@ -1,22 +1,3 @@
-#' @export
-`with.units database` <- function(data, expr, ...) {
-  if (all(!unlist(l10n_info()))) # ISO8859-15
-    data <- subset(data, Encoding(names(data)) != "UTF-8")
-  eval(substitute(expr), data, enclos = parent.frame())
-}
-
-#' @export
-`print.units database` <- function(x, ...) {
-  cat("Units database, containing", length(x), "units:\n")
-  cat(" ", paste(names(x)[1:9], collapse=", "), "...\n")
-}
-
-#' List containing pre-defined units from the udunits2 package.
-#'
-#' Lazy loaded when used
-#' @export
-ud_units <- NULL
-
 `%|%` <- function(x, y) ifelse(is.na(x), y, x)
 
 `%empty%` <-  function(x, y) if(length(x)==0) y else x
@@ -25,10 +6,10 @@ pcc <- function(...) paste0(..., collapse = ", ")
 
 #' Get information about valid units
 #'
-#' The returned dataframe is constructed at runtime by reading the xml database
-#' that powers unit conversion in [package:udunits2]. Inspect this dataframe to
-#' determine what inputs are accepted by \code{as_units} (and the other
-#' functions it powers: \code{as_units} , \code{set_units} , \code{units<-}).
+#' These functions require the \pkg{xml2} package, and return data frames with
+#' complete information about pre-defined units from UDUNITS2. Inspect this data
+#' frames to determine what inputs are accepted by \code{as_units} (and the
+#' other functions it powers: \code{as_units}, \code{set_units} , \code{units<-}).
 #'
 #' Any entry listed under \code{symbol} , \code{symbol_aliases} , \code{
 #' name_singular} , \code{name_singular_aliases} , \code{name_plural} , or
@@ -37,7 +18,7 @@ pcc <- function(...) paste0(..., collapse = ", ")
 #' as specified by \code{valid_udunits_prefixes()} .
 #'
 #' Note, this is primarily intended for interactive use, the exact format of the
-#' returned dataframe may change in the future.
+#' returned data frames may change in the future.
 #'
 #' @param quiet logical, defaults \code{TRUE} to give a message about the location of
 #'   the udunits database being read.
