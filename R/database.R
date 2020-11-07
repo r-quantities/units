@@ -1,8 +1,8 @@
 .startup_msg <- function(warn = FALSE) {
-  paste("udunits database from" , .get_ud_xml(warn))
+  paste("udunits database from" , default_units_xml(warn))
 }
 
-.get_ud_xml <- function(warn = FALSE) {
+default_units_xml <- function(warn = FALSE) {
   paths = c(
     Sys.getenv("UDUNITS2_XML_PATH"),
     "/usr/local/share/udunits/udunits2.xml",
@@ -24,17 +24,47 @@
   p
 }
 
-.read_ud_db <- function(file = .get_ud_xml(), type) {
+#' Load a unit system
+#'
+#' Load an XML database containing a unit system compatible with UDUNITS2.
+#'
+#' A unit system comprises a root \code{<unit-system>} and a number of children
+#' defining prefixes (\code{<prefix>}) or units (\code{<unit>}).
+#' See the contents of
+#'
+#' \code{system.file("share/udunits", package="units")}
+#'
+#' for examples.
+#'
+#' @param path a path to a valid unit system in XML format.
+#'
+#' @examples
+#' # load a new unit system
+#' load_units_xml(system.file("share/udunits/udunits2-base.xml", package="units"))
+#' \dontrun{
+#' set_units(1, rad) # doesn'twork
+#' }
+#'
+#' # reload the default unit system
+#' load_units_xml()
+#' set_units(1, rad) # works again
+#'
+#' @export
+load_units_xml <- function(path = default_units_xml()) {
+  udunits_init(path)
+}
+
+.read_ud_db <- function(path = default_units_xml(), type) {
   if (! requireNamespace("xml2", quietly = TRUE))
     stop("package 'xml2' is required for this functionality", call.=FALSE)
 
-  db <- xml2::read_xml(file)
+  db <- xml2::read_xml(path)
 
   # resolve imports
   imports <- xml2::xml_find_all(db, "import")
   files <- sapply(imports, xml2::xml_text)
   for (i in files) {
-    import <- xml2::read_xml(file.path(dirname(file), i))
+    import <- xml2::read_xml(file.path(dirname(path), i))
     for (child in xml2::xml_children(import)) {
       source <- gsub("udunits2-|\\.xml", "", i)
       source <- paste0("<doc><source>", source, "</source></doc>")
