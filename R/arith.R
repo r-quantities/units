@@ -5,7 +5,17 @@
 
 #' S3 Ops Group Generic Functions for units objects
 #'
-#' Ops functions for units objects, including comparison, product and divide, add, subtract
+#' Ops functions for units objects, including comparison, product and divide,
+#' add, subtract.
+#'
+#' Users are advised against performing arithmetical operations with
+#' temperatures in different units. The \pkg{units} package ensure that results
+#' 1) are arithmetically correct, and 2) satisfy dimensional analysis, but could
+#' never ensure that results are physically meaningful. Temperature units are
+#' special because there is an absolute unit, Kelvin, and relative ones, Celsius
+#' and Fahrenheit degrees. Arithmetic operations between them are meaningless
+#' from the physical standpoint. Users are thus advised to convert all
+#' temperatures to Kelvin before operating.
 #'
 #' @param e1 object of class \code{units}, 
 #'        or something that can be coerced to it by \code{as_units(e1)}
