@@ -1,10 +1,33 @@
-#' Set measurement units on a numeric vector
+#' Handle measurement units
 #'
-#' @param x numeric vector, or object of class \code{units}
-#' @param value object of class \code{units} or \code{symbolic_units}, or in the case of \code{set_units} expression with symbols that can be resolved in \link{ud_units} (see examples).
+#' A number of functions are provided for handling unit objects.
+#' \itemize{
+#'     \item \code{`units<-`} and \code{units} are the basic functions to set
+#'     and retrieve units.
+#'     \item \code{as_units}, a generic with methods for a
+#'     character string and for quoted language. Note, direct usage of this function
+#'     by users is typically not necessary, as coercion via \code{as_units} is
+#'     automatically done with \code{`units<-`} and \code{set_units}.
+#'     \item \code{make_units}, constructs units from bare expressions.
+#'     \code{make_units(m/s)} is equivalent to \code{as_units(quote(m/s))}.
+#'     \item \code{set_units}, a pipe-friendly version of \code{`units<-`}. By
+#'     default it operates with bare expressions like \code{make_unit}, but this
+#'     behavior can be disabled by a specifying \code{mode = "standard"} or setting
+#'     \code{units_options(set_units_mode = "standard")}.
+#' }
 #'
-#' @return object of class \code{units}
-#' @details if \code{value} is of class \code{units} and has a value unequal to 1, this value is ignored unless \code{units_options("simplifiy")} is \code{TRUE}. If \code{simplify} is \code{TRUE}, \code{x} is multiplied by this value.
+#' @param x numeric vector, or object of class \code{units}.
+#' @param value object of class \code{units} or \code{symbolic_units}, or in the
+#' case of \code{set_units} expression with symbols that can be resolved in
+#' \link{ud_units} (see examples).
+#'
+#' @return An object of class \code{units}.
+#'
+#' @details
+#' If \code{value} is of class \code{units} and has a value unequal to 1, this
+#' value is ignored unless \code{units_options("simplifiy")} is \code{TRUE}. If
+#' \code{simplify} is \code{TRUE}, \code{x} is multiplied by this value.
+#'
 #' @export
 #' @name units
 #'
@@ -36,8 +59,6 @@
   x
 }
 
-#' Convert units
-#' 
 #' @name units
 #' @export
 #' 
@@ -95,85 +116,18 @@
   x
 }
 
-#' retrieve measurement units from \code{units} object
+#' @return The \code{units} method retrieves the units attribute, which is of
+#' class \code{symbolic_units}.
 #'
-#' @export
 #' @name units
-#' @return the units method retrieves the units attribute, which is of class \code{symbolic_units}
+#' @export
 units.units <- function(x) {
   attr(x, "units")
 }
 
+#' @name units
 #' @export
 units.symbolic_units <- function(x) {
-  x
-}
-
-#' convert object to a units object
-#'
-#' @param x object of class units
-#' @param value an object of class units, or something coercible to one with
-#'   \code{as_units}
-#' @param ... passed on to other methods
-#'
-#' @export
-as_units <- function(x, ...) {
-  UseMethod("as_units")
-}
-
-#' @export
-as_units.units <- function(x, value, ...) {
-  if(!missing(value) && !identical(units(value), units(x)))
-    warning("Use set_units() to perform unit conversion. Return unit unmodified")
-  x
-}
-#' @export
-as_units.symbolic_units <- function(x, value, ...) {
-  if(!missing(value))
-    warning("supplied value ignored")
-  .as.units(1L, x)
-}
-
-#' @export
-#' @name as_units
-as_units.default <- function(x, value = unitless, ...) {
-  if (is.null(x)) return(x)
-  units(x) <- value
-  x
-}
-
-#'  difftime objects to units
-#'
-#' @export
-#' @name as_units
-#' 
-#' @examples
-#' s = Sys.time()
-#' d  = s - (s+1)
-#' as_units(d)
-as_units.difftime <- function(x, value, ...) {
-  u <- attr(x, "units")
-  x <- unclass(x)
-  attr(x, "units") <- NULL
-  
-  # convert from difftime to udunits2:
-  if (u == "secs") # secs -> s
-    x <- x * symbolic_unit("s")
-  else if (u == "mins") # mins -> min
-    x <- x * symbolic_unit("min")
-  else if (u == "hours") # hours -> h
-    x <- x * symbolic_unit("h")
-  else if (u == "days") # days -> d
-    x <- x * symbolic_unit("d")
-  else if (u == "weeks") { # weeks -> 7 days
-    x <- 7 * x
-    x <- x * symbolic_unit("d")
-  } else 
-    stop(paste("unknown time units", u, "in difftime object"))
-  
-  if (!missing(value)) # convert optionally:
-    units(x) <- value
-  
   x
 }
 
@@ -260,20 +214,90 @@ as.Date.units = function (x, ...) {
 	as.Date(as.numeric(x), origin = as.Date("1970-01-01 00:00:00"))
 }
 
+#' @param ... passed on to other methods.
+#' @param mode if \code{"symbols"} (the default), then unit is constructed from
+#'   the expression supplied. Otherwise, if\code{mode = "standard"},
+#'   standard evaluation is used for the supplied value This argument can be set
+#'   via a global option \code{units_options(set_units_mode = "standard")}
+#'
+#' @name units
 #' @export
-as_units.POSIXt = function(x, value, ...) {
-	u = as.numeric(as.POSIXct(x))
-	units(u) = symbolic_unit("seconds since 1970-01-01 00:00:00 +00:00")
-	if (! missing(value))
-		units(u) = symbolic_unit(value)
-	u
+set_units <- function(x, value, ..., mode = units_options("set_units_mode"))
+  UseMethod("set_units")
+
+#' @export
+set_units.numeric <- function(x, value, ..., mode = units_options("set_units_mode")) {
+  if (missing(value))
+    value <- unitless
+  else if (mode == "symbols") {
+    value <- substitute(value)
+
+    if(is.numeric(value) && !identical(value, 1) && !identical(value, 1L))
+      stop("The only valid number defining a unit is '1', signifying a unitless unit")
+  }
+
+  units(x) <- as_units(value, ...)
+  x
 }
 
 #' @export
-as_units.Date = function(x, value, ...) {
-	u = as.numeric(x)
-	units(u) = symbolic_unit("days since 1970-01-01")
-	if (!missing(value))
-		units(u) = symbolic_unit(value)
-	u
+set_units.logical <- set_units.numeric
+
+#' @export
+set_units.units <- set_units.numeric
+
+#' Drop Units
+#'
+#' Drop units attribute and class.
+#'
+#' @param x an object with units metadata.
+#'
+#' @return the numeric without any units attributes, while preserving other
+#' attributes like dimensions or other classes.
+#'
+#' @details Equivalent to \code{units(x) <- NULL}, or the pipe-friendly version
+#' \code{set_units(x, NULL)}, but \code{drop_units} will fail if the object has
+#' no units metadata. Use the alternatives if you want this operation to succeed
+#' regardless of the object type.
+#'
+#' A \code{data.frame} method is also provided, which checks every column and
+#' drops units if any.
+#'
+#' @export
+#' @examples
+#' x <- 1
+#' y <- set_units(x, m/s)
+#'
+#' # this succeeds
+#' drop_units(y)
+#' set_units(y, NULL)
+#' set_units(x, NULL)
+#'
+#' \dontrun{
+#' # this fails
+#' drop_units(x)
+#' }
+#'
+#' df <- data.frame(x=x, y=y)
+#' df
+#' drop_units(df)
+#'
+drop_units <- function(x) UseMethod("drop_units")
+
+#' @name drop_units
+#' @export
+drop_units.units <- function(x) {
+  class(x) <- setdiff(class(x), "units")
+  attr(x, "units") <- NULL
+  x
+}
+
+#' @name drop_units
+#' @export
+drop_units.data.frame <- function(x) {
+  for (i in seq_along(x)) {
+    if (inherits(x[[i]], "units"))
+      x[[i]] <- drop_units(x[[i]])
+  }
+  x
 }

@@ -6,31 +6,12 @@
     structure(x, units = value, dim = dim, class = "units")
 }
 
-#' Unit creation
-#'
-#' A number of functions are provided for creating unit objects. 
-#' \itemize{
-#'     \item \code{as_units}, a generic with methods for a
-#'     character string and for quoted language. Note, direct usage of this function
-#'     by users is typically not necessary, as coercion via \code{as_units} is
-#'     automatically done with \code{`units<-`} and \code{set_units()}.
-#'    
-#'     \item \code{make_units()}, constructs units from bare expressions.
-#'     \code{make_units(m/s)} is equivalent to \code{as_units(quote(m/s))}
-#'    
-#'     \item \code{set_units()}, a pipe_friendly version of \code{`units<-`}. By
-#'     default it operates with bare expressions like \code{make_unit}, but this
-#'     behavior can be disabled by a specifying \code{mode = "standard"} or setting 
-#'     \code{units_options(set_units_mode = "standard")}.
-#' }
-#' 
+#' @name units
 #' @export
-#' @rdname as_units
 #' 
 #' @param bare_expression a bare R expression describing units. Must be valid R
 #'   syntax (reserved R syntax words like \code{in} must be backticked)
 #'
-#' @noMd
 #' @examples
 #' # The easiest way to assign units to a numeric vector is like this: 
 #' x <- y <- 1:4
@@ -149,6 +130,68 @@ make_units <- function(bare_expression, check_is_valid = TRUE) {
   as_units.call(substitute(bare_expression), check_is_valid = check_is_valid)
 }
 
+#' @name units
+#' @export
+as_units <- function(x, ...) {
+  UseMethod("as_units")
+}
+
+#' @name units
+#' @export
+as_units.default <- function(x, value = unitless, ...) {
+  if (is.null(x)) return(x)
+  units(x) <- value
+  x
+}
+
+#' @name units
+#' @export
+as_units.units <- function(x, value, ...) {
+  if(!missing(value) && !identical(units(value), units(x)))
+    warning("Use set_units() to perform unit conversion. Return unit unmodified")
+  x
+}
+
+#' @name units
+#' @export
+as_units.symbolic_units <- function(x, value, ...) {
+  if(!missing(value))
+    warning("supplied value ignored")
+  .as.units(1L, x)
+}
+
+#' @examples
+#' s = Sys.time()
+#' d  = s - (s+1)
+#' as_units(d)
+#' 
+#' @name units
+#' @export
+as_units.difftime <- function(x, value, ...) {
+  u <- attr(x, "units")
+  x <- unclass(x)
+  attr(x, "units") <- NULL
+  
+  # convert from difftime to udunits2:
+  if (u == "secs") # secs -> s
+    x <- x * symbolic_unit("s")
+  else if (u == "mins") # mins -> min
+    x <- x * symbolic_unit("min")
+  else if (u == "hours") # hours -> h
+    x <- x * symbolic_unit("h")
+  else if (u == "days") # days -> d
+    x <- x * symbolic_unit("d")
+  else if (u == "weeks") { # weeks -> 7 days
+    x <- 7 * x
+    x <- x * symbolic_unit("d")
+  } else 
+    stop(paste("unknown time units", u, "in difftime object"))
+  
+  if (!missing(value)) # convert optionally:
+    units(x) <- value
+  
+  x
+}
 
 #  ----- as_units.character helpers ------ 
 
@@ -170,10 +213,8 @@ is_udunits_time <- function(s) {
   ud_is_parseable(s) && ud_are_convertible(s, "seconds since 1970-01-01")
 }
 
-
-#' @rdname as_units
+#' @name units
 #' @export
-#' @noMd
 #'
 #' @param force_single_symbol Whether to perform no string parsing and force
 #'   treatment of the string as a single symbol.
@@ -184,7 +225,7 @@ is_udunits_time <- function(s) {
 #'   incorrect.
 #'
 #' @section Character strings:
-#'
+#'   
 #'   Generally speaking, there are 3 types of unit strings are accepted in
 #'   \code{as_units} (and by extension, \code{`units<-`}).
 #'
@@ -217,6 +258,12 @@ is_udunits_time <- function(s) {
 #'   string, and unit symbol or names must be separated by a space. Each unit
 #'   symbol may optionally be followed by a single number, specifying the power.
 #'   For example \code{"m2 s-2"} is equivalent to \code{"(m^2)*(s^-2)"}.
+#'   
+#'   It must be noted that prepended numbers are supported too, but their
+#'   interpretation slightly varies depending on whether they are separated from
+#'   the unit string or not. E.g., \code{"1000 m"} is interpreted as magnitude
+#'   and unit, but \code{"1000m"} is interpreted as a prefixed unit, and it is
+#'   equivalent to \code{"km"} to all effects.
 #'
 #'   The third type of unit string format accepted is the special case of
 #'   udunits time duration with a reference origin, for example \code{"hours
@@ -226,6 +273,7 @@ is_udunits_time <- function(s) {
 #'   users that work with udunits time data, e.g., with NetCDF files. Users are
 #'   otherwise encouraged to use \code{R}'s date and time functionality provided
 #'   by \code{Date} and \code{POSIXt} classes.
+#'   
 as_units.character <- function(x, 
                                check_is_valid = TRUE,
                                implicit_exponents = NULL, 
@@ -302,8 +350,8 @@ units_eval_env$lg <- function(x) base::log(x, base = 10)
 units_eval_env$lb <- function(x) base::log(x, base = 2)
 
 
+#' @name units
 #' @export
-#' @rdname as_units
 #'
 #' @param check_is_valid throw an error if all the unit symbols are not either
 #'   recognized by udunits2 via \code{ud_is_parseable()}, or a custom
@@ -323,9 +371,6 @@ units_eval_env$lb <- function(x) base::log(x, base = 2)
 #'   \code{install_symbolic_unit()} or \code{install_conversion_constant()}. To
 #'   see which symbols and names are currently recognized by the udunits
 #'   database, see \code{udunits_symbols()}.
-#'
-#' @return A new unit object that can be used in arithmetic, unit conversion or
-#'   unit assignment.
 #'
 #' @seealso \code{\link{valid_udunits}}
 as_units.call <- function(x, check_is_valid = TRUE, ...) {
@@ -372,12 +417,33 @@ See ?as_units for usage examples.")
   .as.units(as.numeric(unit), units(unit))
 }
 
-
+#' @name units
 #' @export
 as_units.expression <- as_units.call
 
+#' @name units
 #' @export
 as_units.name       <- as_units.call
+
+#' @name units
+#' @export
+as_units.POSIXt = function(x, value, ...) {
+  u = as.numeric(as.POSIXct(x))
+  units(u) = symbolic_unit("seconds since 1970-01-01 00:00:00 +00:00")
+  if (! missing(value))
+    units(u) = symbolic_unit(value)
+  u
+}
+
+#' @name units
+#' @export
+as_units.Date = function(x, value, ...) {
+  u = as.numeric(x)
+  units(u) = symbolic_unit("days since 1970-01-01")
+  if (!missing(value))
+    units(u) = symbolic_unit(value)
+  u
+}
 
 
 symbolic_unit <- function(chr, check_is_valid = TRUE) {
@@ -397,61 +463,4 @@ symbolic_unit <- function(chr, check_is_valid = TRUE) {
   }
   
   .as.units(1, .symbolic_units(chr))
-}
-
-
-#' Drop Units
-#' 
-#' Drop units attribute and class.
-#' 
-#' @param x an object with units metadata.
-#' 
-#' @return the numeric without any units attributes, while preserving other
-#' attributes like dimensions or other classes.
-#'   
-#' @details Equivalent to \code{units(x) <- NULL}, or the pipe-friendly version
-#' \code{set_units(x, NULL)}, but \code{drop_units} will fail if the object has
-#' no units metadata. Use the alternatives if you want this operation to succeed
-#' regardless of the object type.
-#' 
-#' A \code{data.frame} method is also provided, which checks every column and
-#' drops units if any.
-#' 
-#' @export
-#' @examples
-#' x <- 1
-#' y <- set_units(x, m/s)
-#' 
-#' # this succeeds
-#' drop_units(y)
-#' set_units(y, NULL)
-#' set_units(x, NULL)
-#' 
-#' \dontrun{
-#' # this fails
-#' drop_units(x)
-#' }
-#' 
-#' df <- data.frame(x=x, y=y)
-#' df
-#' drop_units(df)
-#' 
-drop_units <- function(x) UseMethod("drop_units")
-
-#' @name drop_units
-#' @export
-drop_units.units <- function(x) {
-  class(x) <- setdiff(class(x), "units")
-  attr(x, "units") <- NULL
-  x
-}
-
-#' @name drop_units
-#' @export
-drop_units.data.frame <- function(x) {
-  for (i in seq_along(x)) {
-    if (inherits(x[[i]], "units"))
-      x[[i]] <- drop_units(x[[i]])
-  }
-  x
 }
