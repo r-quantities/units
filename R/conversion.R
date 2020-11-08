@@ -4,15 +4,12 @@
 #' \itemize{
 #'     \item \code{`units<-`} and \code{units} are the basic functions to set
 #'     and retrieve units.
-#'
 #'     \item \code{as_units}, a generic with methods for a
 #'     character string and for quoted language. Note, direct usage of this function
 #'     by users is typically not necessary, as coercion via \code{as_units} is
-#'     automatically done with \code{`units<-`} and \code{set_units()}.
-#'
+#'     automatically done with \code{`units<-`} and \code{set_units}.
 #'     \item \code{make_units}, constructs units from bare expressions.
-#'     \code{make_units(m/s)} is equivalent to \code{as_units(quote(m/s))}
-#'
+#'     \code{make_units(m/s)} is equivalent to \code{as_units(quote(m/s))}.
 #'     \item \code{set_units}, a pipe-friendly version of \code{`units<-`}. By
 #'     default it operates with bare expressions like \code{make_unit}, but this
 #'     behavior can be disabled by a specifying \code{mode = "standard"} or setting

@@ -96,10 +96,26 @@ The \code{units} method retrieves the units attribute, which is of
 class \code{symbolic_units}.
 }
 \description{
-
+A number of functions are provided for handling unit objects.
+\itemize{
+    \item \code{`units<-`} and \code{units} are the basic functions to set
+    and retrieve units.
+    \item \code{as_units}, a generic with methods for a
+    character string and for quoted language. Note, direct usage of this function
+    by users is typically not necessary, as coercion via \code{as_units} is
+    automatically done with \code{`units<-`} and \code{set_units}.
+    \item \code{make_units}, constructs units from bare expressions.
+    \code{make_units(m/s)} is equivalent to \code{as_units(quote(m/s))}.
+    \item \code{set_units}, a pipe-friendly version of \code{`units<-`}. By
+    default it operates with bare expressions like \code{make_unit}, but this
+    behavior can be disabled by a specifying \code{mode = "standard"} or setting
+    \code{units_options(set_units_mode = "standard")}.
+}
 }
 \details{
-
+If \code{value} is of class \code{units} and has a value unequal to 1, this
+value is ignored unless \code{units_options("simplifiy")} is \code{TRUE}. If
+\code{simplify} is \code{TRUE}, \code{x} is multiplied by this value.
 }
 \note{
 By default, unit names are automatically substituted with unit names
