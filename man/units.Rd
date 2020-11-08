@@ -108,7 +108,7 @@ By default, unit names are automatically substituted with unit names
 }
 \section{Character strings}{
 
-
+  
   Generally speaking, there are 3 types of unit strings are accepted in
   \code{as_units} (and by extension, \code{`units<-`}).
 
@@ -141,6 +141,12 @@ By default, unit names are automatically substituted with unit names
   string, and unit symbol or names must be separated by a space. Each unit
   symbol may optionally be followed by a single number, specifying the power.
   For example \code{"m2 s-2"} is equivalent to \code{"(m^2)*(s^-2)"}.
+  
+  It must be noted that prepended numbers are supported too, but their
+  interpretation slightly varies depending on whether they are separated from
+  the unit string or not. E.g., \code{"1000 m"} is interpreted as magnitude
+  and unit, but \code{"1000m"} is interpreted as a prefixed unit, and it is
+  equivalent to \code{"km"} to all effects.
 
   The third type of unit string format accepted is the special case of
   udunits time duration with a reference origin, for example \code{"hours
