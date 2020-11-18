@@ -1,3 +1,8 @@
+# version 0.6-8
+
+* add `load_units_xml` to enable database reloading as well as loading
+  user-provided unit systems; #254 addressing #243, #244
+
 # version 0.6-7
 
 * port `isFALSE` to fix regression in old R versions; #230 addressing #229
