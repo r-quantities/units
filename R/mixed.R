@@ -51,6 +51,8 @@ format.mixed_units = function(x, ...) {
 `[.mixed_units` = function(x, i, ...) {
 	.as.mixed_units(unclass(x)[i])
 }
+
+#' @export
 c.mixed_units = function(...) {
 	args = list(...)
 	.as.mixed_units(do.call(c, lapply(args, unclass)))
@@ -72,29 +74,33 @@ as_units.mixed_units = function(x, ...) {
 
 #' @export
 units.mixed_units = function(x) {
-	structure(lapply(x, units), class = "mixed_symbolic_units")
+  u = lapply(x, function(i) if (inherits(i, "units")) units(i) else NULL)
+	structure(u, class = "mixed_symbolic_units")
 }
 
 #' @export
 as.character.mixed_symbolic_units = function(x, ...) {
-	sapply(x, as.character)
+	sapply(x, function(i) if (!is.null(i)) as.character(i) else "NULL")
+}
+
+.cat_units_table <- function(x) {
+  cat("Mixed units: ")
+  if (!length(x)) return()
+
+  tbl = table(as.character(units(x)))
+  tbl = paste(names(tbl), " (", as.numeric(tbl), ")", sep = "")
+  cat(paste(tbl, collapse = ", "), "\n")
 }
 
 #' @export
 print.mixed_units = function(x, ...) {
-	cat("Mixed units: ")
-	tbl = table(as.character(units(x)))
-	tbl = paste(names(tbl), " (", as.numeric(tbl), ")", sep = "")
-	cat(paste(tbl, collapse = ", "), "\n")
+  .cat_units_table(x)
 	cat(paste(format(x, ...), collapse = ", "), "\n")
 }
 
 #' @export
 str.mixed_units = function(object, ...) {
-  tbl <- table(as.character(units(object)))
-  tbl <- paste(names(tbl), " (", as.numeric(tbl), ")", sep = "")
-  tbl_str <- paste(tbl, collapse = ", ")
-  cat("Mixed units:", tbl_str, "\n")
+  .cat_units_table(object)
   cat(capture.output(str(unclass(object), ...))[-1], sep="\n")
 }
 
