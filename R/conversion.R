@@ -11,7 +11,7 @@
 #'     \item \code{make_units}, constructs units from bare expressions.
 #'     \code{make_units(m/s)} is equivalent to \code{as_units(quote(m/s))}.
 #'     \item \code{set_units}, a pipe-friendly version of \code{`units<-`}. By
-#'     default it operates with bare expressions like \code{make_unit}, but this
+#'     default it operates with bare expressions, but this
 #'     behavior can be disabled by a specifying \code{mode = "standard"} or setting
 #'     \code{units_options(set_units_mode = "standard")}.
 #' }
@@ -40,10 +40,10 @@
 `units<-.numeric` <- function(x, value) {
   if(is.null(value))
     return(x)
- 
+
   if(!inherits(value, "units") && !inherits(value, "symbolic_units"))
     value <- as_units(value)
-  
+
   if (inherits(value, "units")) {
 	if (any(is.na(value)))
 	  stop("a missing value for units is not allowed")
@@ -53,7 +53,7 @@
 	  warning(paste("numeric value", unclass(value), "is ignored in unit assignment"))
     value <- units(value)
   }
- 
+
   attr(x, "units") = value
   class(x) <- "units"
   x
@@ -61,7 +61,7 @@
 
 #' @name units
 #' @export
-#' 
+#'
 #' @examples
 #' a <- set_units(1:3, m/s)
 #' units(a) <- with(ud_units, km/h)
@@ -70,26 +70,26 @@
 #' units(a) = c("m/s", "km/h", "km/h")
 #' a
 `units<-.units` <- function(x, value) {
-  
+
   if(is.null(value))
     return(drop_units(x))
-  
+
   if(!inherits(value, "units") && !inherits(value, "symbolic_units")) {
 	if ((is.character(value) && length(value) > 1))
 	  return(set_units(mixed_units(x), value))
     value <- as_units(value)
   }
-  
+
   dimx = dim(x)
   if (inherits(value, "units")) {
     if (!identical(as.numeric(value), 1))
       x <- .as.units(unclass(x) * unclass(value), units(x))
     value <- units(value)
   }
-  
+
   if (identical(units(x), value)) # do nothing; possibly user-defined units:
     return(x)
-  
+
   str1 <- as.character(units(x))
   str2 <- as.character(value)
 
@@ -108,9 +108,9 @@
 #' @name units
 #' @export
 `units<-.logical` <- function(x, value) {
-  if (!all(is.na(x))) 
+  if (!all(is.na(x)))
     stop("x must be numeric, non-NA logical not supported")
-  
+
   x <- as.numeric(x)
   units(x) <- value
   x
@@ -151,9 +151,9 @@ as.list.units <- function(x, ...)
 #'
 #' @export
 #' @examples
-#' 
-#' t1 = Sys.time() 
-#' t2 = t1 + 3600 
+#'
+#' t1 = Sys.time()
+#' t2 = t1 + 3600
 #' d = t2 - t1
 #' du <- as_units(d)
 #' dt = as_difftime(du)

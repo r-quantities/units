@@ -25,7 +25,7 @@ test_that("We can concatenate units if they have the same unit", {
   x <- 1:4 * as_units("m")
   y <- 5:8 * as_units("m")
   z <- c(x, y)
-  
+
   expect_equal(length(z), length(x) + length(y))
   expect_equal(x, z[1:4])
   expect_equal(y, z[1:4 + 4])
@@ -41,7 +41,7 @@ test_that("We can concatenate units if their units can be converted", {
   x <- 1:4 * as_units("m")
   y <- 5:8 * as_units("km")
   z <- c(x, y)
-  
+
   expect_equal(length(z), length(x) + length(y))
   expect_equal(as.character(units(z)), "m")
   expect_equal(x, z[1:4])
@@ -79,12 +79,12 @@ test_that("we can provide a symbol to as_units and make it look in ud_units", {
   five_ha <- as_units(5, ha) # ha pulled from ud_units
   expect_equal(as.numeric(five_ha), 5)
   expect_equal(units(five_ha), units(ud_units$ha))
-  
+
   ha <- as_units("m") # make sure that user-defined units overrule
   five_ha <- as_units(5, ha) # ha pulled from ud_units
   expect_equal(as.numeric(five_ha), 5)
   expect_equal(units(five_ha), units(ud_units$m))
-  
+
 })
 
 test_that("set_units(x, u) is a short form for x * with(ud_units, u)", {
@@ -129,8 +129,4 @@ test_that("seq works", {
 
 test_that("str works", {
   str(set_units(1/1:3, m/s))
-})
-
-test_that("deprecations work", {
-  expect_warning(parse_unit("m"))
 })

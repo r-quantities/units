@@ -31,7 +31,7 @@ c.units <- function(..., recursive = FALSE, allow_mixed = units_options("allow_m
 }
 
 #' @export
-diff.units = function(x, ...) { 
+diff.units = function(x, ...) {
   u = units(x)
   # units(x) = u will not work here, as units(x) is NULL!
   .as.units(NextMethod(), u)
@@ -45,11 +45,11 @@ rep.units = function(x, ...) {
 
 
 #' deparse unit to string in product power form (e.g. km m-2 s-1)
-#' 
+#'
 #' deparse unit to string in product power form (e.g. km m-2 s-1)
 #' @param x object of class units
 #' @return length one character vector
-#' @examples 
+#' @examples
 #' u = as_units("kg m-2 s-1", implicit_exponents = TRUE)
 #' u
 #' deparse_unit(u)
@@ -67,14 +67,6 @@ deparse_unit = function(x) {
   paste(c(paste0(nm1, vals1), paste0(nm2, vals2)), collapse=" ")
 }
 # This should perhaps be an option in format.symbolic_units
-
-#' @export
-#' @name deparse_unit
-#' @details \code{as_cf} is deprecated; use \code{deparse_unit}.
-as_cf = function(x) {
-  .Deprecated("deparse_unit") # nocov
-  deparse_unit(x)             # nocov
-}
 
 #' @method all.equal units
 #' @export

@@ -1,7 +1,9 @@
-# version 0.6-8
+# version 0.7-0
 
 * add `load_units_xml` to enable database reloading as well as loading
   user-provided unit systems; #254 addressing #243, #244
+
+* remove deprecations: `as.units`, `as_cf`, `make_unit`, `parse_unit`; #259
 
 # version 0.6-7
 
