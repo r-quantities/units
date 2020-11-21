@@ -5,6 +5,8 @@
 
 * remove deprecations: `as.units`, `as_cf`, `make_unit`, `parse_unit`; #259
 
+* remove deprecated pre-computed `ud_units` database; #259
+
 # version 0.6-7
 
 * port `isFALSE` to fix regression in old R versions; #230 addressing #229

@@ -14,4 +14,4 @@ as_units("common_year")
 as_units("leap_year")
 as_units("Gregorian_year")
 as_units("Julian_year")
-as_units(with(ud_units, yr)) # yr = tropical:
+as_units("yr") # yr = tropical:

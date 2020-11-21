@@ -18,8 +18,7 @@
 #'
 #' @param x numeric vector, or object of class \code{units}.
 #' @param value object of class \code{units} or \code{symbolic_units}, or in the
-#' case of \code{set_units} expression with symbols that can be resolved in
-#' \link{ud_units} (see examples).
+#' case of \code{set_units} expression with symbols (see examples).
 #'
 #' @return An object of class \code{units}.
 #'
@@ -64,7 +63,7 @@
 #'
 #' @examples
 #' a <- set_units(1:3, m/s)
-#' units(a) <- with(ud_units, km/h)
+#' units(a) <- make_units(km/h)
 #' a
 #' # convert to a mixed_units object:
 #' units(a) = c("m/s", "km/h", "km/h")
@@ -182,10 +181,10 @@ as_difftime <- function(x) {
 # #' @return object of class hms
 # #' @examples
 # #' if (require(hms)) {
-# #'  as.hms(1:10 * with(ud_units, s))
-# #'  as.hms(1:10 * with(ud_units, min))
-# #'  as.hms(1:10 * with(ud_units, h))
-# #'  as.hms(1:10 * with(ud_units, d))
+# #'  as.hms(1:10 * make_units(s))
+# #'  as.hms(1:10 * make_units(min))
+# #'  as.hms(1:10 * make_units(h))
+# #'  as.hms(1:10 * make_units(d))
 # #' }
 # #' @export
 # as.hms.units = function(x, ...) {

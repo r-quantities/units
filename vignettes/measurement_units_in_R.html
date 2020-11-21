@@ -357,7 +357,7 @@ str(x)
 ##   ..$ numerator  : chr &quot;m&quot;
 ##   ..$ denominator: chr &quot;s&quot;
 ##   ..- attr(*, &quot;class&quot;)= chr &quot;symbolic_units&quot;</code></pre>
-<p>represents speed values in <code>m/s</code>. The units <code>m</code> and <code>s</code> are retrieved from the <code>ud_units</code> database, which is part of <a href="https://cran.r-project.org/package=units">units</a>, and was derived from the xml units database that is part of udunits2 C library.</p>
+<p>represents speed values in <code>m/s</code>. The units <code>m</code> and <code>s</code> are resolved from the udunits2 C library (but could be user-defined units).</p>
 <p>Units can be used in arbitrary R expressions like</p>
 <pre class="r"><code>set_units(1:3, m/s^2)
 ## Units: [m/s^2]

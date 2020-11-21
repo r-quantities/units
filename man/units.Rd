@@ -63,8 +63,7 @@ as_units(x, ...)
 \item{x}{numeric vector, or object of class \code{units}.}
 
 \item{value}{object of class \code{units} or \code{symbolic_units}, or in the
-case of \code{set_units} expression with symbols that can be resolved in
-\link{ud_units} (see examples).}
+case of \code{set_units} expression with symbols (see examples).}
 
 \item{...}{passed on to other methods.}
 
@@ -193,7 +192,7 @@ units(x) <- as_units("m/s")
 class(x)
 y = 2:5
 a <- set_units(1:3, m/s)
-units(a) <- with(ud_units, km/h)
+units(a) <- make_units(km/h)
 a
 # convert to a mixed_units object:
 units(a) = c("m/s", "km/h", "km/h")

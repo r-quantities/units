@@ -1,9 +1,9 @@
 library(units)
 oldpar = par(mar = par("mar") + c(0, .3, 0, 0))
-displacement = mtcars$disp * ud_units[["in"]]^3
-units(displacement) = with(ud_units, cm^3)
-weight = mtcars$wt * 1000 * with(ud_units, lb)
-units(weight) = with(ud_units, kg)
+displacement = mtcars$disp * as_units("in")^3
+units(displacement) = make_units(cm^3)
+weight = mtcars$wt * 1000 * make_units(lb)
+units(weight) = make_units(kg)
 plot(weight, displacement)
 units_options(group = c("(", ")") )  # parenthesis instead of square brackets
 plot(weight, displacement)
@@ -11,8 +11,8 @@ units_options(sep = c("~~~", "~"), group = c("", ""))  # no brackets; extra spac
 plot(weight, displacement)
 units_options(sep = c("~", "~~"), group = c("[", "]"))
 gallon = as_units("gallon")
-consumption = mtcars$mpg * with(ud_units, mi/gallon)
-units(consumption) = with(ud_units, km/l)
+consumption = mtcars$mpg * make_units(mi/gallon)
+units(consumption) = make_units(km/l)
 plot(displacement, consumption) # division in consumption
 units_options(negative_power = TRUE) # division becomes ^-1
 plot(displacement, consumption)

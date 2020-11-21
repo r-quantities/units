@@ -1,5 +1,5 @@
 #' create axis label with appropriate labels
-#' 
+#'
 #' create axis label with appropriate labels
 #' @param lab length one character; name of the variable to plot
 #' @param u vector of class \code{units}
@@ -21,23 +21,23 @@ make_unit_label = function(lab, u,
   		parse = units_options("parse")) {
 
   if (parse) {
-    str = paste0("group('", group[1], "',", 
+    str = paste0("group('", group[1], "',",
                  as.character(units(u), escape_units = TRUE, plot_sep = sep[2]),
                  ",'", group[2], "')")
-    
+
 	  if (length(grep("[^\t ]", lab)) > 0) {
 	    str = paste0(lab, "*", sep[1], str)
 	  }
-    
+
     parse(text = str)
-    
+
   } else {
     paste0(lab, " ", group[1], as.character(units(u)), group[2])
   }
 }
 
 #' plot unit objects
-#' 
+#'
 #' plot unit objects
 #' @param x object of class units, to plot along the x axis, or, if y is missing, along the y axis
 #' @param y object to plot along the y axis, or missing
@@ -47,14 +47,14 @@ make_unit_label = function(lab, u,
 #' @export
 #' @examples
 #' oldpar = par(mar = par("mar") + c(0, .3, 0, 0))
-#' displacement = mtcars$disp * ud_units[["in"]]^3
+#' displacement = mtcars$disp * as_units("in")^3
 #' # an example that would break if parse were (default) TRUE, since 'in' is a reserved word:
 #' units_options(parse=FALSE)
 #' make_unit_label("displacement", displacement)
 #' units_options(parse=TRUE)
-#' units(displacement) = with(ud_units, cm^3)
-#' weight = mtcars$wt * 1000 * with(ud_units, lb)
-#' units(weight) = with(ud_units, kg)
+#' units(displacement) = make_units(cm^3)
+#' weight = mtcars$wt * 1000 * make_units(lb)
+#' units(weight) = make_units(kg)
 #' plot(weight, displacement)
 #' units_options(group = c("(", ")") )  # parenthesis instead of square brackets
 #' plot(weight, displacement)
@@ -62,8 +62,8 @@ make_unit_label = function(lab, u,
 #' plot(weight, displacement)
 #' units_options(sep = c("~", "~~"), group = c("[", "]"))
 #' gallon = as_units("gallon")
-#' consumption = mtcars$mpg * with(ud_units, mi/gallon)
-#' units(consumption) = with(ud_units, km/l)
+#' consumption = mtcars$mpg * make_units(mi/gallon)
+#' units(consumption) = make_units(km/l)
 #' plot(displacement, consumption) # division in consumption
 #' units_options(negative_power = TRUE) # division becomes ^-1
 #' plot(displacement, consumption)
@@ -81,7 +81,7 @@ plot.units <- function(x, y, xlab = NULL, ylab = NULL, ...) {
   	y <- x
   	x <- seq_along(x)
     return(NextMethod("plot", x, y, xlab=xlab, ylab=ylab))
-  } 
+  }
   if (is.null(xlab)) {
     xlab <- make_unit_label(xlab0, x)
   }
@@ -92,11 +92,11 @@ plot.units <- function(x, y, xlab = NULL, ylab = NULL, ...) {
 }
 
 #' histogram for unit objects
-#' 
+#'
 #' histogram for unit objects
 #' @param x object of class units, for which we want to plot the histogram
 #' @param xlab character; x axis label
-#' @param main character; title of histogram 
+#' @param main character; title of histogram
 #' @param ... parameters passed on to \link{hist.default}
 #' @export
 #' @examples
@@ -114,11 +114,11 @@ hist.units <- function(x, xlab = NULL, main = paste("Histogram of", xname), ...)
 }
 
 #' boxplot for unit objects
-#' 
+#'
 #' boxplot for unit objects
 #' @param x object of class units, for which we want to plot the boxplot
 #' @param ... parameters passed on to \link{boxplot.default}
-#' @param horizontal logical indicating if the boxplots should be horizontal; 
+#' @param horizontal logical indicating if the boxplots should be horizontal;
 #' default FALSE means vertical boxes.
 #' @export
 #' @examples

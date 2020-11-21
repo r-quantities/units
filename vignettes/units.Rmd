@@ -55,13 +55,9 @@ physical measurement units associated with them, in a similar way as
 
 ## Setting units, unit conversion
 
-Existing units are resolved from a database in the `units` package, called `ud_units`. We can see the first three elements of it by
-```{r}
-library(units)
-ud_units[1:3]
-```
 We can set units to numerical values by `set_units`:
 ```{r}
+library(units)
 (a <- set_units(runif(10),  m/s))
 ```
 the result, e.g. 
@@ -71,22 +67,12 @@ set_units(10, m/s)
 literally means "10 times 1 m divided by 1 s". In writing, the "1"
 values are omitted, and the multiplication is implicit.
 
-The `units` package comes with a list of over 3000 predefined units, 
-```{r}
-length(ud_units)
-```
-
-We can retrieve a single unit from the `ud_units` database by
-```{r}
-with(ud_units, km/h)
-```
-
 ### Unit conversion
 
 When conversion is meaningful, such as hours to seconds or meters to kilometers, conversion can be done explicitly by setting the units of a vector
 ```{r}
 b = a
-units(b) <- with(ud_units, km/h)
+units(b) <- make_units(km/h)
 b
 ```
 
@@ -112,17 +98,17 @@ Currently, powers are only supported for integer powers, so using `a ** 2.5` wou
 ### Unit simplification
 There are some basic simplification of units:
 ```{r}
-t <- with(ud_units, s)
+t <- make_units(s)
 a * t
 ```
 which also work when units need to be converted before they can be simplified:
 ```{r}
-t <- with(ud_units, min)
+t <- make_units(min)
 a * t
 ```
 Simplification to unit-less values gives the "1" as unit:
 ```{r}
-m <- with(ud_units, m)
+m <- make_units(m)
 a * t / m
 ```
 
@@ -150,7 +136,7 @@ sum(a)
 min(a)
 max(a)
 range(a)
-with(ud_units, min(m/s, km/h)) # converts to first unit:
+make_units(min(m/s, km/h)) # converts to first unit:
 ```
 
 ### Printing
@@ -224,7 +210,7 @@ can be defined as unit, and also parsed by `as_units`:
 ```
 udunits understands such string, and can convert them
 ```{r}
-y = 1:10 * with(ud_units, m^2/s)
+y = 1:10 * make_units(m^2/s)
 x + y
 ```
 Printing units in this form is done by
@@ -241,10 +227,10 @@ reserved word in R.)
 
 ```{r fig=TRUE}
 mar = par("mar") + c(0, .3, 0, 0)
-displacement = mtcars$disp * ud_units[["in"]]^3
-units(displacement) = with(ud_units, cm^3)
-weight = mtcars$wt * 1000 * with(ud_units, lb)
-units(weight) = with(ud_units, kg)
+displacement = mtcars$disp * as_units("in")^3
+units(displacement) = make_units(cm^3)
+weight = mtcars$wt * 1000 * make_units(lb)
+units(weight) = make_units(kg)
 par(mar = mar)
 plot(weight, displacement)
 ```
@@ -268,8 +254,8 @@ by modifying one of `units`'s global options using `units_options`:
 
 ```{r}
 gallon = as_units("gallon")
-consumption = mtcars$mpg * with(ud_units, mi/gallon)
-units(consumption) = with(ud_units, km/l)
+consumption = mtcars$mpg * make_units(mi/gallon)
+units(consumption) = make_units(km/l)
 par(mar = mar)
 plot(displacement, consumption) # division in consumption
 units_options(negative_power = TRUE) # division becomes ^-1

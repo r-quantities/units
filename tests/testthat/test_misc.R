@@ -62,7 +62,7 @@ test_that("parse_unit works", {
   u = as_units("kg m-2 s-1", implicit_exponents = TRUE)
   expect_equal(u, u0)
   J = as_units("J")
-  u0 = with(ud_units, kg*kg*kg*m*m*J/s/s/s/s/s)
+  u0 = make_units(kg*kg*kg*m*m*J/s/s/s/s/s)
   u = as_units("kg3 m2 s-5 J", implicit_exponents = TRUE)
   expect_equal(u, u0)
 })
@@ -74,22 +74,8 @@ test_that("deparse_unit works", {
   expect_equal(str, str0)
 })
 
-test_that("we can provide a symbol to as_units and make it look in ud_units", {
-  skip("skipping as_units() tests")
-  five_ha <- as_units(5, ha) # ha pulled from ud_units
-  expect_equal(as.numeric(five_ha), 5)
-  expect_equal(units(five_ha), units(ud_units$ha))
-
-  ha <- as_units("m") # make sure that user-defined units overrule
-  five_ha <- as_units(5, ha) # ha pulled from ud_units
-  expect_equal(as.numeric(five_ha), 5)
-  expect_equal(units(five_ha), units(ud_units$m))
-
-})
-
-test_that("set_units(x, u) is a short form for x * with(ud_units, u)", {
-  skip("ud_units not necessary")
-  expect_equal(set_units(1:10, m/s), 1:10 * with(ud_units, m/s)) # not identical - why?
+test_that("set_units(x, u) is a short form for x * make_units(u)", {
+  expect_equal(set_units(1:10, m/s), 1:10 * make_units(m/s))
   x = set_units(1:5, m/s)
   y = x
   units(y) = set_units(1, km/h)

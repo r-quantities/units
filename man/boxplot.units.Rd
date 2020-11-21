@@ -11,7 +11,7 @@
 
 \item{...}{parameters passed on to \link{boxplot.default}}
 
-\item{horizontal}{logical indicating if the boxplots should be horizontal; 
+\item{horizontal}{logical indicating if the boxplots should be horizontal;
 default FALSE means vertical boxes.}
 }
 \description{
