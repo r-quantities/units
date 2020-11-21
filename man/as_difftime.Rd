@@ -14,8 +14,8 @@ convert units object into difftime object
 }
 \examples{
 
-t1 = Sys.time() 
-t2 = t1 + 3600 
+t1 = Sys.time()
+t2 = t1 + 3600
 d = t2 - t1
 du <- as_units(d)
 dt = as_difftime(du)

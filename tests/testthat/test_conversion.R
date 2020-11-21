@@ -5,7 +5,7 @@ test_that("we can convert numbers to unit-less units", {
   expect_equal(length(x), 4)
   expect_equal(class(x), "units")
   expect_equal(as.numeric(x), 1:4)
-  
+
   y <- 1:4
   units(y) <- unitless
   expect_equal(x, y)
@@ -18,11 +18,11 @@ test_that("we can convert numbers to physical units", {
   expect_equal(class(x), "units")
   expect_equal(as.character(units(x)), "m")
   expect_equal(as.numeric(x), 1:4)
-  
+
   y <- 1:4
   units(y) <- m
   expect_equal(x, y)
-  
+
   z <- 1:4 / m
   expect_equal(length(z), 4)
   expect_equal(class(z), "units")
@@ -78,7 +78,7 @@ test_that("we can convert difftime objects to units", {
   d <- s - (s + 1)
   x <- as_units(d)
   expect_equal(as.numeric(x), as.numeric(d))
-  
+
   week <- as.difftime(1, units = "weeks")
   units_week <- as_units(week)
   expect_equal(as.character(units(units_week)), "d")
@@ -90,7 +90,7 @@ test_that("we can convert units objects to difftime objects", {
   d <- s - (s + 1)
   x <- as_units(d)
   y <- as_difftime(x)
-  
+
   expect_equal(d, y)
 })
 
@@ -100,7 +100,7 @@ test_that("we can convert units objects to difftime objects", {
 #  d <- as.hms(s - (s + 1))
 #  x <- as_units(d)
 #  y <- as.hms(x)
-#  
+#
 #  expect_equal(d, y)
 #})
 
@@ -122,9 +122,9 @@ test_that("m + m*s is an error", {
 test_that("we can convert between units that are not simply a scalar from each other", {
   m <- 0 * as_units("degC")
   units(m) <- as_units("degK")
-  expect_equal(as.numeric(m), units:::ud_convert(0, "degC", "degK"))  
+  expect_equal(as.numeric(m), units:::ud_convert(0, "degC", "degK"))
   expect_equal(as.character(units(m)), "K")
-  
+
   temp <- 75 * as_units('degF')
   units(temp) <- as_units('degK')
   result <- temp / as_units('degF')
@@ -134,7 +134,7 @@ test_that("we can convert between units that are not simply a scalar from each o
 
 test_that("dim propagates", {
   y = x = set_units(matrix(1:4,2), m)
-  units(y) = make_unit("mm")
+  units(y) = as_units("mm")
   expect_equal(dim(x), dim(y))
 })
 
@@ -175,7 +175,7 @@ test_that("new base units work", {
   install_symbolic_unit("person", dimensionless = FALSE)
   expect_equal(set_units(1, person) + set_units(1, kperson), set_units(1001, person))
   expect_error(set_units(1, person) + set_units(1, rad), "cannot convert")
-  
+
   # restore
   remove_symbolic_unit("person")
 })
@@ -183,7 +183,7 @@ test_that("new base units work", {
 test_that("errors are correctly coerced to a data frame", {
   a <- 1:10
   b <- a * as_units("m")
-  
+
   expect_equal(as.data.frame(b)$b, b)
   x <- data.frame(a, b)
   expect_equal(x$a, a)

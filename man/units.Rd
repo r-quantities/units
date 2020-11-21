@@ -107,7 +107,7 @@ A number of functions are provided for handling unit objects.
     \item \code{make_units}, constructs units from bare expressions.
     \code{make_units(m/s)} is equivalent to \code{as_units(quote(m/s))}.
     \item \code{set_units}, a pipe-friendly version of \code{`units<-`}. By
-    default it operates with bare expressions like \code{make_unit}, but this
+    default it operates with bare expressions, but this
     behavior can be disabled by a specifying \code{mode = "standard"} or setting
     \code{units_options(set_units_mode = "standard")}.
 }
