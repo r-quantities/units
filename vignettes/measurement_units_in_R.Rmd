@@ -269,9 +269,8 @@ library(units)
 x = set_units(1:5, m/s)
 str(x)
 ```
-represents speed values in `m/s`. The units `m` and `s` are retrieved
-from the `ud_units` database, which is part of [units](https://cran.r-project.org/package=units), and was
-derived from the xml units database that is part of udunits2 C library. 
+represents speed values in `m/s`. The units `m` and `s` are resolved
+from the udunits2 C library (but could be user-defined units).
 
 Units can be used in arbitrary R expressions like
 ```{r}
