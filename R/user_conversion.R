@@ -106,7 +106,7 @@ remove_unit <- function(symbol=character(0), name=character(0)) {
 #' \code{install_conversion_constant} or \code{install_conversion_offset} directly.ç
 #'
 #' @export
-install_symbolic_unit <- function(name, warn = TRUE, dimensionless = TRUE) {
+install_symbolic_unit <- function(name, warn = TRUE, dimensionless = TRUE) {# nocov start
   .Deprecated("install_unit")
   check_unit_format(name)
 
@@ -121,14 +121,14 @@ install_symbolic_unit <- function(name, warn = TRUE, dimensionless = TRUE) {
   R_ut_map_name_to_unit(name, ut_unit)
 
   invisible(NULL)
-}
+}# nocov end
 
 #' @export
 #' @rdname install_symbolic_unit
-remove_symbolic_unit <- function(name) {
+remove_symbolic_unit <- function(name) {# nocov start
   .Deprecated("remove_unit")
 	remove_unit(name=name)
-}
+}# nocov end
 
 #' Install a conversion constant or offset between user-defined units.
 #'
@@ -148,7 +148,7 @@ remove_symbolic_unit <- function(name) {
 #'   multiplying by a constant, or adding a constant.
 #'
 #' @export
-install_conversion_constant <- function(from, to, const) {
+install_conversion_constant <- function(from, to, const) {# nocov start
   .Deprecated("install_unit")
   stopifnot(is.finite(const), const != 0.0)
   if (! xor(ud_is_parseable(from), ud_is_parseable(to)))
@@ -157,11 +157,11 @@ install_conversion_constant <- function(from, to, const) {
     R_ut_scale(check_unit_format(from), to, as.double(const))
   else
     R_ut_scale(check_unit_format(to), from, 1.0 / as.double(const))
-}
+}# nocov end
 
 #' @export
 #' @name install_conversion_constant
-install_conversion_offset <- function(from, to, const) {
+install_conversion_offset <- function(from, to, const) {# nocov start
   .Deprecated("install_unit")
   stopifnot(is.finite(const))
   if (! xor(ud_is_parseable(from), ud_is_parseable(to)))
@@ -170,9 +170,9 @@ install_conversion_offset <- function(from, to, const) {
     R_ut_offset(check_unit_format(from), to, -as.double(const))
   else
     R_ut_offset(check_unit_format(to), from, as.double(const))
-}
+}# nocov end
 
-check_unit_format <- function(x) {
+check_unit_format <- function(x) {# nocov start
   cond <- c(
     # leading and trailing numbers
     grepl("^[[:space:]]*[0-9]+", x), grepl("[0-9]+[[:space:]]*$", x),
@@ -187,4 +187,4 @@ check_unit_format <- function(x) {
          "  - arithmetic operators\n",
          "  - intermediate white spaces")
   x
-}
+}# nocov end
