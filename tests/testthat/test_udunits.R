@@ -14,6 +14,10 @@ test_that("udunits low-level functions work", {
   expect_equal(set_units(set_units(1, kg), foo), set_units(11, foo))
   remove_unit(name="foo")
 
+  u = units:::R_ut_scale("foo", "kg", 2)
+  expect_equal(set_units(set_units(2, kg), foo), set_units(1, foo))
+  remove_unit(name="foo")
+
   expect_silent(units:::R_ut_divide(a, b))
   expect_silent(units:::R_ut_multiply(a, b))
   expect_silent(units:::R_ut_invert(a))

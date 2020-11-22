@@ -23,8 +23,13 @@ test_that("we can convert between units with a user-defined function", {
   bananas <- 6 * as_units("banana")
   expect_equal(bananas + 3 * apples, (6 + 3 * 2 / 3) * as_units("banana"))
 
+  # check dimensionless
+  install_unit("person", "unitless")
+  persons <- set_units(3, person)
+  expect_equal(persons, set_units(3, 1))
+
   # restore
-  remove_unit(c("orange", "apple", "banana"))
+  remove_unit(c("orange", "apple", "banana", "person"))
 })
 
 test_that("we can simplify via user-defined units", {
