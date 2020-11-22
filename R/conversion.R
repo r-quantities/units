@@ -142,7 +142,7 @@ as.data.frame.units <- function(x, row.names = NULL, optional = FALSE, ...) {
 
 #' @export
 as.list.units <- function(x, ...)
-  mapply(set_units, unclass(x), x, mode="standard", SIMPLIFY=FALSE)
+  lapply(NextMethod(), set_units, units(x), mode="standard")
 
 #' convert units object into difftime object
 #'

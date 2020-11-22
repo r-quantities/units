@@ -15,7 +15,10 @@ remove_symbolic_unit(name)
 \item{warn}{warns if the supplied unit symbol is already a valid unit symbol
 recognized by udunits.}
 
-\item{dimensionless}{logical; if \code{TRUE}, a new dimensionless unit is created, if \code{FALSE} a new base unit is created. Dimensionless units are convertible to other dimensionless units (such as \code{rad}), new base units are not convertible to other existing units.}
+\item{dimensionless}{logical; if \code{TRUE}, a new dimensionless unit is
+created, if \code{FALSE} a new base unit is created. Dimensionless units are
+convertible to other dimensionless units (such as \code{rad}), new base units
+are not convertible to other existing units.}
 }
 \description{
 Adding a symbolic unit allows it to be used in \code{as_units},
@@ -23,12 +26,8 @@ Adding a symbolic unit allows it to be used in \code{as_units},
 unit is already known by udunits.
 }
 \details{
-\code{install_symbolic_unit} installs a new dimensionless unit; these are directly compatible to any other dimensionless unit. To install a new unit that is a scaled or shifted version of an existing unit, use \code{install_conversion_constant} or \code{install_conversion_offset} directly.
-}
-\examples{
-install_symbolic_unit("person")
-set_units(1, rad) + set_units(1, person) # that is how dimensionless units work!
-}
-\seealso{
-\code{\link{install_conversion_constant}}, \code{\link{install_conversion_offset}}
+\code{install_symbolic_unit} installs a new dimensionless unit;
+these are directly compatible to any other dimensionless unit. To install a
+new unit that is a scaled or shifted version of an existing unit, use
+\code{install_conversion_constant} or \code{install_conversion_offset} directly.ç
 }
