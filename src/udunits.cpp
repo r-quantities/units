@@ -16,14 +16,16 @@
 # include <udunits2.h>
 #endif
 
+extern "C" {
+  void r_error_fn(const char* fmt, va_list args) {
+    char buf[256];
+    vsprintf(buf, fmt, args);
+    Rf_error(buf);
+  }
+}
+
 using namespace Rcpp;
 typedef XPtr<ut_unit, PreserveStorage, ut_free, true> XPtrUT;
-
-void r_error_fn(const char* fmt, va_list args) {
-  char buf[256];
-  vsprintf(buf, fmt, args);
-  stop(buf);
-}
 
 static ut_system *sys = NULL;
 static ut_encoding enc = UT_UTF8;

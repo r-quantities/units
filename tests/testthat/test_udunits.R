@@ -10,11 +10,11 @@ test_that("udunits low-level functions work", {
   b <- units:::R_ut_parse("g")
   expect_error(units:::R_convert_doubles(a, b, 1:10), "not convertible")
 
-  u = units:::R_ut_offset("foo", "kg", -10)
+  units:::R_ut_offset("foo", "kg", -10)
   expect_equal(set_units(set_units(1, kg), foo), set_units(11, foo))
   remove_unit(name="foo")
 
-  u = units:::R_ut_scale("foo", "kg", 2)
+  units:::R_ut_scale("foo", "kg", 2)
   expect_equal(set_units(set_units(2, kg), foo), set_units(1, foo))
   remove_unit(name="foo")
 
