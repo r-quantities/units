@@ -22,5 +22,4 @@ ud_are_convertible("m", "km")
 a <- set_units(1:3, m/s)
 ud_are_convertible(units(a), "km/h")
 ud_are_convertible("s", "kg")
-
 }
