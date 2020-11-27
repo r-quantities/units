@@ -211,3 +211,13 @@ test_that("NA as units generate warnings", {
   expect_error(set_units(NA_real_, NA_character_, mode="standard"), "a missing value for units is not allowed")
   expect_error(set_units(NA_real_, NA, mode="standard"), "a missing value for units is not allowed")
 })
+
+test_that("ud_are_convertible return the expected value", {
+  x <- 1:10 * as_units("m")
+  expect_is(ud_are_convertible("m", "km"), "logical")
+  expect_true(ud_are_convertible("m", "km"))
+  expect_true(ud_are_convertible(units(x), "km"))
+  expect_false(ud_are_convertible("s", "kg"))
+
+})
+

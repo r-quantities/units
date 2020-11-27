@@ -1,3 +1,7 @@
+# development version
+
+* export `ud_are_convertible` , #258 @cregouby
+
 # version 0.7-0
 
 * add `load_units_xml` to enable database reloading as well as loading
