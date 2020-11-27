@@ -1,7 +1,9 @@
 #' Test if two units are convertible
 #'
-#' @param u1 string, the first unit
-#' @param u2 string, the second unit
+#' Test if two units are convertible, though direct interface with UDUNITS-2.
+#'
+#' @param u1 String or object of class \code{symbolic_units}, for the symbol of the first unit.
+#' @param u2 String or object of class \code{symbolic_units}, for the symbol of the second unit.
 #'
 #' @return boolean, \code{TRUE} if both units are convertible.
 #' @export

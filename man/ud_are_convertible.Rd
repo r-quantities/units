@@ -7,15 +7,15 @@
 ud_are_convertible(u1, u2)
 }
 \arguments{
-\item{u1}{string, the first unit}
+\item{u1}{String or object of class \code{symbolic_units}, for the symbol of the first unit.}
 
-\item{u2}{string, the second unit}
+\item{u2}{String or object of class \code{symbolic_units}, for the symbol of the second unit.}
 }
 \value{
 boolean, \code{TRUE} if both units are convertible.
 }
 \description{
-Test if two units are convertible
+Test if two units are convertible, though direct interface with UDUNITS-2.
 }
 \examples{
 ud_are_convertible("m", "km")
