@@ -4,18 +4,22 @@
 \alias{ud_are_convertible}
 \title{Test if two units are convertible}
 \usage{
-ud_are_convertible(u1, u2)
+ud_are_convertible(x, y)
 }
 \arguments{
-\item{u1}{String or object of class \code{symbolic_units}, for the symbol of the first unit.}
+\item{x}{character or object of class \code{symbolic_units}, for the symbol
+of the first unit.}
 
-\item{u2}{String or object of class \code{symbolic_units}, for the symbol of the second unit.}
+\item{y}{character or object of class \code{symbolic_units}, for the symbol
+of the second unit.}
 }
 \value{
-boolean, \code{TRUE} if both units are convertible.
+boolean, \code{TRUE} if both units exist and are convertible.
 }
 \description{
-Test if two units are convertible, though direct interface with UDUNITS-2.
+Parses and checks whether units can be converted by UDUNITS-2. Units may not
+be convertible either because they are different magnitudes or because one
+(or both) units are not defined in the database.
 }
 \examples{
 ud_are_convertible("m", "km")
