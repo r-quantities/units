@@ -3,6 +3,8 @@
 * add `load_units_xml` to enable database reloading as well as loading
   user-provided unit systems; #254 addressing #243, #244
 
+* export `ud_are_convertible`; #263 addressing #258 @cregouby
+
 * remove deprecations: `as.units`, `as_cf`, `make_unit`, `parse_unit`; #259
 
 * remove deprecated pre-computed `ud_units` database; #259

@@ -1,6 +1,25 @@
-ud_are_convertible = function(u1, u2) {
-	res <- try(R_ut_are_convertible(R_ut_parse(as.character(u1)), R_ut_parse(as.character(u2))),
-		silent = TRUE)
+#' Test if two units are convertible
+#'
+#' Parses and checks whether units can be converted by UDUNITS-2. Units may not
+#' be convertible either because they are different magnitudes or because one
+#' (or both) units are not defined in the database.
+#'
+#' @param x character or object of class \code{symbolic_units}, for the symbol
+#' of the first unit.
+#' @param y character or object of class \code{symbolic_units}, for the symbol
+#' of the second unit.
+#'
+#' @return boolean, \code{TRUE} if both units exist and are convertible.
+#' @export
+#'
+#' @examples
+#' ud_are_convertible("m", "km")
+#' a <- set_units(1:3, m/s)
+#' ud_are_convertible(units(a), "km/h")
+#' ud_are_convertible("s", "kg")
+ud_are_convertible = function(x, y) {
+	res <- try(R_ut_are_convertible(
+	  R_ut_parse(as.character(x)), R_ut_parse(as.character(y))), silent = TRUE)
 	! inherits(res, "try-error") && res
 }
 
