@@ -51,23 +51,34 @@ You may also look at the \code{<def>} elements in the units database to see
 examples of string unit specifications.
 }
 \examples{
-# one orange is worth two apples
-install_unit("apple")
-install_unit("orange", "2 apple")
-apples <- 2 * as_units("apple")
-oranges <- 1 * as_units("orange")
-apples + oranges
-oranges + apples
+# define a fortnight
+install_unit("fn", "2 week", "fortnight")
+year <- as_units("year")
+set_units(year, fn)        # by symbol
+set_units(year, fortnight) # by name
+# clean up
+remove_unit("fn", "fortnight")
 
-# a new name for meter
-install_unit(name="newmeter", def="meter")
-m = set_units(1:3, meter)
-n = set_units(1:3, newmeter)
-m + n
-n + m
+# working with currencies
+install_unit("dollar")
+install_unit("euro", "1.22 dollar")
+install_unit("yen", "0.0079 euro")
+set_units(as_units("dollar"), yen)
+# clean up
+remove_unit(c("dollar", "euro", "yen"))
 
-# this is how dimensionless units work!
-install_unit("person", "unitless")
-set_units(1, rad) + set_units(1, person)
+# an example from microbiology
+cfu_symbols <- c("CFU", "cfu")
+cfu_names <- c("colony_forming_unit", "ColonyFormingUnit")
+install_unit("cell")
+install_unit(cfu_symbols, "3.4 cell", cfu_names)
+cell <- set_units(2.5e5, cell)
+vol <- set_units(500, ul)
+set_units(cell/vol, "cfu/ml")
+set_units(cell/vol, "CFU/ml")
+set_units(cell/vol, "colony_forming_unit/ml")
+set_units(cell/vol, "ColonyFormingUnit/ml")
+# clean up
+remove_unit(c("cell", cfu_symbols), cfu_names)
 
 }
