@@ -13,8 +13,8 @@ R_ut_parse <- function(name) {
     .Call('_units_R_ut_parse', PACKAGE = 'units', name)
 }
 
-R_ut_get_dimensionless_unit_one <- function(name) {
-    .Call('_units_R_ut_get_dimensionless_unit_one', PACKAGE = 'units', name)
+R_ut_get_dimensionless_unit_one <- function() {
+    .Call('_units_R_ut_get_dimensionless_unit_one', PACKAGE = 'units')
 }
 
 R_ut_are_convertible <- function(a, b) {
@@ -25,16 +25,12 @@ R_convert_doubles <- function(from, to, val) {
     .Call('_units_R_convert_doubles', PACKAGE = 'units', from, to, val)
 }
 
-R_ut_new_dimensionless_unit <- function(name) {
-    invisible(.Call('_units_R_ut_new_dimensionless_unit', PACKAGE = 'units', name))
+R_ut_new_dimensionless_unit <- function() {
+    .Call('_units_R_ut_new_dimensionless_unit', PACKAGE = 'units')
 }
 
-R_ut_new_base_unit <- function(name) {
-    invisible(.Call('_units_R_ut_new_base_unit', PACKAGE = 'units', name))
-}
-
-R_ut_remove_unit <- function(name) {
-    invisible(.Call('_units_R_ut_remove_unit', PACKAGE = 'units', name))
+R_ut_new_base_unit <- function() {
+    .Call('_units_R_ut_new_base_unit', PACKAGE = 'units')
 }
 
 R_ut_scale <- function(nw, old, d) {
@@ -86,6 +82,18 @@ R_ut_get_name <- function(ustr) {
 }
 
 R_ut_map_name_to_unit <- function(name, inunit) {
-    .Call('_units_R_ut_map_name_to_unit', PACKAGE = 'units', name, inunit)
+    invisible(.Call('_units_R_ut_map_name_to_unit', PACKAGE = 'units', name, inunit))
+}
+
+R_ut_unmap_name_to_unit <- function(name) {
+    invisible(.Call('_units_R_ut_unmap_name_to_unit', PACKAGE = 'units', name))
+}
+
+R_ut_map_symbol_to_unit <- function(name, inunit) {
+    invisible(.Call('_units_R_ut_map_symbol_to_unit', PACKAGE = 'units', name, inunit))
+}
+
+R_ut_unmap_symbol_to_unit <- function(name) {
+    invisible(.Call('_units_R_ut_unmap_symbol_to_unit', PACKAGE = 'units', name))
 }
 

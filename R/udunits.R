@@ -24,11 +24,10 @@ ud_are_convertible = function(x, y) {
 }
 
 ud_get_symbol = function(u) {
-	sy = R_ut_get_symbol(u)
-	if (sy == "")
-		R_ut_get_name(u)
-	else
-		sy
+	sym = R_ut_get_symbol(u)
+	if (!length(sym))
+		sym = R_ut_get_name(u)
+	sym
 }
 
 ud_is_parseable = function(u) {

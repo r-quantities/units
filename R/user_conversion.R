@@ -1,3 +1,102 @@
+#' Define or remove units
+#'
+#' Installing new symbols and/or names allows them to be used in \code{as_units},
+#' \code{make_units} and \code{set_units}. Optionally, a relationship can be
+#' defined between such symbols/names and existing ones (see details and examples).
+#'
+#' At least one symbol or name is expected, but multiple symbols and/or names
+#' can be installed (and thus mapped to the same unit) or removed at the same
+#' time. The \code{def} argument enables arbitrary relationships with existing
+#' units using UDUNITS-2 syntax:
+#' \tabular{llll}{
+#'   \strong{String Type} \tab \strong{Using Names} \tab \strong{Using Symbols}
+#'     \tab \strong{Comment}\cr
+#'   Simple \tab meter \tab m \tab \cr
+#'   Raised \tab meter^2 \tab m2 \tab
+#'     higher precedence than multiplying or dividing\cr
+#'   Product \tab newton meter \tab N.m \tab \cr
+#'   Quotient \tab meter per second \tab m/s \tab \cr
+#'   Scaled \tab 60 second \tab 60 s \tab \cr
+#'   Prefixed \tab kilometer \tab km \tab \cr
+#'   Offset \tab kelvin from 273.15 \tab K @ 273.15 \tab
+#'     lower precedence than multiplying or dividing\cr
+#'   Logarithmic \tab lg(re milliwatt) \tab lg(re mW) \tab
+#'     "lg" is base 10, "ln" is base e, and "lb" is base 2\cr
+#'   Grouped \tab (5 meter)/(30 second) \tab (5 m)/(30 s) \tab
+#' }
+#' The above may be combined, e.g., \code{"0.1 lg(re m/(5 s)^2) @ 50"}.
+#' You may also look at the \code{<def>} elements in the units database to see
+#' examples of string unit specifications.
+#'
+#' @param symbol a vector of symbols to be installed/removed.
+#' @param def either \itemize{
+#'   \item an empty definition, which defines a new base unit;
+#'   \item \code{"unitless"}, which defines a new dimensionless unit;
+#'   \item a relationship with existing units (see details for the syntax).
+#' }
+#' @param name a vector of names to be installed/removed.
+#'
+#' @examples
+#' # define a fortnight
+#' install_unit("fn", "2 week", "fortnight")
+#' year <- as_units("year")
+#' set_units(year, fn)        # by symbol
+#' set_units(year, fortnight) # by name
+#' # clean up
+#' remove_unit("fn", "fortnight")
+#'
+#' # working with currencies
+#' install_unit("dollar")
+#' install_unit("euro", "1.22 dollar")
+#' install_unit("yen", "0.0079 euro")
+#' set_units(as_units("dollar"), yen)
+#' # clean up
+#' remove_unit(c("dollar", "euro", "yen"))
+#'
+#' # an example from microbiology
+#' cfu_symbols <- c("CFU", "cfu")
+#' cfu_names <- c("colony_forming_unit", "ColonyFormingUnit")
+#' install_unit("cell")
+#' install_unit(cfu_symbols, "3.4 cell", cfu_names)
+#' cell <- set_units(2.5e5, cell)
+#' vol <- set_units(500, ul)
+#' set_units(cell/vol, "cfu/ml")
+#' set_units(cell/vol, "CFU/ml")
+#' set_units(cell/vol, "colony_forming_unit/ml")
+#' set_units(cell/vol, "ColonyFormingUnit/ml")
+#' # clean up
+#' remove_unit(c("cell", cfu_symbols), cfu_names)
+#'
+#' @export
+install_unit <- function(symbol=character(0), def=character(0), name=character(0)) {
+  stopifnot(is.character(def), length(def) < 2)
+  stopifnot(is.character(symbol), is.character(name))
+  if (!length(symbol) && !length(name))
+    stop("at least one symbol or name must be specified")
+
+  if (!length(def)) {
+    ut_unit <- R_ut_new_base_unit()
+  } else if (identical(def, "unitless")) {
+    ut_unit <- R_ut_new_dimensionless_unit()
+  } else {
+    ut_unit <- R_ut_parse(def)
+  }
+
+  R_ut_map_symbol_to_unit(symbol, ut_unit)
+  R_ut_map_name_to_unit(name, ut_unit)
+}
+
+#' @rdname install_unit
+#' @export
+remove_unit <- function(symbol=character(0), name=character(0)) {
+  stopifnot(is.character(symbol), is.character(name))
+  if (!length(symbol) && !length(name))
+    stop("at least one symbol or name must be specified")
+
+  R_ut_unmap_symbol_to_unit(symbol)
+  R_ut_unmap_name_to_unit(name)
+}
+
 #' Define new symbolic units
 #'
 #' Adding a symbolic unit allows it to be used in \code{as_units},
@@ -7,64 +106,61 @@
 #' @param name a length 1 character vector that is the unit name or symbol.
 #' @param warn warns if the supplied unit symbol is already a valid unit symbol
 #'   recognized by udunits.
-#' @param dimensionless logical; if \code{TRUE}, a new dimensionless unit is created, if \code{FALSE} a new base unit is created. Dimensionless units are convertible to other dimensionless units (such as \code{rad}), new base units are not convertible to other existing units.
+#' @param dimensionless logical; if \code{TRUE}, a new dimensionless unit is
+#' created, if \code{FALSE} a new base unit is created. Dimensionless units are
+#' convertible to other dimensionless units (such as \code{rad}), new base units
+#' are not convertible to other existing units.
 #'
-#' @details \code{install_symbolic_unit} installs a new dimensionless unit; these are directly compatible to any other dimensionless unit. To install a new unit that is a scaled or shifted version of an existing unit, use \code{install_conversion_constant} or \code{install_conversion_offset} directly.
+#' @details \code{install_symbolic_unit} installs a new dimensionless unit;
+#' these are directly compatible to any other dimensionless unit. To install a
+#' new unit that is a scaled or shifted version of an existing unit, use
+#' \code{install_conversion_constant} or \code{install_conversion_offset} directly.ç
+#'
 #' @export
-#' @rdname install_symbolic_unit
-#' @seealso \code{\link{install_conversion_constant}}, \code{\link{install_conversion_offset}}
-#' @examples
-#' install_symbolic_unit("person")
-#' set_units(1, rad) + set_units(1, person) # that is how dimensionless units work!
-install_symbolic_unit <- function(name, warn = TRUE, dimensionless = TRUE) {
+install_symbolic_unit <- function(name, warn = TRUE, dimensionless = TRUE) {# nocov start
+  .Deprecated("install_unit")
   check_unit_format(name)
+
   if(ud_is_parseable(name)) {
-    if (warn) 
-      warning(sQuote(name), 
-	    " is already a valid unit recognized by udunits; removing and reinstalling.")
+    if (warn) warning(
+      sQuote(name), " is already a valid unit recognized by udunits; removing and reinstalling.")
     remove_symbolic_unit(name)
   }
-  if (dimensionless)
-  	R_ut_new_dimensionless_unit(name)
-  else
-  	R_ut_new_base_unit(name)
-}
+
+  ut_unit <- if (dimensionless)
+    R_ut_new_dimensionless_unit() else R_ut_new_base_unit()
+  R_ut_map_name_to_unit(name, ut_unit)
+
+  invisible(NULL)
+}# nocov end
 
 #' @export
 #' @rdname install_symbolic_unit
-remove_symbolic_unit <- function(name) {
-	R_ut_remove_unit(name)
-}
+remove_symbolic_unit <- function(name) {# nocov start
+  .Deprecated("remove_unit")
+	remove_unit(name=name)
+}# nocov end
 
 #' Install a conversion constant or offset between user-defined units.
-#' 
-#' @description Tells the \code{units} package how to convert between units that
-#'   have a linear relationship, i.e. can be related on the form \eqn{y = \alpha
-#'   x} (constant) or \eqn{y = \alpha + x} (offset).
-#'   
+#'
+#' Tells the \code{units} package how to convert between units that
+#' have a linear relationship, i.e. can be related on the form \eqn{y = \alpha
+#' x} (constant) or \eqn{y = \alpha + x} (offset).
+#'
 #' @param from    String for the symbol of the unit being converted from.
-#' @param to      String for the symbol of the unit being converted to. One of \code{from} and \code{to} must be an existing unit name.
+#' @param to      String for the symbol of the unit being converted to. One of
+#' \code{from} and \code{to} must be an existing unit name.
 #' @param const   The constant \eqn{\alpha} in the conversion.
-#'   
-#' @details This function handles the very common case where units are related 
-#'   through a linear function, that is, you can convert from one to the other 
+#'
+#' @details This function handles the very common case where units are related
+#'   through a linear function, that is, you can convert from one to the other
 #'   as \eqn{y = \alpha x}. Using this function, you specify that you
-#'   can go from values of type \code{from} to values of type \code{to} by 
+#'   can go from values of type \code{from} to values of type \code{to} by
 #'   multiplying by a constant, or adding a constant.
-#'   
-#' @examples 
-#' 
-#' # one orange is worth two apples
-#' install_symbolic_unit("orange")
-#' install_conversion_constant("orange", "apple", 2) # apple = 2 * orange
-#' apples <- 2 * as_units("apple")
-#' oranges <- 1 * as_units("orange")
-#' apples + oranges
-#' oranges + apples
-#' 
+#'
 #' @export
-#' @seealso \code{\link{install_symbolic_unit}}, \code{\link{remove_symbolic_unit}}
-install_conversion_constant <- function(from, to, const) {
+install_conversion_constant <- function(from, to, const) {# nocov start
+  .Deprecated("install_unit")
   stopifnot(is.finite(const), const != 0.0)
   if (! xor(ud_is_parseable(from), ud_is_parseable(to)))
     stop("exactly one of (from, to) must be a known unit")
@@ -72,17 +168,12 @@ install_conversion_constant <- function(from, to, const) {
     R_ut_scale(check_unit_format(from), to, as.double(const))
   else
     R_ut_scale(check_unit_format(to), from, 1.0 / as.double(const))
-}
+}# nocov end
 
 #' @export
-#' @name install_conversion_constant 
-#' @examples
-#' install_conversion_offset("meter", "newmeter", 1)
-#' m = set_units(1:3, meter)
-#' n = set_units(1:3, newmeter)
-#' m + n
-#' n + m
-install_conversion_offset <- function(from, to, const) {
+#' @name install_conversion_constant
+install_conversion_offset <- function(from, to, const) {# nocov start
+  .Deprecated("install_unit")
   stopifnot(is.finite(const))
   if (! xor(ud_is_parseable(from), ud_is_parseable(to)))
     stop("exactly one of (from, to) must be a known unit")
@@ -90,9 +181,9 @@ install_conversion_offset <- function(from, to, const) {
     R_ut_offset(check_unit_format(from), to, -as.double(const))
   else
     R_ut_offset(check_unit_format(to), from, as.double(const))
-}
+}# nocov end
 
-check_unit_format <- function(x) {
+check_unit_format <- function(x) {# nocov start
   cond <- c(
     # leading and trailing numbers
     grepl("^[[:space:]]*[0-9]+", x), grepl("[0-9]+[[:space:]]*$", x),
@@ -107,4 +198,4 @@ check_unit_format <- function(x) {
          "  - arithmetic operators\n",
          "  - intermediate white spaces")
   x
-}
+}# nocov end

@@ -172,12 +172,12 @@ test_that("units.symbolic_units works", {
 })
 
 test_that("new base units work", {
-  install_symbolic_unit("person", dimensionless = FALSE)
+  install_unit("person")
   expect_equal(set_units(1, person) + set_units(1, kperson), set_units(1001, person))
   expect_error(set_units(1, person) + set_units(1, rad), "cannot convert")
 
   # restore
-  remove_symbolic_unit("person")
+  remove_unit("person")
 })
 
 test_that("errors are correctly coerced to a data frame", {
