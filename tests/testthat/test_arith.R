@@ -130,6 +130,13 @@ test_that("we can compute powers if the result is an integer", {
   expect_error(set_units(1:10, m^3) ^ -1.5, "powers not divisible")
 })
 
+test_that("we can undo logatithms", {
+  x <- set_units(1:5, m^2)
+  expect_equal(exp(10^log10(log(x))), x)
+  expect_equal(expm1(3^log(log1p(x), base=3)), x)
+  expect_error(exp(log10(x)), "wrong base in power operation")
+})
+
 test_that("%*%, %/% and %% work", {
   a = set_units(1:5, m)
   expect_equal(a %/% set_units(2, m), set_units(c(0,1,1,2,2)))

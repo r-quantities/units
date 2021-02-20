@@ -6,13 +6,13 @@
 #'
 #' @param x object of class units
 #' @param ... parameters passed on to the Math functions
-#' 
+#'
 #' @details Logarithms receive a special treatment by the underlying \pkg{udunits2}
 #' library. If a natural logarithm is applied to some \code{unit}, the result is
 #' \code{ln(re 1 unit)}, which means \emph{natural logarithm referenced to
 #' \code{1 unit}}. For base 2 and base 10 logarithms, the output \code{lb(...)}
 #' and \code{lg(...)} respectively instead of \code{ln(...)}.
-#' 
+#'
 #' This is particularly important for some units that are typically expressed in
 #' a logarithmic scale (i.e., \emph{bels}, or, more commonly, \emph{decibels}),
 #' such as Watts or Volts. For some of these units, the default \pkg{udunits2}
@@ -21,21 +21,21 @@
 #' \code{lg(re 0.001 W)}; \code{BV} is an alias of \code{lg(re 1 V)} (bel-Volts),
 #' and so on and so forth (see the output of \code{valid_udunits()} for further
 #' reference).
-#' 
+#'
 #' Additionally, the \pkg{units} package defines \code{B}, the \emph{bel}, by
 #' default (because it is not defined by \pkg{udunits2}) as an alias of
 #' \code{lg(re 1)}, unless a user-provided XML database already contains a
 #' definition of \code{B}, or the \code{define_bel} option is set to \code{FALSE}
 #' (see \code{help(units_options)}).
-#' 
+#'
 #' @export
-#' 
+#'
 #' @examples
 #' # roundings, cummulative functions
 #' x <- set_units(sqrt(1:10), m/s)
 #' signif(x, 2)
 #' cumsum(x)
-#' 
+#'
 #' # trigonometry
 #' sin(x) # not meaningful
 #' x <- set_units(sqrt(1:10), rad)
@@ -44,7 +44,7 @@
 #' x <- set_units(seq(0, 1, 0.1), 1)
 #' asin(x)
 #' acos(x)
-#' 
+#'
 #' # logarithms
 #' x <- set_units(sqrt(1:10), W)
 #' log(x) # base exp(1)
@@ -56,14 +56,22 @@
 Math.units = function(x, ...) {
   if (.Generic == "sqrt")
     return(x^0.5)
-  
-  if (.Generic == "sign")	
+
+  if (.Generic == "exp")
+    return(exp(1)^x)
+
+  if (.Generic == "expm1") {
+    out <- exp(1)^x
+    return(out - set_units(1, units(out), mode="standard"))
+  }
+
+  if (.Generic == "sign")
     return(as.numeric(NextMethod()))
-  
+
   OK <- switch(.Generic, "abs" = , "sign" = , "floor" = , "ceiling" = , "log" = ,
-               "log1p" =, "trunc" = , "round" = , "signif" = , "cumsum" = , 
+               "log1p" =, "trunc" = , "round" = , "signif" = , "cumsum" = ,
                "cummax" = , "cummin" = TRUE, FALSE)
-  
+
   rad = units(as_units("rad"))
   deg = units(as_units("degree"))
   if (!OK && (units(x) == rad || units(x) == deg)) {
@@ -78,7 +86,7 @@ Math.units = function(x, ...) {
     if (OK)
       units(x) <- "rad" # unit of the answer (also unitless)
   }
-  
+
   if (!OK) {
     warning(paste("Operation", .Generic, "not meaningful for units"))
     x <- drop_units(x)

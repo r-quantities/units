@@ -79,23 +79,46 @@ Ops.units <- function(e1, e2) {
     }
     return(.simplify_units(NextMethod(), .symbolic_units(numerator, denominator)))
 
-  } else if (pw) { # FIXME: I am not sure how to take powers of non-integers yet
+  } else if (pw) {
+    if (inherits(e1, "units") && identical(units(e1), set_units(1)))
+      e1 <- drop_units(e1)
 
-    if (identical(units(e1), set_units(1)))
-      return(set_units(unclass(e1) ^ e2, set_units(1)))
+    if (inherits(e2, "units")) {
+      if (inherits(e1, "units"))
+        stop("power operation only allowed with numeric power")
 
-    if (inherits(e2, "units"))
-      stop("power operation only allowed with numeric power")
+      # code to manage things like exp(log(...)) and 10^log10(...) follows
+      # this is not supported in udunits2, so we are on our own
+      u <- units(e2)
+      if (length(u$numerator) > 1 || !grepl("\\(re", u$numerator) || length(u$denominator))
+        stop("power operation only allowed with logarithmic unit")
 
-    if (length(e2) > 1L) {
-	  if (length(unique(e2)) == 1) # all identical
-	    e2 = e2[1]
-	  else # return mixed units:
-	    return(.as.mixed_units(mapply("^", e1, e2, SIMPLIFY=FALSE)))
+      sp <- strsplit(u$numerator, "\\(re ")[[1]]
+
+      # only works for the same base
+      type <- strsplit(sp[1], " ")[[1]]
+      fc <- if (length(type) == 1) 1 else as.numeric(type[1])
+      base <- switch(type[length(type)], lb=2, lg=10, ln=exp(1/fc))
+      if (!isTRUE(all.equal(e1, base)))
+        stop("wrong base in power operation")
+
+      # this is the next unit after "undoing" the outer logarithm
+      nxt_u <- paste(sp[-1], collapse="(re ")   # next unit
+      nxt_u <- substr(nxt_u, 1, nchar(nxt_u)-1) # remove last parenthesis
+      nxt_u <- sub("^1 ", "", nxt_u)            # remove leading one
+
+      if (length(sp) > 2) # another logarithm!
+        attr(e2, "units")$numerator <- nxt_u
+      else attr(e2, "units") <- units(as_units(nxt_u))
+      return(NextMethod())
     }
 
-    # if (round(e2) != e2)
-    #   stop("currently you can only take integer powers of units")
+    if (length(e2) > 1L) {
+      if (length(unique(e2)) == 1) # all identical
+        e2 = e2[1]
+      else # return mixed units:
+        return(.as.mixed_units(mapply("^", e1, e2, SIMPLIFY=FALSE)))
+    }
 
     # we repeat each unit the number of times given by e2. They are already
     # sorted so they will remain sorted. We need to flip numerator and denominator

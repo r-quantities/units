@@ -13,6 +13,8 @@
 
 * fix arithmetic for powers above 1 and below -1; #264
 
+* improve arithmetic of logarithms; #249
+
 * export `ud_are_convertible`; #263 addressing #258 @cregouby
 
 * remove deprecations: `as.units`, `as_cf`, `make_unit`, `parse_unit`; #259
