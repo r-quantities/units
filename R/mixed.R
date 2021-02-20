@@ -21,7 +21,7 @@ mixed_units <- function(x, values, ...) UseMethod("mixed_units")
 
 
 #' @export
-mixed_units.units = function(x, values, ...) { 
+mixed_units.units = function(x, values, ...) {
 	stopifnot(missing(values))
 	u = as.character(units(x))
 	mixed_units(unclass(x), rep(u, length(x)))
@@ -29,7 +29,7 @@ mixed_units.units = function(x, values, ...) {
 
 
 #' @export
-mixed_units.numeric = function(x, values, ...) { 
+mixed_units.numeric = function(x, values, ...) {
 	#stopifnot(length(x) == length(values), is.character(values), is.numeric(x))
 	stopifnot(is.character(values), is.numeric(x))
 	.as.mixed_units(mapply(set_units, x, values, mode = "standard", SIMPLIFY = FALSE))
@@ -62,8 +62,17 @@ c.mixed_units = function(...) {
 set_units.mixed_units = function(x, value, ..., mode = "standard") {
 	if (! is.character(value))
 		stop("use character string to denote target unit") # FIXME: rlang::quo stuff needed here?
-	#do.call(c, lapply(x, set_units, value = value, mode = mode, ...))
-	.as.mixed_units(mapply(set_units, x, value, mode = mode, SIMPLIFY = FALSE))
+
+  # conversion data frame and split
+  cv <- data.frame(val=as.numeric(x), from=I(units(x)), to=value)
+  sp <- paste(cv$from, cv$to, sep=".")
+  sp <- factor(sp, levels=unique(sp))
+
+  # grouped conversion
+  do.call(c, unname(by(cv, sp, function(x) {
+    u <- set_units(x$val, x$from[[1]], mode="symbolic")
+    mixed_units(set_units(u, x$to[1], mode="standard"))
+  }, simplify=FALSE)))
 }
 
 #' @export
