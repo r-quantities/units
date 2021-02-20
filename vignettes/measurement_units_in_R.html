@@ -164,7 +164,7 @@ $(document).ready(function () {
 </ul>
 <p>Furthermore, if spatial objects as defined in package <a href="https://cran.r-project.org/package=sp">sp</a> <span class="citation">(E. Pebesma and Bivand <a href="#ref-sp">2005</a>)</span> have a proper coordinate reference system set, they can be transformed to other datums, or converted to various flat (projected) representations of the Earth <span class="citation">(Iliffe and Lott <a href="#ref-iliffe">2008</a>)</span>.</p>
 <p>In many cases however, R drops contextual information. As an example, we look at annual global land-ocean temperature index (from <code>http://climate.nasa.gov/vital-signs/global-temperature/</code>) since 1960:</p>
-<pre class="r"><code>temp_data = subset(read.table(&quot;647_Global_Temperature_Data_File.txt&quot;, 
+<pre class="r"><code>temp_data = subset(read.table(&quot;647_Global_Temperature_Data_File.txt&quot;,
     header=TRUE)[1:2], Year &gt;= 1960)
 temp_data$date = as.Date(paste0(temp_data$Year, &quot;-01-01&quot;))
 temp_data$time = as.POSIXct(temp_data$date)
@@ -183,10 +183,10 @@ mean(year_duration)
 ## [1,] 365.2545</code></pre>
 <p>the unit is dropped. Similarly, for linear regression coefficients we see</p>
 <pre class="r"><code>coef(lm(Annual_Mean ~ date, temp_data))
-##  (Intercept)         date 
+##  (Intercept)         date
 ## 1.833671e-02 4.364763e-05
 coef(lm(Annual_Mean ~ time, temp_data))
-##  (Intercept)         time 
+##  (Intercept)         time
 ## 1.833671e-02 5.051809e-10</code></pre>
 <p>where the unit of change is in degrees Celsius but either <em>per day</em> (<code>date</code>) or <em>per second</em> (<code>time</code>). For purely mathematical manipulations, R often strips context from numbers when it is carried in attributes, the linear algebra routines being a prime example.</p>
 <p>Most variables are somehow attributed with information about their <em>units</em>, which specify what the value <code>1</code> of this variable represents. This may be counts of something, e.g. <code>1 apple</code>, but it may also refer to some <em>physical unit</em>, such as distance in meter. This article discusses how strong unit support can be introduced in R.</p>
@@ -276,15 +276,15 @@ conv_unit(10, &quot;cm_per_sec&quot;, &quot;km_per_day&quot;)
 ## [1] 8.64</code></pre>
 <p>but uses for instance <code>kph</code> instead of <code>km_per_hour</code>, and then <code>m3_per_hr</code> for flow – unit names seem to come from convention rather than systematic composition. Object <code>conv_unit_options</code> contains all 173 supported units, categorized by the physical dimension they describe:</p>
 <pre class="r"><code>names(conv_unit_options)
-##  [1] &quot;acceleration&quot; &quot;angle&quot;        &quot;area&quot;         &quot;coordinate&quot;  
-##  [5] &quot;count&quot;        &quot;duration&quot;     &quot;energy&quot;       &quot;flow&quot;        
-##  [9] &quot;length&quot;       &quot;mass&quot;         &quot;power&quot;        &quot;pressure&quot;    
+##  [1] &quot;acceleration&quot; &quot;angle&quot;        &quot;area&quot;         &quot;coordinate&quot;
+##  [5] &quot;count&quot;        &quot;duration&quot;     &quot;energy&quot;       &quot;flow&quot;
+##  [9] &quot;length&quot;       &quot;mass&quot;         &quot;power&quot;        &quot;pressure&quot;
 ## [13] &quot;speed&quot;        &quot;temperature&quot;  &quot;volume&quot;
 conv_unit_options$volume
-##  [1] &quot;ul&quot;        &quot;ml&quot;        &quot;dl&quot;        &quot;l&quot;         &quot;cm3&quot;      
-##  [6] &quot;dm3&quot;       &quot;m3&quot;        &quot;km3&quot;       &quot;us_tsp&quot;    &quot;us_tbsp&quot;  
-## [11] &quot;us_oz&quot;     &quot;us_cup&quot;    &quot;us_pint&quot;   &quot;us_quart&quot;  &quot;us_gal&quot;   
-## [16] &quot;inch3&quot;     &quot;ft3&quot;       &quot;mi3&quot;       &quot;imp_tsp&quot;   &quot;imp_tbsp&quot; 
+##  [1] &quot;ul&quot;        &quot;ml&quot;        &quot;dl&quot;        &quot;l&quot;         &quot;cm3&quot;
+##  [6] &quot;dm3&quot;       &quot;m3&quot;        &quot;km3&quot;       &quot;us_tsp&quot;    &quot;us_tbsp&quot;
+## [11] &quot;us_oz&quot;     &quot;us_cup&quot;    &quot;us_pint&quot;   &quot;us_quart&quot;  &quot;us_gal&quot;
+## [16] &quot;inch3&quot;     &quot;ft3&quot;       &quot;mi3&quot;       &quot;imp_tsp&quot;   &quot;imp_tbsp&quot;
 ## [21] &quot;imp_oz&quot;    &quot;imp_cup&quot;   &quot;imp_pint&quot;  &quot;imp_quart&quot; &quot;imp_gal&quot;</code></pre>
 <p>Function <code>conv_dim</code> allows for the conversion of units in products or ratios, e.g.</p>
 <pre class="r"><code>conv_dim(x = 100, x_unit = &quot;m&quot;, trans = 3, trans_unit = &quot;ft_per_sec&quot;, y_unit = &quot;min&quot;)
@@ -304,8 +304,8 @@ NISTwattPerSqrMeterTOwattPerSqrInch(1:5)
 <pre class="r"><code>library(udunits2)
 ## udunits system database read
 ls(2)
-## [1] &quot;ud.are.convertible&quot;  &quot;ud.convert&quot;          &quot;ud.get.name&quot;        
-## [4] &quot;ud.get.symbol&quot;       &quot;ud.have.unit.system&quot; &quot;ud.is.parseable&quot;    
+## [1] &quot;ud.are.convertible&quot;  &quot;ud.convert&quot;          &quot;ud.get.name&quot;
+## [4] &quot;ud.get.symbol&quot;       &quot;ud.have.unit.system&quot; &quot;ud.is.parseable&quot;
 ## [7] &quot;ud.set.encoding&quot;</code></pre>
 <p>Dropping the <code>ud</code> prefix, <code>is.parseable</code> verifies whether a unit is parseable</p>
 <pre class="r"><code>ud.is.parseable(&quot;m/s&quot;)
@@ -401,11 +401,11 @@ attr(e, &quot;condition&quot;)[[1]]
 <p>The full set of methods and method groups for <code>units</code> objects is shown by</p>
 <pre class="r"><code>methods(class = &quot;units&quot;)
 ##  [1] [             [[            all.equal     as_units      as.data.frame
-##  [6] as.Date       as.list       as.POSIXct    boxplot       c            
-## [11] diff          drop_units    format        hist          log10        
-## [16] log2          Math          mean          median        mixed_units  
-## [21] Ops           plot          print         quantile      rep          
-## [26] seq           set_units     str           summary       Summary      
+##  [6] as.Date       as.list       as.POSIXct    boxplot       c
+## [11] diff          drop_units    format        hist          log10
+## [16] log2          Math          mean          median        mixed_units
+## [21] Ops           plot          print         quantile      rep
+## [26] seq           set_units     str           summary       Summary
 ## [31] units         units&lt;-       weighted.mean
 ## see '?methods' for accessing help and source code</code></pre>
 <p>where the method groups</p>
@@ -524,7 +524,7 @@ as.Date(d1)
 <p>Pebesma, Edzer. 2012. “Spacetime: Spatio-Temporal Data in R.” <em>Journal of Statistical Software</em> 51 (1): 1–30. doi:<a href="https://doi.org/10.18637/jss.v051.i07">10.18637/jss.v051.i07</a>.</p>
 </div>
 <div id="ref-sp">
-<p>Pebesma, Edzer, and Roger Bivand. 2005. “Classes and Methods for Spatial Data in R.” <em>R News</em> 5 (2): 9–13. <a href=" https://cran.r-project.org/doc/Rnews/">https://cran.r-project.org/doc/Rnews/</a>.</p>
+<p>Pebesma, Edzer, and Roger Bivand. 2005. “Classes and Methods for Spatial Data in R.” <em>R News</em> 5 (2): 9–13. <a href="https://cran.r-project.org/doc/Rnews/">https://cran.r-project.org/doc/Rnews/</a>.</p>
 </div>
 <div id="ref-rj">
 <p>Pebesma, Edzer, Thomas Mailund, and James Hiebert. 2016. “Measurement Units in R.” <em>The R Journal</em> 8 (2): 486–94. <a href="https://doi.org/10.32614/RJ-2016-061">https://doi.org/10.32614/RJ-2016-061</a>.</p>
@@ -542,7 +542,7 @@ as.Date(d1)
 <p>Schadow, Gunther, and Clement J McDonald. 2009. “The Unified Code for Units of Measure.” <em>Regenstrief Institute and UCUM Organization: Indianapolis, IN, USA</em>.</p>
 </div>
 <div id="ref-scheider">
-<p>Scheider, Simon, Benedikt Gräler, Edzer Pebesma, and Christoph Stasch. 2016. “Modeling Spatiotemporal Information Generation.” <em>International Journal of Geographical Information Science</em> 30 (10): 1980–2008. <a href=" http://dx.doi.org/10.1080/13658816.2016.1151520 ">http://dx.doi.org/10.1080/13658816.2016.1151520</a>.</p>
+<p>Scheider, Simon, Benedikt Gräler, Edzer Pebesma, and Christoph Stasch. 2016. “Modeling Spatiotemporal Information Generation.” <em>International Journal of Geographical Information Science</em> 30 (10): 1980–2008. <a href="https://dx.doi.org/10.1080/13658816.2016.1151520">https://dx.doi.org/10.1080/13658816.2016.1151520</a>.</p>
 </div>
 <div id="ref-ggplot2">
 <p>Wickham, Hadley. 2009. <em>Ggplot2: Elegant Graphics for Data Analysis</em>. Springer-Verlag New York. <a href="http://ggplot2.org" class="uri">http://ggplot2.org</a>.</p>
