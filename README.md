@@ -2,8 +2,8 @@
 
 [![Build Status](https://github.com/r-quantities/units/workflows/build/badge.svg)](https://github.com/r-quantities/units/actions)
 [![Coverage Status](https://img.shields.io/codecov/c/github/r-quantities/units/master.svg)](https://codecov.io/github/r-quantities/units?branch=master)
-[![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html) [![CRAN](http://www.r-pkg.org/badges/version/units)](https://cran.r-project.org/package=units) 
-[![Downloads](http://cranlogs.r-pkg.org/badges/units?color=brightgreen)](http://www.r-pkg.org/pkg/units)
+[![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html) [![CRAN](https://www.r-pkg.org/badges/version/units)](https://cran.r-project.org/package=units)
+[![Downloads](https://cranlogs.r-pkg.org/badges/units?color=brightgreen)](https://www.r-pkg.org/pkg/units)
 
 Support for measurement units in R vectors, matrices
 and arrays: automatic propagation, conversion, derivation
@@ -24,9 +24,9 @@ The main units
 [vignette](https://r-quantities.github.io/units/articles/measurement_units_in_R.html)
 derives from this manuscript and is kept up to date with the package development.
 
-- Blog posts: [first](http://r-spatial.org/r/2016/06/10/units.html),
-  [second](http://r-spatial.org/r/2016/08/16/units2.html),
-  [third](http://r-spatial.org/r/2016/09/29/plot_units.html).
+- Blog posts: [first](https://www.r-spatial.org/r/2016/06/10/units.html),
+  [second](https://www.r-spatial.org/r/2016/08/16/units2.html),
+  [third](https://www.r-spatial.org/r/2016/09/29/plot_units.html).
 - The [udunits2 R package](https://github.com/pacificclimate/Rudunits2) GitHub page.
 - The UNIDATA [udunits2](https://github.com/Unidata/UDUNITS-2) library at GitHub.
 
