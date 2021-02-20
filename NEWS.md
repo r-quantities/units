@@ -8,6 +8,9 @@
   `install_symbolic_unit`, `remove_symbolic_unit`, `install_conversion_constant`,
   `install_conversion_offset` are deprecated; #261 addressing #89
 
+* add `keep_units`, a helper to apply functions that do not preserve units;
+  #255 addressing #252
+
 * export `ud_are_convertible`; #263 addressing #258 @cregouby
 
 * remove deprecations: `as.units`, `as_cf`, `make_unit`, `parse_unit`; #259
