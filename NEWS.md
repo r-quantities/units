@@ -11,6 +11,8 @@
 * add `keep_units`, a helper to apply functions that do not preserve units;
   #255 addressing #252
 
+* fix plot axes for `plot.formula` and `plot.data.frame`; #213
+
 * fix arithmetic for powers above 1 and below -1; #264
 
 * improve arithmetic of logarithms; #249

@@ -73,6 +73,7 @@ plot.units <- function(x, y, xlab = NULL, ylab = NULL, ...) {
   # We define the axis labels if they are not already provided and then let
   # the default plotting function take over...
   xlab0 = paste(deparse(substitute(x), 500), collapse = "\\n")
+  ylab0 = paste(deparse(substitute(y), 500), collapse = "\\n")
   if (missing(y)) { # from xy.coords:
     if (is.null(ylab))
       ylab <- make_unit_label(deparse(substitute(x)), x)
@@ -82,12 +83,13 @@ plot.units <- function(x, y, xlab = NULL, ylab = NULL, ...) {
   	x <- seq_along(x)
     return(NextMethod("plot", x, y, xlab=xlab, ylab=ylab))
   }
-  if (is.null(xlab)) {
-    xlab <- make_unit_label(xlab0, x)
-  }
-  if (is.null(ylab) && inherits(y, "units")) {
-    ylab <- make_unit_label(deparse(substitute(y)), y)
-  }
+  if (is.null(xlab))
+    xlab <- xlab0
+  if (is.null(ylab))
+    ylab <- ylab0
+  xlab <- make_unit_label(xlab, x)
+  if (inherits(y, "units"))
+    ylab <- make_unit_label(ylab, y)
   NextMethod("plot", xlab=xlab, ylab=ylab)
 }
 
