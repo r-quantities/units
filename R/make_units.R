@@ -279,7 +279,7 @@ as_units.character <- function(x,
 
   stopifnot(is.character(x), length(x) == 1)
 
-  if (x == "") return(unitless)
+  if (isTRUE(x == "")) return(unitless)
 
   if(force_single_symbol || is_udunits_time(x))
     return(symbolic_unit(x, check_is_valid = check_is_valid))
