@@ -11,6 +11,8 @@
 * add `keep_units`, a helper to apply functions that do not preserve units;
   #255 addressing #252
 
+* fix arithmetic for powers above 1 and below -1; #264
+
 * export `ud_are_convertible`; #263 addressing #258 @cregouby
 
 * remove deprecations: `as.units`, `as_cf`, `make_unit`, `parse_unit`; #259
