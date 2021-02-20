@@ -1,7 +1,18 @@
-# version 0.6-8
+# version 0.7-0
 
 * add `load_units_xml` to enable database reloading as well as loading
   user-provided unit systems; #254 addressing #243, #244
+
+* add `install_unit` and `remove_unit` for adding/removing custom user-defined
+  symbols or names, with optional mapping to existing units;
+  `install_symbolic_unit`, `remove_symbolic_unit`, `install_conversion_constant`,
+  `install_conversion_offset` are deprecated; #261 addressing #89
+
+* export `ud_are_convertible`; #263 addressing #258 @cregouby
+
+* remove deprecations: `as.units`, `as_cf`, `make_unit`, `parse_unit`; #259
+
+* remove deprecated pre-computed `ud_units` database; #259
 
 # version 0.6-7
 

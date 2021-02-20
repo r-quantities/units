@@ -21,7 +21,7 @@
 }
 
 #' set one or more units global options
-#' 
+#'
 #' set units global options, mostly related how units are printed and plotted
 #' @param ... named options (character) for which the value is queried
 #' @param sep character length two; default \code{c("~", "~")}; space separator between variable and units, and space separator between two different units
@@ -30,12 +30,12 @@
 #' @param parse logical, default \code{TRUE}; should the units be made into an expression (so we get subscripts)? Setting to \code{FALSE} may be useful if \link{parse} fails, e.g. if the unit contains symbols that assume a particular encoding
 #' @param set_units_mode character; either \code{"symbols"} or \code{"standard"}; see \link{set_units}; default is \code{"symbols"}
 #' @param auto_convert_names_to_symbols logical, default \code{TRUE}: should names, such as \code{degree_C} be converted to their usual symbol?
-#' @param simplify logical, default \code{NA}; simplify units in expressions? 
+#' @param simplify logical, default \code{NA}; simplify units in expressions?
 #' @param allow_mixed logical; if \code{TRUE}, combining mixed units creates a \code{mixed_units} object, if \code{FALSE} it generates an error
 #' @param unitless_symbol character; set the symbol to use for unitless (1) units
 #' @param define_bel logical; if \code{TRUE}, define the unit \code{B} (i.e., the \emph{bel}, widely used with the \emph{deci-} prefix as \code{dB}, \emph{decibel}) as an alias of \code{lg(re 1)}. \code{TRUE} by default, unless \code{B} is already defined in the existing XML database.
 #' @details This sets or gets units options. Set them by using named arguments, get them by passing the option name.
-#' 
+#'
 #' The default \code{NA} value for \code{simplify} means units are not simplified in \link{set_units} or \link{as_units}, but are simplified in arithmetical expressions.
 #' @return in case options are set, invisibly a named list with the option values that are being set; if an option is queried, the current option value.
 #' @examples
@@ -90,9 +90,9 @@ units_options = function(..., sep, group, negative_power, parse, set_units_mode,
 	  ret$define_bel = .setopt(define_bel)
 	  if (!identical(ret$define_bel, define_bel)) {
 	    if (!is.na(ret$define_bel))
-	      try(remove_symbolic_unit("B"), silent = TRUE)
+	      remove_unit("B", "bel")
 	    if (define_bel)
-	      install_conversion_constant("lg(re 1)", "B", 1)
+	      install_unit("B", "lg(re 1)", "bel")
 	  }
 	}
 

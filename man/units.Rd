@@ -63,8 +63,7 @@ as_units(x, ...)
 \item{x}{numeric vector, or object of class \code{units}.}
 
 \item{value}{object of class \code{units} or \code{symbolic_units}, or in the
-case of \code{set_units} expression with symbols that can be resolved in
-\link{ud_units} (see examples).}
+case of \code{set_units} expression with symbols (see examples).}
 
 \item{...}{passed on to other methods.}
 
@@ -78,7 +77,7 @@ syntax (reserved R syntax words like \code{in} must be backticked)}
 
 \item{check_is_valid}{throw an error if all the unit symbols are not either
 recognized by udunits2 via \code{ud_is_parseable()}, or a custom
-user defined via \code{install_symbolic_unit()}. If \code{FALSE}, no check
+user defined via \code{install_unit()}. If \code{FALSE}, no check
 for validity is performed.}
 
 \item{implicit_exponents}{If the unit string is in product power form (e.g.
@@ -107,7 +106,7 @@ A number of functions are provided for handling unit objects.
     \item \code{make_units}, constructs units from bare expressions.
     \code{make_units(m/s)} is equivalent to \code{as_units(quote(m/s))}.
     \item \code{set_units}, a pipe-friendly version of \code{`units<-`}. By
-    default it operates with bare expressions like \code{make_unit}, but this
+    default it operates with bare expressions, but this
     behavior can be disabled by a specifying \code{mode = "standard"} or setting
     \code{units_options(set_units_mode = "standard")}.
 }
@@ -124,7 +123,7 @@ By default, unit names are automatically substituted with unit names
 }
 \section{Character strings}{
 
-  
+
   Generally speaking, there are 3 types of unit strings are accepted in
   \code{as_units} (and by extension, \code{`units<-`}).
 
@@ -157,7 +156,7 @@ By default, unit names are automatically substituted with unit names
   string, and unit symbol or names must be separated by a space. Each unit
   symbol may optionally be followed by a single number, specifying the power.
   For example \code{"m2 s-2"} is equivalent to \code{"(m^2)*(s^-2)"}.
-  
+
   It must be noted that prepended numbers are supported too, but their
   interpretation slightly varies depending on whether they are separated from
   the unit string or not. E.g., \code{"1000 m"} is interpreted as magnitude
@@ -180,10 +179,9 @@ By default, unit names are automatically substituted with unit names
   In \code{as_units()}, each of the symbols in the unit expression is treated
   individually, such that each symbol must be recognized by the udunits
   database (checked by \code{ud_is_parseable()}, \emph{or} be a custom,
-  user-defined unit symbol that was defined either by
-  \code{install_symbolic_unit()} or \code{install_conversion_constant()}. To
+  user-defined unit symbol that was defined by \code{install_unit()}. To
   see which symbols and names are currently recognized by the udunits
-  database, see \code{udunits_symbols()}.
+  database, see \code{valid_udunits()}.
 }
 
 \examples{
@@ -193,12 +191,12 @@ units(x) <- as_units("m/s")
 class(x)
 y = 2:5
 a <- set_units(1:3, m/s)
-units(a) <- with(ud_units, km/h)
+units(a) <- make_units(km/h)
 a
 # convert to a mixed_units object:
 units(a) = c("m/s", "km/h", "km/h")
 a
-# The easiest way to assign units to a numeric vector is like this: 
+# The easiest way to assign units to a numeric vector is like this:
 x <- y <- 1:4
 units(x) <- "m/s"  # meters / second
 
@@ -206,7 +204,7 @@ units(x) <- "m/s"  # meters / second
 if(requireNamespace("magrittr", quietly = TRUE)) {
   library(magrittr)
   y \%>\% set_units(m/s)
-} 
+}
 
 # these are different ways of creating the same unit:
 # meters per second squared, i.e, acceleration
@@ -229,8 +227,8 @@ all_identical <- function(...) {
 }
 all_identical(x1, x2, x3, x4, x5, x6, x7, x8)
 
-# Note, direct usage of these unit creation functions is typically not 
-# necessary, since coercion is automatically done via as_units(). Again, 
+# Note, direct usage of these unit creation functions is typically not
+# necessary, since coercion is automatically done via as_units(). Again,
 # these are all equivalent ways to generate the same result.
 
 x1 <- x2 <- x3 <- x4 <- x5 <- x6 <- x7 <- x8 <- 1:4
@@ -275,16 +273,14 @@ set_units(x, grams/gallon)
 # For example, a microbiologist might work with counts of bacterial cells
 # make_units(cells/ml) # by default, throws an ERROR
 # First define the unit, then the newly defined unit is accepted.
-install_symbolic_unit("cells")
-make_units(cells/ml) 
+install_unit("cells")
+make_units(cells/ml)
 
-# Note, install_symbolic_unit() does not add any support for unit
-# conversion, or arithmetic operations that require unit conversion. See
-# ?install_conversion_constant for defining relationships between user 
-# defined units.
+# Note that install_unit() adds support for defining relationships between
+# the newly created symbols or names and existing units.
 
 ## set_units()
-# set_units is a pipe friendly version of `units<-`. 
+# set_units is a pipe friendly version of `units<-`.
 if(requireNamespace("magrittr", quietly = TRUE)) {
   library(magrittr)
   1:5 \%>\% set_units(N/m^2)
@@ -292,7 +288,7 @@ if(requireNamespace("magrittr", quietly = TRUE)) {
   1:5 \%>\% set_units(m) \%>\% set_units(km)
 }
 
-# set_units has two modes of operation. By default, it operates with 
+# set_units has two modes of operation. By default, it operates with
 # bare symbols to define the units.
 set_units(1:5, m/s)
 
@@ -317,5 +313,5 @@ as_units(d)
 
 }
 \seealso{
-\code{\link{valid_udunits}}
+\code{\link{install_unit}}, \code{\link{valid_udunits}}
 }

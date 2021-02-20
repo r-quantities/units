@@ -2,12 +2,9 @@
 % Please edit documentation in R/misc.R
 \name{deparse_unit}
 \alias{deparse_unit}
-\alias{as_cf}
 \title{deparse unit to string in product power form (e.g. km m-2 s-1)}
 \usage{
 deparse_unit(x)
-
-as_cf(x)
 }
 \arguments{
 \item{x}{object of class units}
@@ -17,9 +14,6 @@ length one character vector
 }
 \description{
 deparse unit to string in product power form (e.g. km m-2 s-1)
-}
-\details{
-\code{as_cf} is deprecated; use \code{deparse_unit}.
 }
 \examples{
 u = as_units("kg m-2 s-1", implicit_exponents = TRUE)

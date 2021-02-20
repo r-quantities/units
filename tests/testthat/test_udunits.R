@@ -5,14 +5,18 @@ test_that("udunits error messages", {
 })
 
 test_that("udunits low-level functions work", {
-  expect_silent(units:::R_ut_get_dimensionless_unit_one(character(0)))
+  expect_silent(units:::R_ut_get_dimensionless_unit_one())
   a <- units:::R_ut_parse("m")
   b <- units:::R_ut_parse("g")
   expect_error(units:::R_convert_doubles(a, b, 1:10), "not convertible")
 
-  u = units:::R_ut_offset("foo", "kg", -10)
+  units:::R_ut_offset("foo", "kg", -10)
   expect_equal(set_units(set_units(1, kg), foo), set_units(11, foo))
-  remove_symbolic_unit("foo")
+  remove_unit(name="foo")
+
+  units:::R_ut_scale("foo", "kg", 2)
+  expect_equal(set_units(set_units(2, kg), foo), set_units(1, foo))
+  remove_unit(name="foo")
 
   expect_silent(units:::R_ut_divide(a, b))
   expect_silent(units:::R_ut_multiply(a, b))
@@ -34,14 +38,12 @@ test_that("udunits low-level functions work", {
   expect_silent(units:::R_ut_set_encoding("utf8"))
   expect_silent(ud_set_encoding("utf8"))
   expect_error(units:::R_ut_set_encoding("foo"))
-  expect_error(units:::R_ut_get_symbol("foo"), "string unit representation contains unknown word")
-  expect_error(units:::R_ut_get_name("foo"), "R_ut_get_name")
+  expect_error(units:::R_ut_get_symbol("foo"))
+  expect_error(units:::R_ut_get_name("foo"))
 })
 
 test_that("udunits database can be read", {
   skip_if_not_installed("xml2")
   expect_message(valid_udunits(), "udunits")
   expect_message(valid_udunits_prefixes(), "udunits")
-  # expect_identical(units:::.construct_ud_units(), ud_units) # NOT TRUE -- *ppv not in ud_units?
-  expect_silent(units:::.construct_ud_units())
 })
