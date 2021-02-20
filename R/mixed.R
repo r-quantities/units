@@ -64,7 +64,8 @@ set_units.mixed_units = function(x, value, ..., mode = "standard") {
 		stop("use character string to denote target unit") # FIXME: rlang::quo stuff needed here?
 
   # conversion data frame and split
-  cv <- data.frame(val=as.numeric(x), from=I(units(x)), to=value)
+  cv <- data.frame(
+    val=as.numeric(x), from=I(units(x)), to=value, stringsAsFactors=FALSE)
   sp <- paste(cv$from, cv$to, sep=".")
   sp <- factor(sp, levels=unique(sp))
 
