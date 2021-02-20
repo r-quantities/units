@@ -71,7 +71,7 @@ set_units.mixed_units = function(x, value, ..., mode = "standard") {
 
   # grouped conversion
   do.call(c, unname(by(cv, sp, function(x) {
-    u <- set_units(x$val, x$from[[1]], mode="symbolic")
+    u <- set_units(x$val, x$from[[1]], mode="standard")
     mixed_units(set_units(u, x$to[1], mode="standard"))
   }, simplify=FALSE)))
 }

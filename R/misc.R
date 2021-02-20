@@ -15,7 +15,7 @@ c.units <- function(..., recursive = FALSE, allow_mixed = units_options("allow_m
   if (length(args) == 1)
   	.as.units(NextMethod(), u)
   else if (.units_are_convertible(args[-1], u)) {
-    args <- lapply(args, set_units, u, mode="symbolic")
+    args <- lapply(args, set_units, u, mode="standard")
     .as.units(do.call(c, lapply(args, drop_units)), u)
   } else if (allow_mixed)
     do.call(c, lapply(args, mixed_units))
