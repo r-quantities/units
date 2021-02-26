@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">units</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6-7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7-0</span>
       </span>
     </div>
 
@@ -80,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -109,7 +109,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/r-quantities/units/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -135,9 +135,9 @@
     <p>set units global options, mostly related how units are printed and plotted</p>
     </div>
 
-    <pre class="usage"><span class='fu'>units_options</span>(<span class='no'>...</span>, <span class='no'>sep</span>, <span class='no'>group</span>, <span class='no'>negative_power</span>, <span class='no'>parse</span>, <span class='no'>set_units_mode</span>,
-  <span class='no'>auto_convert_names_to_symbols</span>, <span class='no'>simplify</span>, <span class='no'>allow_mixed</span>, <span class='no'>unitless_symbol</span>,
-  <span class='no'>define_bel</span>)</pre>
+    <pre class="usage"><span class='fu'>units_options</span><span class='op'>(</span><span class='va'>...</span>, <span class='va'>sep</span>, <span class='va'>group</span>, <span class='va'>negative_power</span>, <span class='va'>parse</span>, <span class='va'>set_units_mode</span>,
+  <span class='va'>auto_convert_names_to_symbols</span>, <span class='va'>simplify</span>, <span class='va'>allow_mixed</span>, <span class='va'>unitless_symbol</span>,
+  <span class='va'>define_bel</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -164,7 +164,7 @@
     </tr>
     <tr>
       <th>set_units_mode</th>
-      <td><p>character; either <code>"symbols"</code> or <code>"standard"</code>; see <a href='set_units.html'>set_units</a>; default is <code>"symbols"</code></p></td>
+      <td><p>character; either <code>"symbols"</code> or <code>"standard"</code>; see <a href='units.html'>set_units</a>; default is <code>"symbols"</code></p></td>
     </tr>
     <tr>
       <th>auto_convert_names_to_symbols</th>
@@ -194,18 +194,20 @@
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>This sets or gets units options. Set them by using named arguments, get them by passing the option name.</p>
-<p>The default <code>NA</code> value for <code>simplify</code> means units are not simplified in <a href='set_units.html'>set_units</a> or <a href='as_units.html'>as_units</a>, but are simplified in arithmetical expressions.</p>
+<p>The default <code>NA</code> value for <code>simplify</code> means units are not simplified in <a href='units.html'>set_units</a> or <a href='units.html'>as_units</a>, but are simplified in arithmetical expressions.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>old</span> <span class='kw'>=</span> <span class='fu'>units_options</span>(<span class='kw'>sep</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"~~~"</span>, <span class='st'>"~"</span>), <span class='kw'>group</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>""</span>, <span class='st'>""</span>)) <span class='co'># more space, parenthesis</span>
-<span class='no'>old</span></div><div class='output co'>#&gt; $sep
+    <pre class="examples"><div class='input'><span class='va'>old</span> <span class='op'>=</span> <span class='fu'>units_options</span><span class='op'>(</span>sep <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"~~~"</span>, <span class='st'>"~"</span><span class='op'>)</span>, group <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>""</span>, <span class='st'>""</span><span class='op'>)</span><span class='op'>)</span> <span class='co'># more space, parenthesis</span>
+<span class='va'>old</span>
+</div><div class='output co'>#&gt; $sep
 #&gt; [1] "~"  "~~"
 #&gt; 
 #&gt; $group
 #&gt; [1] "[" "]"
 #&gt; </div><div class='input'><span class='co'>## set back to defaults:</span>
-<span class='fu'>units_options</span>(<span class='kw'>sep</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"~"</span>, <span class='st'>"~"</span>), <span class='kw'>group</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"["</span>, <span class='st'>"]"</span>), <span class='kw'>negative_power</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>parse</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'>units_options</span>(<span class='st'>"group"</span>)</div><div class='output co'>#&gt; [1] "[" "]"</div></pre>
+<span class='fu'>units_options</span><span class='op'>(</span>sep <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"~"</span>, <span class='st'>"~"</span><span class='op'>)</span>, group <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"["</span>, <span class='st'>"]"</span><span class='op'>)</span>, negative_power <span class='op'>=</span> <span class='cn'>FALSE</span>, parse <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='fu'>units_options</span><span class='op'>(</span><span class='st'>"group"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "[" "]"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -221,7 +223,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

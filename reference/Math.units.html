@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">units</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6-7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7-0</span>
       </span>
     </div>
 
@@ -80,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -109,7 +109,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/r-quantities/units/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -136,7 +136,7 @@
     </div>
 
     <pre class="usage"><span class='co'># S3 method for units</span>
-<span class='fu'><a href='https://rdrr.io/r/base/groupGeneric.html'>Math</a></span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
+<span class='fu'><a href='https://rdrr.io/r/base/groupGeneric.html'>Math</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -174,37 +174,50 @@ definition of <code>B</code>, or the <code>define_bel</code> option is set to <c
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># roundings, cummulative functions</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='set_units.html'>set_units</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>), <span class='no'>m</span>/<span class='no'>s</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>signif</a></span>(<span class='no'>x</span>, <span class='fl'>2</span>)</div><div class='output co'>#&gt; Units: [m/s]
-#&gt;  [1] 1.0 1.4 1.7 2.0 2.2 2.4 2.6 2.8 3.0 3.2</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/cumsum.html'>cumsum</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; Units: [m/s]
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='units.html'>set_units</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>)</span>, <span class='va'>m</span><span class='op'>/</span><span class='va'>s</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>signif</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='fl'>2</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Units: [m/s]
+#&gt;  [1] 1.0 1.4 1.7 2.0 2.2 2.4 2.6 2.8 3.0 3.2</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/cumsum.html'>cumsum</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Units: [m/s]
 #&gt;  [1]  1.000000  2.414214  4.146264  6.146264  8.382332 10.831822 13.477573
 #&gt;  [8] 16.306001 19.306001 22.468278</div><div class='input'>
 <span class='co'># trigonometry</span>
-<span class='fu'><a href='https://rdrr.io/r/base/Trig.html'>sin</a></span>(<span class='no'>x</span>) <span class='co'># not meaningful</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Operation sin not meaningful for units</span></div><div class='output co'>#&gt;  [1]  0.84147098  0.98776595  0.98702664  0.90929743  0.78674913  0.63815764
-#&gt;  [7]  0.47577184  0.30807174  0.14112001 -0.02068353</div><div class='input'><span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='set_units.html'>set_units</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>), <span class='no'>rad</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/Trig.html'>sin</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; Units: [1]
+<span class='fu'><a href='https://rdrr.io/r/base/Trig.html'>sin</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='co'># not meaningful</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Operation sin not meaningful for units</span></div><div class='output co'>#&gt;  [1]  0.84147098  0.98776595  0.98702664  0.90929743  0.78674913  0.63815764
+#&gt;  [7]  0.47577184  0.30807174  0.14112001 -0.02068353</div><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='units.html'>set_units</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>)</span>, <span class='va'>rad</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/Trig.html'>sin</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Units: [1]
 #&gt;  [1]  0.84147098  0.98776595  0.98702664  0.90929743  0.78674913  0.63815764
-#&gt;  [7]  0.47577184  0.30807174  0.14112001 -0.02068353</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Trig.html'>cos</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; Units: [1]
+#&gt;  [7]  0.47577184  0.30807174  0.14112001 -0.02068353</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Trig.html'>cos</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Units: [1]
 #&gt;  [1]  0.5403023  0.1559437 -0.1605565 -0.4161468 -0.6172729 -0.7699057
-#&gt;  [7] -0.8795687 -0.9513631 -0.9899925 -0.9997861</div><div class='input'><span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='set_units.html'>set_units</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0.1</span>), <span class='fl'>1</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/Trig.html'>asin</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; Units: [rad]
+#&gt;  [7] -0.8795687 -0.9513631 -0.9899925 -0.9997861</div><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='units.html'>set_units</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0.1</span><span class='op'>)</span>, <span class='fl'>1</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/Trig.html'>asin</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Units: [rad]
 #&gt;  [1] 0.0000000 0.1001674 0.2013579 0.3046927 0.4115168 0.5235988 0.6435011
-#&gt;  [8] 0.7753975 0.9272952 1.1197695 1.5707963</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Trig.html'>acos</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; Units: [rad]
+#&gt;  [8] 0.7753975 0.9272952 1.1197695 1.5707963</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Trig.html'>acos</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Units: [rad]
 #&gt;  [1] 1.5707963 1.4706289 1.3694384 1.2661037 1.1592795 1.0471976 0.9272952
 #&gt;  [8] 0.7953988 0.6435011 0.4510268 0.0000000</div><div class='input'>
 <span class='co'># logarithms</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='set_units.html'>set_units</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>), <span class='no'>W</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>x</span>) <span class='co'># base exp(1)</span></div><div class='output co'>#&gt; Units: [ln(re 1 W)]
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='units.html'>set_units</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>)</span>, <span class='va'>W</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='co'># base exp(1)</span>
+</div><div class='output co'>#&gt; Units: [ln(re 1 W)]
 #&gt;  [1] 0.0000000 0.3465736 0.5493061 0.6931472 0.8047190 0.8958797 0.9729551
-#&gt;  [8] 1.0397208 1.0986123 1.1512925</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>x</span>, <span class='kw'>base</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt; Units: [0.910239226626837 ln(re 1 W)]
+#&gt;  [8] 1.0397208 1.0986123 1.1512925</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>x</span>, base <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Units: [0.910239226626837 ln(re 1 W)]
 #&gt;  [1] 0.0000000 0.3154649 0.5000000 0.6309298 0.7324868 0.8154649 0.8856219
-#&gt;  [8] 0.9463946 1.0000000 1.0479516</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log2</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; Units: [lb(re 1 W)]
+#&gt;  [8] 0.9463946 1.0000000 1.0479516</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log2</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Units: [lb(re 1 W)]
 #&gt;  [1] 0.0000000 0.5000000 0.7924813 1.0000000 1.1609640 1.2924813 1.4036775
-#&gt;  [8] 1.5000000 1.5849625 1.6609640</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log10</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; Units: [lg(re 1 W)]
+#&gt;  [8] 1.5000000 1.5849625 1.6609640</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log10</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Units: [lg(re 1 W)]
 #&gt;  [1] 0.0000000 0.1505150 0.2385606 0.3010300 0.3494850 0.3890756 0.4225490
-#&gt;  [8] 0.4515450 0.4771213 0.5000000</div><div class='input'><span class='fu'><a href='set_units.html'>set_units</a></span>(<span class='no'>x</span>, <span class='no'>dBW</span>) <span class='co'># decibel-watts</span></div><div class='output co'>#&gt; Units: [dBW]
+#&gt;  [8] 0.4515450 0.4771213 0.5000000</div><div class='input'><span class='fu'><a href='units.html'>set_units</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>dBW</span><span class='op'>)</span> <span class='co'># decibel-watts</span>
+</div><div class='output co'>#&gt; Units: [dBW]
 #&gt;  [1] 0.000000 1.505150 2.385606 3.010300 3.494850 3.890756 4.225490 4.515450
-#&gt;  [9] 4.771213 5.000000</div><div class='input'><span class='fu'><a href='set_units.html'>set_units</a></span>(<span class='no'>x</span>, <span class='no'>dBm</span>) <span class='co'># decibel-milliwatts</span></div><div class='output co'>#&gt; Units: [dBm]
+#&gt;  [9] 4.771213 5.000000</div><div class='input'><span class='fu'><a href='units.html'>set_units</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>dBm</span><span class='op'>)</span> <span class='co'># decibel-milliwatts</span>
+</div><div class='output co'>#&gt; Units: [dBm]
 #&gt;  [1] 30.00000 31.50515 32.38561 33.01030 33.49485 33.89076 34.22549 34.51545
 #&gt;  [9] 34.77121 35.00000</div></pre>
   </div>
@@ -222,7 +235,7 @@ definition of <code>B</code>, or the <code>define_bel</code> option is set to <c
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

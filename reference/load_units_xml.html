@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create or convert to a mixed units list-column — mixed_units • units</title>
+<title>Load a unit system — load_units_xml • units</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Create or convert to a mixed units list-column — mixed_units" />
-<meta property="og:description" content="Create or convert to a mixed units list-column" />
+<meta property="og:title" content="Load a unit system — load_units_xml" />
+<meta property="og:description" content="Load an XML database containing a unit system compatible with UDUNITS2." />
 
 
 
@@ -126,54 +126,46 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create or convert to a mixed units list-column</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-quantities/units/blob/master/R/mixed.R'><code>R/mixed.R</code></a></small>
-    <div class="hidden name"><code>mixed_units.Rd</code></div>
+    <h1>Load a unit system</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-quantities/units/blob/master/R/database.R'><code>R/database.R</code></a></small>
+    <div class="hidden name"><code>load_units_xml.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Create or convert to a mixed units list-column</p>
+    <p>Load an XML database containing a unit system compatible with UDUNITS2.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>mixed_units</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>values</span>, <span class='va'>...</span><span class='op'>)</span>
-
-<span class='co'># S3 method for mixed_units</span>
-<span class='fu'><a href='units.html'>units</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='va'>value</span></pre>
+    <pre class="usage"><span class='fu'>load_units_xml</span><span class='op'>(</span>path <span class='op'>=</span> <span class='fu'>default_units_xml</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>numeric, or vector of class <code>units</code></p></td>
-    </tr>
-    <tr>
-      <th>values</th>
-      <td><p>character vector with units encodings, or list with symbolic units of class <code>mixed_symbolic_units</code></p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>ignored</p></td>
-    </tr>
-    <tr>
-      <th>value</th>
-      <td><p>see values</p></td>
+      <th>path</th>
+      <td><p>a path to a valid unit system in XML format.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>if <code>x</code> is of class <code>units</code>, <code>values</code> should be missing or of class <code>mixed_symbolic_units</code>; if <code>x</code> is numeric, <code>values</code> should be a character vector the length of <code>x</code>.</p>
+    <p>A unit system comprises a root <code>&lt;unit-system&gt;</code> and a number of children
+defining prefixes (<code>&lt;prefix&gt;</code>) or units (<code>&lt;unit&gt;</code>).
+See the contents of</p>
+<p><code><a href='https://rdrr.io/r/base/system.file.html'>system.file("share/udunits", package="units")</a></code></p>
+<p>for examples.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>
-<span class='va'>u</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"m/s"</span>, <span class='st'>"km/h"</span>, <span class='st'>"mg/L"</span>, <span class='st'>"g"</span><span class='op'>)</span>
-<span class='fu'>mixed_units</span><span class='op'>(</span><span class='va'>a</span>, <span class='va'>u</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Mixed units: g (1), km/h (1), m/s (1), mg/L (1) 
-#&gt; 1 [m/s], 2 [km/h], 3 [mg/L], 4 [g] </div><div class='input'><span class='fu'><a href='units.html'>units</a></span><span class='op'>(</span><span class='va'>a</span><span class='op'>)</span> <span class='op'>=</span> <span class='fu'><a href='units.html'>as_units</a></span><span class='op'>(</span><span class='st'>"m/s"</span><span class='op'>)</span>
-<span class='fu'>mixed_units</span><span class='op'>(</span><span class='va'>a</span><span class='op'>)</span> <span class='co'># converts to mixed representation</span>
-</div><div class='output co'>#&gt; Mixed units: m/s (4) 
-#&gt; 1 [m/s], 2 [m/s], 3 [m/s], 4 [m/s] </div></pre>
+    <pre class="examples"><div class='input'><span class='co'># load a new unit system</span>
+<span class='fu'>load_units_xml</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"share/udunits/udunits2-base.xml"</span>, package<span class='op'>=</span><span class='st'>"units"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='fu'><a href='units.html'>set_units</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='va'>rad</span><span class='op'>)</span> <span class='co'># doesn'twork</span>
+<span class='op'>}</span>
+
+<span class='co'># reload the default unit system</span>
+<span class='fu'>load_units_xml</span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'><a href='units.html'>set_units</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='va'>rad</span><span class='op'>)</span> <span class='co'># works again</span>
+</div><div class='output co'>#&gt; 1 [rad]</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

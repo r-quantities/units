@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">units</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6-7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7-0</span>
       </span>
     </div>
 
@@ -79,7 +79,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -108,7 +108,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/r-quantities/units/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -129,6 +129,26 @@
       <small>Source: <a href='https://github.com/r-quantities/units/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="version-07-0" class="section level1">
+<h1 class="page-header" data-toc-text="0.7-0">
+<a href="#version-07-0" class="anchor"></a>version 0.7-0<small> 2021-02-25 </small>
+</h1>
+<ul>
+<li><p>add <code>load_units_xml</code> to enable database reloading as well as loading user-provided unit systems; <a href='https://github.com/r-quantities/units/issues/254'>#254</a> addressing <a href='https://github.com/r-quantities/units/issues/243'>#243</a>, <a href='https://github.com/r-quantities/units/issues/244'>#244</a></p></li>
+<li><p>add <code>install_unit</code> and <code>remove_unit</code> for adding/removing custom user-defined symbols or names, with optional mapping to existing units; <code>install_symbolic_unit</code>, <code>remove_symbolic_unit</code>, <code>install_conversion_constant</code>, <code>install_conversion_offset</code> are deprecated; <a href='https://github.com/r-quantities/units/issues/261'>#261</a> addressing <a href='https://github.com/r-quantities/units/issues/89'>#89</a></p></li>
+<li>
+<p>add <code>keep_units</code>, a helper to apply functions that do not preserve units;</p>
+<p><a href='https://github.com/r-quantities/units/issues/255'>#255</a> addressing <a href='https://github.com/r-quantities/units/issues/252'>#252</a></p>
+</li>
+<li><p>fix <code><a href="../reference/units.html">as_units("")</a></code>, which is now equivalent to <code>unitless</code>; <a href='https://github.com/r-quantities/units/issues/199'>#199</a></p></li>
+<li><p>fix plot axes for <code>plot.formula</code> and <code>plot.data.frame</code>; <a href='https://github.com/r-quantities/units/issues/213'>#213</a></p></li>
+<li><p>fix arithmetic for powers above 1 and below -1; <a href='https://github.com/r-quantities/units/issues/264'>#264</a></p></li>
+<li><p>improve arithmetic of logarithms; <a href='https://github.com/r-quantities/units/issues/249'>#249</a></p></li>
+<li><p>export <code>ud_are_convertible</code>; <a href='https://github.com/r-quantities/units/issues/263'>#263</a> addressing <a href='https://github.com/r-quantities/units/issues/258'>#258</a> <a href='https://github.com/cregouby'>@cregouby</a></p></li>
+<li><p>remove deprecations: <code>as.units</code>, <code>as_cf</code>, <code>make_unit</code>, <code>parse_unit</code>; <a href='https://github.com/r-quantities/units/issues/259'>#259</a></p></li>
+<li><p>remove deprecated pre-computed <code>ud_units</code> database; <a href='https://github.com/r-quantities/units/issues/259'>#259</a></p></li>
+</ul>
+</div>
     <div id="version-06-7" class="section level1">
 <h1 class="page-header" data-toc-text="0.6-7">
 <a href="#version-06-7" class="anchor"></a>version 0.6-7<small> 2020-06-13 </small>
@@ -206,7 +226,7 @@
 <li><p><code>install_symbolic_unit</code> now adds a dimensionless unit, integrated in the units system, meaning that prefixes on it work as well; <a href='https://github.com/r-quantities/units/issues/71'>#71</a></p></li>
 <li><p><code>install_conversion_constant</code> and <code>install_conversion_offset</code> now install a new unit that is a function of an existing udunits unit.; <a href='https://github.com/r-quantities/units/issues/71'>#71</a>, <a href='https://github.com/r-quantities/units/issues/84'>#84</a></p></li>
 <li><p>unit simplification can now be user-controlled by <code>units_options</code>; <a href='https://github.com/r-quantities/units/issues/89'>#89</a></p></li>
-<li><p><code><a href="../reference/set_units.html">set_units(15, mg/kg)</a></code> is now no longer simplified to 1e-9 unitless; <a href='https://github.com/r-quantities/units/issues/89'>#89</a></p></li>
+<li><p><code><a href="../reference/units.html">set_units(15, mg/kg)</a></code> is now no longer simplified to 1e-9 unitless; <a href='https://github.com/r-quantities/units/issues/89'>#89</a></p></li>
 <li><p>directly uses the udunits2 C library; drop dependence on R package <code>udunits2</code>, fixing R package <code>udunits2</code> memory leaks; <a href='https://github.com/r-quantities/units/issues/135'>#135</a></p></li>
 <li><p>drops <code><a href="https://rdrr.io/r/base/matmult.html">%*%</a></code>, no longer gives warning when loading</p></li>
 </ul>
@@ -222,7 +242,7 @@
 </h1>
 <ul>
 <li><p>deal with trigonometric functions for units degree; return units rad on inverse trigonometric functions.</p></li>
-<li><p>Unit creation has been significantly refactored. <code>units&lt;-</code> now accepts strings or quoted language objects on the right hand side, powered by new S3 methods for <code>as_units</code>. All valid unit symbols and unit names recognized by package ‘udunits2’ are now accepted. New user facing function <code><a href="../reference/as_units.html">make_units()</a></code> (plural s) is also provided. See <code><a href="../reference/as_units.html">?as_units</a></code> for details. <a href='https://github.com/t-kalinowski'>@t-kalinowski</a></p></li>
+<li><p>Unit creation has been significantly refactored. <code>units&lt;-</code> now accepts strings or quoted language objects on the right hand side, powered by new S3 methods for <code>as_units</code>. All valid unit symbols and unit names recognized by package ‘udunits2’ are now accepted. New user facing function <code><a href="../reference/units.html">make_units()</a></code> (plural s) is also provided. See <code><a href="../reference/units.html">?as_units</a></code> for details. <a href='https://github.com/t-kalinowski'>@t-kalinowski</a></p></li>
 <li><p>new functions <code><a href="../reference/valid_udunits.html">valid_udunits()</a></code> and <code><a href="../reference/valid_udunits.html">valid_udunits_prefixes()</a></code> generate tidy dataframes listing all the valid unit names, symbols, and prefixes recognized by udunits. <a href='https://github.com/t-kalinowski'>@t-kalinowski</a></p></li>
 <li><p>new function <code><a href="../reference/install_symbolic_unit.html">install_symbolic_unit()</a></code> for adding custom, user-defined units. <a href='https://github.com/t-kalinowski'>@t-kalinowski</a></p></li>
 <li><p><code>make_unit</code> and <code>parse_unit</code> (singular unit) have been deprecated, please use <code>as_units</code> instead.</p></li>
@@ -255,8 +275,8 @@
 <li><p>allow for 1/n integer powers, as in <code>set_units(1:10, m^-2) ^ 0.5</code>; <a href='https://github.com/r-quantities/units/issues/29'>#29</a></p></li>
 <li><p>properly set log units after log transform; <a href='https://github.com/r-quantities/units/issues/33'>#33</a></p></li>
 <li><p><code>sin</code>, <code>cos</code> and <code>tan</code> no longer complain when units is <code>rad</code>, and return <code>unitless</code>; <a href='https://github.com/r-quantities/units/issues/40'>#40</a></p></li>
-<li><p>now allow for <code><a href="../reference/set_units.html">set_units(1:3, "°C")</a></code> and also <code><a href="../reference/set_units.html">set_units(1:3, "degree_Celsius")</a></code> by resolving names to symbols first; <a href='https://github.com/r-quantities/units/issues/43'>#43</a></p></li>
-<li><p><code><a href="../reference/set_units.html">set_units(x)</a></code> with <code>x</code> numeric sets units to <code>unitless</code>; <a href='https://github.com/r-quantities/units/issues/41'>#41</a></p></li>
+<li><p>now allow for <code><a href="../reference/units.html">set_units(1:3, "°C")</a></code> and also <code><a href="../reference/units.html">set_units(1:3, "degree_Celsius")</a></code> by resolving names to symbols first; <a href='https://github.com/r-quantities/units/issues/43'>#43</a></p></li>
+<li><p><code><a href="../reference/units.html">set_units(x)</a></code> with <code>x</code> numeric sets units to <code>unitless</code>; <a href='https://github.com/r-quantities/units/issues/41'>#41</a></p></li>
 </ul>
 </div>
     <div id="version-04-4" class="section level1">
@@ -273,7 +293,7 @@
 <a href="#version-04-3" class="anchor"></a>version 0.4-3<small> 2017-03-25 </small>
 </h1>
 <ul>
-<li>support for <code><a href="../reference/set_units.html">set_units(1:10, m)</a></code> which does not require to declare or define, <code>m</code> (<code>m</code> is resolved automatically from <code>ud_units</code>)</li>
+<li>support for <code><a href="../reference/units.html">set_units(1:10, m)</a></code> which does not require to declare or define, <code>m</code> (<code>m</code> is resolved automatically from <code>ud_units</code>)</li>
 </ul>
 </div>
   </div>
@@ -293,7 +313,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

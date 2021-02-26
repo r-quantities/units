@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">units</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6-7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7-0</span>
       </span>
     </div>
 
@@ -39,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -68,7 +68,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/r-quantities/units/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -82,7 +82,7 @@
 
       
 
-      </header><div class="row">
+      </header><script src="units_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Units of Measurement for R Vectors: an Introduction</h1>
@@ -96,18 +96,19 @@
     
     
 <p>R has little support for physical measurement units. The exception is formed by time differences: time differences objects of class <code>difftime</code> have a <code>units</code> attribute that can be modified:</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="no">t1</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span>()
-<span class="no">t2</span> <span class="kw">=</span> <span class="no">t1</span> + <span class="fl">3600</span>
-<span class="no">d</span> <span class="kw">=</span> <span class="no">t2</span> - <span class="no">t1</span>
-<span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span>(<span class="no">d</span>)
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">t1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span><span class="op">(</span><span class="op">)</span> 
+<span class="va">t2</span> <span class="op">=</span> <span class="va">t1</span> <span class="op">+</span> <span class="fl">3600</span> 
+<span class="va">d</span> <span class="op">=</span> <span class="va">t2</span> <span class="op">-</span> <span class="va">t1</span>
+<span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span>
 <span class="co">## [1] "difftime"</span>
-<span class="fu"><a href="../reference/units.html">units</a></span>(<span class="no">d</span>)
+<span class="fu"><a href="../reference/units.html">units</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span>
 <span class="co">## [1] "hours"</span>
-<span class="no">d</span>
+<span class="va">d</span>
 <span class="co">## Time difference of 1 hours</span>
-<span class="fu"><a href="../reference/units.html">units</a></span>(<span class="no">d</span>) <span class="kw">=</span> <span class="st">"secs"</span>
-<span class="no">d</span>
-<span class="co">## Time difference of 3600 secs</span></pre></body></html></div>
+<span class="fu"><a href="../reference/units.html">units</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span> <span class="op">=</span> <span class="st">"secs"</span>
+<span class="va">d</span>
+<span class="co">## Time difference of 3600 secs</span></code></pre></div>
 <p>We see here that the <code>units</code> method is used to retrieve and modify the unit of time differences.</p>
 <p>The <code>units</code> package generalizes this idea to other physical units, building upon the <a href="https://cran.r-project.org/package=udunits2">udunits2</a> R package, which in turn is build upon the <a href="https://www.unidata.ucar.edu/software/udunits/">udunits2</a> C library. The <code>udunits2</code> library provides the following operations:</p>
 <ul>
@@ -121,46 +122,33 @@
 <div id="setting-units-unit-conversion" class="section level2">
 <h2 class="hasAnchor">
 <a href="#setting-units-unit-conversion" class="anchor"></a>Setting units, unit conversion</h2>
-<p>Existing units are resolved from a database in the <code>units</code> package, called <code>ud_units</code>. We can see the first three elements of it by</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">units</span>)
-<span class="co">## Warning in .get_ud_xml_dir(TRUE): multiple udunits databases present: /Users/</span>
-<span class="co">## runner/runners/2.263.0/work/_temp/Library/udunits2/share/udunits2.xml /usr/</span>
-<span class="co">## local/share/udunits/udunits2.xml</span>
-<span class="co">## udunits system database from /Users/runner/runners/2.263.0/work/_temp/Library/udunits2/share</span>
-<span class="no">ud_units</span>[<span class="fl">1</span>:<span class="fl">3</span>]
-<span class="co">## $m</span>
-<span class="co">## 1 [m]</span>
-<span class="co">## </span>
-<span class="co">## $kg</span>
-<span class="co">## 1 [kg]</span>
-<span class="co">## </span>
-<span class="co">## $s</span>
-<span class="co">## 1 [s]</span></pre></body></html></div>
 <p>We can set units to numerical values by <code>set_units</code>:</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r">(<span class="no">a</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/set_units.html">set_units</a></span>(<span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span>(<span class="fl">10</span>),  <span class="no">m</span>/<span class="no">s</span>))
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-quantities/units/">units</a></span><span class="op">)</span>
+<span class="co">## Warning: multiple udunits databases present:</span>
+<span class="co">##  - /Users/runner/work/_temp/Library/udunits2/share/udunits2.xml</span>
+<span class="co">##  - /usr/local/share/udunits/udunits2.xml</span>
+<span class="co">## udunits database from /Users/runner/work/_temp/Library/udunits2/share/udunits2.xml</span>
+<span class="op">(</span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/units.html">set_units</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>,  <span class="va">m</span><span class="op">/</span><span class="va">s</span><span class="op">)</span><span class="op">)</span>
 <span class="co">## Units: [m/s]</span>
-<span class="co">##  [1] 0.1562012 0.3107563 0.2699091 0.8512679 0.7086398 0.7740070 0.9050912</span>
-<span class="co">##  [8] 0.4923948 0.0506700 0.4272135</span></pre></body></html></div>
+<span class="co">##  [1] 0.21009617 0.98060140 0.44770786 0.48260999 0.25605027 0.06764853</span>
+<span class="co">##  [7] 0.98848119 0.09325564 0.02571513 0.07118001</span></code></pre></div>
 <p>the result, e.g. </p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="../reference/set_units.html">set_units</a></span>(<span class="fl">10</span>, <span class="no">m</span>/<span class="no">s</span>)
-<span class="co">## 10 [m/s]</span></pre></body></html></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/units.html">set_units</a></span><span class="op">(</span><span class="fl">10</span>, <span class="va">m</span><span class="op">/</span><span class="va">s</span><span class="op">)</span>
+<span class="co">## 10 [m/s]</span></code></pre></div>
 <p>literally means “10 times 1 m divided by 1 s”. In writing, the “1” values are omitted, and the multiplication is implicit.</p>
-<p>The <code>units</code> package comes with a list of over 3000 predefined units,</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">ud_units</span>)
-<span class="co">## [1] 3248</span></pre></body></html></div>
-<p>We can retrieve a single unit from the <code>ud_units</code> database by</p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span>(<span class="no">ud_units</span>, <span class="no">km</span>/<span class="no">h</span>)
-<span class="co">## 1 [km/h]</span></pre></body></html></div>
 <div id="unit-conversion" class="section level3">
 <h3 class="hasAnchor">
 <a href="#unit-conversion" class="anchor"></a>Unit conversion</h3>
 <p>When conversion is meaningful, such as hours to seconds or meters to kilometers, conversion can be done explicitly by setting the units of a vector</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">b</span> <span class="kw">=</span> <span class="no">a</span>
-<span class="fu"><a href="../reference/units.html">units</a></span>(<span class="no">b</span>) <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span>(<span class="no">ud_units</span>, <span class="no">km</span>/<span class="no">h</span>)
-<span class="no">b</span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">b</span> <span class="op">=</span> <span class="va">a</span>
+<span class="fu"><a href="../reference/units.html">units</a></span><span class="op">(</span><span class="va">b</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/units.html">make_units</a></span><span class="op">(</span><span class="va">km</span><span class="op">/</span><span class="va">h</span><span class="op">)</span>
+<span class="va">b</span>
 <span class="co">## Units: [km/h]</span>
-<span class="co">##  [1] 0.5623242 1.1187226 0.9716727 3.0645643 2.5511033 2.7864253 3.2583282</span>
-<span class="co">##  [8] 1.7726213 0.1824120 1.5379688</span></pre></body></html></div>
+<span class="co">##  [1] 0.75634621 3.53016505 1.61174828 1.73739598 0.92178096 0.24353471</span>
+<span class="co">##  [7] 3.55853229 0.33572029 0.09257447 0.25624802</span></code></pre></div>
 </div>
 </div>
 <div id="basic-manipulations" class="section level2">
@@ -170,133 +158,147 @@
 <h3 class="hasAnchor">
 <a href="#arithmetic-operations" class="anchor"></a>Arithmetic operations</h3>
 <p>Arithmetic operations verify units, and create new ones</p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">a</span> + <span class="no">a</span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">a</span> <span class="op">+</span> <span class="va">a</span>
 <span class="co">## Units: [m/s]</span>
-<span class="co">##  [1] 0.3124023 0.6215126 0.5398181 1.7025357 1.4172796 1.5480140 1.8101823</span>
-<span class="co">##  [8] 0.9847896 0.1013400 0.8544271</span>
-<span class="no">a</span> * <span class="no">a</span>
+<span class="co">##  [1] 0.42019234 1.96120281 0.89541571 0.96521999 0.51210053 0.13529706</span>
+<span class="co">##  [7] 1.97696238 0.18651127 0.05143026 0.14236001</span>
+<span class="va">a</span> <span class="op">*</span> <span class="va">a</span>
 <span class="co">## Units: [m^2/s^2]</span>
-<span class="co">##  [1] 0.024398802 0.096569464 0.072850907 0.724656968 0.502170355 0.599086870</span>
-<span class="co">##  [7] 0.819190027 0.242452649 0.002567449 0.182511412</span>
-<span class="no">a</span> ^ <span class="fl">2</span>
+<span class="co">##  [1] 0.0441403999 0.9615791137 0.2004423246 0.2329124065 0.0655617384</span>
+<span class="co">##  [6] 0.0045763238 0.9770950640 0.0086966139 0.0006612679 0.0050665933</span>
+<span class="va">a</span> <span class="op">^</span> <span class="fl">2</span>
 <span class="co">## Units: [m^2/s^2]</span>
-<span class="co">##  [1] 0.024398802 0.096569464 0.072850907 0.724656968 0.502170355 0.599086870</span>
-<span class="co">##  [7] 0.819190027 0.242452649 0.002567449 0.182511412</span>
-<span class="no">a</span> ** -<span class="fl">2</span>
+<span class="co">##  [1] 0.0441403999 0.9615791137 0.2004423246 0.2329124065 0.0655617384</span>
+<span class="co">##  [6] 0.0045763238 0.9770950640 0.0086966139 0.0006612679 0.0050665933</span>
+<span class="va">a</span> <span class="op">**</span> <span class="op">-</span><span class="fl">2</span>
 <span class="co">## Units: [s^2/m^2]</span>
-<span class="co">##  [1]  40.985618  10.355240  13.726665   1.379963   1.991356   1.669207</span>
-<span class="co">##  [7]   1.220718   4.124517 389.491732   5.479109</span></pre></body></html></div>
+<span class="co">##  [1]   22.654983    1.039956    4.988966    4.293460   15.252799  218.516006</span>
+<span class="co">##  [7]    1.023442  114.987283 1512.246328  197.371278</span></code></pre></div>
 <p>and convert to the units of the first argument if necessary:</p>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">a</span> + <span class="no">b</span> <span class="co"># m/s + km/h -&gt; m/s</span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">a</span> <span class="op">+</span> <span class="va">b</span> <span class="co"># m/s + km/h -&gt; m/s</span>
 <span class="co">## Units: [m/s]</span>
-<span class="co">##  [1] 0.3124023 0.6215126 0.5398181 1.7025357 1.4172796 1.5480140 1.8101823</span>
-<span class="co">##  [8] 0.9847896 0.1013400 0.8544271</span></pre></body></html></div>
+<span class="co">##  [1] 0.42019234 1.96120281 0.89541571 0.96521999 0.51210053 0.13529706</span>
+<span class="co">##  [7] 1.97696238 0.18651127 0.05143026 0.14236001</span></code></pre></div>
 <p>Currently, powers are only supported for integer powers, so using <code>a ** 2.5</code> would result in an error.</p>
 </div>
 <div id="unit-simplification" class="section level3">
 <h3 class="hasAnchor">
 <a href="#unit-simplification" class="anchor"></a>Unit simplification</h3>
 <p>There are some basic simplification of units:</p>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">t</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span>(<span class="no">ud_units</span>, <span class="no">s</span>)
-<span class="no">a</span> * <span class="no">t</span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">t</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/units.html">make_units</a></span><span class="op">(</span><span class="va">s</span><span class="op">)</span>
+<span class="va">a</span> <span class="op">*</span> <span class="va">t</span>
 <span class="co">## Units: [m]</span>
-<span class="co">##  [1] 0.1562012 0.3107563 0.2699091 0.8512679 0.7086398 0.7740070 0.9050912</span>
-<span class="co">##  [8] 0.4923948 0.0506700 0.4272135</span></pre></body></html></div>
+<span class="co">##  [1] 0.21009617 0.98060140 0.44770786 0.48260999 0.25605027 0.06764853</span>
+<span class="co">##  [7] 0.98848119 0.09325564 0.02571513 0.07118001</span></code></pre></div>
 <p>which also work when units need to be converted before they can be simplified:</p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">t</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span>(<span class="no">ud_units</span>, <span class="no">min</span>)
-<span class="no">a</span> * <span class="no">t</span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">t</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/units.html">make_units</a></span><span class="op">(</span><span class="va">min</span><span class="op">)</span>
+<span class="va">a</span> <span class="op">*</span> <span class="va">t</span>
 <span class="co">## Units: [m]</span>
-<span class="co">##  [1]  9.37207 18.64538 16.19454 51.07607 42.51839 46.44042 54.30547 29.54369</span>
-<span class="co">##  [9]  3.04020 25.63281</span></pre></body></html></div>
+<span class="co">##  [1] 12.605770 58.836084 26.862471 28.956600 15.363016  4.058912 59.308871</span>
+<span class="co">##  [8]  5.595338  1.542908  4.270800</span></code></pre></div>
 <p>Simplification to unit-less values gives the “1” as unit:</p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">m</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span>(<span class="no">ud_units</span>, <span class="no">m</span>)
-<span class="no">a</span> * <span class="no">t</span> / <span class="no">m</span>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/units.html">make_units</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span>
+<span class="va">a</span> <span class="op">*</span> <span class="va">t</span> <span class="op">/</span> <span class="va">m</span>
 <span class="co">## Units: [1]</span>
-<span class="co">##  [1]  9.37207 18.64538 16.19454 51.07607 42.51839 46.44042 54.30547 29.54369</span>
-<span class="co">##  [9]  3.04020 25.63281</span></pre></body></html></div>
+<span class="co">##  [1] 12.605770 58.836084 26.862471 28.956600 15.363016  4.058912 59.308871</span>
+<span class="co">##  [8]  5.595338  1.542908  4.270800</span></code></pre></div>
 <p>Allowed operations that require convertible units are <code><a href="https://rdrr.io/r/base/Arithmetic.html">+</a></code>, <code><a href="https://rdrr.io/r/base/Arithmetic.html">-</a></code>, <code><a href="https://rdrr.io/r/base/Comparison.html">==</a></code>, <code><a href="https://rdrr.io/r/base/Comparison.html">!=</a></code>, <code><a href="https://rdrr.io/r/base/Comparison.html">&lt;</a></code>, <code><a href="https://rdrr.io/r/base/Comparison.html">&gt;</a></code>, <code><a href="https://rdrr.io/r/base/Comparison.html">&lt;=</a></code>, <code><a href="https://rdrr.io/r/base/Comparison.html">&gt;=</a></code>. Operations that lead to new units are <code><a href="https://rdrr.io/r/base/Arithmetic.html">*</a></code>, <code><a href="https://rdrr.io/r/base/Arithmetic.html">/</a></code>, and the power operations <code>**</code> and <code><a href="https://rdrr.io/r/base/Arithmetic.html">^</a></code>.</p>
 </div>
 <div id="mathematical-functions" class="section level3">
 <h3 class="hasAnchor">
 <a href="#mathematical-functions" class="anchor"></a>Mathematical functions</h3>
 <p>Mathematical operations allowed are: <code>abs</code>, <code>sign</code>, <code>floor</code>, <code>ceiling</code>, <code>trunc</code>, <code>round</code>, <code>signif</code>, <code>log</code>, <code>cumsum</code>, <code>cummax</code>, <code>cummin</code>.</p>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Round.html">signif</a></span>(<span class="no">a</span> ** <span class="fl">2</span> / <span class="fl">3</span>, <span class="fl">3</span>)
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Round.html">signif</a></span><span class="op">(</span><span class="va">a</span> <span class="op">**</span> <span class="fl">2</span> <span class="op">/</span> <span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span>
 <span class="co">## Units: [m^2/s^2]</span>
-<span class="co">##  [1] 0.008130 0.032200 0.024300 0.242000 0.167000 0.200000 0.273000 0.080800</span>
-<span class="co">##  [9] 0.000856 0.060800</span>
-<span class="fu"><a href="https://rdrr.io/r/base/cumsum.html">cumsum</a></span>(<span class="no">a</span>)
+<span class="co">##  [1] 0.01470 0.32100 0.06680 0.07760 0.02190 0.00153 0.32600 0.00290 0.00022</span>
+<span class="co">## [10] 0.00169</span>
+<span class="fu"><a href="https://rdrr.io/r/base/cumsum.html">cumsum</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span>
 <span class="co">## Units: [m/s]</span>
-<span class="co">##  [1] 0.1562012 0.4669574 0.7368665 1.5881344 2.2967742 3.0707812 3.9758724</span>
-<span class="co">##  [8] 4.4682672 4.5189372 4.9461507</span>
-<span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span>(<span class="no">a</span>) <span class="co"># base defaults to exp(1)</span>
+<span class="co">##  [1] 0.2100962 1.1906976 1.6384054 2.1210154 2.3770657 2.4447142 3.4331954</span>
+<span class="co">##  [8] 3.5264510 3.5521662 3.6233462</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span> <span class="co"># base defaults to exp(1)</span>
 <span class="co">## Units: [(ln(re 1 m.s-1))]</span>
-<span class="co">##  [1] -1.8566106 -1.1687463 -1.3096701 -0.1610284 -0.3444079 -0.2561743</span>
-<span class="co">##  [7] -0.0997196 -0.7084744 -2.9824213 -0.8504713</span>
-<span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span>(<span class="no">a</span>, <span class="kw">base</span> <span class="kw">=</span> <span class="fl">10</span>)
+<span class="co">##  [1] -1.56018991 -0.01958922 -0.80361437 -0.72854642 -1.36238150 -2.69342963</span>
+<span class="co">##  [7] -0.01158566 -2.37241077 -3.66067573 -2.64254331</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">a</span>, base <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
 <span class="co">## Units: [(lg(re 1 m.s-1))]</span>
-<span class="co">##  [1] -0.80631574 -0.50758009 -0.56878252 -0.06993376 -0.14957446 -0.11125510</span>
-<span class="co">##  [7] -0.04330767 -0.30768653 -1.29524912 -0.36935499</span>
-<span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span>(<span class="no">a</span>, <span class="kw">base</span> <span class="kw">=</span> <span class="fl">2</span>)
+<span class="co">##  [1] -0.677581868 -0.008507489 -0.349005285 -0.316403689 -0.591674770</span>
+<span class="co">##  [6] -1.169741627 -0.005031590 -1.030324906 -1.589811269 -1.147641977</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">a</span>, base <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
 <span class="co">## Units: [(lb(re 1 m.s-1))]</span>
-<span class="co">##  [1] -2.6785229 -1.6861446 -1.8894546 -0.2323149 -0.4968756 -0.3695814</span>
-<span class="co">##  [7] -0.1438650 -1.0221125 -4.3027244 -1.2269707</span></pre></body></html></div>
+<span class="co">##  [1] -2.25087824 -0.02826127 -1.15937046 -1.05107030 -1.96550104 -3.88579758</span>
+<span class="co">##  [7] -0.01671458 -3.42266525 -5.28123872 -3.81238413</span></code></pre></div>
 </div>
 <div id="summary-functions" class="section level3">
 <h3 class="hasAnchor">
 <a href="#summary-functions" class="anchor"></a>Summary functions</h3>
 <p>Summary functions <code>sum</code>, <code>min</code>, <code>max</code>, and <code>range</code> are allowed:</p>
-<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="no">a</span>)
-<span class="co">## 4.946151 [m/s]</span>
-<span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span>(<span class="no">a</span>)
-<span class="co">## 0.05067 [m/s]</span>
-<span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(<span class="no">a</span>)
-<span class="co">## 0.9050912 [m/s]</span>
-<span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span>(<span class="no">a</span>)
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span>
+<span class="co">## 3.623346 [m/s]</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span>
+<span class="co">## 0.02571513 [m/s]</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span>
+<span class="co">## 0.9884812 [m/s]</span>
+<span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span>
 <span class="co">## Units: [m/s]</span>
-<span class="co">## [1] 0.0506700 0.9050912</span>
-<span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span>(<span class="no">ud_units</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span>(<span class="no">m</span>/<span class="no">s</span>, <span class="no">km</span>/<span class="no">h</span>)) <span class="co"># converts to first unit:</span>
-<span class="co">## 0.2777778 [m/s]</span></pre></body></html></div>
+<span class="co">## [1] 0.02571513 0.98848119</span>
+<span class="fu"><a href="../reference/units.html">make_units</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">m</span><span class="op">/</span><span class="va">s</span>, <span class="va">km</span><span class="op">/</span><span class="va">h</span><span class="op">)</span><span class="op">)</span> <span class="co"># converts to first unit:</span>
+<span class="co">## 0.2777778 [m/s]</span></code></pre></div>
 </div>
 <div id="printing" class="section level3">
 <h3 class="hasAnchor">
 <a href="#printing" class="anchor"></a>Printing</h3>
 <p>Following <code>difftime</code>, printing behaves differently for length-one vectors:</p>
-<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="no">a</span>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">a</span>
 <span class="co">## Units: [m/s]</span>
-<span class="co">##  [1] 0.1562012 0.3107563 0.2699091 0.8512679 0.7086398 0.7740070 0.9050912</span>
-<span class="co">##  [8] 0.4923948 0.0506700 0.4272135</span>
-<span class="no">a</span>[<span class="fl">1</span>]
-<span class="co">## 0.1562012 [m/s]</span></pre></body></html></div>
+<span class="co">##  [1] 0.21009617 0.98060140 0.44770786 0.48260999 0.25605027 0.06764853</span>
+<span class="co">##  [7] 0.98848119 0.09325564 0.02571513 0.07118001</span>
+<span class="va">a</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>
+<span class="co">## 0.2100962 [m/s]</span></code></pre></div>
 </div>
 <div id="subsetting" class="section level3">
 <h3 class="hasAnchor">
 <a href="#subsetting" class="anchor"></a>Subsetting</h3>
 <p>The usual subsetting rules work:</p>
-<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="no">a</span>[<span class="fl">2</span>:<span class="fl">5</span>]
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">a</span><span class="op">[</span><span class="fl">2</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>
 <span class="co">## Units: [m/s]</span>
-<span class="co">## [1] 0.3107563 0.2699091 0.8512679 0.7086398</span>
-<span class="no">a</span>[-(<span class="fl">1</span>:<span class="fl">9</span>)]
-<span class="co">## 0.4272135 [m/s]</span></pre></body></html></div>
+<span class="co">## [1] 0.9806014 0.4477079 0.4826100 0.2560503</span>
+<span class="va">a</span><span class="op">[</span><span class="op">-</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">9</span><span class="op">)</span><span class="op">]</span>
+<span class="co">## 0.07118001 [m/s]</span></code></pre></div>
 </div>
 <div id="concatenation" class="section level3">
 <h3 class="hasAnchor">
 <a href="#concatenation" class="anchor"></a>Concatenation</h3>
-<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="no">a</span>,<span class="no">a</span>)
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">a</span>,<span class="va">a</span><span class="op">)</span>
 <span class="co">## Units: [m/s]</span>
-<span class="co">##  [1] 0.1562012 0.3107563 0.2699091 0.8512679 0.7086398 0.7740070 0.9050912</span>
-<span class="co">##  [8] 0.4923948 0.0506700 0.4272135 0.1562012 0.3107563 0.2699091 0.8512679</span>
-<span class="co">## [15] 0.7086398 0.7740070 0.9050912 0.4923948 0.0506700 0.4272135</span></pre></body></html></div>
+<span class="co">##  [1] 0.21009617 0.98060140 0.44770786 0.48260999 0.25605027 0.06764853</span>
+<span class="co">##  [7] 0.98848119 0.09325564 0.02571513 0.07118001 0.21009617 0.98060140</span>
+<span class="co">## [13] 0.44770786 0.48260999 0.25605027 0.06764853 0.98848119 0.09325564</span>
+<span class="co">## [19] 0.02571513 0.07118001</span></code></pre></div>
 <p>concatenation converts to the units of the first argument, if necessary:</p>
-<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="no">a</span>,<span class="no">b</span>) <span class="co"># m/s, km/h -&gt; m/s</span>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">a</span>,<span class="va">b</span><span class="op">)</span> <span class="co"># m/s, km/h -&gt; m/s</span>
 <span class="co">## Units: [m/s]</span>
-<span class="co">##  [1] 0.1562012 0.3107563 0.2699091 0.8512679 0.7086398 0.7740070 0.9050912</span>
-<span class="co">##  [8] 0.4923948 0.0506700 0.4272135 0.1562012 0.3107563 0.2699091 0.8512679</span>
-<span class="co">## [15] 0.7086398 0.7740070 0.9050912 0.4923948 0.0506700 0.4272135</span>
-<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="no">b</span>,<span class="no">a</span>) <span class="co"># km/h, m/s -&gt; km/h</span>
+<span class="co">##  [1] 0.21009617 0.98060140 0.44770786 0.48260999 0.25605027 0.06764853</span>
+<span class="co">##  [7] 0.98848119 0.09325564 0.02571513 0.07118001 0.21009617 0.98060140</span>
+<span class="co">## [13] 0.44770786 0.48260999 0.25605027 0.06764853 0.98848119 0.09325564</span>
+<span class="co">## [19] 0.02571513 0.07118001</span>
+<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">b</span>,<span class="va">a</span><span class="op">)</span> <span class="co"># km/h, m/s -&gt; km/h</span>
 <span class="co">## Units: [km/h]</span>
-<span class="co">##  [1] 0.5623242 1.1187226 0.9716727 3.0645643 2.5511033 2.7864253 3.2583282</span>
-<span class="co">##  [8] 1.7726213 0.1824120 1.5379688 0.5623242 1.1187226 0.9716727 3.0645643</span>
-<span class="co">## [15] 2.5511033 2.7864253 3.2583282 1.7726213 0.1824120 1.5379688</span></pre></body></html></div>
+<span class="co">##  [1] 0.75634621 3.53016505 1.61174828 1.73739598 0.92178096 0.24353471</span>
+<span class="co">##  [7] 3.55853229 0.33572029 0.09257447 0.25624802 0.75634621 3.53016505</span>
+<span class="co">## [13] 1.61174828 1.73739598 0.92178096 0.24353471 3.55853229 0.33572029</span>
+<span class="co">## [19] 0.09257447 0.25624802</span></code></pre></div>
 </div>
 </div>
 <div id="conversion-tofrom-difftime" class="section level2">
@@ -304,52 +306,57 @@
 <a href="#conversion-tofrom-difftime" class="anchor"></a>Conversion to/from <code>difftime</code>
 </h2>
 <p>From <code>difftime</code> to <code>units</code>:</p>
-<div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="no">t1</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span>()
-<span class="no">t2</span> <span class="kw">=</span> <span class="no">t1</span> + <span class="fl">3600</span>
-<span class="no">d</span> <span class="kw">=</span> <span class="no">t2</span> - <span class="no">t1</span>
-(<span class="no">du</span> <span class="kw">=</span> <span class="fu"><a href="../reference/as_units.html">as_units</a></span>(<span class="no">d</span>))
-<span class="co">## 1 [h]</span></pre></body></html></div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">t1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span><span class="op">(</span><span class="op">)</span> 
+<span class="va">t2</span> <span class="op">=</span> <span class="va">t1</span> <span class="op">+</span> <span class="fl">3600</span> 
+<span class="va">d</span> <span class="op">=</span> <span class="va">t2</span> <span class="op">-</span> <span class="va">t1</span>
+<span class="op">(</span><span class="va">du</span> <span class="op">=</span> <span class="fu"><a href="../reference/units.html">as_units</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span><span class="op">)</span>
+<span class="co">## 1 [h]</span></code></pre></div>
 <p>vice versa:</p>
-<div class="sourceCode" id="cb20"><html><body><pre class="r">(<span class="no">dt</span> <span class="kw">=</span> <span class="fu"><a href="../reference/as_difftime.html">as_difftime</a></span>(<span class="no">du</span>))
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="op">(</span><span class="va">dt</span> <span class="op">=</span> <span class="fu"><a href="../reference/as_difftime.html">as_difftime</a></span><span class="op">(</span><span class="va">du</span><span class="op">)</span><span class="op">)</span>
 <span class="co">## Time difference of 1 hours</span>
-<span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span>(<span class="no">dt</span>)
-<span class="co">## [1] "difftime"</span></pre></body></html></div>
+<span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">dt</span><span class="op">)</span>
+<span class="co">## [1] "difftime"</span></code></pre></div>
 </div>
 <div id="units-in-matrix-objects" class="section level2">
 <h2 class="hasAnchor">
 <a href="#units-in-matrix-objects" class="anchor"></a>units in <code>matrix</code> objects</h2>
-<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="fu"><a href="../reference/set_units.html">set_units</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="fl">1</span>:<span class="fl">4</span>,<span class="fl">2</span>,<span class="fl">2</span>), <span class="no">m</span>/<span class="no">s</span>)
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/units.html">set_units</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>,<span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span>, <span class="va">m</span><span class="op">/</span><span class="va">s</span><span class="op">)</span>
 <span class="co">## Units: [m/s]</span>
 <span class="co">##      [,1] [,2]</span>
 <span class="co">## [1,]    1    3</span>
 <span class="co">## [2,]    2    4</span>
-<span class="fu"><a href="../reference/set_units.html">set_units</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="fl">1</span>:<span class="fl">4</span>,<span class="fl">2</span>,<span class="fl">2</span>), <span class="no">m</span>/<span class="no">s</span> * <span class="no">m</span>/<span class="no">s</span>)
+<span class="fu"><a href="../reference/units.html">set_units</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>,<span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span>, <span class="va">m</span><span class="op">/</span><span class="va">s</span> <span class="op">*</span> <span class="va">m</span><span class="op">/</span><span class="va">s</span><span class="op">)</span>
 <span class="co">## Units: [m^2/s^2]</span>
 <span class="co">##      [,1] [,2]</span>
 <span class="co">## [1,]    1    3</span>
-<span class="co">## [2,]    2    4</span></pre></body></html></div>
+<span class="co">## [2,]    2    4</span></code></pre></div>
 <p>but</p>
-<div class="sourceCode" id="cb22"><html><body><pre class="r"><span class="fu"><a href="../reference/set_units.html">set_units</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="fl">1</span>:<span class="fl">4</span>,<span class="fl">2</span>,<span class="fl">2</span>), <span class="no">m</span>/<span class="no">s</span>) <span class="kw">%*%</span> <span class="fu"><a href="../reference/set_units.html">set_units</a></span>(<span class="fl">4</span>:<span class="fl">3</span>, <span class="no">m</span>/<span class="no">s</span>)
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/units.html">set_units</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>,<span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span>, <span class="va">m</span><span class="op">/</span><span class="va">s</span><span class="op">)</span> <span class="op">%*%</span> <span class="fu"><a href="../reference/units.html">set_units</a></span><span class="op">(</span><span class="fl">4</span><span class="op">:</span><span class="fl">3</span>, <span class="va">m</span><span class="op">/</span><span class="va">s</span><span class="op">)</span>
 <span class="co">##      [,1]</span>
 <span class="co">## [1,]   13</span>
-<span class="co">## [2,]   20</span></pre></body></html></div>
+<span class="co">## [2,]   20</span></code></pre></div>
 <p>strips units.</p>
 </div>
 <div id="units-objects-in-data-frames" class="section level2">
 <h2 class="hasAnchor">
 <a href="#units-objects-in-data-frames" class="anchor"></a>units objects in <code>data.frame</code>s</h2>
 <p>units in <code>data.frame</code> objects are printed, but do not appear in <code>summary</code>:.</p>
-<div class="sourceCode" id="cb23"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">131</span>)
-<span class="no">d</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">x</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span>(<span class="fl">4</span>),
-                    <span class="kw">y</span> <span class="kw">=</span> <span class="fu"><a href="../reference/set_units.html">set_units</a></span>(<span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span>(<span class="fl">4</span>), <span class="no">s</span>),
-                    <span class="kw">z</span> <span class="kw">=</span> <span class="fu"><a href="../reference/set_units.html">set_units</a></span>(<span class="fl">1</span>:<span class="fl">4</span>, <span class="no">m</span>/<span class="no">s</span>))
-<span class="no">d</span>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">131</span><span class="op">)</span>
+<span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span>, 
+                    y <span class="op">=</span> <span class="fu"><a href="../reference/units.html">set_units</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span>, <span class="va">s</span><span class="op">)</span>, 
+                    z <span class="op">=</span> <span class="fu"><a href="../reference/units.html">set_units</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="va">m</span><span class="op">/</span><span class="va">s</span><span class="op">)</span><span class="op">)</span>
+<span class="va">d</span>
 <span class="co">##           x             y       z</span>
 <span class="co">## 1 0.2064370 0.8463468 [s] 1 [m/s]</span>
 <span class="co">## 2 0.1249422 0.5292048 [s] 2 [m/s]</span>
 <span class="co">## 3 0.2932732 0.5186254 [s] 3 [m/s]</span>
 <span class="co">## 4 0.3757797 0.2378545 [s] 4 [m/s]</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="no">d</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span>
 <span class="co">##        x                y                z       </span>
 <span class="co">##  Min.   :0.1249   Min.   :0.2379   Min.   :1.00  </span>
 <span class="co">##  1st Qu.:0.1861   1st Qu.:0.4484   1st Qu.:1.75  </span>
@@ -357,71 +364,81 @@
 <span class="co">##  Mean   :0.2501   Mean   :0.5330   Mean   :2.50  </span>
 <span class="co">##  3rd Qu.:0.3139   3rd Qu.:0.6085   3rd Qu.:3.25  </span>
 <span class="co">##  Max.   :0.3758   Max.   :0.8463   Max.   :4.00</span>
-<span class="no">d</span>$<span class="no">yz</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span>(<span class="no">d</span>, <span class="no">y</span> * <span class="no">z</span>)
-<span class="no">d</span>
+<span class="va">d</span><span class="op">$</span><span class="va">yz</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="va">d</span>, <span class="va">y</span> <span class="op">*</span> <span class="va">z</span><span class="op">)</span>
+<span class="va">d</span>
 <span class="co">##           x             y       z            yz</span>
 <span class="co">## 1 0.2064370 0.8463468 [s] 1 [m/s] 0.8463468 [m]</span>
 <span class="co">## 2 0.1249422 0.5292048 [s] 2 [m/s] 1.0584095 [m]</span>
 <span class="co">## 3 0.2932732 0.5186254 [s] 3 [m/s] 1.5558761 [m]</span>
 <span class="co">## 4 0.3757797 0.2378545 [s] 4 [m/s] 0.9514180 [m]</span>
-<span class="no">d</span>[<span class="fl">1</span>, <span class="st">"yz"</span>]
-<span class="co">## 0.8463468 [m]</span></pre></body></html></div>
+<span class="va">d</span><span class="op">[</span><span class="fl">1</span>, <span class="st">"yz"</span><span class="op">]</span>
+<span class="co">## 0.8463468 [m]</span></code></pre></div>
 </div>
 <div id="formatting" class="section level2">
 <h2 class="hasAnchor">
 <a href="#formatting" class="anchor"></a>formatting</h2>
 <p>Units are often written in the form <code>m2 s-1</code>, for square meter per second. This can be defined as unit, and also parsed by <code>as_units</code>:</p>
-<div class="sourceCode" id="cb24"><html><body><pre class="r">(<span class="no">x</span> <span class="kw">=</span> <span class="fl">1</span>:<span class="fl">10</span> * <span class="fu"><a href="../reference/as_units.html">as_units</a></span>(<span class="st">"m2 s-1"</span>))
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="op">(</span><span class="va">x</span> <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span> <span class="op">*</span> <span class="fu"><a href="../reference/units.html">as_units</a></span><span class="op">(</span><span class="st">"m2 s-1"</span><span class="op">)</span><span class="op">)</span>
 <span class="co">## Units: [m^2/s]</span>
-<span class="co">##  [1]  1  2  3  4  5  6  7  8  9 10</span></pre></body></html></div>
+<span class="co">##  [1]  1  2  3  4  5  6  7  8  9 10</span></code></pre></div>
 <p>udunits understands such string, and can convert them</p>
-<div class="sourceCode" id="cb25"><html><body><pre class="r"><span class="no">y</span> <span class="kw">=</span> <span class="fl">1</span>:<span class="fl">10</span> * <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span>(<span class="no">ud_units</span>, <span class="no">m</span>^<span class="fl">2</span>/<span class="no">s</span>)
-<span class="no">x</span> + <span class="no">y</span>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">y</span> <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span> <span class="op">*</span> <span class="fu"><a href="../reference/units.html">make_units</a></span><span class="op">(</span><span class="va">m</span><span class="op">^</span><span class="fl">2</span><span class="op">/</span><span class="va">s</span><span class="op">)</span>
+<span class="va">x</span> <span class="op">+</span> <span class="va">y</span>
 <span class="co">## Units: [m^2/s]</span>
-<span class="co">##  [1]  2  4  6  8 10 12 14 16 18 20</span></pre></body></html></div>
+<span class="co">##  [1]  2  4  6  8 10 12 14 16 18 20</span></code></pre></div>
 <p>Printing units in this form is done by</p>
-<div class="sourceCode" id="cb26"><html><body><pre class="r"><span class="fu"><a href="../reference/deparse_unit.html">deparse_unit</a></span>(<span class="no">x</span>)
-<span class="co">## [1] "m2 s-1"</span></pre></body></html></div>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/deparse_unit.html">deparse_unit</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+<span class="co">## [1] "m2 s-1"</span></code></pre></div>
 </div>
 <div id="plotting" class="section level2">
 <h2 class="hasAnchor">
 <a href="#plotting" class="anchor"></a>plotting</h2>
 <p>Base scatter plots and histograms support automatic unit placement in axis labels. In the following example we first convert to SI units. (Unit <code>in</code> needs a bit special treatment, because <code>in</code> is a reserved word in R.)</p>
-<div class="sourceCode" id="cb27"><html><body><pre class="r"><span class="no">mar</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="st">"mar"</span>) + <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">.3</span>, <span class="fl">0</span>, <span class="fl">0</span>)
-<span class="no">displacement</span> <span class="kw">=</span> <span class="no">mtcars</span>$<span class="no">disp</span> * <span class="no">ud_units</span><span class="kw">[[</span><span class="st">"in"</span>]]^<span class="fl">3</span>
-<span class="fu"><a href="../reference/units.html">units</a></span>(<span class="no">displacement</span>) <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span>(<span class="no">ud_units</span>, <span class="no">cm</span>^<span class="fl">3</span>)
-<span class="no">weight</span> <span class="kw">=</span> <span class="no">mtcars</span>$<span class="no">wt</span> * <span class="fl">1000</span> * <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span>(<span class="no">ud_units</span>, <span class="no">lb</span>)
-<span class="fu"><a href="../reference/units.html">units</a></span>(<span class="no">weight</span>) <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span>(<span class="no">ud_units</span>, <span class="no">kg</span>)
-<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="kw">mar</span> <span class="kw">=</span> <span class="no">mar</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">weight</span>, <span class="no">displacement</span>)</pre></body></html></div>
-<p><img src="units_files/figure-html/unnamed-chunk-29-1.png" width="700"></p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">mar</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span><span class="st">"mar"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">.3</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>
+<span class="va">displacement</span> <span class="op">=</span> <span class="va">mtcars</span><span class="op">$</span><span class="va">disp</span> <span class="op">*</span> <span class="fu"><a href="../reference/units.html">as_units</a></span><span class="op">(</span><span class="st">"in"</span><span class="op">)</span><span class="op">^</span><span class="fl">3</span>
+<span class="fu"><a href="../reference/units.html">units</a></span><span class="op">(</span><span class="va">displacement</span><span class="op">)</span> <span class="op">=</span> <span class="fu"><a href="../reference/units.html">make_units</a></span><span class="op">(</span><span class="va">cm</span><span class="op">^</span><span class="fl">3</span><span class="op">)</span>
+<span class="va">weight</span> <span class="op">=</span> <span class="va">mtcars</span><span class="op">$</span><span class="va">wt</span> <span class="op">*</span> <span class="fl">1000</span> <span class="op">*</span> <span class="fu"><a href="../reference/units.html">make_units</a></span><span class="op">(</span><span class="va">lb</span><span class="op">)</span>
+<span class="fu"><a href="../reference/units.html">units</a></span><span class="op">(</span><span class="va">weight</span><span class="op">)</span> <span class="op">=</span> <span class="fu"><a href="../reference/units.html">make_units</a></span><span class="op">(</span><span class="va">kg</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mar <span class="op">=</span> <span class="va">mar</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">weight</span>, <span class="va">displacement</span><span class="op">)</span></code></pre></div>
+<p><img src="units_files/figure-html/unnamed-chunk-26-1.png" width="700"></p>
 <p>We can change grouping symbols from <code>[ ]</code> into <code>( )</code>:</p>
-<div class="sourceCode" id="cb28"><html><body><pre class="r"><span class="fu"><a href="../reference/units_options.html">units_options</a></span>(<span class="kw">group</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"("</span>, <span class="st">")"</span>) )  <span class="co"># parenthesis instead of square brackets</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="kw">mar</span> <span class="kw">=</span> <span class="no">mar</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">weight</span>, <span class="no">displacement</span>)</pre></body></html></div>
-<p><img src="units_files/figure-html/unnamed-chunk-30-1.png" width="700"></p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/units_options.html">units_options</a></span><span class="op">(</span>group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"("</span>, <span class="st">")"</span><span class="op">)</span> <span class="op">)</span>  <span class="co"># parenthesis instead of square brackets</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mar <span class="op">=</span> <span class="va">mar</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">weight</span>, <span class="va">displacement</span><span class="op">)</span></code></pre></div>
+<p><img src="units_files/figure-html/unnamed-chunk-27-1.png" width="700"></p>
 <p>We can also remove grouping symbols, increase space between variable name and unit by:</p>
-<div class="sourceCode" id="cb29"><html><body><pre class="r"><span class="fu"><a href="../reference/units_options.html">units_options</a></span>(<span class="kw">sep</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"~~~"</span>, <span class="st">"~"</span>), <span class="kw">group</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">""</span>, <span class="st">""</span>))  <span class="co"># no brackets; extra space</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="kw">mar</span> <span class="kw">=</span> <span class="no">mar</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">weight</span>, <span class="no">displacement</span>)</pre></body></html></div>
-<p><img src="units_files/figure-html/unnamed-chunk-31-1.png" width="700"></p>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/units_options.html">units_options</a></span><span class="op">(</span>sep <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"~~~"</span>, <span class="st">"~"</span><span class="op">)</span>, group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">""</span>, <span class="st">""</span><span class="op">)</span><span class="op">)</span>  <span class="co"># no brackets; extra space</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mar <span class="op">=</span> <span class="va">mar</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">weight</span>, <span class="va">displacement</span><span class="op">)</span></code></pre></div>
+<p><img src="units_files/figure-html/unnamed-chunk-28-1.png" width="700"></p>
 <p>More complex units can be plotted either with negative powers, or as divisions, by modifying one of <code>units</code>’s global options using <code>units_options</code>:</p>
-<div class="sourceCode" id="cb30"><html><body><pre class="r"><span class="no">gallon</span> <span class="kw">=</span> <span class="fu"><a href="../reference/as_units.html">as_units</a></span>(<span class="st">"gallon"</span>)
-<span class="no">consumption</span> <span class="kw">=</span> <span class="no">mtcars</span>$<span class="no">mpg</span> * <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span>(<span class="no">ud_units</span>, <span class="no">mi</span>/<span class="no">gallon</span>)
-<span class="fu"><a href="../reference/units.html">units</a></span>(<span class="no">consumption</span>) <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span>(<span class="no">ud_units</span>, <span class="no">km</span>/<span class="no">l</span>)
-<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="kw">mar</span> <span class="kw">=</span> <span class="no">mar</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">displacement</span>, <span class="no">consumption</span>) <span class="co"># division in consumption</span></pre></body></html></div>
-<p><img src="units_files/figure-html/unnamed-chunk-32-1.png" width="700"></p>
-<div class="sourceCode" id="cb31"><html><body><pre class="r"><span class="fu"><a href="../reference/units_options.html">units_options</a></span>(<span class="kw">negative_power</span> <span class="kw">=</span> <span class="fl">TRUE</span>) <span class="co"># division becomes ^-1</span>
-<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">displacement</span>, <span class="no">consumption</span>) <span class="co"># division in consumption</span></pre></body></html></div>
-<p><img src="units_files/figure-html/unnamed-chunk-32-2.png" width="700"></p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">gallon</span> <span class="op">=</span> <span class="fu"><a href="../reference/units.html">as_units</a></span><span class="op">(</span><span class="st">"gallon"</span><span class="op">)</span>
+<span class="va">consumption</span> <span class="op">=</span> <span class="va">mtcars</span><span class="op">$</span><span class="va">mpg</span> <span class="op">*</span> <span class="fu"><a href="../reference/units.html">make_units</a></span><span class="op">(</span><span class="va">mi</span><span class="op">/</span><span class="va">gallon</span><span class="op">)</span>
+<span class="fu"><a href="../reference/units.html">units</a></span><span class="op">(</span><span class="va">consumption</span><span class="op">)</span> <span class="op">=</span> <span class="fu"><a href="../reference/units.html">make_units</a></span><span class="op">(</span><span class="va">km</span><span class="op">/</span><span class="va">l</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mar <span class="op">=</span> <span class="va">mar</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">displacement</span>, <span class="va">consumption</span><span class="op">)</span> <span class="co"># division in consumption</span></code></pre></div>
+<p><img src="units_files/figure-html/unnamed-chunk-29-1.png" width="700"></p>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/units_options.html">units_options</a></span><span class="op">(</span>negative_power <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># division becomes ^-1</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">displacement</span>, <span class="va">consumption</span><span class="op">)</span> <span class="co"># division in consumption</span></code></pre></div>
+<p><img src="units_files/figure-html/unnamed-chunk-29-2.png" width="700"></p>
 <p>As usual, units modify automatically in expressions:</p>
-<div class="sourceCode" id="cb32"><html><body><pre class="r"><span class="fu"><a href="../reference/units_options.html">units_options</a></span>(<span class="kw">negative_power</span> <span class="kw">=</span> <span class="fl">TRUE</span>) <span class="co"># division becomes ^-1</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="kw">mar</span> <span class="kw">=</span> <span class="no">mar</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">displacement</span>, <span class="no">consumption</span>)</pre></body></html></div>
-<p><img src="units_files/figure-html/unnamed-chunk-33-1.png" width="700"></p>
-<div class="sourceCode" id="cb33"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="fl">1</span>/<span class="no">displacement</span>, <span class="fl">1</span>/<span class="no">consumption</span>)</pre></body></html></div>
-<p><img src="units_files/figure-html/unnamed-chunk-33-2.png" width="700"></p>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/units_options.html">units_options</a></span><span class="op">(</span>negative_power <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># division becomes ^-1</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mar <span class="op">=</span> <span class="va">mar</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">displacement</span>, <span class="va">consumption</span><span class="op">)</span></code></pre></div>
+<p><img src="units_files/figure-html/unnamed-chunk-30-1.png" width="700"></p>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="va">displacement</span>, <span class="fl">1</span><span class="op">/</span><span class="va">consumption</span><span class="op">)</span></code></pre></div>
+<p><img src="units_files/figure-html/unnamed-chunk-30-2.png" width="700"></p>
 </div>
   </div>
 
@@ -440,7 +457,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

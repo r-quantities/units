@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">units</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6-7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7-0</span>
       </span>
     </div>
 
@@ -80,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -109,7 +109,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/r-quantities/units/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -127,7 +127,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Drop Units</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-quantities/units/blob/master/R/make_units.R'><code>R/make_units.R</code></a>, <a href='https://github.com/r-quantities/units/blob/master/R/mixed.R'><code>R/mixed.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/r-quantities/units/blob/master/R/conversion.R'><code>R/conversion.R</code></a>, <a href='https://github.com/r-quantities/units/blob/master/R/mixed.R'><code>R/mixed.R</code></a></small>
     <div class="hidden name"><code>drop_units.Rd</code></div>
     </div>
 
@@ -135,16 +135,16 @@
     <p>Drop units attribute and class.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>drop_units</span>(<span class='no'>x</span>)
+    <pre class="usage"><span class='fu'>drop_units</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 
 <span class='co'># S3 method for units</span>
-<span class='fu'>drop_units</span>(<span class='no'>x</span>)
+<span class='fu'>drop_units</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 
 <span class='co'># S3 method for data.frame</span>
-<span class='fu'>drop_units</span>(<span class='no'>x</span>)
+<span class='fu'>drop_units</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 
 <span class='co'># S3 method for mixed_units</span>
-<span class='fu'>drop_units</span>(<span class='no'>x</span>)</pre>
+<span class='fu'>drop_units</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -162,26 +162,31 @@ attributes like dimensions or other classes.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Equivalent to <code>units(x) &lt;- NULL</code>, or the pipe-friendly version
-<code><a href='set_units.html'>set_units(x, NULL)</a></code>, but <code>drop_units</code> will fail if the object has
+<code><a href='units.html'>set_units(x, NULL)</a></code>, but <code>drop_units</code> will fail if the object has
 no units metadata. Use the alternatives if you want this operation to succeed
 regardless of the object type.</p>
 <p>A <code>data.frame</code> method is also provided, which checks every column and
 drops units if any.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>
-<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='set_units.html'>set_units</a></span>(<span class='no'>x</span>, <span class='no'>m</span>/<span class='no'>s</span>)
+    <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fl'>1</span>
+<span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='units.html'>set_units</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>m</span><span class='op'>/</span><span class='va'>s</span><span class='op'>)</span>
 
 <span class='co'># this succeeds</span>
-<span class='fu'>drop_units</span>(<span class='no'>y</span>)</div><div class='output co'>#&gt; [1] 1</div><div class='input'><span class='fu'><a href='set_units.html'>set_units</a></span>(<span class='no'>y</span>, <span class='kw'>NULL</span>)</div><div class='output co'>#&gt; [1] 1</div><div class='input'><span class='fu'><a href='set_units.html'>set_units</a></span>(<span class='no'>x</span>, <span class='kw'>NULL</span>)</div><div class='output co'>#&gt; [1] 1</div><div class='input'>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'>drop_units</span><span class='op'>(</span><span class='va'>y</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 1</div><div class='input'><span class='fu'><a href='units.html'>set_units</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='cn'>NULL</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 1</div><div class='input'><span class='fu'><a href='units.html'>set_units</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='cn'>NULL</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 1</div><div class='input'>
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='co'># this fails</span>
-<span class='fu'>drop_units</span>(<span class='no'>x</span>)
-}
+<span class='fu'>drop_units</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+<span class='op'>}</span>
 
-<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>x</span><span class='kw'>=</span><span class='no'>x</span>, <span class='kw'>y</span><span class='kw'>=</span><span class='no'>y</span>)
-<span class='no'>df</span></div><div class='output co'>#&gt;   x       y
-#&gt; 1 1 1 [m/s]</div><div class='input'><span class='fu'>drop_units</span>(<span class='no'>df</span>)</div><div class='output co'>#&gt;   x y
+<span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>x<span class='op'>=</span><span class='va'>x</span>, y<span class='op'>=</span><span class='va'>y</span><span class='op'>)</span>
+<span class='va'>df</span>
+</div><div class='output co'>#&gt;   x       y
+#&gt; 1 1 1 [m/s]</div><div class='input'><span class='fu'>drop_units</span><span class='op'>(</span><span class='va'>df</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;   x y
 #&gt; 1 1 1</div><div class='input'>
 </div></pre>
   </div>
@@ -199,7 +204,7 @@ drops units if any.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

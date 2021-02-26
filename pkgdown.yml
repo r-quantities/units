@@ -1,8 +1,8 @@
 pandoc: 2.7.3
-pkgdown: 1.5.1
+pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   measurement_units_in_R: measurement_units_in_R.html
   units: units.html
-last_built: 2020-06-13T22:35Z
+last_built: 2021-02-26T21:33Z
 
