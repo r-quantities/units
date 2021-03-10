@@ -65,15 +65,20 @@ set_units.mixed_units = function(x, value, ..., mode = "standard") {
 
   # conversion data frame and split
   cv <- data.frame(
-    val=as.numeric(x), from=I(units(x)), to=value, stringsAsFactors=FALSE)
+    val = as.numeric(x), from = I(units(x)), to = value, idx = seq_along(x),
+    stringsAsFactors = FALSE)
   sp <- paste(cv$from, cv$to, sep=".")
   sp <- factor(sp, levels=unique(sp))
 
   # grouped conversion
-  do.call(c, unname(by(cv, sp, function(x) {
-    u <- set_units(x$val, x$from[[1]], mode="standard")
-    mixed_units(set_units(u, x$to[1], mode="standard"))
+  cv <- do.call(rbind, unname(by(cv, sp, function(x) {
+    x$val <- set_units(x$val, x$from[[1]], mode="standard")
+    x$val <- mixed_units(set_units(x$val, x$to[1], mode="standard"))
+    x
   }, simplify=FALSE)))
+
+  # reordering
+  cv[order(cv$idx), ]$val
 }
 
 #' @export
