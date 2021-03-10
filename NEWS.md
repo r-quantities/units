@@ -2,6 +2,9 @@
 
 * allow longer units grouping; #270 addressing #269 @bart1
 
+* fix regression in `set_units` method for `mixed_units` to ensure that
+  ordering is preserved; #272 addressing #271
+
 # version 0.7-0
 
 * add `load_units_xml` to enable database reloading as well as loading

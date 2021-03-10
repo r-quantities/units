@@ -47,3 +47,12 @@ test_that("mixed units work", {
    m = c(set_units(1:3, km), set_units(4:6, g))
    units_options(allow_mixed = FALSE)
 })
+
+test_that("order is preserved", {
+   x <- 1:10
+   u <- rep(c("m", "l"), 5)
+   m <- mixed_units(x, u)
+   m <- set_units(m, paste0("k", u), mode = "standard")
+
+   expect_equal(as.numeric(m), x / 1000)
+})
