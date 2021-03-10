@@ -54,7 +54,7 @@ units_options = function(..., sep, group, negative_power, parse, set_units_mode,
 		ret$sep = .setopt(sep)
 	}
 	if (!missing(group)) {
-		stopifnot(is.character(group) && length(group) == 2 && all(nchar(group) <= 1))
+		stopifnot(is.character(group) && length(group) == 2)
 		ret$group = .setopt(group)
 	}
 	if (!missing(negative_power)) {
