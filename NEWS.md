@@ -1,3 +1,7 @@
+# version 0.7-1
+
+* allow longer units grouping; #270 addressing #269 @bart1
+
 # version 0.7-0
 
 * add `load_units_xml` to enable database reloading as well as loading
