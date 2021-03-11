@@ -31,9 +31,16 @@ static ut_system *sys = NULL;
 static ut_encoding enc = UT_UTF8;
 
 // [[Rcpp::export]]
+void udunits_exit() {
+  R_gc();
+  ut_free_system(sys);
+  sys = NULL;
+}
+
+// [[Rcpp::export]]
 void udunits_init(CharacterVector path) {
   ut_set_error_message_handler(ut_ignore);
-  ut_free_system(sys);
+  udunits_exit();
   for (int i = 0; i < path.size(); i++) {
     if ((sys = ut_read_xml(path[i])) != NULL)
       break;
@@ -44,12 +51,6 @@ void udunits_init(CharacterVector path) {
   if (sys == NULL)
     stop("no database found!"); // #nocov
 }
-
-// [[Rcpp::export]]
-void udunits_exit() {  // #nocov start
-  ut_free_system(sys);
-  sys = NULL;
-}                      // #nocov end
 
 // wrap a ut_unit pointer in an XPtr
 SEXP ut_wrap(ut_unit *u) {

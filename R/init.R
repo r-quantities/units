@@ -25,7 +25,5 @@ NULL
 }
 
 .onUnload = function(libname, pkgname) {
-  # force run weak finalizers before freeing sys
-  invisible(gc())
 	udunits_exit()
 }
