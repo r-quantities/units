@@ -6,6 +6,16 @@
     structure(x, units = value, dim = dim, class = "units")
 }
 
+restore_units <- function(x, to) {
+  attrs <- attributes(to)
+  attrs$names <- NULL
+  attrs$dim <- NULL
+  attrs$dimnams <- NULL
+
+  attributes(x)[names(attrs)] <- attrs
+  x
+}
+
 #' @name units
 #' @export
 #'

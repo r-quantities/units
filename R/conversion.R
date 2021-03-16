@@ -194,12 +194,14 @@ as_difftime <- function(x) {
 
 
 #' @export
-`[.units` <- function(x, i, j, ..., drop = TRUE)
-  .as.units(NextMethod(), units(x))
+`[.units` <- function(x, i, j, ..., drop = TRUE) {
+  restore_units(NextMethod(), x)
+}
 
 #' @export
-`[[.units` <- function(x, i, j, ...)
-  .as.units(NextMethod(), units(x))
+`[[.units` <- function(x, i, j, ...) {
+  restore_units(NextMethod(), x)
+}
 
 #' @export
 as.POSIXct.units = function (x, tz = "UTC", ...) {
