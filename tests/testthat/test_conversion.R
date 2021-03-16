@@ -1,5 +1,3 @@
-context("Unit conversion")
-
 test_that("we can convert numbers to unit-less units", {
   x <- as_units(1:4)
   expect_equal(length(x), 4)

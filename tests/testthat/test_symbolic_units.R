@@ -1,5 +1,3 @@
-context("Symbolic unit manipulation")
-
 test_that("we can make symbolic units", {
   m <- units:::.symbolic_units("m")
   expect_true(inherits(m, "symbolic_units"))

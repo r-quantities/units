@@ -1,5 +1,3 @@
-context("Date/time")
-
 test_that("we can convert from udunits time/date to R", {
   #skip("set_units doesn't accept strings")
   # rewrite this to 

@@ -1,5 +1,3 @@
-context("udunits2")
-
 test_that("udunits error messages", {
   expect_error(set_units(1:3, "qqq"), "qqq")
 })

@@ -1,5 +1,3 @@
-context("Arithmetic")
-
 test_that("we can compare vectors with equal units", {
   x <- 1:4 * as_units("m")
   y <- 1:4 * as_units("m")

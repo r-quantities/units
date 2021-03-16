@@ -1,5 +1,3 @@
-context("Unit summaries")
-
 test_that("we can compute summary functions on units", {
   x <- 1:4
   ux <- x * as_units("m")

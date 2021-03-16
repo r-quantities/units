@@ -1,5 +1,3 @@
-context("Mixed Unit tests")
-
 test_that("mixed units work", {
    (m = c(set_units(1:3, km), set_units(4:6, g), allow_mixed = TRUE))
 
