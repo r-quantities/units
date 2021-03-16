@@ -199,7 +199,7 @@ test_that("errors are correctly coerced to a data frame", {
 test_that("units are correctly coerced to a list", {
   x <- 1:10 * as_units("m")
   y <- as.list(x)
-  expect_is(y, "list")
+  expect_type(y, "list")
   expect_true(all(sapply(seq_along(y), function(i) all.equal(y[[i]], x[i]))))
 })
 
@@ -210,7 +210,7 @@ test_that("NA as units generate warnings", {
 
 test_that("ud_are_convertible return the expected value", {
   x <- 1:10 * as_units("m")
-  expect_is(ud_are_convertible("m", "km"), "logical")
+  expect_type(ud_are_convertible("m", "km"), "logical")
   expect_true(ud_are_convertible("m", "km"))
   expect_true(ud_are_convertible(units(x), "km"))
   expect_false(ud_are_convertible("s", "kg"))
