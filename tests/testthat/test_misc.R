@@ -112,5 +112,7 @@ test_that("seq works", {
 })
 
 test_that("str works", {
-  str(set_units(1/1:3, m/s))
+  expect_snapshot({
+    str(set_units(1/1:3, m/s))
+  })
 })
