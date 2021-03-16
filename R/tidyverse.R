@@ -6,12 +6,11 @@ type_sum.units <- function(x, ...) {
 }
 
 type_sum.mixed_units <- function(x, ...) {
-  "mixed_units" 
+  "mixed_units"
 }
 
 pillar_shaft.units <- function(x, ...) {
-  out <- format(unclass(x), ...)
-  pillar::new_pillar_shaft_simple(out, align = "right", min_width = 8)
+  pillar::pillar_shaft(unclass(x))
 }
 
 pillar_shaft.mixed_units <- function(x, ...) {
