@@ -31,8 +31,10 @@ test_that("mixed units work", {
    expect_type(m[1:3] != mixed_units(set_units(1, mm)), "logical")
    expect_error(m[1:3] ^ mixed_units(set_units(1, mm)))
 
-# this breaks -- seems to be an s3 limitation:
-   expect_error(m[1:3] * set_units(1, mm))
+   # FIXME: Ops.mixed_units and Ops.units must be the same method
+   # to avoid the warning and the error.
+   # We can discriminate by switchpatching.
+   expect_error(expect_warning(m[1:3] * set_units(1, mm)))
 
    expect_s3_class(units(m), "mixed_symbolic_units")
    expect_type(format(m), "character")
