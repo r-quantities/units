@@ -1,5 +1,3 @@
-context("Mixed Unit tests")
-
 test_that("mixed units work", {
    (m = c(set_units(1:3, km), set_units(4:6, g), allow_mixed = TRUE))
 
@@ -29,16 +27,18 @@ test_that("mixed units work", {
    expect_s3_class(m[1:3] / mixed_units(set_units(1, mm)), "mixed_units")
    expect_s3_class(m[1:3] + mixed_units(set_units(1, mm)), "mixed_units")
    expect_s3_class(m[1:3] - mixed_units(set_units(1, mm)), "mixed_units")
-   expect_is(m[1:3] == mixed_units(set_units(1, mm)), "logical")
-   expect_is(m[1:3] != mixed_units(set_units(1, mm)), "logical")
+   expect_type(m[1:3] == mixed_units(set_units(1, mm)), "logical")
+   expect_type(m[1:3] != mixed_units(set_units(1, mm)), "logical")
    expect_error(m[1:3] ^ mixed_units(set_units(1, mm)))
 
-# this breaks -- seems to be an s3 limitation:
-   expect_error(m[1:3] * set_units(1, mm))
+   # FIXME: Ops.mixed_units and Ops.units must be the same method
+   # to avoid the warning and the error.
+   # We can discriminate by switchpatching.
+   expect_error(expect_warning(m[1:3] * set_units(1, mm)))
 
    expect_s3_class(units(m), "mixed_symbolic_units")
-   expect_is(format(m), "character")
-   expect_is(as.character(units(m)), "character")
+   expect_type(format(m), "character")
+   expect_type(as.character(units(m)), "character")
    print(m)
    expect_equal(drop_units(m), sapply(m, as.numeric))
 

@@ -1,5 +1,3 @@
-context("Math functions")
-
 test_that("we can call math functions on units", {
   x <- 1:4 - 2.1
   ux <- x * as_units("m")

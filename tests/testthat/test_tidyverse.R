@@ -1,5 +1,3 @@
-context("tidyverse")
-
 test_that("pillar methods are available for units objects", {
   skip_if_not_installed("pillar")
 

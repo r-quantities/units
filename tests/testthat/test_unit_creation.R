@@ -1,6 +1,3 @@
-context("unit(s) creation")
-
-
 
 test_that("parse_units() backticks strings correctly", {
   

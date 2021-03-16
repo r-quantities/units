@@ -1,5 +1,3 @@
-context("Unit summaries")
-
 test_that("we can compute summary functions on units", {
   x <- 1:4
   ux <- x * as_units("m")
@@ -35,7 +33,7 @@ test_that("we can compute means and medians and quantiles", {
 
   expect_equal(as.numeric(mean(ux)), mean(x))
   expect_equal(as.numeric(median(ux)), median(x))
-  expect_equivalent(as.numeric(quantile(ux)), quantile(x))
+  expect_equal(as.numeric(quantile(ux)), quantile(x), ignore_attr = TRUE)
   expect_equal(as.numeric(weighted.mean(ux, w)), weighted.mean(x, w))
   expect_equal(as.numeric(weighted.mean(ux, uw)), weighted.mean(x, w))
 })

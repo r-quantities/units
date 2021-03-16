@@ -1,5 +1,3 @@
-context("User-defined unit conversion")
-
 test_that("we can convert between units with a user-defined function", {
   expect_error(as_units("apple"))
   expect_error(as_units("orange"))

@@ -1,5 +1,3 @@
-context("Misc. utility functions")
-
 test_that("We can replace parts if they have an equivalent unit", {
   x <- 1:4 * as_units("km")
   y <- c(3000, 4000) * as_units("m")
