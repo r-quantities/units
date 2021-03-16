@@ -26,7 +26,7 @@ test_that("we can convert between units with a user-defined function", {
   # check dimensionless
   install_unit("person", "unitless")
   persons <- set_units(3, person)
-  expect_equal(persons, set_units(3, 1))
+  expect_true(persons == set_units(3, 1))
 
   # restore
   remove_unit(c("orange", "apple", "banana", "person"))

@@ -150,11 +150,11 @@ test_that("conversion to dimensionless with prefix works (g/kg) if simplify=TRUE
 	units(a) = as_units("mg/kg")
 	expect_equal(as.numeric(a), a_orig/1e6)
 	units(a) = as_units("kg/mg")
-	expect_equal(a, a_orig)
+	expect_equal(a, set_units(a_orig, 1))
 	units(a) = as_units("g/g")
-	expect_equal(a, a_orig)
+	expect_equal(a, set_units(a_orig, 1))
 	units(a) = as_units("kg/g")
-	expect_equal(a, a_orig * 1000)
+	expect_equal(a, set_units(a_orig * 1000, 1))
 	units_options(simplify = NA)
 })
 
@@ -218,4 +218,3 @@ test_that("ud_are_convertible return the expected value", {
   expect_false(ud_are_convertible("s", "kg"))
 
 })
-

@@ -109,6 +109,7 @@ A number of functions are provided for handling unit objects.
     default it operates with bare expressions, but this
     behavior can be disabled by a specifying \code{mode = "standard"} or setting
     \code{units_options(set_units_mode = "standard")}.
+    If \code{value} is missing or set to \code{1}, the object becomes unitless.
 }
 }
 \details{
