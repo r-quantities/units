@@ -2,17 +2,18 @@ context("tidyverse")
 
 test_that("pillar methods are available for units objects", {
   skip_if_not_installed("pillar")
-  
+
   x = set_units(1:3, km)
   m = c(x, set_units(4:6, g), allow_mixed = TRUE)
-  
+
   expect_equal(unclass(pillar::type_sum(x)), "[km]")
   expect_s3_class(pillar::type_sum(x), "type_sum_units")
   expect_equal(pillar::type_sum(m), "mixed_units")
-  
-  expect_equal(as.character(pillar::pillar_shaft(x[1])), "1")
-  expect_equal(as.character(pillar::pillar_shaft(m[1])),
-               paste0(1, pillar::style_subtle(" [km]")))
+
+  expect_snapshot({
+    pillar::pillar(x[1])
+    pillar::pillar(m[1])
+  })
 })
 
 skip_if_not_installed("vctrs", "0.3.1")
