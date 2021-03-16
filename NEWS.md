@@ -1,3 +1,7 @@
+# version 0.7-2
+
+* enhance `pillar` integration; #273 @krlmlr
+
 # version 0.7-1
 
 * allow longer units grouping; #270 addressing #269 @bart1
