@@ -5,6 +5,15 @@
 
 using namespace Rcpp;
 
+// udunits_exit
+void udunits_exit();
+RcppExport SEXP _units_udunits_exit() {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    udunits_exit();
+    return R_NilValue;
+END_RCPP
+}
 // udunits_init
 void udunits_init(CharacterVector path);
 RcppExport SEXP _units_udunits_init(SEXP pathSEXP) {
@@ -12,15 +21,6 @@ BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< CharacterVector >::type path(pathSEXP);
     udunits_init(path);
-    return R_NilValue;
-END_RCPP
-}
-// udunits_exit
-void udunits_exit();
-RcppExport SEXP _units_udunits_exit() {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    udunits_exit();
     return R_NilValue;
 END_RCPP
 }
@@ -275,8 +275,8 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_units_udunits_init", (DL_FUNC) &_units_udunits_init, 1},
     {"_units_udunits_exit", (DL_FUNC) &_units_udunits_exit, 0},
+    {"_units_udunits_init", (DL_FUNC) &_units_udunits_init, 1},
     {"_units_R_ut_parse", (DL_FUNC) &_units_R_ut_parse, 1},
     {"_units_R_ut_get_dimensionless_unit_one", (DL_FUNC) &_units_R_ut_get_dimensionless_unit_one, 0},
     {"_units_R_ut_are_convertible", (DL_FUNC) &_units_R_ut_are_convertible, 2},
