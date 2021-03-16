@@ -10,7 +10,7 @@ type_sum.mixed_units <- function(x, ...) {
 }
 
 pillar_shaft.units <- function(x, ...) {
-  pillar::pillar_shaft(unclass(x))
+  pillar::pillar_shaft(unclass(x), ...)
 }
 
 pillar_shaft.mixed_units <- function(x, ...) {
