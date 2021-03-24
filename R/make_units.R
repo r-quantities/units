@@ -7,7 +7,7 @@
 }
 
 restore_units <- function(x, to) {
-  out <- .as.units(x, to)
+  out <- .as.units(x, units(to))
   attr(out, "pillar") <- attr(to, "pillar")
   out
 }
