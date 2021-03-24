@@ -7,13 +7,9 @@
 }
 
 restore_units <- function(x, to) {
-  attrs <- attributes(to)
-  attrs$names <- NULL
-  attrs$dim <- NULL
-  attrs$dimnams <- NULL
-
-  attributes(x)[names(attrs)] <- attrs
-  x
+  out <- .as.units(x, to)
+  attr(out, "pillar") <- attr(to, "pillar")
+  out
 }
 
 #' @name units
