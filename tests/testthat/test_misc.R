@@ -116,3 +116,11 @@ test_that("str works", {
     str(set_units(1/1:3, m/s))
   })
 })
+
+test_that("subsetting keeps pillar attribute (#275)", {
+  x <- set_units(1:3, m)
+  attr(x, "pillar") <- "bar"
+
+  expect_equal(attr(x[1:2], "pillar"), "bar")
+  expect_equal(attr(x[[1]], "pillar"), "bar")
+})
