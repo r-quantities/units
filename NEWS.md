@@ -1,6 +1,6 @@
 # version 0.7-2
 
-* enhance `pillar` integration; #273 @krlmlr
+* enhance `pillar` integration; #273, #275 @krlmlr
 
 # version 0.7-1
 
