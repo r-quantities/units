@@ -7,7 +7,7 @@ Summary.units = function(..., na.rm = FALSE) {
   OK <- switch(.Generic, "sum" = , "min" = , "max" = , "range" = TRUE, FALSE)
   if (! OK)
     stop(paste("Summary operation", .Generic, "not allowed"))
-  
+
   args <- list(...)
   if (length(args) > 1) {
     args <- do.call(c, args) # turns args into a single units vector
@@ -23,6 +23,7 @@ print.units = function (x, ...) { # nocov start
   if (is.array(x) || length(x) > 1L) {
     cat("Units: ", paste0(gr[1], as.character(attr(x, "units")), gr[2]), "\n", sep = "")
     x <- drop_units(x)
+    attr(x, "pillar") <- NULL
     NextMethod()
   } else {
     cat(format(x, ...), "\n", sep="")
@@ -58,6 +59,6 @@ format.units = function(x, ...) {
 }
 
 #' @export
-summary.units = function(object, ...) { 
+summary.units = function(object, ...) {
   summary(unclass(object), ...)
 }
