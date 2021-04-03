@@ -30,7 +30,12 @@ vec_proxy.units = function(x, ...) {
   x
 }
 vec_restore.units = function(x, to, ...) {
-  set_units(x, units(to), mode = "standard")
+  restore_units(x, to)
+}
+restore_units <- function(x, to) {
+  out <- .as.units(x, units(to))
+  attr(out, "pillar") <- attr(to, "pillar")
+  out
 }
 
 

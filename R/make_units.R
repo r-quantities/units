@@ -6,12 +6,6 @@
     structure(x, units = value, dim = dim, class = "units")
 }
 
-restore_units <- function(x, to) {
-  out <- .as.units(x, units(to))
-  attr(out, "pillar") <- attr(to, "pillar")
-  out
-}
-
 #' @name units
 #' @export
 #'
