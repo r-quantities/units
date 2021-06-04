@@ -124,3 +124,8 @@ test_that("subsetting keeps pillar attribute (#275)", {
   expect_equal(attr(x[1:2], "pillar"), "bar")
   expect_equal(attr(x[[1]], "pillar"), "bar")
 })
+
+test_that("unique.units works", {
+  x <- set_units(c(1, 1, 2, 3), kg)
+  expect_equal(unique(x), set_units(c(1, 2, 3), kg))
+})

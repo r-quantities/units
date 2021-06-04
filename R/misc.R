@@ -113,3 +113,8 @@ str.units = function(object, ...) {
   cat(paste0(" Units: ", unit_string))
   str(drop_units(object), ...)
 }
+
+#' @export
+unique.units <- function(x, incomparables = FALSE, ...) {
+  .as.units(NextMethod(), units(x))
+}
