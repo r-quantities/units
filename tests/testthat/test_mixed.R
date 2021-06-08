@@ -56,3 +56,14 @@ test_that("order is preserved", {
 
    expect_equal(as.numeric(m), x / 1000)
 })
+
+test_that("unique.mixed_units works", {
+   x <- c(set_units(c(1, 1, 2), kg), set_units(c(4, 4, 5), s), allow_mixed = TRUE)
+   expect_equal(unique(x), c(set_units(c(1, 2), kg), set_units(c(4, 5), s), allow_mixed = TRUE))
+
+   y <- c(set_units(c(1, 1, 1), m/s), set_units(c(1, 1, 1), kg/s), allow_mixed = TRUE)
+   expect_equal(unique(y), c(set_units(1, m/s), set_units(1, kg/s), allow_mixed = TRUE))
+
+   z <- c(set_units(c(1, 2), kg), set_units(c(3, 4), s), set_units(c(2, 3), kg), allow_mixed = TRUE)
+   expect_equal(unique(z), c(set_units(c(1, 2), kg), set_units(c(3, 4), s), set_units(3, kg), allow_mixed = TRUE))
+})

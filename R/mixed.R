@@ -142,3 +142,8 @@ Ops.mixed_units = function(e1, e2) {
 		ret = .as.mixed_units(ret)
 	ret
 }
+
+#' @export
+unique.mixed_units <- function(x, incomparables = FALSE, ...) {
+  .as.mixed_units(NextMethod())
+}
