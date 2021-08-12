@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">units</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7-1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7-2</span>
       </span>
     </div>
 
@@ -272,46 +272,31 @@
 <p>The R package <a href="https://cran.r-project.org/package=udunits2">udunits2</a> <span class="citation">(Hiebert <a href="#ref-udunits2" role="doc-biblioref">2015</a>)</span> provides a low-level R interface to the most important functions in the udunits2 C library.</p>
 <p>The functions provided by <a href="https://cran.r-project.org/package=udunits2">udunits2</a> are</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/pacificclimate/Rudunits2">udunits2</a></span><span class="op">)</span>
-<span class="co">## udunits system database read from /Users/runner/work/_temp/Library/udunits2/share/udunits2.xml</span>
-<span class="fu"><a href="https://rdrr.io/r/base/ls.html">ls</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>
-<span class="co">## [1] "ud.are.convertible"  "ud.convert"          "ud.get.name"        </span>
-<span class="co">## [4] "ud.get.symbol"       "ud.have.unit.system" "ud.is.parseable"    </span>
-<span class="co">## [7] "ud.set.encoding"</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">udunits2</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/ls.html">ls</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
 <p>Dropping the <code>ud</code> prefix, <code>is.parseable</code> verifies whether a unit is parseable</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/udunits2/man/ud.is.parseable.html">ud.is.parseable</a></span><span class="op">(</span><span class="st">"m/s"</span><span class="op">)</span>
-<span class="co">## [1] TRUE</span>
-<span class="fu"><a href="https://rdrr.io/pkg/udunits2/man/ud.is.parseable.html">ud.is.parseable</a></span><span class="op">(</span><span class="st">"q"</span><span class="op">)</span>
-<span class="co">## [1] FALSE</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">ud.is.parseable</span><span class="op">(</span><span class="st">"m/s"</span><span class="op">)</span>
+<span class="fu">ud.is.parseable</span><span class="op">(</span><span class="st">"q"</span><span class="op">)</span></code></pre></div>
 <p><code>are.convertible</code> specifies whether two units are convertible</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/udunits2/man/ud.are.convertible.html">ud.are.convertible</a></span><span class="op">(</span><span class="st">"m/s"</span>, <span class="st">"km/h"</span><span class="op">)</span>
-<span class="co">## [1] TRUE</span>
-<span class="fu"><a href="https://rdrr.io/pkg/udunits2/man/ud.are.convertible.html">ud.are.convertible</a></span><span class="op">(</span><span class="st">"m/s"</span>, <span class="st">"s"</span><span class="op">)</span>
-<span class="co">## [1] FALSE</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">ud.are.convertible</span><span class="op">(</span><span class="st">"m/s"</span>, <span class="st">"km/h"</span><span class="op">)</span>
+<span class="fu">ud.are.convertible</span><span class="op">(</span><span class="st">"m/s"</span>, <span class="st">"s"</span><span class="op">)</span></code></pre></div>
 <p><code>convert</code> converts units that are convertible, and throws an error otherwise</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/udunits2/man/ud.convert.html">ud.convert</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="st">"m/s"</span>, <span class="st">"km/h"</span><span class="op">)</span>
-<span class="co">## [1]  3.6  7.2 10.8</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">ud.convert</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="st">"m/s"</span>, <span class="st">"km/h"</span><span class="op">)</span></code></pre></div>
 <p>and <code>get.name</code>, <code>get.symbol</code> and <code>set.encoding</code> get name, get symbol or modify encoding of the character unit arguments.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/udunits2/man/ud.get.name.html">ud.get.name</a></span><span class="op">(</span><span class="st">"kg"</span><span class="op">)</span>
-<span class="co">## [1] "kilogram"</span>
-<span class="fu"><a href="https://rdrr.io/pkg/udunits2/man/ud.get.name.html">ud.get.symbol</a></span><span class="op">(</span><span class="st">"kilogram"</span><span class="op">)</span>
-<span class="co">## [1] "kg"</span>
-<span class="fu"><a href="https://rdrr.io/pkg/udunits2/man/ud.set.encoding.html">ud.set.encoding</a></span><span class="op">(</span><span class="st">"utf8"</span><span class="op">)</span>
-<span class="co">## NULL</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">ud.get.name</span><span class="op">(</span><span class="st">"kg"</span><span class="op">)</span>
+<span class="fu">ud.get.symbol</span><span class="op">(</span><span class="st">"kilogram"</span><span class="op">)</span>
+<span class="fu">ud.set.encoding</span><span class="op">(</span><span class="st">"utf8"</span><span class="op">)</span></code></pre></div>
 <p>Unlike the <a href="https://cran.r-project.org/package=measurements">measurements</a> and <a href="https://cran.r-project.org/package=NISTunits">NISTunits</a>, <a href="https://cran.r-project.org/package=udunits2">udunits2</a> parses units as expressions, and bases its logic upon the convertibility of expressions, rather than the comparison of fixed strings:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m100_a</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">"m"</span>, <span class="fl">100</span><span class="op">)</span>, collapse <span class="op">=</span> <span class="st">"*"</span><span class="op">)</span>
 <span class="va">dm100_b</span> <span class="op">=</span> <span class="st">"dm^100"</span>
-<span class="fu"><a href="https://rdrr.io/pkg/udunits2/man/ud.is.parseable.html">ud.is.parseable</a></span><span class="op">(</span><span class="va">m100_a</span><span class="op">)</span>
-<span class="co">## [1] TRUE</span>
-<span class="fu"><a href="https://rdrr.io/pkg/udunits2/man/ud.is.parseable.html">ud.is.parseable</a></span><span class="op">(</span><span class="va">dm100_b</span><span class="op">)</span>
-<span class="co">## [1] TRUE</span>
-<span class="fu"><a href="https://rdrr.io/pkg/udunits2/man/ud.are.convertible.html">ud.are.convertible</a></span><span class="op">(</span><span class="va">m100_a</span>, <span class="va">dm100_b</span><span class="op">)</span>
-<span class="co">## [1] TRUE</span></code></pre></div>
+<span class="fu">ud.is.parseable</span><span class="op">(</span><span class="va">m100_a</span><span class="op">)</span>
+<span class="fu">ud.is.parseable</span><span class="op">(</span><span class="va">dm100_b</span><span class="op">)</span>
+<span class="fu">ud.are.convertible</span><span class="op">(</span><span class="va">m100_a</span>, <span class="va">dm100_b</span><span class="op">)</span></code></pre></div>
 <p>This has the advantage that through complex computations, intermediate objects can have units that are arbitrarily complex, and that can potentially be simplified later on. It also means that the package practically supports an unlimited amount of derived units.</p>
 </div>
 <div id="udunits-versus-the-unified-code-for-units-of-measure-ucum" class="section level2">
@@ -327,10 +312,7 @@
 <p>The <a href="https://cran.r-project.org/package=units">units</a> package builds <code>units</code> objects from scratch, e.g. where</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-quantities/units/">units</a></span><span class="op">)</span>
-<span class="co">## Warning: multiple udunits databases present:</span>
-<span class="co">##  - /Users/runner/work/_temp/Library/udunits2/share/udunits2.xml</span>
-<span class="co">##  - /usr/local/share/udunits/udunits2.xml</span>
-<span class="co">## udunits database from /Users/runner/work/_temp/Library/udunits2/share/udunits2.xml</span>
+<span class="co">## udunits database from /usr/local/share/udunits/udunits2.xml</span>
 <span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="../reference/units.html">set_units</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="va">m</span><span class="op">/</span><span class="va">s</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="co">##  Units: [m/s] int [1:5] 1 2 3 4 5</span></code></pre></div>
@@ -391,7 +373,8 @@
 <span class="co">## [16] hist          log10         log2          Math          mean         </span>
 <span class="co">## [21] median        mixed_units   Ops           plot          print        </span>
 <span class="co">## [26] quantile      rep           seq           set_units     str          </span>
-<span class="co">## [31] summary       Summary       units         units&lt;-       weighted.mean</span>
+<span class="co">## [31] summary       Summary       unique        units         units&lt;-      </span>
+<span class="co">## [36] weighted.mean</span>
 <span class="co">## see '?methods' for accessing help and source code</span></code></pre></div>
 <p>where the method groups</p>
 <ul>
