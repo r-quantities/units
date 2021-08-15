@@ -105,13 +105,13 @@ introduced in R.
 
 ## SI
 
-The [BIPM](http://www.bipm.org/) (Bureau International des Poids et
+The [BIPM](https://www.bipm.org/) (Bureau International des Poids et
 Mesures) is "_the intergovernmental organization through which
 Member States act together on matters related to measurement science
 and measurement standards.  Its recommended practical system of units
 of measurement is the International System of Units (Syst\`{e}me
 International d'Unit\'{e}s, with the international abbreviation SI)_
-(http://www.bipm.org/en/measurement-units/)". 
+(https://www.bipm.org/en/measurement-units/)". 
 
 @si describe the SI units, where, briefly, _SI units_
 
@@ -361,8 +361,7 @@ with(mtcars, plot(1/displacement, 1/consumption))
 
 ```{r fig=TRUE, height=3.8, width=7, eval=requireNamespace("ggforce", quietly=TRUE)}
 library(ggforce)
-if (utils::packageVersion("ggplot2") > "2.2.1")
-  ggplot(mtcars) + geom_point(aes(x = 1/displacement, y = 1/consumption))
+ggplot(mtcars) + geom_point(aes(x = 1/displacement, y = 1/consumption))
 ```
 
 Automatic conversion between `units` and `difftime` is provided: 
