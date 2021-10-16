@@ -82,8 +82,8 @@ install_unit <- function(symbol=character(0), def=character(0), name=character(0
     ut_unit <- R_ut_parse(def)
   }
 
-  R_ut_map_symbol_to_unit(symbol, ut_unit)
-  R_ut_map_name_to_unit(name, ut_unit)
+  ud_map_symbols(symbol, ut_unit)
+  ud_map_names(name, ut_unit)
 }
 
 #' @rdname install_unit
@@ -93,8 +93,8 @@ remove_unit <- function(symbol=character(0), name=character(0)) {
   if (!length(symbol) && !length(name))
     stop("at least one symbol or name must be specified")
 
-  R_ut_unmap_symbol_to_unit(symbol)
-  R_ut_unmap_name_to_unit(name)
+  ud_unmap_symbols(symbol)
+  ud_unmap_names(name)
 }
 
 #' Define new symbolic units
@@ -129,7 +129,7 @@ install_symbolic_unit <- function(name, warn = TRUE, dimensionless = TRUE) {# no
 
   ut_unit <- if (dimensionless)
     R_ut_new_dimensionless_unit() else R_ut_new_base_unit()
-  R_ut_map_name_to_unit(name, ut_unit)
+  ud_map_names(name, ut_unit)
 
   invisible(NULL)
 }# nocov end
@@ -164,10 +164,13 @@ install_conversion_constant <- function(from, to, const) {# nocov start
   stopifnot(is.finite(const), const != 0.0)
   if (! xor(ud_is_parseable(from), ud_is_parseable(to)))
     stop("exactly one of (from, to) must be a known unit")
-  if (ud_is_parseable(to))
-    R_ut_scale(check_unit_format(from), to, as.double(const))
-  else
-    R_ut_scale(check_unit_format(to), from, 1.0 / as.double(const))
+  if (ud_is_parseable(to)) {
+    new <- R_ut_scale(R_ut_parse(to), as.double(const))
+    ud_map_names(check_unit_format(from), new)
+  } else {
+    new <- R_ut_scale(R_ut_parse(from), 1.0 /as.double(const))
+    ud_map_names(check_unit_format(to), new)
+  }
 }# nocov end
 
 #' @export
@@ -177,10 +180,13 @@ install_conversion_offset <- function(from, to, const) {# nocov start
   stopifnot(is.finite(const))
   if (! xor(ud_is_parseable(from), ud_is_parseable(to)))
     stop("exactly one of (from, to) must be a known unit")
-  if (ud_is_parseable(to))
-    R_ut_offset(check_unit_format(from), to, -as.double(const))
-  else
-    R_ut_offset(check_unit_format(to), from, as.double(const))
+  if (ud_is_parseable(to)) {
+    new <- R_ut_offset(R_ut_parse(to), -as.double(const))
+    ud_map_names(check_unit_format(from), new)
+  } else {
+    new <- R_ut_offset(R_ut_parse(from), as.double(const))
+    ud_map_names(check_unit_format(to), new)
+  }
 }# nocov end
 
 check_unit_format <- function(x) {# nocov start

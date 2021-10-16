@@ -66,10 +66,6 @@
 #' make_units(degree_C)
 #' make_units(kilogram)
 #' make_units(ohm)
-#' # Note, if the printing of non-ascii characters is garbled, then you may
-#' # need to specify the encoding on your system manually like this:
-#' # ud_set_encoding("latin1")
-#' # not all unit names get converted to symbols under different encodings
 #'
 #' ## Arithmetic operations and units
 #' # conversion between unit objects that were defined as symbols and names will
