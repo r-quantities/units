@@ -137,14 +137,14 @@ void ud_unmap_symbols(CharacterVector symbols) {
 
 /* Thin wrappers **************************************************************/
 
-// nocov start
+// # nocov start
 
 // [[Rcpp::export]]
 SEXP R_ut_get_dimensionless_unit_one() {
   return ut_wrap(ut_get_dimensionless_unit_one(sys));
 }
 
-// nocov end
+// # nocov end
 
 // [[Rcpp::export]]
 SEXP R_ut_new_base_unit() {
@@ -181,7 +181,7 @@ LogicalVector R_ut_are_convertible(SEXP a, SEXP b) {
   return ut_are_convertible(u1, u2) != 0;
 }
 
-// nocov start
+// # nocov start
 
 // [[Rcpp::export]]
 SEXP R_ut_scale(SEXP unit, double factor) {
@@ -222,7 +222,7 @@ SEXP R_ut_root(SEXP a, IntegerVector i) {
   return ut_wrap(ut_root(ut_unwrap(a), i[0]));
 }
 
-// nocov end
+// # nocov end
 
 // [[Rcpp::export]]
 SEXP R_ut_log(SEXP a, NumericVector base) {
