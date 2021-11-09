@@ -21,9 +21,9 @@ NULL
 }
 
 .onAttach <- function(libname, pkgname) {
-    packageStartupMessage(.startup_msg(TRUE))
+  packageStartupMessage(.startup_msg(TRUE))
 }
 
 .onUnload = function(libname, pkgname) {
-	udunits_exit()
+  ud_exit()
 }

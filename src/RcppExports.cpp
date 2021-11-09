@@ -10,34 +10,88 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// udunits_exit
-void udunits_exit();
-RcppExport SEXP _units_udunits_exit() {
+// ud_exit
+void ud_exit();
+RcppExport SEXP _units_ud_exit() {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
-    udunits_exit();
+    ud_exit();
     return R_NilValue;
 END_RCPP
 }
-// udunits_init
-void udunits_init(CharacterVector path);
-RcppExport SEXP _units_udunits_init(SEXP pathSEXP) {
+// ud_init
+void ud_init(CharacterVector path);
+RcppExport SEXP _units_ud_init(SEXP pathSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< CharacterVector >::type path(pathSEXP);
-    udunits_init(path);
+    ud_init(path);
     return R_NilValue;
 END_RCPP
 }
-// R_ut_parse
-SEXP R_ut_parse(CharacterVector name);
-RcppExport SEXP _units_R_ut_parse(SEXP nameSEXP) {
+// ud_set_encoding
+void ud_set_encoding(std::string enc_str);
+RcppExport SEXP _units_ud_set_encoding(SEXP enc_strSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type enc_str(enc_strSEXP);
+    ud_set_encoding(enc_str);
+    return R_NilValue;
+END_RCPP
+}
+// ud_convert
+NumericVector ud_convert(NumericVector val, CharacterVector from, CharacterVector to);
+RcppExport SEXP _units_ud_convert(SEXP valSEXP, SEXP fromSEXP, SEXP toSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< CharacterVector >::type name(nameSEXP);
-    rcpp_result_gen = Rcpp::wrap(R_ut_parse(name));
+    Rcpp::traits::input_parameter< NumericVector >::type val(valSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type from(fromSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type to(toSEXP);
+    rcpp_result_gen = Rcpp::wrap(ud_convert(val, from, to));
     return rcpp_result_gen;
+END_RCPP
+}
+// ud_map_names
+void ud_map_names(CharacterVector names, SEXP inunit);
+RcppExport SEXP _units_ud_map_names(SEXP namesSEXP, SEXP inunitSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< CharacterVector >::type names(namesSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type inunit(inunitSEXP);
+    ud_map_names(names, inunit);
+    return R_NilValue;
+END_RCPP
+}
+// ud_unmap_names
+void ud_unmap_names(CharacterVector names);
+RcppExport SEXP _units_ud_unmap_names(SEXP namesSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< CharacterVector >::type names(namesSEXP);
+    ud_unmap_names(names);
+    return R_NilValue;
+END_RCPP
+}
+// ud_map_symbols
+void ud_map_symbols(CharacterVector symbols, SEXP inunit);
+RcppExport SEXP _units_ud_map_symbols(SEXP symbolsSEXP, SEXP inunitSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< CharacterVector >::type symbols(symbolsSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type inunit(inunitSEXP);
+    ud_map_symbols(symbols, inunit);
+    return R_NilValue;
+END_RCPP
+}
+// ud_unmap_symbols
+void ud_unmap_symbols(CharacterVector symbols);
+RcppExport SEXP _units_ud_unmap_symbols(SEXP symbolsSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< CharacterVector >::type symbols(symbolsSEXP);
+    ud_unmap_symbols(symbols);
+    return R_NilValue;
 END_RCPP
 }
 // R_ut_get_dimensionless_unit_one
@@ -47,6 +101,48 @@ BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     rcpp_result_gen = Rcpp::wrap(R_ut_get_dimensionless_unit_one());
+    return rcpp_result_gen;
+END_RCPP
+}
+// R_ut_new_base_unit
+SEXP R_ut_new_base_unit();
+RcppExport SEXP _units_R_ut_new_base_unit() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(R_ut_new_base_unit());
+    return rcpp_result_gen;
+END_RCPP
+}
+// R_ut_new_dimensionless_unit
+SEXP R_ut_new_dimensionless_unit();
+RcppExport SEXP _units_R_ut_new_dimensionless_unit() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(R_ut_new_dimensionless_unit());
+    return rcpp_result_gen;
+END_RCPP
+}
+// R_ut_get_name
+CharacterVector R_ut_get_name(SEXP unit);
+RcppExport SEXP _units_R_ut_get_name(SEXP unitSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type unit(unitSEXP);
+    rcpp_result_gen = Rcpp::wrap(R_ut_get_name(unit));
+    return rcpp_result_gen;
+END_RCPP
+}
+// R_ut_get_symbol
+CharacterVector R_ut_get_symbol(SEXP unit);
+RcppExport SEXP _units_R_ut_get_symbol(SEXP unitSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type unit(unitSEXP);
+    rcpp_result_gen = Rcpp::wrap(R_ut_get_symbol(unit));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -62,72 +158,27 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// R_convert_doubles
-NumericVector R_convert_doubles(SEXP from, SEXP to, NumericVector val);
-RcppExport SEXP _units_R_convert_doubles(SEXP fromSEXP, SEXP toSEXP, SEXP valSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type from(fromSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type to(toSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type val(valSEXP);
-    rcpp_result_gen = Rcpp::wrap(R_convert_doubles(from, to, val));
-    return rcpp_result_gen;
-END_RCPP
-}
-// R_ut_new_dimensionless_unit
-SEXP R_ut_new_dimensionless_unit();
-RcppExport SEXP _units_R_ut_new_dimensionless_unit() {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(R_ut_new_dimensionless_unit());
-    return rcpp_result_gen;
-END_RCPP
-}
-// R_ut_new_base_unit
-SEXP R_ut_new_base_unit();
-RcppExport SEXP _units_R_ut_new_base_unit() {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(R_ut_new_base_unit());
-    return rcpp_result_gen;
-END_RCPP
-}
 // R_ut_scale
-void R_ut_scale(CharacterVector nw, CharacterVector old, NumericVector d);
-RcppExport SEXP _units_R_ut_scale(SEXP nwSEXP, SEXP oldSEXP, SEXP dSEXP) {
+SEXP R_ut_scale(SEXP unit, double factor);
+RcppExport SEXP _units_R_ut_scale(SEXP unitSEXP, SEXP factorSEXP) {
 BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< CharacterVector >::type nw(nwSEXP);
-    Rcpp::traits::input_parameter< CharacterVector >::type old(oldSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type d(dSEXP);
-    R_ut_scale(nw, old, d);
-    return R_NilValue;
+    Rcpp::traits::input_parameter< SEXP >::type unit(unitSEXP);
+    Rcpp::traits::input_parameter< double >::type factor(factorSEXP);
+    rcpp_result_gen = Rcpp::wrap(R_ut_scale(unit, factor));
+    return rcpp_result_gen;
 END_RCPP
 }
 // R_ut_offset
-void R_ut_offset(CharacterVector nw, CharacterVector old, NumericVector d);
-RcppExport SEXP _units_R_ut_offset(SEXP nwSEXP, SEXP oldSEXP, SEXP dSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< CharacterVector >::type nw(nwSEXP);
-    Rcpp::traits::input_parameter< CharacterVector >::type old(oldSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type d(dSEXP);
-    R_ut_offset(nw, old, d);
-    return R_NilValue;
-END_RCPP
-}
-// R_ut_divide
-SEXP R_ut_divide(SEXP numer, SEXP denom);
-RcppExport SEXP _units_R_ut_divide(SEXP numerSEXP, SEXP denomSEXP) {
+SEXP R_ut_offset(SEXP unit, double origin);
+RcppExport SEXP _units_R_ut_offset(SEXP unitSEXP, SEXP originSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type numer(numerSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type denom(denomSEXP);
-    rcpp_result_gen = Rcpp::wrap(R_ut_divide(numer, denom));
+    Rcpp::traits::input_parameter< SEXP >::type unit(unitSEXP);
+    Rcpp::traits::input_parameter< double >::type origin(originSEXP);
+    rcpp_result_gen = Rcpp::wrap(R_ut_offset(unit, origin));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -151,6 +202,18 @@ BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type a(aSEXP);
     rcpp_result_gen = Rcpp::wrap(R_ut_invert(a));
+    return rcpp_result_gen;
+END_RCPP
+}
+// R_ut_divide
+SEXP R_ut_divide(SEXP numer, SEXP denom);
+RcppExport SEXP _units_R_ut_divide(SEXP numerSEXP, SEXP denomSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type numer(numerSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type denom(denomSEXP);
+    rcpp_result_gen = Rcpp::wrap(R_ut_divide(numer, denom));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -190,6 +253,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// R_ut_parse
+SEXP R_ut_parse(CharacterVector name);
+RcppExport SEXP _units_R_ut_parse(SEXP nameSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< CharacterVector >::type name(nameSEXP);
+    rcpp_result_gen = Rcpp::wrap(R_ut_parse(name));
+    return rcpp_result_gen;
+END_RCPP
+}
 // R_ut_format
 CharacterVector R_ut_format(SEXP p, bool names, bool definition, bool ascii);
 RcppExport SEXP _units_R_ut_format(SEXP pSEXP, SEXP namesSEXP, SEXP definitionSEXP, SEXP asciiSEXP) {
@@ -204,106 +278,32 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// R_ut_set_encoding
-void R_ut_set_encoding(std::string enc_str);
-RcppExport SEXP _units_R_ut_set_encoding(SEXP enc_strSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< std::string >::type enc_str(enc_strSEXP);
-    R_ut_set_encoding(enc_str);
-    return R_NilValue;
-END_RCPP
-}
-// R_ut_get_symbol
-CharacterVector R_ut_get_symbol(CharacterVector ustr);
-RcppExport SEXP _units_R_ut_get_symbol(SEXP ustrSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< CharacterVector >::type ustr(ustrSEXP);
-    rcpp_result_gen = Rcpp::wrap(R_ut_get_symbol(ustr));
-    return rcpp_result_gen;
-END_RCPP
-}
-// R_ut_get_name
-CharacterVector R_ut_get_name(CharacterVector ustr);
-RcppExport SEXP _units_R_ut_get_name(SEXP ustrSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< CharacterVector >::type ustr(ustrSEXP);
-    rcpp_result_gen = Rcpp::wrap(R_ut_get_name(ustr));
-    return rcpp_result_gen;
-END_RCPP
-}
-// R_ut_map_name_to_unit
-void R_ut_map_name_to_unit(CharacterVector name, SEXP inunit);
-RcppExport SEXP _units_R_ut_map_name_to_unit(SEXP nameSEXP, SEXP inunitSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< CharacterVector >::type name(nameSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type inunit(inunitSEXP);
-    R_ut_map_name_to_unit(name, inunit);
-    return R_NilValue;
-END_RCPP
-}
-// R_ut_unmap_name_to_unit
-void R_ut_unmap_name_to_unit(CharacterVector name);
-RcppExport SEXP _units_R_ut_unmap_name_to_unit(SEXP nameSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< CharacterVector >::type name(nameSEXP);
-    R_ut_unmap_name_to_unit(name);
-    return R_NilValue;
-END_RCPP
-}
-// R_ut_map_symbol_to_unit
-void R_ut_map_symbol_to_unit(CharacterVector name, SEXP inunit);
-RcppExport SEXP _units_R_ut_map_symbol_to_unit(SEXP nameSEXP, SEXP inunitSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< CharacterVector >::type name(nameSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type inunit(inunitSEXP);
-    R_ut_map_symbol_to_unit(name, inunit);
-    return R_NilValue;
-END_RCPP
-}
-// R_ut_unmap_symbol_to_unit
-void R_ut_unmap_symbol_to_unit(CharacterVector name);
-RcppExport SEXP _units_R_ut_unmap_symbol_to_unit(SEXP nameSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< CharacterVector >::type name(nameSEXP);
-    R_ut_unmap_symbol_to_unit(name);
-    return R_NilValue;
-END_RCPP
-}
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_units_udunits_exit", (DL_FUNC) &_units_udunits_exit, 0},
-    {"_units_udunits_init", (DL_FUNC) &_units_udunits_init, 1},
-    {"_units_R_ut_parse", (DL_FUNC) &_units_R_ut_parse, 1},
+    {"_units_ud_exit", (DL_FUNC) &_units_ud_exit, 0},
+    {"_units_ud_init", (DL_FUNC) &_units_ud_init, 1},
+    {"_units_ud_set_encoding", (DL_FUNC) &_units_ud_set_encoding, 1},
+    {"_units_ud_convert", (DL_FUNC) &_units_ud_convert, 3},
+    {"_units_ud_map_names", (DL_FUNC) &_units_ud_map_names, 2},
+    {"_units_ud_unmap_names", (DL_FUNC) &_units_ud_unmap_names, 1},
+    {"_units_ud_map_symbols", (DL_FUNC) &_units_ud_map_symbols, 2},
+    {"_units_ud_unmap_symbols", (DL_FUNC) &_units_ud_unmap_symbols, 1},
     {"_units_R_ut_get_dimensionless_unit_one", (DL_FUNC) &_units_R_ut_get_dimensionless_unit_one, 0},
-    {"_units_R_ut_are_convertible", (DL_FUNC) &_units_R_ut_are_convertible, 2},
-    {"_units_R_convert_doubles", (DL_FUNC) &_units_R_convert_doubles, 3},
-    {"_units_R_ut_new_dimensionless_unit", (DL_FUNC) &_units_R_ut_new_dimensionless_unit, 0},
     {"_units_R_ut_new_base_unit", (DL_FUNC) &_units_R_ut_new_base_unit, 0},
-    {"_units_R_ut_scale", (DL_FUNC) &_units_R_ut_scale, 3},
-    {"_units_R_ut_offset", (DL_FUNC) &_units_R_ut_offset, 3},
-    {"_units_R_ut_divide", (DL_FUNC) &_units_R_ut_divide, 2},
+    {"_units_R_ut_new_dimensionless_unit", (DL_FUNC) &_units_R_ut_new_dimensionless_unit, 0},
+    {"_units_R_ut_get_name", (DL_FUNC) &_units_R_ut_get_name, 1},
+    {"_units_R_ut_get_symbol", (DL_FUNC) &_units_R_ut_get_symbol, 1},
+    {"_units_R_ut_are_convertible", (DL_FUNC) &_units_R_ut_are_convertible, 2},
+    {"_units_R_ut_scale", (DL_FUNC) &_units_R_ut_scale, 2},
+    {"_units_R_ut_offset", (DL_FUNC) &_units_R_ut_offset, 2},
     {"_units_R_ut_multiply", (DL_FUNC) &_units_R_ut_multiply, 2},
     {"_units_R_ut_invert", (DL_FUNC) &_units_R_ut_invert, 1},
+    {"_units_R_ut_divide", (DL_FUNC) &_units_R_ut_divide, 2},
     {"_units_R_ut_raise", (DL_FUNC) &_units_R_ut_raise, 2},
     {"_units_R_ut_root", (DL_FUNC) &_units_R_ut_root, 2},
     {"_units_R_ut_log", (DL_FUNC) &_units_R_ut_log, 2},
+    {"_units_R_ut_parse", (DL_FUNC) &_units_R_ut_parse, 1},
     {"_units_R_ut_format", (DL_FUNC) &_units_R_ut_format, 4},
-    {"_units_R_ut_set_encoding", (DL_FUNC) &_units_R_ut_set_encoding, 1},
-    {"_units_R_ut_get_symbol", (DL_FUNC) &_units_R_ut_get_symbol, 1},
-    {"_units_R_ut_get_name", (DL_FUNC) &_units_R_ut_get_name, 1},
-    {"_units_R_ut_map_name_to_unit", (DL_FUNC) &_units_R_ut_map_name_to_unit, 2},
-    {"_units_R_ut_unmap_name_to_unit", (DL_FUNC) &_units_R_ut_unmap_name_to_unit, 1},
-    {"_units_R_ut_map_symbol_to_unit", (DL_FUNC) &_units_R_ut_map_symbol_to_unit, 2},
-    {"_units_R_ut_unmap_symbol_to_unit", (DL_FUNC) &_units_R_ut_unmap_symbol_to_unit, 1},
     {NULL, NULL, 0}
 };
 

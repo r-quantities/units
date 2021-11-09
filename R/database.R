@@ -51,7 +51,7 @@ default_units_xml <- function(warn = FALSE) {
 #'
 #' @export
 load_units_xml <- function(path = default_units_xml()) {
-  udunits_init(path)
+  ud_init(path)
 }
 
 .read_ud_db <- function(path = default_units_xml(), type) {
