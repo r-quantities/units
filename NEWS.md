@@ -5,6 +5,8 @@
 * remove deprecations: `install_symbolic_unit`, `remove_symbolic_unit`,
   `install_conversion_constant`, `install_conversion_offset`; #290
 
+* fix multipliers for round trip log-exp operations; #292
+
 # version 0.7-2
 
 * enhance `pillar` integration; #273, #275, #280 @krlmlr

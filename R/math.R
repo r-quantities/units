@@ -62,7 +62,8 @@ Math.units = function(x, ...) {
 
   if (.Generic == "expm1") {
     out <- exp(1)^x
-    return(out - set_units(1, units(out), mode="standard"))
+    mult <- drop_units(out) / exp(1)^drop_units(x)
+    return(out - set_units(mult, units(out), mode="standard"))
   }
 
   if (.Generic == "sign")

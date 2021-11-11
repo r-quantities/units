@@ -107,10 +107,15 @@ Ops.units <- function(e1, e2) {
       nxt_u <- substr(nxt_u, 1, nchar(nxt_u)-1) # remove last parenthesis
       nxt_u <- sub("^1 ", "", nxt_u)            # remove leading one
 
-      if (length(sp) > 2) # another logarithm!
+      if (length(sp) > 2) { # another logarithm!
+        mult <- 1
         attr(e2, "units")$numerator <- nxt_u
-      else attr(e2, "units") <- units(as_units(nxt_u))
-      return(NextMethod())
+      } else {
+        nxt_u <- as_units(nxt_u)
+        mult <- drop_units(nxt_u)
+        attr(e2, "units") <- units(nxt_u)
+      }
+      return(mult * NextMethod())
     }
 
     if (length(e2) > 1L) {
