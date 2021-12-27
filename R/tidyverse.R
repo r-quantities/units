@@ -87,6 +87,7 @@ register_all_s3_methods <- function() {
   register_s3_method("vctrs::vec_restore", "units")
   register_s3_method("vctrs::vec_ptype2", "units.units")
   register_s3_method("vctrs::vec_cast", "units.units")
+  register_s3_method("ggplot2::scale_type", "units")
 }
 
 register_s3_method <- function(generic, class, fun=NULL) {

@@ -343,7 +343,7 @@ deparse_unit(set_units(1, m^2*s^-1))
 ```
 The `plot` and `hist` methods add units to default axis labels, an
 example is shown in the following figures. For [ggplot2](https://cran.r-project.org/package=ggplot2) plots
-[@ggplot2], automatic unit placement in default axis label is provided by package [ggforce](https://cran.r-project.org/package=ggforce) [@ggforce]; `demo(ggforce)` gives an example.
+[@ggplot2], automatic unit placement in default axis label is also provided; `demo(ggplot2)` gives an example.
 
 ```{r fig=TRUE, height=3.8, width=7}
 library(units)
@@ -359,8 +359,8 @@ par(mar = par("mar") + c(0, .3, 0, 0))
 with(mtcars, plot(1/displacement, 1/consumption))
 ```
 
-```{r fig=TRUE, height=3.8, width=7, eval=requireNamespace("ggforce", quietly=TRUE)}
-library(ggforce)
+```{r fig=TRUE, height=3.8, width=7, eval=requireNamespace("ggplot2", quietly=TRUE)}
+library(ggplot2)
 ggplot(mtcars) + geom_point(aes(x = 1/displacement, y = 1/consumption))
 ```
 
@@ -447,7 +447,7 @@ of regression coefficient estimates.
 
 We acknowledge three anonymous reviewers and the handling editor for
 their constructive comments, and Thomas Lin Pedersen for implementing
-the ggplot extensions in package `ggforce` that automatically add
-units to default ggplot axis labels.
+the ggplot extensions in package `ggforce` (ported to the `units` package
+since v0.8-0) that automatically add units to default ggplot axis labels.
 
 # References
