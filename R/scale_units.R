@@ -104,4 +104,9 @@ MakeScaleContinuousPositionUnits <- function() {
 }
 
 # registered in .onLoad()
-scale_type.units <- function(x) c("units", "continuous")
+scale_type.units <- function(x) {
+  if (!"units" %in% .packages())
+    stop("Variable of class 'units' found, but 'units' package is not attached.\n",
+         "  Please, attach it using 'library(units)' to properly show scales with units.")
+  c("units", "continuous")
+}
