@@ -24,6 +24,6 @@ NULL
   packageStartupMessage(.startup_msg(TRUE))
 }
 
-.onUnload = function(libname, pkgname) {
+.onUnload = function(libpath) {
   ud_exit()
 }

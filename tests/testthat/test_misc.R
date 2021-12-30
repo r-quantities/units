@@ -105,10 +105,22 @@ test_that("all.equal works", {
 })
 
 test_that("seq works", {
-  seq(to = set_units(10, m), by = set_units(1, m), length.out = 5)
-  seq(set_units(10, m), by = set_units(1, m), length.out = 5)
-  seq(set_units(10, m), set_units(19, m))
-  seq(set_units(10, m), set_units(.02, km))
+  expect_equal(
+    seq(to = set_units(10, m), by = set_units(1, m), length.out = 5),
+    set_units(seq(to = 10, by = 1, length.out = 5), m)
+  )
+  expect_equal(
+    seq(set_units(10, m), by = set_units(1, m), length.out = 5),
+    set_units(seq(10, by = 1, length.out = 5), m)
+  )
+  expect_equal(
+    seq(set_units(10, m), set_units(19, m)),
+    set_units(seq(10, 19), m)
+  )
+  expect_equal(
+    seq(set_units(10, m), set_units(.02, km)),
+    set_units(seq(10, 20), m)
+  )
 })
 
 test_that("str works", {
