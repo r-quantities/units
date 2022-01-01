@@ -71,8 +71,11 @@ deparse_unit = function(x) {
 #' @method all.equal units
 #' @export
 all.equal.units = function(target, current, ...) {
-  if (inherits(current, "units"))
-    current = set_units(current, units(target), mode = "standard")
+  if (inherits(current, "units")) {
+    units(current) <- units(target)
+    target <- drop_units(target)
+    current <- drop_units(current)
+  }
   NextMethod()
 }
 
