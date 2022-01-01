@@ -55,6 +55,7 @@ quantile.units = function(x, ...) {
 format.units = function(x, ...) {
   gr = units_options("group")
   u = paste0(gr[1], units(x), gr[2])
+  x <- drop_units(x)
   setNames(paste(NextMethod(), u), names(x))
 }
 
