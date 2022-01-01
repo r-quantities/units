@@ -14,10 +14,9 @@ test_that("pillar methods are available for units objects", {
   })
 })
 
-skip_if_not_installed("vctrs", "0.3.1")
-skip_if_not_installed("dplyr", "1.0.0")
-
 test_that("units have coercion methods", {
+  skip_if_not_installed("vctrs", "0.3.1")
+
   x = set_units(1:3, "cm")
   y = set_units(4.0, "m")
   z = set_units(10, "celsius")
@@ -46,6 +45,9 @@ test_that("units have coercion methods", {
 })
 
 test_that("can combine units vectors", {
+  skip_if_not_installed("vctrs", "0.3.1")
+  skip_if_not_installed("dplyr", "1.0.0")
+
   x <- set_units(1:3, "cm")
   y <- set_units(4, "m")
 
@@ -60,6 +62,9 @@ test_that("can combine units vectors", {
 })
 
 test_that("can slice units vectors", {
+  skip_if_not_installed("vctrs", "0.3.1")
+  skip_if_not_installed("dplyr", "1.0.0")
+
   x = set_units(1:3, "cm")
   exp = list(set_units(1L, "cm"), set_units(2L, "cm"), set_units(3L, "cm"))
   expect_identical(vctrs::vec_chop(x), exp)
@@ -74,9 +79,11 @@ test_that("can slice units vectors", {
   expect_identical(vctrs::vec_chop(df), exp)
 })
 
-`%>%` <- dplyr::`%>%`
-
 test_that("split-apply-combine with dplyr and base agree", {
+  skip_if_not_installed("vctrs", "0.3.1")
+  skip_if_not_installed("dplyr", "1.0.0")
+
+  `%>%` <- dplyr::`%>%`
   iris2 <- iris
   for (i in 1:4)
     units(iris2[,i]) <- "cm"

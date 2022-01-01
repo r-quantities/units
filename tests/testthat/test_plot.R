@@ -1,8 +1,8 @@
-skip_if_not_installed("vdiffr")
-
 do.call(units_options, units:::.default_options)
 
 test_that("base plots work as expected", {
+  skip_if_not_installed("vdiffr")
+
   displacement = mtcars$disp * as_units("in")^3
   units(displacement) = make_units(cm^3)
   weight = mtcars$wt * 1000 * make_units(lb)
@@ -37,9 +37,9 @@ test_that("base plots work as expected", {
   vdiffr::expect_doppelganger("plot boxplot", boxplot(u))
 })
 
-skip_if_not_installed("ggplot2")
-
 test_that("ggplot2 plots work as expected", {
+  skip_if_not_installed("vdiffr")
+  skip_if_not_installed("ggplot2")
   library(ggplot2)
 
   iris.u <- iris
