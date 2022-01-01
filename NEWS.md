@@ -10,6 +10,8 @@
 * integrate `ggplot2` scales (previously in the `ggforce` package) to
   automatically print axes with units; #294 addressing #164
 
+* fix `all.equal.units` for non-units `current`
+
 # version 0.7-2
 
 * enhance `pillar` integration; #273, #275, #280 @krlmlr

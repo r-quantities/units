@@ -71,8 +71,9 @@ deparse_unit = function(x) {
 #' @method all.equal units
 #' @export
 all.equal.units = function(target, current, ...) {
-  current = set_units(current, units(target), mode = "standard")
-  all.equal(unclass(target), unclass(current), ...)
+  if (inherits(current, "units"))
+    current = set_units(current, units(target), mode = "standard")
+  NextMethod()
 }
 
 #' seq method for units objects
