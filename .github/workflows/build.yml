@@ -21,6 +21,7 @@ jobs:
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
+      _R_CHECK_CRAN_INCOMING_REMOTE_: false
 
     steps:
     - name: Configure git
@@ -64,11 +65,12 @@ jobs:
   quantities:
     needs: build
     runs-on: ${{ matrix.config.os }}
-    name: quantities on ${{ matrix.config.os }} (${{ matrix.config.r }})
+    name: quantities (${{ matrix.version }}) on ${{ matrix.config.os }} (${{ matrix.config.r }})
 
     strategy:
       fail-fast: false
       matrix:
+        version: [devel, cran]
         config:
         - {os: ubuntu-latest, r: 'devel', http-user-agent: 'release'}
         - {os: ubuntu-latest, r: 'release'}
@@ -78,15 +80,19 @@ jobs:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
       _R_CHECK_CRAN_INCOMING_REMOTE_: false
+      CHECK_VERSION: ${{ matrix.version }}
 
     steps:
     - uses: actions/checkout@v2
       with:
         repository: r-quantities/quantities
-    - name: Add units and errors as Remotes
+        fetch-depth: 0
+    - name: Add Remotes
       run: |
-        echo "Remotes: r-quantities/errors," >> DESCRIPTION
-        echo "  $GITHUB_REPOSITORY@$GITHUB_SHA" >> DESCRIPTION
+        REMOTES="Remotes: $GITHUB_REPOSITORY@$GITHUB_SHA"
+        [ $CHECK_VERSION = "cran" ] && git checkout $(git tag | tail -n1) \
+          || REMOTES="$REMOTES, r-quantities/errors"
+        echo $REMOTES >> DESCRIPTION
     - uses: r-lib/actions/setup-r@v1
       with:
         r-version: ${{ matrix.config.r }}
