@@ -1,5 +1,5 @@
 test_that("mixed units work", {
-   (m = c(set_units(1:3, km), set_units(4:6, g), allow_mixed = TRUE))
+   m = c(set_units(1:3, km), set_units(4:6, g), allow_mixed = TRUE)
 
    # select a subset
    expect_s3_class(m[3:4], "mixed_units")
@@ -39,12 +39,12 @@ test_that("mixed units work", {
    expect_s3_class(units(m), "mixed_symbolic_units")
    expect_type(format(m), "character")
    expect_type(as.character(units(m)), "character")
-   print(m)
    expect_equal(drop_units(m), sapply(m, as.numeric))
 
-   str(m)
    units_options(allow_mixed = TRUE)
    m = c(set_units(1:3, km), set_units(4:6, g))
+   expect_s3_class(m, "mixed_units")
+   expect_equal(m, mixed_units(1:6, c(rep("km", 3), rep("g", 3))))
    units_options(allow_mixed = FALSE)
 })
 

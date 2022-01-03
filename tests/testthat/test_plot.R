@@ -2,39 +2,40 @@ do.call(units_options, units:::.default_options)
 
 test_that("base plots work as expected", {
   skip_if_not_installed("vdiffr")
+  fplot <- function(...) function() plot(...)
 
   displacement = mtcars$disp * as_units("in")^3
   units(displacement) = make_units(cm^3)
   weight = mtcars$wt * 1000 * make_units(lb)
   units(weight) = make_units(kg)
-  vdiffr::expect_doppelganger("plot default", plot(weight, displacement))
+  vdiffr::expect_doppelganger("plot default", fplot(weight, displacement))
 
   units_options(group = c("(", ")") )  # parenthesis instead of square brackets
-  vdiffr::expect_doppelganger("plot parentheses", plot(weight, displacement))
+  vdiffr::expect_doppelganger("plot parentheses", fplot(weight, displacement))
 
   units_options(sep = c("~~~", "~"), group = c("", ""))  # no brackets; extra space
-  vdiffr::expect_doppelganger("plot nothing", plot(weight, displacement))
+  vdiffr::expect_doppelganger("plot nothing", fplot(weight, displacement))
 
   units_options(sep = c("~", "~~"), group = c("[", "]"))
   gallon = as_units("gallon")
   consumption = mtcars$mpg * make_units(mi/gallon)
   units(consumption) = make_units(km/l)
-  vdiffr::expect_doppelganger("plot division", plot(displacement, consumption))
+  vdiffr::expect_doppelganger("plot division", fplot(displacement, consumption))
 
   units_options(negative_power = TRUE) # division becomes ^-1
-  vdiffr::expect_doppelganger("plot npower", plot(displacement, consumption))
-  vdiffr::expect_doppelganger("plot inverse", plot(1/displacement, 1/consumption))
+  vdiffr::expect_doppelganger("plot npower", fplot(displacement, consumption))
+  vdiffr::expect_doppelganger("plot inverse", fplot(1/displacement, 1/consumption))
 
   units_options(parse = FALSE)
   n = 100
   set.seed(42)
   u = rnorm(1:n) * as_units("degree_C")
   v = rnorm(1:n) * as_units("s")
-  vdiffr::expect_doppelganger("plot degree_C", plot(u, v))
+  vdiffr::expect_doppelganger("plot degree_C", fplot(u, v))
 
-  vdiffr::expect_doppelganger("plot line", plot(u, type = 'l'))
-  vdiffr::expect_doppelganger("plot hist", hist(u))
-  vdiffr::expect_doppelganger("plot boxplot", boxplot(u))
+  vdiffr::expect_doppelganger("plot line", fplot(u, type = 'l'))
+  vdiffr::expect_doppelganger("plot hist", function() hist(u))
+  vdiffr::expect_doppelganger("plot boxplot", function() boxplot(u))
 })
 
 test_that("ggplot2 plots work as expected", {
