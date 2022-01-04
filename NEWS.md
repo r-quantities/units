@@ -12,6 +12,8 @@
 
 * fix `all.equal.units` for non-units `current`
 
+* fix zero power; #285
+
 # version 0.7-2
 
 * enhance `pillar` integration; #273, #275, #280 @krlmlr

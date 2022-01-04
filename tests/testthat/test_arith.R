@@ -117,6 +117,7 @@ test_that("unit one is handled correctly", {
 })
 
 test_that("we can compute powers if the result is an integer", {
+  expect_equal(set_units(1:10, m^0), set_units(1:10))
   expect_equal(as.numeric(set_units(1:10, m^2) ^ 0.5), (1:10) ^ .5)
   expect_equal(as.numeric(set_units(1:10, m^2) ^ 3/2), (1:10) ^ 3/2)
   expect_error(as.numeric(set_units(1:10, m^3) ^ 0.5), "powers not divisible")
@@ -133,6 +134,7 @@ test_that("we can undo logatithms", {
   y <- set_units(1e6*x, km^2)
 
   expect_equal(exp(10^log10(log(x))), x)
+  expect_equal(exp(set_units(10)^log10(log(x))), x)
   expect_equal(exp(10^log10(log(y))), set_units(y, m^2))
   expect_equal(expm1(3^log(log1p(x), base=3)), x)
   expect_equal(expm1(3^log(log1p(y), base=3)), set_units(y, m^2))

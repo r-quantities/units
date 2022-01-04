@@ -80,7 +80,7 @@ Ops.units <- function(e1, e2) {
     return(.simplify_units(NextMethod(), .symbolic_units(numerator, denominator)))
 
   } else if (pw) {
-    if (inherits(e1, "units") && identical(units(e1), set_units(1)))
+    if (inherits(e1, "units") && identical(units(e1), units(as_units(1))))
       e1 <- drop_units(e1)
 
     if (inherits(e2, "units")) {
@@ -130,7 +130,7 @@ Ops.units <- function(e1, e2) {
     # when the power is negative and we have a special case when it is zero where
     # units should be removed.
     if (e2 == 0) {
-      u <- set_units(1)
+      u <- units(as_units(1))
     } else {
       if (any((table(units(e1)$denominator)*e2) %% 1 != 0) ||
           any((table(units(e1)$numerator)*e2)   %% 1 != 0))
