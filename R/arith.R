@@ -80,10 +80,9 @@ Ops.units <- function(e1, e2) {
     return(.simplify_units(NextMethod(), .symbolic_units(numerator, denominator)))
 
   } else if (pw) {
-    if (inherits(e1, "units") && identical(units(e1), units(as_units(1))))
-      e1 <- drop_units(e1)
-
     if (inherits(e2, "units")) {
+      if (inherits(e1, "units") && identical(units(e1), units(as_units(1))))
+        e1 <- drop_units(e1)
       if (inherits(e1, "units"))
         stop("power operation only allowed with numeric power")
 
