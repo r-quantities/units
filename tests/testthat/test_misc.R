@@ -138,7 +138,19 @@ test_that("subsetting keeps pillar attribute (#275)", {
   expect_equal(attr(x[[1]], "pillar"), "bar")
 })
 
-test_that("unique.units works", {
-  x <- set_units(c(1, 1, 2, 3), kg)
-  expect_equal(unique(x), set_units(c(1, 2, 3), kg))
+test_that("duplicated-related methods work as expected", {
+  x <- set_units(1:4, m)
+  expect_equal(duplicated(x), duplicated(drop_units(x)))
+  expect_equal(anyDuplicated(x), anyDuplicated(drop_units(x)))
+  expect_equal(unique(x), x)
+
+  x <- set_units(rep(c(1, 2), 2), m)
+  expect_equal(duplicated(x), duplicated(drop_units(x)))
+  expect_equal(anyDuplicated(x), anyDuplicated(drop_units(x)))
+  expect_equal(unique(x), x[1:2])
+
+  x <- set_units(matrix(rep(c(1, 2), 2), 2, byrow=TRUE), m)
+  expect_equal(duplicated(x), duplicated(drop_units(x)))
+  expect_equal(anyDuplicated(x), anyDuplicated(drop_units(x)))
+  expect_equal(unique(x), x[1, , drop=FALSE])
 })

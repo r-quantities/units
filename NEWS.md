@@ -14,6 +14,9 @@
 
 * fix zero power; #285
 
+* fix `unique.units` to support arrays and matrices, implement methods for
+  `duplicated` and `anyDuplicated`
+
 # version 0.7-2
 
 * enhance `pillar` integration; #273, #275, #280 @krlmlr

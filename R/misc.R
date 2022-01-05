@@ -119,6 +119,20 @@ str.units = function(object, ...) {
 }
 
 #' @export
+duplicated.units <- function(x, incomparables=FALSE, ...) {
+  if (is.null(dim(x)))
+    NextMethod() else duplicated.array(x, incomparables, ...)
+}
+
+#' @export
+anyDuplicated.units <- function(x, incomparables=FALSE, ...) {
+  if (is.null(dim(x)))
+    NextMethod() else anyDuplicated.array(x, incomparables, ...)
+}
+
+#' @export
 unique.units <- function(x, incomparables = FALSE, ...) {
-  .as.units(NextMethod(), units(x))
+  xx <- if (is.null(dim(x)))
+    NextMethod() else unique.array(x, incomparables, ...)
+  .as.units(xx, units(x))
 }
