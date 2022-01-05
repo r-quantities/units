@@ -1,63 +1,12 @@
-# constants
-
-<details>
-
-* Version: 1.0.0
-* GitHub: https://github.com/r-quantities/constants
-* Source code: https://github.com/cran/constants
-* Date/Publication: 2020-11-11 07:40:12 UTC
-* Number of recursive dependencies: 38
-
-Run `revdep_details(, "constants")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking whether package ‘constants’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: 'units::remove_symbolic_unit' is deprecated.
-      Warning: 'units::install_conversion_constant' is deprecated.
-    See ‘/home/iucar/Documents/repos/units/revdep/checks/constants/new/constants.Rcheck/00install.out’ for details.
-    ```
-
-*   checking examples ... WARNING
-    ```
-    Found the following significant warnings:
-    
-      Warning: 'units::remove_symbolic_unit' is deprecated.
-      Warning: 'units::install_conversion_constant' is deprecated.
-    Deprecated functions may be defunct as soon as of the next release of
-    R.
-    See ?Deprecated.
-    ```
-
-*   checking whether the namespace can be loaded with stated dependencies ... NOTE
-    ```
-    Warning: 'units::remove_symbolic_unit' is deprecated.
-    Use 'remove_unit' instead.
-    See help("Deprecated")
-    Warning: 'units::install_conversion_constant' is deprecated.
-    Use 'install_unit' instead.
-    See help("Deprecated")
-    
-    A namespace must be able to be loaded with just the base namespace
-    loaded: otherwise if the namespace gets loaded by a saved object, the
-    session will be unable to start.
-    
-    Probably some imports need to be declared in the NAMESPACE file.
-    ```
-
 # EmissV
 
 <details>
 
-* Version: 0.665.3.0
+* Version: 0.665.5.2
 * GitHub: https://github.com/atmoschem/EmissV
 * Source code: https://github.com/cran/EmissV
-* Date/Publication: 2020-10-08 08:00:03 UTC
-* Number of recursive dependencies: 67
+* Date/Publication: 2021-03-31 11:10:02 UTC
+* Number of recursive dependencies: 68
 
 Run `revdep_details(, "EmissV")` for more info
 
@@ -65,25 +14,44 @@ Run `revdep_details(, "EmissV")` for more info
 
 ## Newly broken
 
-*   checking examples ... WARNING
+*   checking tests ...
     ```
-    Found the following significant warnings:
-    
-      Warning: 'units::install_conversion_constant' is deprecated.
-    Deprecated functions may be defunct as soon as of the next release of
-    R.
-    See ?Deprecated.
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      Backtrace:
+          █
+       1. ├─testthat::expect_equal(...) test-emission.R:62:2
+       2. │ └─testthat::quasi_label(enquo(object), label, arg = "object")
+       3. │   └─rlang::eval_bare(expr, quo_get_env(quo))
+       4. ├─base::nrow(...)
+       5. ├─EmissV::emission(...)
+       6. │ └─base::suppressWarnings(units::install_symbolic_unit("MOL"))
+       7. │   └─base::withCallingHandlers(...)
+       8. └─base::.handleSimpleError(...)
+       9.   └─base:::h(simpleError(msg, call))
+      
+      [ FAIL 1 | WARN 0 | SKIP 0 | PASS 18 ]
+      Error: Test failures
+      Execution halted
+    ```
+
+*   checking dependencies in R code ... WARNING
+    ```
+    Missing or unexported objects:
+      ‘units::install_symbolic_unit’ ‘units::remove_symbolic_unit’
     ```
 
 # eplusr
 
 <details>
 
-* Version: 0.14.0
+* Version: 0.15.0
 * GitHub: https://github.com/hongyuanjia/eplusr
 * Source code: https://github.com/cran/eplusr
-* Date/Publication: 2021-01-07 07:00:38 UTC
-* Number of recursive dependencies: 102
+* Date/Publication: 2021-11-17 17:00:05 UTC
+* Number of recursive dependencies: 62
 
 Run `revdep_details(, "eplusr")` for more info
 
@@ -91,243 +59,321 @@ Run `revdep_details(, "eplusr")` for more info
 
 ## Newly broken
 
-*   checking tests ...
+*   checking dependencies in R code ... WARNING
     ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      Prefixes will automatically work with any user-defined unit.
-      Backtrace:
-          █
-       1. ├─testthat::expect_equal(...) test-units.R:4:4
-       2. │ └─testthat::quasi_label(enquo(object), label, arg = "object")
-       3. │   └─rlang::eval_bare(expr, quo_get_env(quo))
-       4. ├─units::set_units(1, "person")
-       5. └─units:::set_units.numeric(1, "person")
-       6.   ├─units::as_units(value, ...)
-       7.   └─units:::as_units.character(value, ...)
-       8.     └─units:::as_units.call(expr, check_is_valid = check_is_valid)
-      
-      [ FAIL 1 | WARN 0 | SKIP 74 | PASS 2062 ]
-      Error: Test failures
-      Execution halted
-    ```
-
-# ggforce
-
-<details>
-
-* Version: 0.3.2
-* GitHub: https://github.com/thomasp85/ggforce
-* Source code: https://github.com/cran/ggforce
-* Date/Publication: 2020-06-23 09:40:02 UTC
-* Number of recursive dependencies: 82
-
-Run `revdep_details(, "ggforce")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘ggforce-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: scale_unit
-    > ### Title: Position scales for units data
-    > ### Aliases: scale_x_unit scale_y_unit scale_type.units
-    > 
-    > ### ** Examples
-    > 
-    > library(units)
-    udunits database from /usr/share/udunits/udunits2.xml
-    > gallon <- as_units('gallon')
-    > mtcars$consumption <- mtcars$mpg * with(ud_units, mi / gallon)
-    Error in with(ud_units, mi/gallon) : object 'ud_units' not found
-    Execution halted
+    Missing or unexported objects:
+      ‘units::install_conversion_constant’ ‘units::install_symbolic_unit’
     ```
 
 ## In both
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 23.7Mb
+      installed size is  6.8Mb
       sub-directories of 1Mb or more:
-        help   1.1Mb
-        libs  21.8Mb
+        R   5.6Mb
     ```
 
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘withr’
-      All declared Imports should be used.
-    ```
-
-# magclass
+# fgdr
 
 <details>
 
-* Version: 5.15.6
-* GitHub: https://github.com/pik-piam/magclass
-* Source code: https://github.com/cran/magclass
-* Date/Publication: 2020-12-14 18:10:08 UTC
-* Number of recursive dependencies: 61
+* Version: 1.1.0
+* GitHub: https://github.com/uribo/fgdr
+* Source code: https://github.com/cran/fgdr
+* Date/Publication: 2020-09-30 07:00:02 UTC
+* Number of recursive dependencies: 122
 
-Run `revdep_details(, "magclass")` for more info
+Run `revdep_details(, "fgdr")` for more info
 
 </details>
 
 ## Newly broken
-
-*   checking examples ... WARNING
-    ```
-    Found the following significant warnings:
-    
-      Warning: 'units::install_conversion_constant' is deprecated.
-      Warning: 'units::install_conversion_constant' is deprecated.
-      Warning: 'units::install_conversion_constant' is deprecated.
-      Warning: 'units::install_symbolic_unit' is deprecated.
-      Warning: 'units::install_conversion_constant' is deprecated.
-      Warning: 'units::install_conversion_constant' is deprecated.
-      Warning: 'units::install_symbolic_unit' is deprecated.
-      Warning: 'units::install_symbolic_unit' is deprecated.
-    ...
-      Warning: 'units::install_symbolic_unit' is deprecated.
-      Warning: 'units::install_symbolic_unit' is deprecated.
-      Warning: 'units::install_conversion_constant' is deprecated.
-      Warning: 'units::install_conversion_constant' is deprecated.
-      Warning: 'units::install_conversion_constant' is deprecated.
-      Warning: 'units::install_conversion_constant' is deprecated.
-      Warning: 'units::install_symbolic_unit' is deprecated.
-    Deprecated functions may be defunct as soon as of the next release of
-    R.
-    See ?Deprecated.
-    ```
-
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘udunits2’
-    ```
-
-*   checking Rd cross-references ... NOTE
-    ```
-    Package unavailable to check Rd xrefs: ‘udunits2’
-    ```
-
-# quantities
-
-<details>
-
-* Version: 0.1.5
-* GitHub: https://github.com/r-quantities/quantities
-* Source code: https://github.com/cran/quantities
-* Date/Publication: 2020-06-14 05:20:02 UTC
-* Number of recursive dependencies: 55
-
-Run `revdep_details(, "quantities")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘quantities-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: Extract.quantities
-    > ### Title: Extract or Replace Parts of an Object
-    > ### Aliases: Extract.quantities [.quantities [[.quantities [<-.quantities
-    > ###   [[<-.quantities
-    > 
-    > ### ** Examples
-    > 
-    > x <- set_quantities(1:3, m/s, 0.1)
-    > y <- set_quantities(4:6, m/s, 0.2)
-    > (z <- rbind(x, y))
-    Error in data.frame(val = as.numeric(x), from = I(units(x)), to = value,  : 
-      'list' object cannot be coerced to type 'double'
-    Calls: rbind -> rbind -> <Anonymous> -> data.frame
-    Execution halted
-    ```
 
 *   checking tests ...
     ```
+      Running ‘testthat.R’
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
     Last 13 lines of output:
-        1. ├─quantities:::expect_quantities(...) test-utils.R:30:2
-        2. │ └─testthat::expect_equal(class(x), c("quantities", "units", "errors")) helper-quantities.R:3:2
-        3. │   └─testthat::quasi_label(enquo(object), label, arg = "object")
-        4. │     └─rlang::eval_bare(expr, quo_get_env(quo))
-        5. └─base::cbind(x, y, x, y)
-        6.   └─quantities:::cbind(deparse.level, ...)
-        7.     └─getS3method("set_units", "mixed_units")(dots, as.character(u))
-        8.       ├─base::data.frame(...)
-        9.       ├─base::I(units(x))
-       10.       │ └─base::structure(x, class = unique(c("AsIs", oldClass(x))))
-       11.       └─base::units(x)
+      > library(fgdr)
+      > 
+      > test_check("fgdr")
+      ══ Failed tests ════════════════════════════════════════════════════════════════
+      ── Failure (test-read_fgd_dem.R:43:3): Successed on dummies ────────────────────
+      unique(res$value) not equal to c(-9999L, NA_real_).
+      Attributes: < Modes: list, NULL >
+      Attributes: < Lengths: 2, 0 >
+      Attributes: < names for target but not for current >
+      Attributes: < current is not list-like >
+      target is units, current is numeric
       
-      [ FAIL 4 | WARN 11 | SKIP 0 | PASS 457 ]
+      [ FAIL 1 | WARN 0 | SKIP 0 | PASS 50 ]
       Error: Test failures
       Execution halted
     ```
 
-*   checking Rd cross-references ... WARNING
+## In both
+
+*   checking LazyData ... NOTE
     ```
-    Missing link or links in documentation object 'units.Rd':
-      ‘[units]{ud_units}’
-    
-    See section 'Cross-references' in the 'Writing R Extensions' manual.
+      'LazyData' is specified without a 'data' directory
     ```
 
-# traitdataform
+# gtfs2gps
 
 <details>
 
-* Version: 0.6.1
-* GitHub: https://github.com/ecologicaltraitdata/traitdataform
-* Source code: https://github.com/cran/traitdataform
-* Date/Publication: 2020-11-11 07:40:02 UTC
-* Number of recursive dependencies: 99
+* Version: 1.5-4
+* GitHub: https://github.com/ipeaGIT/gtfs2gps
+* Source code: https://github.com/cran/gtfs2gps
+* Date/Publication: 2021-09-06 08:00:07 UTC
+* Number of recursive dependencies: 91
 
-Run `revdep_details(, "traitdataform")` for more info
+Run `revdep_details(, "gtfs2gps")` for more info
 
 </details>
 
 ## Newly broken
+
+*   checking tests ...
+    ```
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      Attributes: < Lengths: 2, 0 >
+      Attributes: < names for target but not for current >
+      Attributes: < current is not list-like >
+      target is units, current is numeric
+      ── Failure (test_gtfs2gps.R:63:5): gtfs2gps ────────────────────────────────────
+      sum(poa_gps$dist) not equal to 516072.
+      Attributes: < Modes: list, NULL >
+      Attributes: < Lengths: 2, 0 >
+      Attributes: < names for target but not for current >
+      Attributes: < current is not list-like >
+      target is units, current is numeric
+      
+      [ FAIL 2 | WARN 0 | SKIP 0 | PASS 186 ]
+      Error: Test failures
+      Execution halted
+    ```
+
+# jpmesh
+
+<details>
+
+* Version: 2.0.2
+* GitHub: https://github.com/uribo/jpmesh
+* Source code: https://github.com/cran/jpmesh
+* Date/Publication: 2021-06-25 11:10:07 UTC
+* Number of recursive dependencies: 113
+
+Run `revdep_details(, "jpmesh")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking tests ...
+    ```
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      NULL
+      NULL
+      NULL
+      NULL
+      ══ Skipped tests ═══════════════════════════════════════════════════════════════
+      • On CRAN (5)
+      
+      ══ Failed tests ════════════════════════════════════════════════════════════════
+      ── Failure (test-neighborhood.R:93:3): corners ─────────────────────────────────
+      ... %>% sf::st_area() not equivalent to 9455968.
+      target is units, current is numeric
+      
+      [ FAIL 1 | WARN 0 | SKIP 5 | PASS 175 ]
+      Error: Test failures
+      Execution halted
+    ```
+
+## In both
+
+*   checking data for non-ASCII characters ... NOTE
+    ```
+      Note: found 176 marked UTF-8 strings
+    ```
+
+# photosynthesis
+
+<details>
+
+* Version: 2.0.1
+* GitHub: https://github.com/cdmuir/photosynthesis
+* Source code: https://github.com/cran/photosynthesis
+* Date/Publication: 2021-07-01 04:30:02 UTC
+* Number of recursive dependencies: 100
+
+Run `revdep_details(, "photosynthesis")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking tests ...
+    ```
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      Attributes: < Lengths: 2, 0 >
+      Attributes: < names for target but not for current >
+      Attributes: < current is not list-like >
+      target is units, current is numeric
+      ── Failure (test-unitless.R:120:3): unitless values match unit-ed values ───────
+      `Wt1` not equal to `Wt2`.
+      Attributes: < Modes: list, NULL >
+      Attributes: < Lengths: 2, 0 >
+      Attributes: < names for target but not for current >
+      Attributes: < current is not list-like >
+      target is units, current is numeric
+      
+      [ FAIL 6 | WARN 0 | SKIP 0 | PASS 149 ]
+      Error: Test failures
+      Execution halted
+    ```
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  5.3Mb
+      sub-directories of 1Mb or more:
+        doc    3.4Mb
+        help   1.2Mb
+    ```
 
 *   checking dependencies in R code ... NOTE
     ```
-    Missing or unexported object: ‘units::parse_unit’
+    Namespace in Imports field not imported from: ‘future’
+      All declared Imports should be used.
     ```
 
-# yamlet
+# RWmisc
 
 <details>
 
-* Version: 0.6.10
-* GitHub: NA
-* Source code: https://github.com/cran/yamlet
-* Date/Publication: 2021-02-20 08:00:02 UTC
-* Number of recursive dependencies: 78
+* Version: 0.1.1
+* GitHub: https://github.com/jayrobwilliams/RWmisc
+* Source code: https://github.com/cran/RWmisc
+* Date/Publication: 2021-06-20 10:00:11 UTC
+* Number of recursive dependencies: 84
 
-Run `revdep_details(, "yamlet")` for more info
+Run `revdep_details(, "RWmisc")` for more info
 
 </details>
 
 ## Newly broken
 
-*   checking examples ... WARNING
+*   checking tests ...
     ```
-    Found the following significant warnings:
-    
-      Warning: 'install_symbolic_unit' is deprecated.
-    Deprecated functions may be defunct as soon as of the next release of
-    R.
-    See ?Deprecated.
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      Attributes: < Lengths: 2, 0 >
+      Attributes: < names for target but not for current >
+      Attributes: < current is not list-like >
+      target is units, current is numeric
+      ── Failure (test-pointpolydist.R:19:3): point.poly.dist works with projected CRS ──
+      point.poly.dist(points_t, projectUTM(poly_t)) not equal to 100201.5.
+      Attributes: < Modes: list, NULL >
+      Attributes: < Lengths: 2, 0 >
+      Attributes: < names for target but not for current >
+      Attributes: < current is not list-like >
+      target is units, current is numeric
+      
+      [ FAIL 4 | WARN 0 | SKIP 0 | PASS 19 ]
+      Error: Test failures
+      Execution halted
+    ```
+
+# sf
+
+<details>
+
+* Version: 1.0-5
+* GitHub: https://github.com/r-spatial/sf
+* Source code: https://github.com/cran/sf
+* Date/Publication: 2021-12-17 13:00:02 UTC
+* Number of recursive dependencies: 151
+
+Run `revdep_details(, "sf")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking dependencies in R code ... WARNING
+    ```
+    Missing or unexported object: ‘units::install_conversion_constant’
+    ```
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is 24.7Mb
+      sub-directories of 1Mb or more:
+        doc      1.7Mb
+        libs    18.1Mb
+        sqlite   1.5Mb
+    ```
+
+# vein
+
+<details>
+
+* Version: 0.9.4
+* GitHub: https://github.com/atmoschem/vein
+* Source code: https://github.com/cran/vein
+* Date/Publication: 2021-10-08 08:00:02 UTC
+* Number of recursive dependencies: 87
+
+Run `revdep_details(, "vein")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking tests ...
+    ```
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      Attributes: < Lengths: 2, 0 >
+      Attributes: < names for target but not for current >
+      Attributes: < current is not list-like >
+      target is units, current is numeric
+      ── Failure (test-Vehicles.R:8:3): Vehicles works ───────────────────────────────
+      Vehicles(as.numeric(ef_cetesb("CO_0km", "PC_G")))[[1]] not equal to 0.1612112.
+      Attributes: < Modes: list, NULL >
+      Attributes: < Lengths: 2, 0 >
+      Attributes: < names for target but not for current >
+      Attributes: < current is not list-like >
+      target is units, current is numeric
+      
+      [ FAIL 29 | WARN 0 | SKIP 0 | PASS 686 ]
+      Error: Test failures
+      Execution halted
+    ```
+
+## In both
+
+*   checking data for non-ASCII characters ... NOTE
+    ```
+      Note: found 49 marked UTF-8 strings
     ```
 

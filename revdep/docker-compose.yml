@@ -1,0 +1,6 @@
+services:
+  check:
+    build: .
+    working_dir: /mnt
+    volumes:
+      - ../:/mnt:z
