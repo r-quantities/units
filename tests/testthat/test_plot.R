@@ -10,6 +10,9 @@ test_that("base plots work as expected", {
   units(weight) = make_units(kg)
   vdiffr::expect_doppelganger("plot default", fplot(weight, displacement))
 
+  xlab <- "some other thing"
+  vdiffr::expect_doppelganger("plot lab", fplot(weight, displacement, xlab=xlab))
+
   units_options(group = c("(", ")") )  # parenthesis instead of square brackets
   vdiffr::expect_doppelganger("plot parentheses", fplot(weight, displacement))
 
@@ -50,9 +53,13 @@ test_that("ggplot2 plots work as expected", {
     geom_point() + theme_bw() + theme(legend.position=c(0.6, 0.8))
 
   p1 <- p0 + scale_x_units(unit="m") + scale_y_units(unit="mm")
+  p2 <- p0 + xlab("some other thing")
+  p3 <- p0 + xlab(NULL)
 
   vdiffr::expect_doppelganger("ggplot2 automatic", p0)
   vdiffr::expect_doppelganger("ggplot2 manual", p1)
+  vdiffr::expect_doppelganger("ggplot2 lab", p2)
+  vdiffr::expect_doppelganger("ggplot2 nolab", p3)
 })
 
 do.call(units_options, units:::.default_options)

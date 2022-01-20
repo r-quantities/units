@@ -146,7 +146,7 @@ hist.units <- function(x, xlab = NULL, main = paste("Histogram of", xname), ...)
 #' boxplot(u)
 boxplot.units <- function(x, ..., horizontal = FALSE) {
   xlab <- ylab <- NULL
-  lab <- make_unit_label(deparse1(substitute(x)), x)
+  lab <- make_unit_label_internal(deparse1(substitute(x)), x)
   if (horizontal)
     xlab <- lab
   else ylab <- lab
