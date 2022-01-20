@@ -98,10 +98,10 @@ plot.units <- function(x, y, xlab = NULL, ylab = NULL, ...) {
 
   if (missing(y)) { # from xy.coords:
     ylab <- .make_unit_label(ylab, x, xlab0)
-	  if (is.null(xlab)) xlab <- "Index"
+    if (is.null(xlab)) xlab <- "Index"
 
-	  y <- x
-  	x <- seq_along(x)
+    y <- x
+    x <- seq_along(x)
 
     return(NextMethod("plot", x, y, xlab=xlab, ylab=ylab))
   }
