@@ -3,7 +3,7 @@
 \name{plot.units}
 \alias{plot.units}
 \alias{make_unit_label}
-\title{create axis label with appropriate labels}
+\title{Plot \code{units} objects}
 \usage{
 make_unit_label(lab, u, sep = units_options("sep"),
   group = units_options("group"), parse = units_options("parse"))
@@ -37,36 +37,36 @@ without special formatting.}
 \item{...}{other parameters, passed on to \link{plot.default}}
 }
 \description{
-create axis label with appropriate labels
+Create axis label with appropriate labels.
 
-plot unit objects
+Plot method for \code{units} objects.
 }
 \details{
 \link{units_options} can be used to set and change the defaults for
   \code{sep}, \code{group} and \code{doParse}.
 }
 \examples{
-oldpar = par(mar = par("mar") + c(0, .3, 0, 0))
 displacement = mtcars$disp * as_units("in")^3
-# an example that would break if parse were (default) TRUE, since 'in' is a reserved word:
-units_options(parse=FALSE)
-make_unit_label("displacement", displacement)
-units_options(parse=TRUE)
 units(displacement) = make_units(cm^3)
 weight = mtcars$wt * 1000 * make_units(lb)
 units(weight) = make_units(kg)
 plot(weight, displacement)
+
 units_options(group = c("(", ")") )  # parenthesis instead of square brackets
 plot(weight, displacement)
+
 units_options(sep = c("~~~", "~"), group = c("", ""))  # no brackets; extra space
 plot(weight, displacement)
+
 units_options(sep = c("~", "~~"), group = c("[", "]"))
 gallon = as_units("gallon")
 consumption = mtcars$mpg * make_units(mi/gallon)
 units(consumption) = make_units(km/l)
 plot(displacement, consumption) # division in consumption
+
 units_options(negative_power = TRUE) # division becomes ^-1
 plot(displacement, consumption)
+
 plot(1/displacement, 1/consumption)
-par(oldpar)
+
 }
