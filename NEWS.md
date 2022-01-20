@@ -21,8 +21,6 @@
 
 * always add units to labels, including user-provided ones; as part of #298
 
-* deprecate `make_unit_label`; as part of #298
-
 # version 0.7-2
 
 * enhance `pillar` integration; #273, #275, #280 @krlmlr

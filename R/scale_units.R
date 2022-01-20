@@ -99,7 +99,7 @@ MakeScaleContinuousPositionUnits <- function() {
 
     make_title = function(self, title) {
       if (!is.null(title))
-        title <- .make_unit_label(title, as_units(1, self$units))
+        title <- make_unit_label(title, as_units(1, self$units))
       title
     }
   )

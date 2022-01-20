@@ -22,15 +22,7 @@ make_unit_label = function(lab, u,
   		sep = units_options("sep"),
   		group = units_options("group"),
   		parse = units_options("parse")) {
-  .Deprecated(msg="`units::make_unit_label` is deprecated and will be removed.")
-  make_unit_label_internal(lab, u, sep, group, parse)
-}
 
-make_unit_label_internal <- function(lab, u,
-                                     sep = units_options("sep"),
-                                     group = units_options("group"),
-                                     parse = units_options("parse"))
-{
   if (parse) {
     str = paste0("group('", group[1], "',",
                  as.character(units(u), escape_units = TRUE, plot_sep = sep[2]),
@@ -53,7 +45,7 @@ make_unit_label_internal <- function(lab, u,
   if (is.null(label))
     label <- default
   if (inherits(unit, "units"))
-    label <- make_unit_label_internal(label, unit)
+    label <- make_unit_label(label, unit)
   label
 }
 
@@ -146,7 +138,7 @@ hist.units <- function(x, xlab = NULL, main = paste("Histogram of", xname), ...)
 #' boxplot(u)
 boxplot.units <- function(x, ..., horizontal = FALSE) {
   xlab <- ylab <- NULL
-  lab <- make_unit_label_internal(deparse1(substitute(x)), x)
+  lab <- make_unit_label(deparse1(substitute(x)), x)
   if (horizontal)
     xlab <- lab
   else ylab <- lab
