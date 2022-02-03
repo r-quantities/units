@@ -98,9 +98,9 @@ void ud_map_names(CharacterVector names, SEXP inunit) {
   if (!names.size()) return;
 
   ut_unit *unit = ut_unwrap(inunit);
-  ut_map_unit_to_name(unit, ut_trim(names[0], enc), enc);
   for (int i = 0; i < names.size(); i++)
     ut_map_name_to_unit(ut_trim(names[i], enc), enc, unit);
+  ut_map_unit_to_name(unit, ut_trim(names[0], enc), enc);
 }
 
 // [[Rcpp::export]]
@@ -119,9 +119,9 @@ void ud_map_symbols(CharacterVector symbols, SEXP inunit) {
   if (!symbols.size()) return;
 
   ut_unit *unit = ut_unwrap(inunit);
-  ut_map_unit_to_symbol(unit, ut_trim(symbols[0], enc), enc);
   for (int i = 0; i < symbols.size(); i++)
     ut_map_symbol_to_unit(ut_trim(symbols[i], enc), enc, unit);
+  ut_map_unit_to_symbol(unit, ut_trim(symbols[0], enc), enc);
 }
 
 // [[Rcpp::export]]
