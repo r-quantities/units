@@ -4,8 +4,8 @@
       pillar::pillar(x[1])
     Output
       <pillar>
-       [km]
-          1
+      [km]
+         1
     Code
       pillar::pillar(m[1])
     Output
