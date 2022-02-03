@@ -27,7 +27,6 @@ derives from this manuscript and is kept up to date with the package development
 - Blog posts: [first](https://www.r-spatial.org/r/2016/06/10/units.html),
   [second](https://www.r-spatial.org/r/2016/08/16/units2.html),
   [third](https://www.r-spatial.org/r/2016/09/29/plot_units.html).
-- The [udunits2 R package](https://github.com/pacificclimate/Rudunits2) GitHub page.
 - The UNIDATA [udunits2](https://github.com/Unidata/UDUNITS-2) library at GitHub.
 
 ### What it does

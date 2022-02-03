@@ -15,7 +15,6 @@ Imports:
 LinkingTo:
     Rcpp (>= 0.12.10)
 Suggests:
-    udunits2,
     NISTunits,
     measurements,
     xml2,

@@ -29,8 +29,7 @@ This vignette is identical to @rj, except for two changes:
 ## Abstract
 We briefly review SI units, and discuss R packages that deal
 with measurement units, their compatibility and conversion.
-Built upon [udunits2](https://cran.r-project.org/package=udunits2)
-and the UNIDATA udunits library, we introduce the package
+Built upon the UNIDATA udunits library, we introduce the package
 [units](https://cran.r-project.org/package=units) that provides a
 class for maintaining unit metadata. When used in expression, it
 automatically converts units, and simplifies units of results when
@@ -180,7 +179,7 @@ NISTwattPerSqrMeterTOwattPerSqrInch(1:5)
 Both [measurements](https://cran.r-project.org/package=measurements) and [NISTunits](https://cran.r-project.org/package=NISTunits) are written entirely
 in R.
 
-## UNIDATA's udunits library and the `udunits2` R package
+## UNIDATA's udunits library
 
 Udunits, developed by UCAR/UNIDATA, advertises itself on [its web
 page](https://www.unidata.ucar.edu/software/udunits/)
@@ -190,50 +189,16 @@ of units and for conversion of numeric values between compatible
 units. The package contains an extensive unit database, which is
 in XML format and user-extendable._"
 
-The R package [udunits2](https://cran.r-project.org/package=udunits2)
-[@udunits2] provides a low-level R interface to the most important
-functions in the udunits2 C library.
-
-The functions provided by [udunits2](https://cran.r-project.org/package=udunits2) are
-```{r, eval=requireNamespace("udunits2", quietly=TRUE)}
-library(udunits2)
-ls(2)
-```
-Dropping the `ud` prefix,
-`is.parseable` verifies whether a unit is parseable
-```{r, eval=requireNamespace("udunits2", quietly=TRUE)}
-ud.is.parseable("m/s")
-ud.is.parseable("q")
-```
-`are.convertible` specifies whether two units are convertible
-```{r, eval=requireNamespace("udunits2", quietly=TRUE)}
-ud.are.convertible("m/s", "km/h")
-ud.are.convertible("m/s", "s")
-```
-`convert` converts units that are convertible, and throws an error otherwise
-```{r, eval=requireNamespace("udunits2", quietly=TRUE)}
-ud.convert(1:3, "m/s", "km/h")
-```
-and `get.name`, `get.symbol` and `set.encoding` get name, get symbol
-or modify encoding of the character unit arguments.
-```{r, eval=requireNamespace("udunits2", quietly=TRUE)}
-ud.get.name("kg")
-ud.get.symbol("kilogram")
-ud.set.encoding("utf8")
-```
-
 Unlike the
 [measurements](https://cran.r-project.org/package=measurements)
 and [NISTunits](https://cran.r-project.org/package=NISTunits),
-[udunits2](https://cran.r-project.org/package=udunits2) parses
+the underlying udunits2 C library parses
 units as expressions, and bases its logic upon the convertibility
 of expressions, rather than the comparison of fixed strings:
-```{r, eval=requireNamespace("udunits2", quietly=TRUE)}
+```{r}
 m100_a = paste(rep("m", 100), collapse = "*")
 dm100_b = "dm^100"
-ud.is.parseable(m100_a)
-ud.is.parseable(dm100_b)
-ud.are.convertible(m100_a, dm100_b)
+units::ud_are_convertible(m100_a, dm100_b)
 ```
 This has the advantage that through complex computations,
 intermediate objects can have units that are arbitrarily complex,
@@ -425,8 +390,7 @@ two set the class attribute of a vector or matrix.
 
 Despite all standardization efforts, units may still be ambiguous,
 or subject to interpretation. For instance for the duration of one
-year [NISTunits](https://cran.r-project.org/package=NISTunits)
-or [udunits2](https://cran.r-project.org/package=udunits2) give
+year [NISTunits](https://cran.r-project.org/package=NISTunits) gives
 us an answer that depends on whether we want a common, leap,
 Gregorian, Julian, tropical or siderial year (@lang, see
 also `demo(year)`).  This illustrates that those who apply
