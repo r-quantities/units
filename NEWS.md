@@ -21,6 +21,9 @@
 
 * always add units to labels, including user-provided ones; as part of #298
 
+* new symbols/names with a percentage character are not allowed due to an
+  upstream bug; #289
+
 # version 0.7-2
 
 * enhance `pillar` integration; #273, #275, #280 @krlmlr

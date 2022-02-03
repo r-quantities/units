@@ -74,6 +74,11 @@ install_unit <- function(symbol=character(0), def=character(0), name=character(0
   if (!length(symbol) && !length(name))
     stop("at least one symbol or name must be specified")
 
+  # workaround for https://github.com/r-quantities/units/issues/289
+  if (any(grepl("%", c(symbol, name), fixed=TRUE)))
+    stop("Symbols/names with a percentage character '%' are not allowed ",
+         "(see https://github.com/r-quantities/units/issues/289)")
+
   if (!length(def)) {
     ut_unit <- R_ut_new_base_unit()
   } else if (identical(def, "unitless")) {
