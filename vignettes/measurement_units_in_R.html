@@ -282,7 +282,7 @@ div.tocify {
 </ul>
 <div id="abstract" class="section level2">
 <h2>Abstract</h2>
-<p>We briefly review SI units, and discuss R packages that deal with measurement units, their compatibility and conversion. Built upon <a href="https://cran.r-project.org/package=udunits2">udunits2</a> and the UNIDATA udunits library, we introduce the package <a href="https://cran.r-project.org/package=units">units</a> that provides a class for maintaining unit metadata. When used in expression, it automatically converts units, and simplifies units of results when possible; in case of incompatible units, errors are raised. The class flexibly allows expansion beyond predefined units. Using <a href="https://cran.r-project.org/package=units">units</a> may eliminate a whole class of potential scientific programming mistakes. We discuss the potential and limitations of computing with explicit units.</p>
+<p>We briefly review SI units, and discuss R packages that deal with measurement units, their compatibility and conversion. Built upon the UNIDATA udunits library, we introduce the package <a href="https://cran.r-project.org/package=units">units</a> that provides a class for maintaining unit metadata. When used in expression, it automatically converts units, and simplifies units of results when possible; in case of incompatible units, errors are raised. The class flexibly allows expansion beyond predefined units. Using <a href="https://cran.r-project.org/package=units">units</a> may eliminate a whole class of potential scientific programming mistakes. We discuss the potential and limitations of computing with explicit units.</p>
 </div>
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
@@ -426,44 +426,13 @@ NISTwattPerSqrMeterTOwattPerSqrInch(1:5)
 ## [1] 0.00064516 0.00129032 0.00193548 0.00258064 0.00322580</code></pre>
 <p>Both <a href="https://cran.r-project.org/package=measurements">measurements</a> and <a href="https://cran.r-project.org/package=NISTunits">NISTunits</a> are written entirely in R.</p>
 </div>
-<div id="unidatas-udunits-library-and-the-udunits2-r-package" class="section level2">
-<h2>UNIDATA’s udunits library and the <code>udunits2</code> R package</h2>
+<div id="unidatas-udunits-library" class="section level2">
+<h2>UNIDATA’s udunits library</h2>
 <p>Udunits, developed by UCAR/UNIDATA, advertises itself on <a href="https://www.unidata.ucar.edu/software/udunits/">its web page</a> as: “<em>The udunits package supports units of physical quantities. Its C library provides for arithmetic manipulation of units and for conversion of numeric values between compatible units. The package contains an extensive unit database, which is in XML format and user-extendable.</em>”</p>
-<p>The R package <a href="https://cran.r-project.org/package=udunits2">udunits2</a> <span class="citation">(<a href="#ref-udunits2" role="doc-biblioref">Hiebert 2015</a>)</span> provides a low-level R interface to the most important functions in the udunits2 C library.</p>
-<p>The functions provided by <a href="https://cran.r-project.org/package=udunits2">udunits2</a> are</p>
-<pre class="r"><code>library(udunits2)
-## udunits system database read
-ls(2)
-## [1] &quot;ud.are.convertible&quot;  &quot;ud.convert&quot;          &quot;ud.get.name&quot;         &quot;ud.get.symbol&quot;      
-## [5] &quot;ud.have.unit.system&quot; &quot;ud.is.parseable&quot;     &quot;ud.set.encoding&quot;</code></pre>
-<p>Dropping the <code>ud</code> prefix, <code>is.parseable</code> verifies whether a unit is parseable</p>
-<pre class="r"><code>ud.is.parseable(&quot;m/s&quot;)
-## [1] TRUE
-ud.is.parseable(&quot;q&quot;)
-## [1] FALSE</code></pre>
-<p><code>are.convertible</code> specifies whether two units are convertible</p>
-<pre class="r"><code>ud.are.convertible(&quot;m/s&quot;, &quot;km/h&quot;)
-## [1] TRUE
-ud.are.convertible(&quot;m/s&quot;, &quot;s&quot;)
-## [1] FALSE</code></pre>
-<p><code>convert</code> converts units that are convertible, and throws an error otherwise</p>
-<pre class="r"><code>ud.convert(1:3, &quot;m/s&quot;, &quot;km/h&quot;)
-## [1]  3.6  7.2 10.8</code></pre>
-<p>and <code>get.name</code>, <code>get.symbol</code> and <code>set.encoding</code> get name, get symbol or modify encoding of the character unit arguments.</p>
-<pre class="r"><code>ud.get.name(&quot;kg&quot;)
-## [1] &quot;kilogram&quot;
-ud.get.symbol(&quot;kilogram&quot;)
-## [1] &quot;kg&quot;
-ud.set.encoding(&quot;utf8&quot;)
-## NULL</code></pre>
-<p>Unlike the <a href="https://cran.r-project.org/package=measurements">measurements</a> and <a href="https://cran.r-project.org/package=NISTunits">NISTunits</a>, <a href="https://cran.r-project.org/package=udunits2">udunits2</a> parses units as expressions, and bases its logic upon the convertibility of expressions, rather than the comparison of fixed strings:</p>
+<p>Unlike the <a href="https://cran.r-project.org/package=measurements">measurements</a> and <a href="https://cran.r-project.org/package=NISTunits">NISTunits</a>, the underlying udunits2 C library parses units as expressions, and bases its logic upon the convertibility of expressions, rather than the comparison of fixed strings:</p>
 <pre class="r"><code>m100_a = paste(rep(&quot;m&quot;, 100), collapse = &quot;*&quot;)
 dm100_b = &quot;dm^100&quot;
-ud.is.parseable(m100_a)
-## [1] TRUE
-ud.is.parseable(dm100_b)
-## [1] TRUE
-ud.are.convertible(m100_a, dm100_b)
+units::ud_are_convertible(m100_a, dm100_b)
 ## [1] TRUE</code></pre>
 <p>This has the advantage that through complex computations, intermediate objects can have units that are arbitrarily complex, and that can potentially be simplified later on. It also means that the package practically supports an unlimited amount of derived units.</p>
 </div>
@@ -479,20 +448,20 @@ ud.are.convertible(m100_a, dm100_b)
 <pre class="r"><code>library(units)
 x = set_units(1:5, m/s)
 str(x)
-##  Units: [m*s^-1] int [1:5] 1 2 3 4 5</code></pre>
+##  Units: [m/s] int [1:5] 1 2 3 4 5</code></pre>
 <p>represents speed values in <code>m/s</code>. The units <code>m</code> and <code>s</code> are resolved from the udunits2 C library (but could be user-defined units).</p>
 <p>Units can be used in arbitrary R expressions like</p>
 <pre class="r"><code>set_units(1:3, m/s^2)
-## Units: [m*s^-2]
+## Units: [m/s^2]
 ## [1] 1 2 3</code></pre>
 <p>Several manipulations with <code>units</code> objects will now be illustrated. Manipulations that do not involve unit conversion are for instance addition:</p>
 <pre class="r"><code>x = set_units(1:3, m/s)
 x + 2 * x
-## Units: [m*s^-1]
+## Units: [m/s]
 ## [1] 3 6 9</code></pre>
 <p>Explicit unit conversion is done by assigning new units:</p>
 <pre class="r"><code>(x = set_units(x, cm/s))
-## Units: [cm*s^-1]
+## Units: [cm/s]
 ## [1] 100 200 300
 as.numeric(x)
 ## [1] 100 200 300</code></pre>
@@ -500,36 +469,36 @@ as.numeric(x)
 <p>When mixing units in sums, comparisons or concatenation, units are automatically converted to those of the first argument:</p>
 <pre class="r"><code>y = set_units(1:3, km/h)
 x + y
-## Units: [cm*s^-1]
+## Units: [cm/s]
 ## [1] 127.7778 255.5556 383.3333
 y + x
-## Units: [km*h^-1]
+## Units: [km/h]
 ## [1]  4.6  9.2 13.8
 x == y
 ## [1] FALSE FALSE FALSE
 c(y, x)
-## Units: [km*h^-1]
+## Units: [km/h]
 ## [1]  1.0  2.0  3.0  3.6  7.2 10.8</code></pre>
 <p>where <code>c(y, x)</code> concatenates <code>y</code> and <code>x</code> after converting <code>x</code> to the units of <code>y</code>. Derived units are created where appropriate:</p>
 <pre class="r"><code>x * y
-## Units: [cm*km*h^-1*s^-1]
+## Units: [cm*km/h/s]
 ## [1] 100 400 900
 x^3
-## Units: [cm^3*s^-3]
+## Units: [cm^3/s^3]
 ## [1] 1.0e+06 8.0e+06 2.7e+07</code></pre>
 <p>and meaningful error messages appear when units are not compatible:</p>
 <pre class="r"><code>e = try(z &lt;- x + x * y)
-## Error : cannot convert cm*km*h^-1*s^-1 into cm*s^-1
+## Error : cannot convert cm*km/h/s into cm/s
 attr(e, &quot;condition&quot;)[[1]]
-## [1] &quot;cannot convert cm*km*h^-1*s^-1 into cm*s^-1&quot;</code></pre>
+## [1] &quot;cannot convert cm*km/h/s into cm/s&quot;</code></pre>
 <p>The full set of methods and method groups for <code>units</code> objects is shown by</p>
 <pre class="r"><code>methods(class = &quot;units&quot;)
-##  [1] [             [[            [[&lt;-          [&lt;-           all.equal     as_units      as.data.frame
-##  [8] as.Date       as.list       as.POSIXct    boxplot       c             diff          drop_units   
-## [15] format        hist          log10         log2          Math          mean          median       
-## [22] mixed_units   Ops           plot          print         quantile      rep           scale_type   
-## [29] seq           set_units     str           summary       Summary       unique        units        
-## [36] units&lt;-       weighted.mean
+##  [1] [             [[            [[&lt;-          [&lt;-           all.equal     anyDuplicated as_units     
+##  [8] as.data.frame as.Date       as.list       as.POSIXct    boxplot       c             diff         
+## [15] drop_units    duplicated    format        hist          log10         log2          Math         
+## [22] mean          median        mixed_units   Ops           plot          print         quantile     
+## [29] rep           seq           set_units     str           summary       Summary       unique       
+## [36] units         units&lt;-       weighted.mean
 ## see &#39;?methods&#39; for accessing help and source code</code></pre>
 <p>where the method groups</p>
 <ul>
@@ -549,10 +518,10 @@ as_units(ustr1) / as_units(ustr2)
 ## 1e+100 [m]</code></pre>
 <p>Units are printed as simple R expressions, e.g.</p>
 <pre class="r"><code>set_units(1, m^5/s^4)
-## 1 [m^5*s^-4]</code></pre>
+## 1 [m^5/s^4]</code></pre>
 <p>Another way to print units commonly seen in Climate and Forecast Conventions is <code>m2 s-1</code> for m<span class="math inline">\(^2\)</span>/s. These are not R expressions, but they can be parsed by <code>as_units</code>, and created by <code>deparse_unit</code>:</p>
 <pre class="r"><code>as_units(&quot;m2 s-1&quot;)
-## 1 [m^2*s^-1]
+## 1 [m^2/s]
 deparse_unit(set_units(1, m^2*s^-1))
 ## [1] &quot;m2 s-1&quot;</code></pre>
 <p>The <code>plot</code> and <code>hist</code> methods add units to default axis labels, an example is shown in the following figures. For <a href="https://cran.r-project.org/package=ggplot2">ggplot2</a> plots <span class="citation">(<a href="#ref-ggplot2" role="doc-biblioref">Wickham 2009</a>)</span>, automatic unit placement in default axis label is also provided; <code>demo(ggplot2)</code> gives an example.</p>
@@ -598,7 +567,7 @@ as.Date(d1)
 <p>The <a href="https://cran.r-project.org/package=units">units</a> R package provides a new class, <code>units</code>, for numeric data with associated measurement units. Operations on objects of this class retain the unit metadata and provide automated dimensional analysis: dimensions are taken into consideration in computations and comparisons. Combining different units that are compatible triggers automatic unit conversion, derived units are automatically generated and simplified where possible, and meaningful error messages are given when a user tries to add objects with incompatible units. This verifies that computations are not only syntactically and numerically allowed, but also semantically, and in the case of physical units, physically allowed, which may support code verification and provenance tracking. Using this package may eliminate a whole class of potential scientific programming mistakes.</p>
 <p>Where the R packages <a href="https://cran.r-project.org/package=measurements">measurements</a> and <a href="https://cran.r-project.org/package=NISTunits">NISTunits</a> provide conversion between a fixed number of units, with the help of the udunits2 C library and unit database, R package <a href="https://cran.r-project.org/package=units">units</a> handles arbitrarily complex derived units. By treating units as expressions it can derive, convert and simplify units. In addition, beyond the SI units packaged, <a href="https://cran.r-project.org/package=units">units</a> handles user-defined units.</p>
 <p>Data in <code>units</code> vectors can be stored as columns in <code>data.frame</code> or <code>tbl_df</code> objects, and can be converted to and from <code>difftime</code>. When <code>units</code> objects have associated time and location information, they could be stored in spatial or spatio-temporal objects provided by <a href="https://cran.r-project.org/package=sp">sp</a> or <a href="https://cran.r-project.org/package=spacetime">spacetime</a> <span class="citation">(<a href="#ref-spacetime" role="doc-biblioref">Pebesma 2012</a>)</span> as these store attribute data in <code>data.frame</code> slots, but for instance not in <code>zoo</code> <span class="citation">(<a href="#ref-zoo" role="doc-biblioref">Zeileis and Grothendieck 2005</a>)</span> or <code>xts</code> <span class="citation">(<a href="#ref-xts" role="doc-biblioref">Ryan and Ulrich 2014</a>)</span> objects, as these latter two set the class attribute of a vector or matrix.</p>
-<p>Despite all standardization efforts, units may still be ambiguous, or subject to interpretation. For instance for the duration of one year <a href="https://cran.r-project.org/package=NISTunits">NISTunits</a> or <a href="https://cran.r-project.org/package=udunits2">udunits2</a> give us an answer that depends on whether we want a common, leap, Gregorian, Julian, tropical or siderial year (<span class="citation"><a href="#ref-lang" role="doc-biblioref">Lang</a> (<a href="#ref-lang" role="doc-biblioref">2006</a>)</span>, see also <code>demo(year)</code>). This illustrates that those who apply unit conversion should be aware of possible pitfalls. Support for calendars in udunits seems not as well developed as in R.</p>
+<p>Despite all standardization efforts, units may still be ambiguous, or subject to interpretation. For instance for the duration of one year <a href="https://cran.r-project.org/package=NISTunits">NISTunits</a> gives us an answer that depends on whether we want a common, leap, Gregorian, Julian, tropical or siderial year (<span class="citation"><a href="#ref-lang" role="doc-biblioref">Lang</a> (<a href="#ref-lang" role="doc-biblioref">2006</a>)</span>, see also <code>demo(year)</code>). This illustrates that those who apply unit conversion should be aware of possible pitfalls. Support for calendars in udunits seems not as well developed as in R.</p>
 <p>Future work includes extending packages that read external data from formats, databases or interfaces with support for measurement unit information into R, preserving the measurement unit information. Examples would be interfaces to HDF5 (e.g., <a href="https://cran.r-project.org/package=h5">h5</a>, <span class="citation"><a href="#ref-h5" role="doc-biblioref">Annau</a> (<a href="#ref-h5" role="doc-biblioref">2016</a>)</span>), <a href="https://cran.r-project.org/package=RNetCDF">RNetCDF</a> <span class="citation">(<a href="#ref-RNetCDF" role="doc-biblioref">Michna and Woods 2016</a>)</span> or <a href="https://cran.r-project.org/package=sos4R">sos4R</a> <span class="citation">(<a href="#ref-sos4R" role="doc-biblioref">Nüst, Stasch, and Pebesma 2011</a>)</span>. It would be nice to see units of measurements propagate into units of regression coefficient estimates.</p>
 </div>
 <div id="acknowledgements" class="section level1">
@@ -622,9 +591,6 @@ Gama, Jose. 2014. <em>NISTunits: Fundamental Physical Constants and Unit Convers
 </div>
 <div id="ref-lubridate" class="csl-entry">
 Grolemund, Garrett, and Hadley Wickham. 2011. <span>“Dates and Times Made Easy with Lubridate.”</span> <em>Journal of Statistical Software</em> 40 (1): 1–25. <a href="https://doi.org/10.18637/jss.v040.i03">https://doi.org/10.18637/jss.v040.i03</a>.
-</div>
-<div id="ref-udunits2" class="csl-entry">
-Hiebert, James. 2015. <em>Udunits2: Udunits-2 Bindings for r</em>.
 </div>
 <div id="ref-iliffe" class="csl-entry">
 Iliffe, Jonathan, and Roger Lott. 2008. <em>Datums and Map Projections: For Remote Sensing, GIS and Surveying</em>. CRC Inc.
