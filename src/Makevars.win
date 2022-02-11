@@ -1,5 +1,6 @@
-PKG_CPPFLAGS = -DUDUNITS2_DIR=0 -I../windows/udunits-2.2.20/include
-PKG_LIBS = -L../windows/udunits-2.2.20/lib${R_ARCH} \
+RWINLIB = ../windows/udunits-2.2.28
+PKG_CPPFLAGS = -DUDUNITS2_DIR=0 -I${RWINLIB}/include
+PKG_LIBS = -L${RWINLIB}/lib${R_ARCH}${CRT} \
 	-ludunits2 -lexpat
 
 all: clean winlibs
@@ -8,7 +9,7 @@ winlibs:
 	"${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" "../tools/winlibs.R"
 	mkdir -p ../inst
 	rm -Rf ../inst/share
-	cp -r ../windows/udunits-2.2.20/share ../inst/
+	cp -r ${RWINLIB}/share ../inst/
 
 clean:
 	rm -Rf $(SHLIB) $(OBJECTS)
