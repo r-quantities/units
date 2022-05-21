@@ -130,13 +130,13 @@ test_that("we can compute powers if the result is an integer", {
 })
 
 test_that("we can undo logatithms", {
-  x <- set_units(1:5, m^2)
-  y <- set_units(1e6*x, km^2)
+  x <- set_units(1:5, cm^2)
+  y <- set_units(1e6*x, dam^2)
 
-  expect_equal(exp(10^log10(log(x))), x)
-  expect_equal(exp(set_units(10)^log10(log(x))), x)
+  expect_equal(exp(10^log10(log(x))), set_units(x, m^2))
+  expect_equal(exp(set_units(10)^log10(log(x))), set_units(x, m^2))
   expect_equal(exp(10^log10(log(y))), set_units(y, m^2))
-  expect_equal(expm1(3^log(log1p(x), base=3)), x)
+  expect_equal(expm1(3^log(log1p(x), base=3)), set_units(x, m^2))
   expect_equal(expm1(3^log(log1p(y), base=3)), set_units(y, m^2))
   expect_error(exp(log10(x)), "wrong base in power operation")
 })

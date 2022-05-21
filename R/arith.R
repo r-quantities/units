@@ -104,14 +104,14 @@ Ops.units <- function(e1, e2) {
       # this is the next unit after "undoing" the outer logarithm
       nxt_u <- paste(sp[-1], collapse="(re ")   # next unit
       nxt_u <- substr(nxt_u, 1, nchar(nxt_u)-1) # remove last parenthesis
-      nxt_u <- sub("^1 ", "", nxt_u)            # remove leading one
 
       if (length(sp) > 2) { # another logarithm!
         mult <- 1
-        attr(e2, "units")$numerator <- nxt_u
+        attr(e2, "units")$numerator <- sub("^1 ", "", nxt_u)
       } else {
-        nxt_u <- as_units(nxt_u)
-        mult <- drop_units(nxt_u)
+        nxt_u <- strsplit(nxt_u, " ")[[1]]
+        mult <- as.numeric(nxt_u[1])
+        nxt_u <- as_units(nxt_u[2])
         attr(e2, "units") <- units(nxt_u)
       }
       return(mult * NextMethod())

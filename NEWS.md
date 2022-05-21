@@ -1,3 +1,7 @@
+# version 0.8-1
+
+* fix multiplier parsing for `exp(log(x))` operations; #321
+
 # version 0.8-0
 
 * enhance unit mapping for newly installed units; #290
