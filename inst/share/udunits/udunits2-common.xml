@@ -128,6 +128,20 @@ elements appear only within <aliases>.
             </aliases>
             <definition>number of parts per hundred</definition>
         </unit>
+        <!-- I loathe and despise units like this: one's that contain 
+        information about the physical quantity in their name or symbol (e.g.,
+        "parts by volume". Such information is better conveyed by the name of
+        the physical quantity (e.g., "volume fraction"). Eschewing such 
+        information in the unit provides for a better separation between
+        physical quantities and units and enables fewer and simpler units. -->
+        <unit>
+            <comment>Constant</comment>
+            <def>1</def>
+            <aliases>
+                <symbol>ppv</symbol>
+            </aliases>
+            <definition>parts per volume</definition>
+        </unit>
         <unit>
             <comment>Constant</comment>
             <def>1e-6</def>
@@ -923,7 +937,7 @@ elements appear only within <aliases>.
             <aliases>
                 <name> <singular>sidereal_second</singular> </name>
             </aliases>
-            <definition>unit of time equal to 1/60 sidereal second</definition>
+            <definition>unit of time equal to 1/60 sidereal minute</definition>
         </unit>
         <unit>
             <def>3.155815e7 s</def>
@@ -1575,7 +1589,7 @@ elements appear only within <aliases>.
         <unit>
             <def>lg(re 1 mW)</def>
             <aliases> <symbol>Bm</symbol> </aliases>
-            <definition>unit of power in decibel scale, referenced to 1 milliwatt; the power in bel-milliwatts is equal to 100 times the base 10 logarithm of the power in milliwatts (making decibel-milliwatt, the more common term, 10 times the base 10 log of the power in watts)</definition>
+            <definition>unit of power in decibel scale, referenced to 1 milliwatt; the power in bel-milliwatts is equal to 100 times the base 10 logarithm of the power in milliwatts (making decibel-milliwatt, the more common term, 10 times the base 10 log of the power in milliwatts)</definition>
         </unit>
 
     <!-- Heat -->

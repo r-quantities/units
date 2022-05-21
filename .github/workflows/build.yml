@@ -40,6 +40,10 @@ jobs:
       if: ${{ runner.os == 'macOS' }}
       run: brew install automake udunits
 
+    - name: Install Windows dependencies
+      if: ${{ runner.os == 'Windows' }}
+      run: pacman -Syu --noconfirm mingw-w64-ucrt-x86_64-udunits
+
     - uses: r-lib/actions/setup-r-dependencies@v2
       with:
         extra-packages: rcmdcheck, covr

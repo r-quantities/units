@@ -7,9 +7,6 @@ all: clean winlibs
 
 winlibs:
 	"${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" "../tools/winlibs.R"
-	mkdir -p ../inst
-	rm -Rf ../inst/share
-	cp -r ${RWINLIB}/share ../inst/
 
 clean:
 	rm -Rf $(SHLIB) $(OBJECTS)

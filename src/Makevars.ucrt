@@ -1,15 +1,9 @@
-PKG_CPPFLAGS = -DUDUNITS2_DIR=0 
+PKG_CPPFLAGS = -DUDUNITS2_DIR=0
 PKG_LIBS = -ludunits2 -lexpat
 
-all: clean winlibs
+all: clean
 
 clean:
 	rm -Rf $(SHLIB) $(OBJECTS)
 
-winlibs:
-	rm -Rf ../inst/share
-	mkdir -p ../inst/share/
-	cp -r $(LOCAL_SOFT)/share/udunits ../inst/share
-
-
-.PHONY: all winlibs clean
+.PHONY: all clean
