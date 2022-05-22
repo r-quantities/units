@@ -24,9 +24,9 @@ The main units
 [vignette](https://r-quantities.github.io/units/articles/measurement_units_in_R.html)
 derives from this manuscript and is kept up to date with the package development.
 
-- Blog posts: [first](https://www.r-spatial.org/r/2016/06/10/units.html),
-  [second](https://www.r-spatial.org/r/2016/08/16/units2.html),
-  [third](https://www.r-spatial.org/r/2016/09/29/plot_units.html).
+- Blog posts: [first](https://r-spatial.org/r/2016/06/10/units.html),
+  [second](https://r-spatial.org/r/2016/08/16/units2.html),
+  [third](https://r-spatial.org/r/2016/09/29/plot_units.html).
 - The UNIDATA [udunits2](https://github.com/Unidata/UDUNITS-2) library at GitHub.
 
 ### What it does
