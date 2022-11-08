@@ -4,7 +4,7 @@
 #' be added automatically. To override manually, use \code{scale_*_units}.
 #'
 #' @param ... arguments passed on to \code{\link[ggplot2]{continuous_scale}}.
-#' @inheritParams ggplot2::continuous_scale
+#' @inheritParams ggplot2::scale_x_continuous
 #'
 #' @param unit A unit specification to use for the axis. If given, the values
 #' will be converted to this unit before plotting. An error will be thrown if
@@ -40,7 +40,8 @@ NULL
 
 #' @rdname scale_units
 #' @export
-scale_x_units <- function(..., position = "bottom", unit = NULL) {
+scale_x_units <- function(..., guide = ggplot2::waiver(), position = "bottom",
+                          sec.axis = ggplot2::waiver(), unit = NULL) {
   if (!requireNamespace("ggplot2", quietly=TRUE))
     stop("package 'ggplot2' is required for this functionality", call.=FALSE)
 
@@ -48,17 +49,18 @@ scale_x_units <- function(..., position = "bottom", unit = NULL) {
     c("x", "xmin", "xmax", "xend", "xintercept", "xmin_final", "xmax_final",
       "xlower", "xmiddle", "xupper"),
     "position_c", identity, ...,
+    guide = guide,
     position = position,
-    guide = ggplot2::waiver(),
     super = MakeScaleContinuousPositionUnits()
   )
   sc$units <- as_units(unit)
-  sc
+  set_sec_axis(sec.axis, sc)
 }
 
 #' @rdname scale_units
 #' @export
-scale_y_units <- function(..., unit = NULL) {
+scale_y_units <- function(..., guide = ggplot2::waiver(), position = "left",
+                          sec.axis = ggplot2::waiver(), unit = NULL) {
   if (!requireNamespace("ggplot2", quietly=TRUE))
     stop("package 'ggplot2' is required for this functionality", call.=FALSE)
 
@@ -66,11 +68,12 @@ scale_y_units <- function(..., unit = NULL) {
     c("y", "ymin", "ymax", "yend", "yintercept", "ymin_final", "ymax_final",
       "lower", "middle", "upper"),
     "position_c", identity, ...,
-    guide = ggplot2::waiver(),
+    guide = guide,
+    position = position,
     super = MakeScaleContinuousPositionUnits()
   )
   sc$units <- as_units(unit)
-  sc
+  set_sec_axis(sec.axis, sc)
 }
 
 MakeScaleContinuousPositionUnits <- function() {
@@ -103,6 +106,18 @@ MakeScaleContinuousPositionUnits <- function() {
       title
     }
   )
+}
+
+set_sec_axis <- function(sec.axis, scale) {
+  if (!inherits(sec.axis, "waiver")) {
+    if (inherits(sec.axis, "formula"))
+      sec.axis <- ggplot2::sec_axis(sec.axis)
+    if (!inherits(sec.axis, "AxisSecondary"))
+      stop("Secondary axes must be specified using \"sec_axis()\"", call.=FALSE)
+    sec.axis$units <- scale$units
+    scale$secondary.axis <- sec.axis
+  }
+  scale
 }
 
 # registered in .onLoad()

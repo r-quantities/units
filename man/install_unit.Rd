@@ -5,7 +5,8 @@
 \alias{remove_unit}
 \title{Define or remove units}
 \usage{
-install_unit(symbol = character(0), def = character(0), name = character(0))
+install_unit(symbol = character(0), def = character(0),
+  name = character(0))
 
 remove_unit(symbol = character(0), name = character(0))
 }

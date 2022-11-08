@@ -41,7 +41,7 @@ SystemRequirements: udunits-2
 License: GPL-2
 URL: https://github.com/r-quantities/units
 BugReports: https://github.com/r-quantities/units/issues
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.1
 Roxygen: list(old_usage = TRUE)
 Encoding: UTF-8
 Config/testthat/edition: 3
