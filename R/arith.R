@@ -40,27 +40,35 @@
 #' a %/% set_units(2)
 #' set_units(1:5, m^2) %/% set_units(2, m)
 #' a %% a
-#' a %% set_units(2 )
+#' a %% set_units(2)
 Ops.units <- function(e1, e2) {
   if (missing(e2))
     return(NextMethod())
 
   eq  <- .Generic %in% c("+", "-", "==", "!=", "<", ">", "<=", ">=") # requiring identical units
-  prd <- .Generic %in% c("*", "/", "%/%")                            # product-type
+  prd <- .Generic %in% c("*", "/", "%/%", "%%")                      # product-type
   pw  <- .Generic %in% c( "**", "^")                                 # power-type
-  mod <- .Generic == "%%"                                            # modulo
+  mod <- .Generic %in% c("%/%", "%%")                                # modulo-type
   pm  <- .Generic %in% c("+", "-")                                   # addition-type
 
   if (! any(eq, prd, pw, mod))
     stop(paste("operation", .Generic, "not allowed"))
 
-  if (eq || mod || .Generic == "%/%") {
+  if (eq) {
     if (!(inherits(e1, "units") && inherits(e2, "units")))
       stop("both operands of the expression should be \"units\" objects") # nocov
     units(e2) <- units(e1) # convert before we can compare; errors if unconvertible
   }
 
-  if (prd) {
+  if (mod) {
+    div <- e1 / e2
+    int <- round(div)
+    if (.Generic == "%/%") {
+      return(int)
+    } else {
+      return(e1 - int*e2)
+    }
+  } else if (prd) {
     if (!inherits(e1, "units"))
       e1 <- set_units(e1, 1) # TODO: or warn?
 
@@ -143,7 +151,7 @@ Ops.units <- function(e1, e2) {
           rep(unique(units(e1)$denominator),table(units(e1)$denominator)*abs(e2)),
           rep(unique(units(e1)$numerator),table(units(e1)$numerator)*abs(e2)))
     }
-  } else # eq, plus/minus, mod:
+  } else # eq, plus/minus:
     u <- units(e1)
 
   if (eq && !pm) {
