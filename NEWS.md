@@ -1,5 +1,7 @@
 # version 0.8-1
 
+* fix `%/%` and `%%` if arguments have different units; #313
+
 * fix multiplier parsing for `exp(log(x))` operations; #321
 
 * fix specification of secondary axes with `scale_units`; #326
