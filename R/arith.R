@@ -54,7 +54,7 @@ Ops.units <- function(e1, e2) {
   if (! any(eq, prd, pw, mod))
     stop(paste("operation", .Generic, "not allowed"))
 
-  if (eq) {
+  if (eq || mod || .Generic == "%/%") {
     if (!(inherits(e1, "units") && inherits(e2, "units")))
       stop("both operands of the expression should be \"units\" objects") # nocov
     units(e2) <- units(e1) # convert before we can compare; errors if unconvertible
