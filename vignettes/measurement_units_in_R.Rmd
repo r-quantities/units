@@ -16,8 +16,6 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
-
 ```{r echo=FALSE}
 knitr::opts_chunk$set(collapse = TRUE)
 ```
@@ -108,8 +106,8 @@ The [BIPM](https://www.bipm.org/) (Bureau International des Poids et
 Mesures) is "_the intergovernmental organization through which
 Member States act together on matters related to measurement science
 and measurement standards.  Its recommended practical system of units
-of measurement is the International System of Units (Syst\`{e}me
-International d'Unit\'{e}s, with the international abbreviation SI)_
+of measurement is the International System of Units (Système International 
+d'Unités, with the international abbreviation SI)_
 (https://www.bipm.org/en/measurement-units/)". 
 
 @si describe the SI units, where, briefly, _SI units_
