@@ -1,6 +1,7 @@
 on:
+  workflow_dispatch:
   release:
-    types: [published, edited]
+    types: [published]
 
 name: pkgdown
 
