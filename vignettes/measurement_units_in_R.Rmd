@@ -402,11 +402,11 @@ or [sos4R](https://cran.r-project.org/package=sos4R) [@sos4R].
 It would be nice to see units of measurements propagate into units
 of regression coefficient estimates.
 
-# Acknowledgements
+## Acknowledgements
 
 We acknowledge three anonymous reviewers and the handling editor for
 their constructive comments, and Thomas Lin Pedersen for implementing
 the ggplot extensions in package `ggforce` (ported to the `units` package
 since v0.8-0) that automatically add units to default ggplot axis labels.
 
-# References
+## References
