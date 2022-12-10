@@ -2,12 +2,8 @@
 title: "Measurement units in R"
 author: "Edzer Pebesma, Thomas Mailund, and James Hiebert"
 output:
-  html_document:
-    toc: true
-    toc_float:
-      collapsed: false
-      smooth_scroll: false
-    toc_depth: 2
+  rmarkdown::html_vignette:
+    toc: yes
 bibliography: measurement_units_in_R.bib
 link-citations: yes
 vignette: >
@@ -17,8 +13,9 @@ vignette: >
 ---
 
 ```{r echo=FALSE}
-knitr::opts_chunk$set(collapse = TRUE)
+knitr::opts_chunk$set(collapse = TRUE, fig.asp = 0.7, fig.width = 7)
 ```
+
 This vignette is identical to @rj, except for two changes:
 
 * it has been synchronized with updates to the [units](https://cran.r-project.org/package=units) package
@@ -308,7 +305,7 @@ The `plot` and `hist` methods add units to default axis labels, an
 example is shown in the following figures. For [ggplot2](https://cran.r-project.org/package=ggplot2) plots
 [@ggplot2], automatic unit placement in default axis label is also provided; `demo(ggplot2)` gives an example.
 
-```{r fig=TRUE, height=3.8, width=7}
+```{r}
 library(units)
 units_options(negative_power = TRUE)
 # initialize variables with units:
@@ -322,7 +319,7 @@ par(mar = par("mar") + c(0, .3, 0, 0))
 with(mtcars, plot(1/displacement, 1/consumption))
 ```
 
-```{r fig=TRUE, height=3.8, width=7, eval=requireNamespace("ggplot2", quietly=TRUE)}
+```{r, eval=requireNamespace("ggplot2", quietly=TRUE)}
 library(ggplot2)
 ggplot(mtcars) + geom_point(aes(x = 1/displacement, y = 1/consumption))
 ```
