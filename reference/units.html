@@ -32,7 +32,7 @@ set_units, a pipe-friendly version of `units&amp;lt;-`. By
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">units</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8-0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8-1</span>
       </span>
     </div>
 
@@ -44,7 +44,7 @@ set_units, a pipe-friendly version of `units&amp;lt;-`. By
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -93,94 +93,113 @@ set_units, a pipe-friendly version of `units&amp;lt;-`. By
 </ul></div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># S3 method for numeric</span>
-<span class="fu">units</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span>
-
-<span class="co"># S3 method for units</span>
-<span class="fu">units</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span>
-
-<span class="co"># S3 method for logical</span>
-<span class="fu">units</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span>
-
-<span class="co"># S3 method for units</span>
-<span class="fu">units</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="co"># S3 method for symbolic_units</span>
-<span class="fu">units</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="fu">set_units</span><span class="op">(</span><span class="va">x</span>, <span class="va">value</span>, <span class="va">...</span>, mode <span class="op">=</span> <span class="fu"><a href="units_options.html">units_options</a></span><span class="op">(</span><span class="st">"set_units_mode"</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu">make_units</span><span class="op">(</span><span class="va">bare_expression</span>, check_is_valid <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="fu">as_units</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for default</span>
-<span class="fu">as_units</span><span class="op">(</span><span class="va">x</span>, value <span class="op">=</span> <span class="va">unitless</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for units</span>
-<span class="fu">as_units</span><span class="op">(</span><span class="va">x</span>, <span class="va">value</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for symbolic_units</span>
-<span class="fu">as_units</span><span class="op">(</span><span class="va">x</span>, <span class="va">value</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for difftime</span>
-<span class="fu">as_units</span><span class="op">(</span><span class="va">x</span>, <span class="va">value</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for character</span>
-<span class="fu">as_units</span><span class="op">(</span><span class="va">x</span>, check_is_valid <span class="op">=</span> <span class="cn">TRUE</span>,
-  implicit_exponents <span class="op">=</span> <span class="cn">NULL</span>, force_single_symbol <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for call</span>
-<span class="fu">as_units</span><span class="op">(</span><span class="va">x</span>, check_is_valid <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for expression</span>
-<span class="fu">as_units</span><span class="op">(</span><span class="va">x</span>, check_is_valid <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for name</span>
-<span class="fu">as_units</span><span class="op">(</span><span class="va">x</span>, check_is_valid <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for POSIXt</span>
-<span class="fu">as_units</span><span class="op">(</span><span class="va">x</span>, <span class="va">value</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for Date</span>
-<span class="fu">as_units</span><span class="op">(</span><span class="va">x</span>, <span class="va">value</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for numeric</span></span>
+<span><span class="fu">units</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="co"># S3 method for units</span></span>
+<span><span class="fu">units</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="co"># S3 method for logical</span></span>
+<span><span class="fu">units</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="co"># S3 method for units</span></span>
+<span><span class="fu">units</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for symbolic_units</span></span>
+<span><span class="fu">units</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">set_units</span><span class="op">(</span><span class="va">x</span>, <span class="va">value</span>, <span class="va">...</span>, mode <span class="op">=</span> <span class="fu"><a href="units_options.html">units_options</a></span><span class="op">(</span><span class="st">"set_units_mode"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">make_units</span><span class="op">(</span><span class="va">bare_expression</span>, check_is_valid <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">as_units</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for default</span></span>
+<span><span class="fu">as_units</span><span class="op">(</span><span class="va">x</span>, value <span class="op">=</span> <span class="va">unitless</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for units</span></span>
+<span><span class="fu">as_units</span><span class="op">(</span><span class="va">x</span>, <span class="va">value</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for symbolic_units</span></span>
+<span><span class="fu">as_units</span><span class="op">(</span><span class="va">x</span>, <span class="va">value</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for difftime</span></span>
+<span><span class="fu">as_units</span><span class="op">(</span><span class="va">x</span>, <span class="va">value</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for character</span></span>
+<span><span class="fu">as_units</span><span class="op">(</span><span class="va">x</span>, check_is_valid <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  implicit_exponents <span class="op">=</span> <span class="cn">NULL</span>, force_single_symbol <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for call</span></span>
+<span><span class="fu">as_units</span><span class="op">(</span><span class="va">x</span>, check_is_valid <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for expression</span></span>
+<span><span class="fu">as_units</span><span class="op">(</span><span class="va">x</span>, check_is_valid <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for name</span></span>
+<span><span class="fu">as_units</span><span class="op">(</span><span class="va">x</span>, check_is_valid <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for POSIXt</span></span>
+<span><span class="fu">as_units</span><span class="op">(</span><span class="va">x</span>, <span class="va">value</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for Date</span></span>
+<span><span class="fu">as_units</span><span class="op">(</span><span class="va">x</span>, <span class="va">value</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
 <dd><p>numeric vector, or object of class <code>units</code>.</p></dd>
+
+
 <dt>value</dt>
 <dd><p>object of class <code>units</code> or <code>symbolic_units</code>, or in the
 case of <code>set_units</code> expression with symbols (see examples).</p></dd>
+
+
 <dt>...</dt>
 <dd><p>passed on to other methods.</p></dd>
+
+
 <dt>mode</dt>
 <dd><p>if <code>"symbols"</code> (the default), then unit is constructed from
 the expression supplied. Otherwise, if<code>mode = "standard"</code>,
 standard evaluation is used for the supplied value This argument can be set
 via a global option <code>units_options(set_units_mode = "standard")</code></p></dd>
+
+
 <dt>bare_expression</dt>
 <dd><p>a bare R expression describing units. Must be valid R
 syntax (reserved R syntax words like <code>in</code> must be backticked)</p></dd>
+
+
 <dt>check_is_valid</dt>
 <dd><p>throw an error if all the unit symbols are not either
 recognized by udunits2 via <code>ud_is_parseable()</code>, or a custom
 user defined via <code><a href="install_unit.html">install_unit()</a></code>. If <code>FALSE</code>, no check
 for validity is performed.</p></dd>
+
+
 <dt>implicit_exponents</dt>
 <dd><p>If the unit string is in product power form (e.g.
 <code>"km m-2 s-1"</code>). Defaults to <code>NULL</code>, in which case a guess is made
 based on the supplied string. Set to <code>TRUE</code> or <code>FALSE</code> if the guess is
 incorrect.</p></dd>
+
+
 <dt>force_single_symbol</dt>
 <dd><p>Whether to perform no string parsing and force
 treatment of the string as a single symbol.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>An object of class <code>units</code>.
-The <code>units</code> method retrieves the units attribute, which is of
+    
+
+<p>An object of class <code>units</code>.</p>
+
+
+<p>The <code>units</code> method retrieves the units attribute, which is of
 class <code>symbolic_units</code>.</p>
     </div>
     <div id="details">
@@ -262,157 +281,157 @@ value is ignored unless <code>units_options("simplifiy")</code> is <code>TRUE</c
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">x</span> <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">x</span> <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "integer"</span>
-<span class="r-in"><span class="fu">units</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">as_units</span><span class="op">(</span><span class="st">"m/s"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">units</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">as_units</span><span class="op">(</span><span class="st">"m/s"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "units"</span>
-<span class="r-in"><span class="va">y</span> <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">5</span></span>
-<span class="r-in"><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu">set_units</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="va">m</span><span class="op">/</span><span class="va">s</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">units</span><span class="op">(</span><span class="va">a</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">make_units</span><span class="op">(</span><span class="va">km</span><span class="op">/</span><span class="va">h</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">a</span></span>
+<span class="r-in"><span><span class="va">y</span> <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">5</span></span></span>
+<span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu">set_units</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="va">m</span><span class="op">/</span><span class="va">s</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">units</span><span class="op">(</span><span class="va">a</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">make_units</span><span class="op">(</span><span class="va">km</span><span class="op">/</span><span class="va">h</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">a</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Units: [km*h^-1]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1]  3.6  7.2 10.8</span>
-<span class="r-in"><span class="co"># convert to a mixed_units object:</span></span>
-<span class="r-in"><span class="fu">units</span><span class="op">(</span><span class="va">a</span><span class="op">)</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"m/s"</span>, <span class="st">"km/h"</span>, <span class="st">"km/h"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">a</span></span>
+<span class="r-in"><span><span class="co"># convert to a mixed_units object:</span></span></span>
+<span class="r-in"><span><span class="fu">units</span><span class="op">(</span><span class="va">a</span><span class="op">)</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"m/s"</span>, <span class="st">"km/h"</span>, <span class="st">"km/h"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">a</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Mixed units: km*h^-1 (2), m*s^-1 (1) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 [m*s^-1], 7.2 [km*h^-1], 10.8 [km*h^-1] </span>
-<span class="r-in"><span class="co"># The easiest way to assign units to a numeric vector is like this:</span></span>
-<span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">y</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span></span>
-<span class="r-in"><span class="fu">units</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"m/s"</span>  <span class="co"># meters / second</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Alternatively, the easiest pipe-friendly way to set units:</span></span>
-<span class="r-in"><span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"magrittr"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org" class="external-link">magrittr</a></span><span class="op">)</span></span>
-<span class="r-in">  <span class="va">y</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">set_units</span><span class="op">(</span><span class="va">m</span><span class="op">/</span><span class="va">s</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+<span class="r-in"><span><span class="co"># The easiest way to assign units to a numeric vector is like this:</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">y</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span></span></span>
+<span class="r-in"><span><span class="fu">units</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"m/s"</span>  <span class="co"># meters / second</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Alternatively, the easiest pipe-friendly way to set units:</span></span></span>
+<span class="r-in"><span><span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"magrittr"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org" class="external-link">magrittr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">y</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">set_units</span><span class="op">(</span><span class="va">m</span><span class="op">/</span><span class="va">s</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Units: [m*s^-1]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 2 3 4</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># these are different ways of creating the same unit:</span></span>
-<span class="r-in"><span class="co"># meters per second squared, i.e, acceleration</span></span>
-<span class="r-in"><span class="va">x1</span> <span class="op">&lt;-</span> <span class="fu">make_units</span><span class="op">(</span><span class="va">m</span><span class="op">/</span><span class="va">s</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">x2</span> <span class="op">&lt;-</span> <span class="fu">as_units</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">m</span><span class="op">/</span><span class="va">s</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">x2</span> <span class="op">&lt;-</span> <span class="fu">as_units</span><span class="op">(</span><span class="st">"m/s^2"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">x3</span> <span class="op">&lt;-</span> <span class="fu">as_units</span><span class="op">(</span><span class="st">"m s-2"</span><span class="op">)</span> <span class="co"># in product power form, i.e., implicit exponents = T</span></span>
-<span class="r-in"><span class="va">x4</span> <span class="op">&lt;-</span> <span class="fu">set_units</span><span class="op">(</span><span class="fl">1</span>,  <span class="va">m</span><span class="op">/</span><span class="va">s</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span> <span class="co"># by default, mode = "symbols"</span></span>
-<span class="r-in"><span class="va">x5</span> <span class="op">&lt;-</span> <span class="fu">set_units</span><span class="op">(</span><span class="fl">1</span>, <span class="st">"m/s^2"</span>,   mode <span class="op">=</span> <span class="st">"standard"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">x6</span> <span class="op">&lt;-</span> <span class="fu">set_units</span><span class="op">(</span><span class="fl">1</span>, <span class="va">x1</span>,        mode <span class="op">=</span> <span class="st">"standard"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">x7</span> <span class="op">&lt;-</span> <span class="fu">set_units</span><span class="op">(</span><span class="fl">1</span>, <span class="fu">units</span><span class="op">(</span><span class="va">x1</span><span class="op">)</span>, mode <span class="op">=</span> <span class="st">"standard"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">x8</span> <span class="op">&lt;-</span> <span class="fu">as_units</span><span class="op">(</span><span class="st">"m"</span><span class="op">)</span> <span class="op">/</span> <span class="fu">as_units</span><span class="op">(</span><span class="st">"s"</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">all_identical</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="va">l</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
-<span class="r-in">  <span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">l</span><span class="op">)</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
-<span class="r-in">    <span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">l</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="va">l</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in">      <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in">  <span class="cn">TRUE</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"><span class="fu">all_identical</span><span class="op">(</span><span class="va">x1</span>, <span class="va">x2</span>, <span class="va">x3</span>, <span class="va">x4</span>, <span class="va">x5</span>, <span class="va">x6</span>, <span class="va">x7</span>, <span class="va">x8</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># these are different ways of creating the same unit:</span></span></span>
+<span class="r-in"><span><span class="co"># meters per second squared, i.e, acceleration</span></span></span>
+<span class="r-in"><span><span class="va">x1</span> <span class="op">&lt;-</span> <span class="fu">make_units</span><span class="op">(</span><span class="va">m</span><span class="op">/</span><span class="va">s</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">x2</span> <span class="op">&lt;-</span> <span class="fu">as_units</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">m</span><span class="op">/</span><span class="va">s</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">x2</span> <span class="op">&lt;-</span> <span class="fu">as_units</span><span class="op">(</span><span class="st">"m/s^2"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">x3</span> <span class="op">&lt;-</span> <span class="fu">as_units</span><span class="op">(</span><span class="st">"m s-2"</span><span class="op">)</span> <span class="co"># in product power form, i.e., implicit exponents = T</span></span></span>
+<span class="r-in"><span><span class="va">x4</span> <span class="op">&lt;-</span> <span class="fu">set_units</span><span class="op">(</span><span class="fl">1</span>,  <span class="va">m</span><span class="op">/</span><span class="va">s</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span> <span class="co"># by default, mode = "symbols"</span></span></span>
+<span class="r-in"><span><span class="va">x5</span> <span class="op">&lt;-</span> <span class="fu">set_units</span><span class="op">(</span><span class="fl">1</span>, <span class="st">"m/s^2"</span>,   mode <span class="op">=</span> <span class="st">"standard"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">x6</span> <span class="op">&lt;-</span> <span class="fu">set_units</span><span class="op">(</span><span class="fl">1</span>, <span class="va">x1</span>,        mode <span class="op">=</span> <span class="st">"standard"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">x7</span> <span class="op">&lt;-</span> <span class="fu">set_units</span><span class="op">(</span><span class="fl">1</span>, <span class="fu">units</span><span class="op">(</span><span class="va">x1</span><span class="op">)</span>, mode <span class="op">=</span> <span class="st">"standard"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">x8</span> <span class="op">&lt;-</span> <span class="fu">as_units</span><span class="op">(</span><span class="st">"m"</span><span class="op">)</span> <span class="op">/</span> <span class="fu">as_units</span><span class="op">(</span><span class="st">"s"</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">all_identical</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">l</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">l</span><span class="op">)</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">l</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="va">l</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>      <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="fu">all_identical</span><span class="op">(</span><span class="va">x1</span>, <span class="va">x2</span>, <span class="va">x3</span>, <span class="va">x4</span>, <span class="va">x5</span>, <span class="va">x6</span>, <span class="va">x7</span>, <span class="va">x8</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Note, direct usage of these unit creation functions is typically not</span></span>
-<span class="r-in"><span class="co"># necessary, since coercion is automatically done via as_units(). Again,</span></span>
-<span class="r-in"><span class="co"># these are all equivalent ways to generate the same result.</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">x1</span> <span class="op">&lt;-</span> <span class="va">x2</span> <span class="op">&lt;-</span> <span class="va">x3</span> <span class="op">&lt;-</span> <span class="va">x4</span> <span class="op">&lt;-</span> <span class="va">x5</span> <span class="op">&lt;-</span> <span class="va">x6</span> <span class="op">&lt;-</span> <span class="va">x7</span> <span class="op">&lt;-</span> <span class="va">x8</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span></span>
-<span class="r-in"><span class="fu">units</span><span class="op">(</span><span class="va">x1</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"m/s^2"</span></span>
-<span class="r-in"><span class="fu">units</span><span class="op">(</span><span class="va">x2</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"m s-2"</span></span>
-<span class="r-in"><span class="fu">units</span><span class="op">(</span><span class="va">x3</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">m</span><span class="op">/</span><span class="va">s</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">units</span><span class="op">(</span><span class="va">x4</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">make_units</span><span class="op">(</span><span class="va">m</span><span class="op">/</span><span class="va">s</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">units</span><span class="op">(</span><span class="va">x5</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">as_units</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">m</span><span class="op">/</span><span class="va">s</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">x6</span> <span class="op">&lt;-</span> <span class="fu">set_units</span><span class="op">(</span><span class="va">x6</span>, <span class="va">m</span><span class="op">/</span><span class="va">s</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">x7</span> <span class="op">&lt;-</span> <span class="fu">set_units</span><span class="op">(</span><span class="va">x7</span>, <span class="st">"m/s^2"</span>, mode <span class="op">=</span> <span class="st">"standard"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">x8</span> <span class="op">&lt;-</span> <span class="fu">set_units</span><span class="op">(</span><span class="va">x8</span>, <span class="fu">units</span><span class="op">(</span><span class="va">x1</span><span class="op">)</span>, mode <span class="op">=</span> <span class="st">"standard"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">all_identical</span><span class="op">(</span><span class="va">x1</span>, <span class="va">x2</span>, <span class="va">x3</span>, <span class="va">x4</span>, <span class="va">x5</span>, <span class="va">x6</span>, <span class="va">x7</span>, <span class="va">x8</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Note, direct usage of these unit creation functions is typically not</span></span></span>
+<span class="r-in"><span><span class="co"># necessary, since coercion is automatically done via as_units(). Again,</span></span></span>
+<span class="r-in"><span><span class="co"># these are all equivalent ways to generate the same result.</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">x1</span> <span class="op">&lt;-</span> <span class="va">x2</span> <span class="op">&lt;-</span> <span class="va">x3</span> <span class="op">&lt;-</span> <span class="va">x4</span> <span class="op">&lt;-</span> <span class="va">x5</span> <span class="op">&lt;-</span> <span class="va">x6</span> <span class="op">&lt;-</span> <span class="va">x7</span> <span class="op">&lt;-</span> <span class="va">x8</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span></span></span>
+<span class="r-in"><span><span class="fu">units</span><span class="op">(</span><span class="va">x1</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"m/s^2"</span></span></span>
+<span class="r-in"><span><span class="fu">units</span><span class="op">(</span><span class="va">x2</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"m s-2"</span></span></span>
+<span class="r-in"><span><span class="fu">units</span><span class="op">(</span><span class="va">x3</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">m</span><span class="op">/</span><span class="va">s</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">units</span><span class="op">(</span><span class="va">x4</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">make_units</span><span class="op">(</span><span class="va">m</span><span class="op">/</span><span class="va">s</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">units</span><span class="op">(</span><span class="va">x5</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">as_units</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">m</span><span class="op">/</span><span class="va">s</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">x6</span> <span class="op">&lt;-</span> <span class="fu">set_units</span><span class="op">(</span><span class="va">x6</span>, <span class="va">m</span><span class="op">/</span><span class="va">s</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">x7</span> <span class="op">&lt;-</span> <span class="fu">set_units</span><span class="op">(</span><span class="va">x7</span>, <span class="st">"m/s^2"</span>, mode <span class="op">=</span> <span class="st">"standard"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">x8</span> <span class="op">&lt;-</span> <span class="fu">set_units</span><span class="op">(</span><span class="va">x8</span>, <span class="fu">units</span><span class="op">(</span><span class="va">x1</span><span class="op">)</span>, mode <span class="op">=</span> <span class="st">"standard"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">all_identical</span><span class="op">(</span><span class="va">x1</span>, <span class="va">x2</span>, <span class="va">x3</span>, <span class="va">x4</span>, <span class="va">x5</span>, <span class="va">x6</span>, <span class="va">x7</span>, <span class="va">x8</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Both unit names or symbols can be used. By default, unit names are</span></span>
-<span class="r-in"><span class="co"># automatically converted to unit symbols.</span></span>
-<span class="r-in"><span class="fu">make_units</span><span class="op">(</span><span class="va">degree_C</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Both unit names or symbols can be used. By default, unit names are</span></span></span>
+<span class="r-in"><span><span class="co"># automatically converted to unit symbols.</span></span></span>
+<span class="r-in"><span><span class="fu">make_units</span><span class="op">(</span><span class="va">degree_C</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 [°C]</span>
-<span class="r-in"><span class="fu">make_units</span><span class="op">(</span><span class="va">kilogram</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">make_units</span><span class="op">(</span><span class="va">kilogram</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 [kg]</span>
-<span class="r-in"><span class="fu">make_units</span><span class="op">(</span><span class="va">ohm</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">make_units</span><span class="op">(</span><span class="va">ohm</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 [Ω]</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Arithmetic operations and units</span></span>
-<span class="r-in"><span class="co"># conversion between unit objects that were defined as symbols and names will</span></span>
-<span class="r-in"><span class="co"># work correctly, although unit simplification in printing may not always occur.</span></span>
-<span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">500</span> <span class="op">*</span> <span class="fu">make_units</span><span class="op">(</span><span class="va">micrograms</span><span class="op">/</span><span class="va">liter</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu">set_units</span><span class="op">(</span><span class="fl">200</span>, <span class="va">ug</span><span class="op">/</span><span class="va">l</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">x</span> <span class="op">+</span> <span class="va">y</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Arithmetic operations and units</span></span></span>
+<span class="r-in"><span><span class="co"># conversion between unit objects that were defined as symbols and names will</span></span></span>
+<span class="r-in"><span><span class="co"># work correctly, although unit simplification in printing may not always occur.</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">500</span> <span class="op">*</span> <span class="fu">make_units</span><span class="op">(</span><span class="va">micrograms</span><span class="op">/</span><span class="va">liter</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu">set_units</span><span class="op">(</span><span class="fl">200</span>, <span class="va">ug</span><span class="op">/</span><span class="va">l</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">+</span> <span class="va">y</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 700 [micrograms*L^-1]</span>
-<span class="r-in"><span class="va">x</span> <span class="op">*</span> <span class="va">y</span> <span class="co"># numeric result is correct, but units not simplified completely</span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">*</span> <span class="va">y</span> <span class="co"># numeric result is correct, but units not simplified completely</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1e+05 [micrograms*ug*L^-2]</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># note, plural form of unit name accepted too ('liters' vs 'liter'), and</span></span>
-<span class="r-in"><span class="co"># denominator simplification can be performed correctly</span></span>
-<span class="r-in"><span class="va">x</span> <span class="op">*</span> <span class="fu">set_units</span><span class="op">(</span><span class="fl">5</span>, <span class="va">liters</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># note, plural form of unit name accepted too ('liters' vs 'liter'), and</span></span></span>
+<span class="r-in"><span><span class="co"># denominator simplification can be performed correctly</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">*</span> <span class="fu">set_units</span><span class="op">(</span><span class="fl">5</span>, <span class="va">liters</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2500 [micrograms]</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># unit conversion works too</span></span>
-<span class="r-in"><span class="fu">set_units</span><span class="op">(</span><span class="va">x</span>, <span class="va">grams</span><span class="op">/</span><span class="va">gallon</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># unit conversion works too</span></span></span>
+<span class="r-in"><span><span class="fu">set_units</span><span class="op">(</span><span class="va">x</span>, <span class="va">grams</span><span class="op">/</span><span class="va">gallon</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 0.001892706 [g*gallon^-1]</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Creating custom, user defined units</span></span>
-<span class="r-in"><span class="co"># For example, a microbiologist might work with counts of bacterial cells</span></span>
-<span class="r-in"><span class="co"># make_units(cells/ml) # by default, throws an ERROR</span></span>
-<span class="r-in"><span class="co"># First define the unit, then the newly defined unit is accepted.</span></span>
-<span class="r-in"><span class="fu"><a href="install_unit.html">install_unit</a></span><span class="op">(</span><span class="st">"cells"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">make_units</span><span class="op">(</span><span class="va">cells</span><span class="op">/</span><span class="va">ml</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Creating custom, user defined units</span></span></span>
+<span class="r-in"><span><span class="co"># For example, a microbiologist might work with counts of bacterial cells</span></span></span>
+<span class="r-in"><span><span class="co"># make_units(cells/ml) # by default, throws an ERROR</span></span></span>
+<span class="r-in"><span><span class="co"># First define the unit, then the newly defined unit is accepted.</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="install_unit.html">install_unit</a></span><span class="op">(</span><span class="st">"cells"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">make_units</span><span class="op">(</span><span class="va">cells</span><span class="op">/</span><span class="va">ml</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 [cells*ml^-1]</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Note that install_unit() adds support for defining relationships between</span></span>
-<span class="r-in"><span class="co"># the newly created symbols or names and existing units.</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## set_units()</span></span>
-<span class="r-in"><span class="co"># set_units is a pipe friendly version of `units&lt;-`.</span></span>
-<span class="r-in"><span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"magrittr"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org" class="external-link">magrittr</a></span><span class="op">)</span></span>
-<span class="r-in">  <span class="fl">1</span><span class="op">:</span><span class="fl">5</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">set_units</span><span class="op">(</span><span class="va">N</span><span class="op">/</span><span class="va">m</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
-<span class="r-in">  <span class="co"># first sets to m, then converts to km</span></span>
-<span class="r-in">  <span class="fl">1</span><span class="op">:</span><span class="fl">5</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">set_units</span><span class="op">(</span><span class="va">m</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">set_units</span><span class="op">(</span><span class="va">km</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Note that install_unit() adds support for defining relationships between</span></span></span>
+<span class="r-in"><span><span class="co"># the newly created symbols or names and existing units.</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## set_units()</span></span></span>
+<span class="r-in"><span><span class="co"># set_units is a pipe friendly version of `units&lt;-`.</span></span></span>
+<span class="r-in"><span><span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"magrittr"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org" class="external-link">magrittr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fl">1</span><span class="op">:</span><span class="fl">5</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">set_units</span><span class="op">(</span><span class="va">N</span><span class="op">/</span><span class="va">m</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="co"># first sets to m, then converts to km</span></span></span>
+<span class="r-in"><span>  <span class="fl">1</span><span class="op">:</span><span class="fl">5</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">set_units</span><span class="op">(</span><span class="va">m</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">set_units</span><span class="op">(</span><span class="va">km</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Units: [km]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.001 0.002 0.003 0.004 0.005</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># set_units has two modes of operation. By default, it operates with</span></span>
-<span class="r-in"><span class="co"># bare symbols to define the units.</span></span>
-<span class="r-in"><span class="fu">set_units</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="va">m</span><span class="op">/</span><span class="va">s</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># set_units has two modes of operation. By default, it operates with</span></span></span>
+<span class="r-in"><span><span class="co"># bare symbols to define the units.</span></span></span>
+<span class="r-in"><span><span class="fu">set_units</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="va">m</span><span class="op">/</span><span class="va">s</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Units: [m*s^-1]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 2 3 4 5</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># use `mode = "standard"` to use the value of supplied argument, rather than</span></span>
-<span class="r-in"><span class="co"># the bare symbols of the expression. In this mode, set_units() can be</span></span>
-<span class="r-in"><span class="co"># thought of as a simple alias for `units&lt;-` that is pipe friendly.</span></span>
-<span class="r-in"><span class="fu">set_units</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="st">"m/s"</span>, mode <span class="op">=</span> <span class="st">"standard"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># use `mode = "standard"` to use the value of supplied argument, rather than</span></span></span>
+<span class="r-in"><span><span class="co"># the bare symbols of the expression. In this mode, set_units() can be</span></span></span>
+<span class="r-in"><span><span class="co"># thought of as a simple alias for `units&lt;-` that is pipe friendly.</span></span></span>
+<span class="r-in"><span><span class="fu">set_units</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="st">"m/s"</span>, mode <span class="op">=</span> <span class="st">"standard"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Units: [m*s^-1]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 2 3 4 5</span>
-<span class="r-in"><span class="fu">set_units</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fu">make_units</span><span class="op">(</span><span class="va">m</span><span class="op">/</span><span class="va">s</span><span class="op">)</span>, mode <span class="op">=</span> <span class="st">"standard"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">set_units</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fu">make_units</span><span class="op">(</span><span class="va">m</span><span class="op">/</span><span class="va">s</span><span class="op">)</span>, mode <span class="op">=</span> <span class="st">"standard"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Units: [m*s^-1]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 2 3 4 5</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># the mode of set_units() can be controlled via a global option</span></span>
-<span class="r-in"><span class="co"># units_options(set_units_mode = "standard")</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># To remove units use</span></span>
-<span class="r-in"><span class="fu">units</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span>
-<span class="r-in"><span class="co"># or</span></span>
-<span class="r-in"><span class="fu">set_units</span><span class="op">(</span><span class="va">x</span>, <span class="cn">NULL</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># the mode of set_units() can be controlled via a global option</span></span></span>
+<span class="r-in"><span><span class="co"># units_options(set_units_mode = "standard")</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># To remove units use</span></span></span>
+<span class="r-in"><span><span class="fu">units</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span></span>
+<span class="r-in"><span><span class="co"># or</span></span></span>
+<span class="r-in"><span><span class="fu">set_units</span><span class="op">(</span><span class="va">x</span>, <span class="cn">NULL</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 500</span>
-<span class="r-in"><span class="co"># or</span></span>
-<span class="r-in"><span class="fu"><a href="drop_units.html">drop_units</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co"># or</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="drop_units.html">drop_units</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 200</span>
-<span class="r-in"><span class="va">s</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">d</span>  <span class="op">=</span> <span class="va">s</span> <span class="op">-</span> <span class="op">(</span><span class="va">s</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">as_units</span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">s</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">d</span>  <span class="op">=</span> <span class="va">s</span> <span class="op">-</span> <span class="op">(</span><span class="va">s</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">as_units</span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> -1 [s]</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -427,7 +446,7 @@ value is ignored unless <code>units_options("simplifiy")</code> is <code>TRUE</c
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

@@ -19,7 +19,7 @@ defined between such symbols/names and existing ones (see details and examples).
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">units</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8-0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8-1</span>
       </span>
     </div>
 
@@ -31,7 +31,7 @@ defined between such symbols/names and existing ones (see details and examples).
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -70,22 +70,28 @@ defined between such symbols/names and existing ones (see details and examples).
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">install_unit</span><span class="op">(</span>symbol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>, def <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>, name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu">remove_unit</span><span class="op">(</span>symbol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>, name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">install_unit</span><span class="op">(</span>symbol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>, def <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
+<span>  name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">remove_unit</span><span class="op">(</span>symbol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>, name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>symbol</dt>
 <dd><p>a vector of symbols to be installed/removed.</p></dd>
+
+
 <dt>def</dt>
 <dd><p>either</p><ul><li><p>an empty definition, which defines a new base unit;</p></li>
 <li><p><code>"unitless"</code>, which defines a new dimensionless unit;</p></li>
 <li><p>a relationship with existing units (see details for the syntax).</p></li>
 </ul></dd>
+
+
 <dt>name</dt>
 <dd><p>a vector of names to be installed/removed.</p></dd>
+
 </dl></div>
     <div id="details">
     <h2>Details</h2>
@@ -99,43 +105,43 @@ examples of string unit specifications.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># define a fortnight</span></span>
-<span class="r-in"><span class="fu">install_unit</span><span class="op">(</span><span class="st">"fn"</span>, <span class="st">"2 week"</span>, <span class="st">"fortnight"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">year</span> <span class="op">&lt;-</span> <span class="fu"><a href="units.html">as_units</a></span><span class="op">(</span><span class="st">"year"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="units.html">set_units</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">fn</span><span class="op">)</span>        <span class="co"># by symbol</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># define a fortnight</span></span></span>
+<span class="r-in"><span><span class="fu">install_unit</span><span class="op">(</span><span class="st">"fn"</span>, <span class="st">"2 week"</span>, <span class="st">"fortnight"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">year</span> <span class="op">&lt;-</span> <span class="fu"><a href="units.html">as_units</a></span><span class="op">(</span><span class="st">"year"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="units.html">set_units</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">fn</span><span class="op">)</span>        <span class="co"># by symbol</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 26.08873 [fn]</span>
-<span class="r-in"><span class="fu"><a href="units.html">set_units</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">fortnight</span><span class="op">)</span> <span class="co"># by name</span></span>
+<span class="r-in"><span><span class="fu"><a href="units.html">set_units</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">fortnight</span><span class="op">)</span> <span class="co"># by name</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 26.08873 [fn]</span>
-<span class="r-in"><span class="co"># clean up</span></span>
-<span class="r-in"><span class="fu">remove_unit</span><span class="op">(</span><span class="st">"fn"</span>, <span class="st">"fortnight"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># working with currencies</span></span>
-<span class="r-in"><span class="fu">install_unit</span><span class="op">(</span><span class="st">"dollar"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">install_unit</span><span class="op">(</span><span class="st">"euro"</span>, <span class="st">"1.22 dollar"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">install_unit</span><span class="op">(</span><span class="st">"yen"</span>, <span class="st">"0.0079 euro"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="units.html">set_units</a></span><span class="op">(</span><span class="fu"><a href="units.html">as_units</a></span><span class="op">(</span><span class="st">"dollar"</span><span class="op">)</span>, <span class="va">yen</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co"># clean up</span></span></span>
+<span class="r-in"><span><span class="fu">remove_unit</span><span class="op">(</span><span class="st">"fn"</span>, <span class="st">"fortnight"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># working with currencies</span></span></span>
+<span class="r-in"><span><span class="fu">install_unit</span><span class="op">(</span><span class="st">"dollar"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">install_unit</span><span class="op">(</span><span class="st">"euro"</span>, <span class="st">"1.22 dollar"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">install_unit</span><span class="op">(</span><span class="st">"yen"</span>, <span class="st">"0.0079 euro"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="units.html">set_units</a></span><span class="op">(</span><span class="fu"><a href="units.html">as_units</a></span><span class="op">(</span><span class="st">"dollar"</span><span class="op">)</span>, <span class="va">yen</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 103.756 [yen]</span>
-<span class="r-in"><span class="co"># clean up</span></span>
-<span class="r-in"><span class="fu">remove_unit</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"dollar"</span>, <span class="st">"euro"</span>, <span class="st">"yen"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># an example from microbiology</span></span>
-<span class="r-in"><span class="va">cfu_symbols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CFU"</span>, <span class="st">"cfu"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">cfu_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"colony_forming_unit"</span>, <span class="st">"ColonyFormingUnit"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">install_unit</span><span class="op">(</span><span class="st">"cell"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">install_unit</span><span class="op">(</span><span class="va">cfu_symbols</span>, <span class="st">"3.4 cell"</span>, <span class="va">cfu_names</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">cell</span> <span class="op">&lt;-</span> <span class="fu"><a href="units.html">set_units</a></span><span class="op">(</span><span class="fl">2.5e5</span>, <span class="va">cell</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">vol</span> <span class="op">&lt;-</span> <span class="fu"><a href="units.html">set_units</a></span><span class="op">(</span><span class="fl">500</span>, <span class="va">ul</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="units.html">set_units</a></span><span class="op">(</span><span class="va">cell</span><span class="op">/</span><span class="va">vol</span>, <span class="st">"cfu/ml"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co"># clean up</span></span></span>
+<span class="r-in"><span><span class="fu">remove_unit</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"dollar"</span>, <span class="st">"euro"</span>, <span class="st">"yen"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># an example from microbiology</span></span></span>
+<span class="r-in"><span><span class="va">cfu_symbols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CFU"</span>, <span class="st">"cfu"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">cfu_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"colony_forming_unit"</span>, <span class="st">"ColonyFormingUnit"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">install_unit</span><span class="op">(</span><span class="st">"cell"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">install_unit</span><span class="op">(</span><span class="va">cfu_symbols</span>, <span class="st">"3.4 cell"</span>, <span class="va">cfu_names</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">cell</span> <span class="op">&lt;-</span> <span class="fu"><a href="units.html">set_units</a></span><span class="op">(</span><span class="fl">2.5e5</span>, <span class="va">cell</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">vol</span> <span class="op">&lt;-</span> <span class="fu"><a href="units.html">set_units</a></span><span class="op">(</span><span class="fl">500</span>, <span class="va">ul</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="units.html">set_units</a></span><span class="op">(</span><span class="va">cell</span><span class="op">/</span><span class="va">vol</span>, <span class="st">"cfu/ml"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 147058.8 [CFU/ml]</span>
-<span class="r-in"><span class="fu"><a href="units.html">set_units</a></span><span class="op">(</span><span class="va">cell</span><span class="op">/</span><span class="va">vol</span>, <span class="st">"CFU/ml"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="units.html">set_units</a></span><span class="op">(</span><span class="va">cell</span><span class="op">/</span><span class="va">vol</span>, <span class="st">"CFU/ml"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 147058.8 [CFU/ml]</span>
-<span class="r-in"><span class="fu"><a href="units.html">set_units</a></span><span class="op">(</span><span class="va">cell</span><span class="op">/</span><span class="va">vol</span>, <span class="st">"colony_forming_unit/ml"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="units.html">set_units</a></span><span class="op">(</span><span class="va">cell</span><span class="op">/</span><span class="va">vol</span>, <span class="st">"colony_forming_unit/ml"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 147058.8 [CFU/ml]</span>
-<span class="r-in"><span class="fu"><a href="units.html">set_units</a></span><span class="op">(</span><span class="va">cell</span><span class="op">/</span><span class="va">vol</span>, <span class="st">"ColonyFormingUnit/ml"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="units.html">set_units</a></span><span class="op">(</span><span class="va">cell</span><span class="op">/</span><span class="va">vol</span>, <span class="st">"ColonyFormingUnit/ml"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 147058.8 [CFU/ml]</span>
-<span class="r-in"><span class="co"># clean up</span></span>
-<span class="r-in"><span class="fu">remove_unit</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cell"</span>, <span class="va">cfu_symbols</span><span class="op">)</span>, <span class="va">cfu_names</span><span class="op">)</span></span>
-<span class="r-in"></span>
+<span class="r-in"><span><span class="co"># clean up</span></span></span>
+<span class="r-in"><span><span class="fu">remove_unit</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cell"</span>, <span class="va">cfu_symbols</span><span class="op">)</span>, <span class="va">cfu_names</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -150,7 +156,7 @@ examples of string unit specifications.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

@@ -20,7 +20,7 @@ other functions it powers: as_units, set_units , units&amp;lt;-)."><!-- mathjax 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">units</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8-0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8-1</span>
       </span>
     </div>
 
@@ -32,7 +32,7 @@ other functions it powers: as_units, set_units , units&amp;lt;-)."><!-- mathjax 
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -72,9 +72,9 @@ other functions it powers: <code>as_units</code>, <code>set_units</code> , <code
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">valid_udunits</span><span class="op">(</span>quiet <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="fu">valid_udunits_prefixes</span><span class="op">(</span>quiet <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">valid_udunits</span><span class="op">(</span>quiet <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">valid_udunits_prefixes</span><span class="op">(</span>quiet <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -82,13 +82,20 @@ other functions it powers: <code>as_units</code>, <code>set_units</code> , <code
     <dl><dt>quiet</dt>
 <dd><p>logical, defaults <code>TRUE</code> to give a message about the location of
 the udunits database being read.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a data frame with columns <code>symbol</code> , <code>symbol_aliases</code> ,
-<code>name_singular</code> , <code>name_singular_aliases</code> , <code>name_plural</code> ,
-  or <code>name_plural_aliases</code> , <code>def</code> , <code>definition</code> ,
-<code>comment</code> , <code>dimensionless</code> and <code>source_xml</code></p>
+    
+
+<p>a data frame with columns <code>symbol</code> , <code>symbol_aliases</code> ,</p>
+<p></p>
+<p><code>name_singular</code> , <code>name_singular_aliases</code> , <code>name_plural</code> ,
+  or <code>name_plural_aliases</code> , <code>def</code> , <code>definition</code> ,</p>
+<p></p>
+<p><code>comment</code> , <code>dimensionless</code> and <code>source_xml</code></p>
+
+
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -103,12 +110,12 @@ returned data frames may change in the future.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"xml2"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="fu">valid_udunits</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in">  <span class="fu">valid_udunits_prefixes</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in">  <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in">    <span class="fu"><a href="https://rdrr.io/r/utils/View.html" class="external-link">View</a></span><span class="op">(</span><span class="fu">valid_udunits</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"xml2"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu">valid_udunits</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">valid_udunits_prefixes</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/utils/View.html" class="external-link">View</a></span><span class="op">(</span><span class="fu">valid_udunits</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> udunits database from /usr/local/share/udunits/udunits2.xml</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> udunits database from /usr/local/share/udunits/udunits2.xml</span>
 </code></pre></div>
@@ -125,7 +132,7 @@ returned data frames may change in the future.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

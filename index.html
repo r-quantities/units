@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">units</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8-0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8-1</span>
       </span>
     </div>
 
@@ -54,7 +54,7 @@
   <a href="reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -89,8 +89,8 @@
       </header><div class="row">
   <div class="contents col-md-9">
 <div class="section level1">
-<div class="page-header"><h1 id="-measurement-units-for-r">
-<img src="https://avatars1.githubusercontent.com/u/32303769?s=40&amp;v=4"> Measurement Units for R<a class="anchor" aria-label="anchor" href="#-measurement-units-for-r"></a>
+<div class="page-header"><h1 id="id_-measurement-units-for-r">
+<img src="https://avatars1.githubusercontent.com/u/32303769?s=40&amp;v=4"> Measurement Units for R<a class="anchor" aria-label="anchor" href="#id_-measurement-units-for-r"></a>
 </h1></div>
 
 <p>Support for measurement units in R vectors, matrices and arrays: automatic propagation, conversion, derivation and simplification of units; raising errors in case of unit incompatibility. Compatible with the POSIXct, Date and difftime classes. Uses the UNIDATA udunits library and unit database for unit compatibility checking and conversion.</p>
@@ -104,7 +104,7 @@
 </ul>
 <p>The main units <a href="https://r-quantities.github.io/units/articles/measurement_units_in_R.html" class="external-link">vignette</a> derives from this manuscript and is kept up to date with the package development.</p>
 <ul>
-<li>Blog posts: <a href="https://www.r-spatial.org/r/2016/06/10/units.html" class="external-link">first</a>, <a href="https://www.r-spatial.org/r/2016/08/16/units2.html" class="external-link">second</a>, <a href="https://www.r-spatial.org/r/2016/09/29/plot_units.html" class="external-link">third</a>.</li>
+<li>Blog posts: <a href="https://r-spatial.org/r/2016/06/10/units.html" class="external-link">first</a>, <a href="https://r-spatial.org/r/2016/08/16/units2.html" class="external-link">second</a>, <a href="https://r-spatial.org/r/2016/09/29/plot_units.html" class="external-link">third</a>.</li>
 <li>The UNIDATA <a href="https://github.com/Unidata/UDUNITS-2" class="external-link">udunits2</a> library at GitHub.</li>
 </ul>
 </div>
@@ -113,34 +113,34 @@
 </h3>
 <p>Package <code>units</code> provides measurement units for R vectors: conversion, derivation, simplification and error checking:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-quantities/units/" class="external-link">units</a></span><span class="op">)</span>
-<span class="op">(</span><span class="va">spd1</span> <span class="op">=</span> <span class="fu"><a href="reference/units.html">set_units</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="va">m</span><span class="op">/</span><span class="va">s</span><span class="op">)</span><span class="op">)</span>
-<span class="co"># Units: m/s</span>
-<span class="co"># [1] 1 2 3 4 5</span>
-<span class="op">(</span><span class="va">spd2</span> <span class="op">=</span> <span class="fu"><a href="reference/units.html">set_units</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="va">km</span><span class="op">/</span><span class="va">h</span><span class="op">)</span><span class="op">)</span>
-<span class="co"># Units: km/h</span>
-<span class="co"># [1] 1 2 3 4 5</span>
-<span class="va">spd1</span> <span class="op">+</span> <span class="va">spd2</span>                   <span class="co"># automatic conversion</span>
-<span class="co"># Units: m/s</span>
-<span class="co"># [1] 1.277778 2.555556 3.833333 5.111111 6.388889</span>
-<span class="va">spd1</span> <span class="op">*</span> <span class="va">spd2</span>                   <span class="co"># unit derivation</span>
-<span class="co"># Units: km*m/h/s</span>
-<span class="co"># [1]  1  4  9 16 25</span>
-<span class="va">spd1</span> <span class="op">*</span> <span class="fu"><a href="reference/units.html">set_units</a></span><span class="op">(</span><span class="fl">10</span>, <span class="va">s</span><span class="op">)</span> <span class="co"># unit simplification</span>
-<span class="co"># Units: m</span>
-<span class="co"># [1] 10 20 30 40 50</span>
-<span class="va">spd1</span> <span class="op">+</span> <span class="fu"><a href="reference/units.html">set_units</a></span><span class="op">(</span><span class="fl">10</span>, <span class="va">s</span><span class="op">)</span> <span class="co"># error checking</span>
-<span class="co">#   cannot convert s into m/s</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-quantities/units" class="external-link">units</a></span><span class="op">)</span></span>
+<span><span class="op">(</span><span class="va">spd1</span> <span class="op">=</span> <span class="fu"><a href="reference/units.html">set_units</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="va">m</span><span class="op">/</span><span class="va">s</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># Units: m/s</span></span>
+<span><span class="co"># [1] 1 2 3 4 5</span></span>
+<span><span class="op">(</span><span class="va">spd2</span> <span class="op">=</span> <span class="fu"><a href="reference/units.html">set_units</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="va">km</span><span class="op">/</span><span class="va">h</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># Units: km/h</span></span>
+<span><span class="co"># [1] 1 2 3 4 5</span></span>
+<span><span class="va">spd1</span> <span class="op">+</span> <span class="va">spd2</span>                   <span class="co"># automatic conversion</span></span>
+<span><span class="co"># Units: m/s</span></span>
+<span><span class="co"># [1] 1.277778 2.555556 3.833333 5.111111 6.388889</span></span>
+<span><span class="va">spd1</span> <span class="op">*</span> <span class="va">spd2</span>                   <span class="co"># unit derivation</span></span>
+<span><span class="co"># Units: km*m/h/s</span></span>
+<span><span class="co"># [1]  1  4  9 16 25</span></span>
+<span><span class="va">spd1</span> <span class="op">*</span> <span class="fu"><a href="reference/units.html">set_units</a></span><span class="op">(</span><span class="fl">10</span>, <span class="va">s</span><span class="op">)</span> <span class="co"># unit simplification</span></span>
+<span><span class="co"># Units: m</span></span>
+<span><span class="co"># [1] 10 20 30 40 50</span></span>
+<span><span class="va">spd1</span> <span class="op">+</span> <span class="fu"><a href="reference/units.html">set_units</a></span><span class="op">(</span><span class="fl">10</span>, <span class="va">s</span><span class="op">)</span> <span class="co"># error checking</span></span>
+<span><span class="co">#   cannot convert s into m/s</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h3>
 <p>Install the release version from CRAN:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"units"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"units"</span><span class="op">)</span></span></code></pre></div>
 <p>The installation of the development version from GitHub requires, e.g., the <code>remotes</code> package:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"r-quantities/units"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"r-quantities/units"</span><span class="op">)</span></span></code></pre></div>
 <p>If the installation fails due to a missing udunits2 system library, either install it e.g. on Ubuntu or Debian by</p>
 <pre><code>sudo apt-get install libudunits2-dev</code></pre>
 <p>on CentOS7 with</p>
@@ -165,7 +165,7 @@ sudo ldconfig</code></pre>
 <ul class="list-unstyled">
 <li><a href="https://cloud.r-project.org/package=units" class="external-link">View on CRAN</a></li>
 <li><a href="https://github.com/r-quantities/units/" class="external-link">Browse source code</a></li>
-<li><a href="https://github.com/r-quantities/units/issues/" class="external-link">Report a bug</a></li>
+<li><a href="https://github.com/r-quantities/units/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 
@@ -217,7 +217,7 @@ sudo ldconfig</code></pre>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>

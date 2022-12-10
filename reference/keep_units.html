@@ -18,7 +18,7 @@ the original units."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/a
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">units</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8-0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8-1</span>
       </span>
     </div>
 
@@ -30,7 +30,7 @@ the original units."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/a
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -68,23 +68,32 @@ the original units.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">keep_units</span><span class="op">(</span><span class="va">FUN</span>, <span class="va">x</span>, <span class="va">...</span>, unit <span class="op">=</span> <span class="fu"><a href="units.html">units</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">keep_units</span><span class="op">(</span><span class="va">FUN</span>, <span class="va">x</span>, <span class="va">...</span>, unit <span class="op">=</span> <span class="fu"><a href="units.html">units</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>FUN</dt>
 <dd><p>the function to be applied.</p></dd>
+
+
 <dt>x</dt>
 <dd><p>first argument of <code>FUN</code>, of class <code>units</code>.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>optional arguments to <code>FUN</code>.</p></dd>
+
+
 <dt>unit</dt>
 <dd><p>symbolic unit to restore after <code>FUN</code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>An object of class <code>units</code>.</p>
+    
+
+<p>An object of class <code>units</code>.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -94,11 +103,11 @@ responsible for ensuring the correctness of the output.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="units.html">set_units</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="va">m</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">keep_units</span><span class="op">(</span><span class="va">drop_units</span>, <span class="va">x</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="units.html">set_units</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="va">m</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">keep_units</span><span class="op">(</span><span class="va">drop_units</span>, <span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Units: [m]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 2 3 4 5</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -113,7 +122,7 @@ responsible for ensuring the correctness of the output.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

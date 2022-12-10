@@ -19,7 +19,7 @@ be convertible either because they are different magnitudes or because one
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">units</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8-0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8-1</span>
       </span>
     </div>
 
@@ -31,7 +31,7 @@ be convertible either because they are different magnitudes or because one
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -70,7 +70,7 @@ be convertible either because they are different magnitudes or because one
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">ud_are_convertible</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ud_are_convertible</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -78,23 +78,28 @@ be convertible either because they are different magnitudes or because one
     <dl><dt>x</dt>
 <dd><p>character or object of class <code>symbolic_units</code>, for the symbol
 of the first unit.</p></dd>
+
+
 <dt>y</dt>
 <dd><p>character or object of class <code>symbolic_units</code>, for the symbol
 of the second unit.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>boolean, <code>TRUE</code> if both units exist and are convertible.</p>
+    
+
+<p>boolean, <code>TRUE</code> if both units exist and are convertible.</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">ud_are_convertible</span><span class="op">(</span><span class="st">"m"</span>, <span class="st">"km"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">ud_are_convertible</span><span class="op">(</span><span class="st">"m"</span>, <span class="st">"km"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="units.html">set_units</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="va">m</span><span class="op">/</span><span class="va">s</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">ud_are_convertible</span><span class="op">(</span><span class="fu"><a href="units.html">units</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span>, <span class="st">"km/h"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="units.html">set_units</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="va">m</span><span class="op">/</span><span class="va">s</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ud_are_convertible</span><span class="op">(</span><span class="fu"><a href="units.html">units</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span>, <span class="st">"km/h"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"><span class="fu">ud_are_convertible</span><span class="op">(</span><span class="st">"s"</span>, <span class="st">"kg"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">ud_are_convertible</span><span class="op">(</span><span class="st">"s"</span>, <span class="st">"kg"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
 </code></pre></div>
     </div>
@@ -110,7 +115,7 @@ of the second unit.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>
