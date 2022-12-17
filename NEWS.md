@@ -1,3 +1,7 @@
+# development version
+
+* Names are preserved when doing unit conversions; #305 @billdenney
+
 # version 0.8-1
 
 * fix `%/%` and `%%` if arguments have different units; #313
