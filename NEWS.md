@@ -1,3 +1,8 @@
+# development version
+
+* identical units will always divide (`/`) and allow integer division (`%/%`);
+  #310 @billdenney
+
 # version 0.8-1
 
 * fix `%/%` and `%%` if arguments have different units; #313

@@ -46,6 +46,7 @@ Ops.units <- function(e1, e2) {
     return(NextMethod())
 
   eq  <- .Generic %in% c("+", "-", "==", "!=", "<", ">", "<=", ">=") # requiring identical units
+  div <- .Generic %in% c("/", "%/%")
   prd <- .Generic %in% c("*", "/", "%/%", "%%")                      # product-type
   pw  <- .Generic %in% c( "**", "^")                                 # power-type
   mod <- .Generic %in% c("%/%", "%%")                                # modulo-type
@@ -60,7 +61,15 @@ Ops.units <- function(e1, e2) {
     units(e2) <- units(e1) # convert before we can compare; errors if unconvertible
   }
 
-  if (mod) {
+  if (div & identical(units(e1), units(e2))) {
+    # Special cases for identical units which may not be otherwise divisible
+    # (see #310)
+    if (.Generic == "%/%") {
+      return(set_units(as.numeric(e2) %/% as.numeric(e2), ""))
+    } else if (.Generic == "/") {
+      return(set_units(as.numeric(e1)/as.numeric(e2), ""))
+    }
+  } else if (mod) {
     div <- e1 / e2
     int <- round(div)
     if (.Generic == "%/%") {
