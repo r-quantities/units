@@ -46,7 +46,7 @@ Ops.units <- function(e1, e2) {
     return(NextMethod())
 
   eq  <- .Generic %in% c("+", "-", "==", "!=", "<", ">", "<=", ">=") # requiring identical units
-  div <- .Generic %in% c("/", "%/%")
+  div <- .Generic %in% c("/", "%/%")                                 # division-type
   prd <- .Generic %in% c("*", "/", "%/%", "%%")                      # product-type
   pw  <- .Generic %in% c( "**", "^")                                 # power-type
   mod <- .Generic %in% c("%/%", "%%")                                # modulo-type
@@ -61,13 +61,19 @@ Ops.units <- function(e1, e2) {
     units(e2) <- units(e1) # convert before we can compare; errors if unconvertible
   }
 
-  if (div & identical(units(e1), units(e2))) {
-    # Special cases for identical units which may not be otherwise divisible
-    # (see #310)
+  identical_units <-
+    inherits(e1, "units") & inherits(e2, "units") &&
+    identical(units(e1), units(e2))
+
+  if (div & identical_units) {
+    # Special cases for identical units which may not be otherwise divisible by
+    # udunits (see #310)
     if (.Generic == "%/%") {
-      return(set_units(as.numeric(e2) %/% as.numeric(e2), ""))
+      return(set_units(as.numeric(e1) %/% as.numeric(e2), ""))
     } else if (.Generic == "/") {
       return(set_units(as.numeric(e1)/as.numeric(e2), ""))
+    } else {
+      stop("Unknown division .Generic, please report a bug") # nocov
     }
   } else if (mod) {
     div <- e1 / e2

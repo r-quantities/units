@@ -204,7 +204,7 @@ test_that("identical units can always be divided and return unitless (#310)", {
     set_units(log(100)/log(4), "")
   )
   expect_equal(
-    x1%/%x2,
-    set_units(3, "")
+    x1 %/% x2,
+    set_units(log(100) %/% log(4), "")
   )
 })
