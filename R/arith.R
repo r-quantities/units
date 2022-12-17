@@ -71,18 +71,12 @@ Ops.units <- function(e1, e2) {
     identical(units(e1)$numerator, units(e2)$denominator) &&
     identical(units(e1)$denominator, units(e2)$numerator)
 
-  if (div && identical_units) {
-    # Special cases for identical units which may not be otherwise divisible by
-    # udunits (see #310)
-    if (.Generic == "%/%") {
-      return(set_units(drop_units(e1) %/% drop_units(e2), 1))
-    } else if (.Generic == "/") {
-      return(set_units(drop_units(e1)/drop_units(e2), 1))
-    } else {
-      stop("Unknown division .Generic, please report a bug") # nocov
-    }
-  } else if (mul && inverse_units) {
-    return(set_units(drop_units(e1) * drop_units(e2), 1))
+  if ((div && identical_units) | (mul && inverse_units)) {
+    # Special cases for identical unit division and inverse unit multiplication
+    # which may not be otherwise divisible by udunits (see #310)
+    e1 <- drop_units(e1)
+    e2 <- drop_units(e2)
+    return(set_units(NextMethod(), 1))
   } else if (mod) {
     div <- e1 / e2
     int <- round(div)
