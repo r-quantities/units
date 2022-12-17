@@ -202,3 +202,28 @@ test_that("test for comparison where one side does not have units", {
     regexp = 'both operands of the expression should be "units" objects'
   )
 })
+
+test_that("test for comparison where one side does not have units and is all NA (#308)", {
+  expect_equal(
+    set_units(1, "") == NA,
+    NA
+  )
+  expect_equal(
+    NA == set_units(1, "m"),
+    NA
+  )
+  expect_equal(
+    NA_real_ == set_units(1:3, "m"),
+    rep(NA, 3)
+  )
+  # Comparison to character does not make sense, so it does not work
+  expect_error(
+    NA_character_ == set_units(1:3, "m"),
+    regexp = 'both operands of the expression should be "units" objects'
+  )
+  # Comparison when any value is not NA fails
+  expect_error(
+    c(1, NA, NA) == set_units(1:3, "m"),
+    regexp = 'both operands of the expression should be "units" objects'
+  )
+})

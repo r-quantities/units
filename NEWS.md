@@ -1,3 +1,8 @@
+# development version
+
+* NA to unit comparisons (for logical and numeric NA) will always return NA;
+  #308 @billdenney
+
 # version 0.8-1
 
 * fix `%/%` and `%%` if arguments have different units; #313

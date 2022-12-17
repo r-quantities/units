@@ -55,9 +55,22 @@ Ops.units <- function(e1, e2) {
     stop(paste("operation", .Generic, "not allowed"))
 
   if (eq) {
-    if (!(inherits(e1, "units") && inherits(e2, "units")))
-      stop("both operands of the expression should be \"units\" objects")
-    units(e2) <- units(e1) # convert before we can compare; errors if unconvertible
+    # If one side is all numeric or logical NA, then set the units for that to
+    # the same as the other side's units.  That allows NA input to give NA
+    # output with units.
+    e1_units <- inherits(e1, "units")
+    e2_units <- inherits(e2, "units")
+    e1_allowed <- (is.logical(e1) | is.numeric(e1)) & all(is.na(e1))
+    e2_allowed <- (is.logical(e2) | is.numeric(e2)) & all(is.na(e2))
+    if (e1_units & e2_allowed) {
+      units(e2) <- units(e1)
+    } else if (e1_allowed & e2_units) {
+      units(e1) <- units(e2)
+    } else {
+      if (!(inherits(e1, "units") && inherits(e2, "units")))
+        stop("both operands of the expression should be \"units\" objects")
+      units(e2) <- units(e1) # convert before we can compare; errors if unconvertible
+    }
   }
 
   if (mod) {
