@@ -93,10 +93,7 @@
   str2 <- as.character(value)
 
   if (ud_are_convertible(str1, str2))
-    setNames(
-      .as.units(ud_convert(unclass(x), str1, str2), value, dim = dimx),
-      nm = names(x)
-    )
+    .as.units(ud_convert(unclass(x), str1, str2), value, dim = dimx)
   else
     stop(paste("cannot convert", units(x), "into", value), call. = FALSE)
 }
