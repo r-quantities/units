@@ -208,3 +208,13 @@ test_that("identical units can always be divided and return unitless (#310)", {
     set_units(log(100) %/% log(4), "")
   )
 })
+
+test_that("inverse units can always be multiplied and return unitless (related to #310)", {
+  x1 <- log(set_units(100, "g"))
+  x2 <- log(set_units(4, "g"))
+  expect_equal(
+    x1*(1/x2),
+    set_units(log(100)/log(4), "")
+  )
+})
+

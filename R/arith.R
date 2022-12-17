@@ -47,8 +47,9 @@ Ops.units <- function(e1, e2) {
 
   eq  <- .Generic %in% c("+", "-", "==", "!=", "<", ">", "<=", ">=") # requiring identical units
   div <- .Generic %in% c("/", "%/%")                                 # division-type
+  mul <- .Generic %in% "*"                                           # multiplication-only
   prd <- .Generic %in% c("*", "/", "%/%", "%%")                      # product-type
-  pw  <- .Generic %in% c( "**", "^")                                 # power-type
+  pw  <- .Generic %in% c("**", "^")                                  # power-type
   mod <- .Generic %in% c("%/%", "%%")                                # modulo-type
   pm  <- .Generic %in% c("+", "-")                                   # addition-type
 
@@ -65,6 +66,11 @@ Ops.units <- function(e1, e2) {
     inherits(e1, "units") && inherits(e2, "units") &&
     identical(units(e1), units(e2))
 
+  inverse_units <-
+    inherits(e1, "units") && inherits(e2, "units") &&
+    identical(units(e1)$numerator, units(e2)$denominator) &&
+    identical(units(e1)$denominator, units(e2)$numerator)
+
   if (div && identical_units) {
     # Special cases for identical units which may not be otherwise divisible by
     # udunits (see #310)
@@ -75,6 +81,8 @@ Ops.units <- function(e1, e2) {
     } else {
       stop("Unknown division .Generic, please report a bug") # nocov
     }
+  } else if (mul && inverse_units) {
+    return(set_units(drop_units(e1) * drop_units(e2), 1))
   } else if (mod) {
     div <- e1 / e2
     int <- round(div)

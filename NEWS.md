@@ -1,7 +1,7 @@
 # development version
 
-* identical units will always divide (`/`) and allow integer division (`%/%`);
-  #310 @billdenney
+* Identical units will always divide (`/`) and allow integer division (`%/%`).
+  And, inverse units will always be able to multiply; #310 @billdenney
 
 # version 0.8-1
 
