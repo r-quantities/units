@@ -70,13 +70,12 @@
 #' units(a) = c("m/s", "km/h", "km/h")
 #' a
 `units<-.units` <- function(x, value) {
-
   if(is.null(value))
     return(drop_units(x))
 
   if(!inherits(value, "units") && !inherits(value, "symbolic_units")) {
-	if ((is.character(value) && length(value) > 1))
-	  return(set_units(mixed_units(x), value))
+    if ((is.character(value) && length(value) > 1))
+      return(set_units(mixed_units(x), value))
     value <- as_units(value)
   }
 
@@ -94,7 +93,10 @@
   str2 <- as.character(value)
 
   if (ud_are_convertible(str1, str2))
-    .as.units(ud_convert(unclass(x), str1, str2), value, dim = dimx)
+    setNames(
+      .as.units(ud_convert(unclass(x), str1, str2), value, dim = dimx),
+      nm = names(x)
+    )
   else
     stop(paste("cannot convert", units(x), "into", value), call. = FALSE)
 }

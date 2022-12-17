@@ -214,5 +214,12 @@ test_that("ud_are_convertible return the expected value", {
   expect_true(ud_are_convertible("m", "km"))
   expect_true(ud_are_convertible(units(x), "km"))
   expect_false(ud_are_convertible("s", "kg"))
+})
 
+test_that("set_units keeps names even with unit conversion (#305)", {
+  expect_named(set_units(c(a=1), "m"), "a")
+  expect_named(
+    set_units(set_units(c(a=1), "m"), "km"),
+    "a"
+  )
 })
