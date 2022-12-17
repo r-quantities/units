@@ -62,16 +62,16 @@ Ops.units <- function(e1, e2) {
   }
 
   identical_units <-
-    inherits(e1, "units") & inherits(e2, "units") &&
+    inherits(e1, "units") && inherits(e2, "units") &&
     identical(units(e1), units(e2))
 
-  if (div & identical_units) {
+  if (div && identical_units) {
     # Special cases for identical units which may not be otherwise divisible by
     # udunits (see #310)
     if (.Generic == "%/%") {
-      return(set_units(as.numeric(e1) %/% as.numeric(e2), ""))
+      return(set_units(drop_units(e1) %/% drop_units(e2), 1))
     } else if (.Generic == "/") {
-      return(set_units(as.numeric(e1)/as.numeric(e2), ""))
+      return(set_units(drop_units(e1)/drop_units(e2), 1))
     } else {
       stop("Unknown division .Generic, please report a bug") # nocov
     }
