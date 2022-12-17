@@ -67,7 +67,7 @@
 #' units(a) <- make_units(km/h)
 #' a
 #' # convert to a mixed_units object:
-#' units(a) = c("m/s", "km/h", "km/h")
+#' units(a) <- c("m/s", "km/h", "km/h")
 #' a
 `units<-.units` <- function(x, value) {
   if(is.null(value))

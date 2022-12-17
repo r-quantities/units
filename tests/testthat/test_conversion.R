@@ -223,3 +223,14 @@ test_that("set_units keeps names even with unit conversion (#305)", {
     "a"
   )
 })
+
+test_that("conversion to mixed_units", {
+  a <- set_units(1:3, m/s)
+  expect_s3_class(a, "units")
+  units(a) <- c("m/s", "km/h", "km/h")
+  expect_s3_class(a, "mixed_units")
+  expect_equal(
+    drop_units(a),
+    c(1, 0.002*3600, 0.003*3600)
+  )
+})
