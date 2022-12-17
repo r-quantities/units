@@ -6,3 +6,6 @@
 README.md
 ^quantities$
 ^revdep$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
