@@ -84,13 +84,12 @@ NumericVector ud_convert(NumericVector val, CharacterVector from, CharacterVecto
   ut_unit *u_to = ut_parse(sys, ut_trim(to[0], enc), enc);
 
   cv_converter *cv = ut_get_converter(u_from, u_to);
-  NumericVector out(val.size());
-  cv_convert_doubles(cv, &(val[0]), val.size(), &(out[0]));
+  cv_convert_doubles(cv, &(val[0]), val.size(), &(val[0]));
 
   cv_free(cv);
   ut_free(u_from);
   ut_free(u_to);
-  return out;
+  return val;
 }
 
 // [[Rcpp::export]]

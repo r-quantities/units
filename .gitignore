@@ -36,3 +36,4 @@ configure.scan
 *.app
 # OSX-specific
 .DS_Store
+inst/doc
