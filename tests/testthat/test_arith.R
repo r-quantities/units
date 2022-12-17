@@ -195,3 +195,10 @@ test_that("we obtain mixed units when taking powers of multiple integers", {
   p = 4:1
   expect_equal(a ^ p, c(set_units(1, m^4), set_units(8, m^3), set_units(9, m^2), set_units(4, m),  allow_mixed=TRUE))
 })
+
+test_that("test for comparison where one side does not have units", {
+  expect_error(
+    set_units(1, "") == 1,
+    regexp = 'both operands of the expression should be "units" objects'
+  )
+})

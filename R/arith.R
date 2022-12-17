@@ -56,7 +56,7 @@ Ops.units <- function(e1, e2) {
 
   if (eq) {
     if (!(inherits(e1, "units") && inherits(e2, "units")))
-      stop("both operands of the expression should be \"units\" objects") # nocov
+      stop("both operands of the expression should be \"units\" objects")
     units(e2) <- units(e1) # convert before we can compare; errors if unconvertible
   }
 
