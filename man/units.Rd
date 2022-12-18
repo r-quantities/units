@@ -195,7 +195,7 @@ a <- set_units(1:3, m/s)
 units(a) <- make_units(km/h)
 a
 # convert to a mixed_units object:
-units(a) = c("m/s", "km/h", "km/h")
+units(a) <- c("m/s", "km/h", "km/h")
 a
 # The easiest way to assign units to a numeric vector is like this:
 x <- y <- 1:4

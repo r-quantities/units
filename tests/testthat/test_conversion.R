@@ -214,5 +214,23 @@ test_that("ud_are_convertible return the expected value", {
   expect_true(ud_are_convertible("m", "km"))
   expect_true(ud_are_convertible(units(x), "km"))
   expect_false(ud_are_convertible("s", "kg"))
+})
 
+test_that("set_units keeps names even with unit conversion (#305)", {
+  expect_named(set_units(c(a=1), "m"), "a")
+  expect_named(
+    set_units(set_units(c(a=1), "m"), "km"),
+    "a"
+  )
+})
+
+test_that("conversion to mixed_units", {
+  a <- set_units(1:3, m/s)
+  expect_s3_class(a, "units")
+  units(a) <- c("m/s", "km/h", "km/h")
+  expect_s3_class(a, "mixed_units")
+  expect_equal(
+    drop_units(a),
+    c(1, 0.002*3600, 0.003*3600)
+  )
 })

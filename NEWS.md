@@ -1,5 +1,7 @@
 # development version
 
+* Names are preserved when doing unit conversions; #305 @billdenney
+
 * NA to unit comparisons (for logical and numeric NA) will always return NA;
   #308 @billdenney
 
