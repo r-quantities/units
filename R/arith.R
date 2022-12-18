@@ -46,21 +46,41 @@ Ops.units <- function(e1, e2) {
     return(NextMethod())
 
   eq  <- .Generic %in% c("+", "-", "==", "!=", "<", ">", "<=", ">=") # requiring identical units
+  div <- .Generic %in% c("/", "%/%")                                 # division-type
+  mul <- .Generic %in% "*"                                           # multiplication-only
   prd <- .Generic %in% c("*", "/", "%/%", "%%")                      # product-type
-  pw  <- .Generic %in% c( "**", "^")                                 # power-type
+  pw  <- .Generic %in% c("**", "^")                                  # power-type
   mod <- .Generic %in% c("%/%", "%%")                                # modulo-type
   pm  <- .Generic %in% c("+", "-")                                   # addition-type
 
   if (! any(eq, prd, pw, mod))
     stop(paste("operation", .Generic, "not allowed"))
 
+  e1_inherits_units <- inherits(e1, "units")
+  e2_inherits_units <- inherits(e2, "units")
+  both_inherit_units <- e1_inherits_units && e2_inherits_units
   if (eq) {
-    if (!(inherits(e1, "units") && inherits(e2, "units")))
+    if (!(both_inherit_units))
       stop("both operands of the expression should be \"units\" objects") # nocov
     units(e2) <- units(e1) # convert before we can compare; errors if unconvertible
   }
 
-  if (mod) {
+  identical_units <-
+    both_inherit_units &&
+    identical(units(e1), units(e2))
+
+  inverse_units <-
+    both_inherit_units &&
+    identical(units(e1)$numerator, units(e2)$denominator) &&
+    identical(units(e1)$denominator, units(e2)$numerator)
+
+  if ((div && identical_units) || (mul && inverse_units)) {
+    # Special cases for identical unit division and inverse unit multiplication
+    # which may not be otherwise divisible by udunits (see #310)
+    e1 <- drop_units(e1)
+    e2 <- drop_units(e2)
+    return(set_units(NextMethod(), 1))
+  } else if (mod) {
     div <- e1 / e2
     int <- round(div)
     if (.Generic == "%/%") {
@@ -69,10 +89,10 @@ Ops.units <- function(e1, e2) {
       return(e1 - int*e2)
     }
   } else if (prd) {
-    if (!inherits(e1, "units"))
+    if (!e1_inherits_units)
       e1 <- set_units(e1, 1) # TODO: or warn?
 
-    if (!inherits(e2, "units"))
+    if (!e2_inherits_units)
       e2 <- set_units(e2, 1) # TODO: or warn?
 
     ve1 <- unclass(e1) ; ue1 <- units(e1)
@@ -88,11 +108,12 @@ Ops.units <- function(e1, e2) {
     return(.simplify_units(NextMethod(), .symbolic_units(numerator, denominator)))
 
   } else if (pw) {
-    if (inherits(e2, "units")) {
-      if (inherits(e1, "units") && identical(units(e1), units(as_units(1))))
+    if (e2_inherits_units) {
+      if (e1_inherits_units && identical(units(e1), units(as_units(1)))) {
         e1 <- drop_units(e1)
-      if (inherits(e1, "units"))
+      } else if (e1_inherits_units) {
         stop("power operation only allowed with numeric power")
+      }
 
       # code to manage things like exp(log(...)) and 10^log10(...) follows
       # this is not supported in udunits2, so we are on our own

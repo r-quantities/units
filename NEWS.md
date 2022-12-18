@@ -2,6 +2,9 @@
 
 * Names are preserved when doing unit conversions; #305 @billdenney
 
+* Identical units will always divide (`/`) and allow integer division (`%/%`).
+  And, inverse units will always be able to multiply; #310 @billdenney
+
 # version 0.8-1
 
 * fix `%/%` and `%%` if arguments have different units; #313

@@ -195,3 +195,26 @@ test_that("we obtain mixed units when taking powers of multiple integers", {
   p = 4:1
   expect_equal(a ^ p, c(set_units(1, m^4), set_units(8, m^3), set_units(9, m^2), set_units(4, m),  allow_mixed=TRUE))
 })
+
+test_that("identical units can always be divided and return unitless (#310)", {
+  x1 <- log(set_units(100, "g"))
+  x2 <- log(set_units(4, "g"))
+  expect_equal(
+    x1/x2,
+    set_units(log(100)/log(4), "")
+  )
+  expect_equal(
+    x1 %/% x2,
+    set_units(log(100) %/% log(4), "")
+  )
+})
+
+test_that("inverse units can always be multiplied and return unitless (related to #310)", {
+  x1 <- log(set_units(100, "g"))
+  x2 <- log(set_units(4, "g"))
+  expect_equal(
+    x1*(1/x2),
+    set_units(log(100)/log(4), "")
+  )
+})
+
