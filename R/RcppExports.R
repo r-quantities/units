@@ -13,6 +13,10 @@ ud_set_encoding <- function(enc_str) {
     invisible(.Call('_units_ud_set_encoding', PACKAGE = 'units', enc_str))
 }
 
+ud_compare <- function(x, y, xn, yn) {
+    .Call('_units_ud_compare', PACKAGE = 'units', x, y, xn, yn)
+}
+
 ud_convert <- function(val, from, to) {
     .Call('_units_ud_convert', PACKAGE = 'units', val, from, to)
 }

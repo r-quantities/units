@@ -1,7 +1,8 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-.travis.yml
+^.travis.yml$
 ^appveyor\.yml$
+^_pkgdown\.yml$
 ^\.github$
 README.md
 ^quantities$

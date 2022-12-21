@@ -22,7 +22,7 @@ test_that("we can convert between units with a user-defined function", {
   expect_equal(bananas + 3 * apples, (6 + 3 * 2 / 3) * as_units("banana"))
 
   # check dimensionless
-  install_unit("person", "unitless")
+  install_unit("person", "1")
   persons <- set_units(3, person)
   expect_true(persons == set_units(3, 1))
 

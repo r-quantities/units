@@ -39,6 +39,20 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
+// ud_compare
+IntegerVector ud_compare(NumericVector x, NumericVector y, CharacterVector xn, CharacterVector yn);
+RcppExport SEXP _units_ud_compare(SEXP xSEXP, SEXP ySEXP, SEXP xnSEXP, SEXP ynSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type y(ySEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type xn(xnSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type yn(ynSEXP);
+    rcpp_result_gen = Rcpp::wrap(ud_compare(x, y, xn, yn));
+    return rcpp_result_gen;
+END_RCPP
+}
 // ud_convert
 NumericVector ud_convert(NumericVector val, CharacterVector from, CharacterVector to);
 RcppExport SEXP _units_ud_convert(SEXP valSEXP, SEXP fromSEXP, SEXP toSEXP) {
@@ -283,6 +297,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_units_ud_exit", (DL_FUNC) &_units_ud_exit, 0},
     {"_units_ud_init", (DL_FUNC) &_units_ud_init, 1},
     {"_units_ud_set_encoding", (DL_FUNC) &_units_ud_set_encoding, 1},
+    {"_units_ud_compare", (DL_FUNC) &_units_ud_compare, 4},
     {"_units_ud_convert", (DL_FUNC) &_units_ud_convert, 3},
     {"_units_ud_map_names", (DL_FUNC) &_units_ud_map_names, 2},
     {"_units_ud_unmap_names", (DL_FUNC) &_units_ud_unmap_names, 1},

@@ -79,6 +79,38 @@ void ud_set_encoding(std::string enc_str) {
 }
 
 // [[Rcpp::export]]
+IntegerVector ud_compare(NumericVector x, NumericVector y,
+                         CharacterVector xn, CharacterVector yn)
+{
+  bool swapped = false;
+
+  if (y.size() > x.size()) {
+    std::swap(x, y);
+    std::swap(xn, yn);
+    swapped = true;
+  }
+
+  IntegerVector out(x.size());
+  for (std::string &attr : x.attributeNames())
+    out.attr(attr) = x.attr(attr);
+
+  ut_unit *ux = ut_parse(sys, ut_trim(xn[0], enc), enc);
+  ut_unit *uy = ut_parse(sys, ut_trim(yn[0], enc), enc);
+
+  for (int i=0, j=0; i < x.size(); i++, j++) {
+    if (j == y.size())
+      j = 0;
+    out[i] = ut_compare(ut_scale(x[i], ux), ut_scale(y[j], uy));
+  }
+
+  ut_free(ux);
+  ut_free(uy);
+  if (swapped)
+    out = -out;
+  return out;
+}
+
+// [[Rcpp::export]]
 NumericVector ud_convert(NumericVector val, CharacterVector from, CharacterVector to) {
   ut_unit *u_from = ut_parse(sys, ut_trim(from[0], enc), enc);
   ut_unit *u_to = ut_parse(sys, ut_trim(to[0], enc), enc);

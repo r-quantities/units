@@ -45,24 +45,40 @@ Ops.units <- function(e1, e2) {
   if (missing(e2))
     return(NextMethod())
 
-  eq  <- .Generic %in% c("+", "-", "==", "!=", "<", ">", "<=", ">=") # requiring identical units
-  div <- .Generic %in% c("/", "%/%")                                 # division-type
-  mul <- .Generic %in% "*"                                           # multiplication-only
-  prd <- .Generic %in% c("*", "/", "%/%", "%%")                      # product-type
-  pw  <- .Generic %in% c("**", "^")                                  # power-type
-  mod <- .Generic %in% c("%/%", "%%")                                # modulo-type
-  pm  <- .Generic %in% c("+", "-")                                   # addition-type
+  cmp <- .Generic %in% c("==", "!=", "<", ">", "<=", ">=") # comparison-type
+  div <- .Generic %in% c("/", "%/%")                       # division-type
+  mul <- .Generic %in% "*"                                 # multiplication-only
+  prd <- .Generic %in% c("*", "/", "%/%", "%%")            # product-type
+  pw  <- .Generic %in% c("**", "^")                        # power-type
+  mod <- .Generic %in% c("%/%", "%%")                      # modulo-type
+  pm  <- .Generic %in% c("+", "-")                         # addition-type
 
-  if (! any(eq, prd, pw, mod))
+  if (! any(cmp, pm, prd, pw, mod))
     stop(paste("operation", .Generic, "not allowed"))
 
   e1_inherits_units <- inherits(e1, "units")
   e2_inherits_units <- inherits(e2, "units")
   both_inherit_units <- e1_inherits_units && e2_inherits_units
-  if (eq) {
-    if (!(both_inherit_units))
-      stop("both operands of the expression should be \"units\" objects") # nocov
-    units(e2) <- units(e1) # convert before we can compare; errors if unconvertible
+
+  if ((pm || cmp) && !both_inherit_units)
+    stop("both operands of the expression should be \"units\" objects") # nocov
+
+  if (cmp) {
+    if (!ud_are_convertible(units(e1), units(e2)))
+      stop("cannot compare non-convertible units")
+
+    if (length(e1) >= length(e2)) {
+      e1 <- ud_compare(e1, e2, as.character(units(e1)), as.character(units(e2)))
+      attr <- attributes(e2)
+      e2 <- rep(0, length(e2))
+      attributes(e2) <- attr
+    } else {
+      e2 <- ud_compare(e2, e1, as.character(units(e2)), as.character(units(e1)))
+      attr <- attributes(e1)
+      e1 <- rep(0, length(e1))
+      attributes(e1) <- attr
+    }
+    return(NextMethod())
   }
 
   identical_units <-
@@ -172,14 +188,12 @@ Ops.units <- function(e1, e2) {
           rep(unique(units(e1)$denominator),table(units(e1)$denominator)*abs(e2)),
           rep(unique(units(e1)$numerator),table(units(e1)$numerator)*abs(e2)))
     }
-  } else # eq, plus/minus:
+  } else { # pm:
+    units(e2) <- units(e1)
     u <- units(e1)
+  }
 
-  if (eq && !pm) {
-    dimension = dim(structure(as.numeric(e1), dim = dim(e1)) == structure(as.numeric(e2), dim = dim(e2)))
-    structure(as.logical(NextMethod()), dim = dimension)
-  } else
-    .as.units(NextMethod(), u)
+  .as.units(NextMethod(), u)
 }
 
 #' #' matrix multiplication

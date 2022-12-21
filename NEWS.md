@@ -5,6 +5,9 @@
 * Identical units will always divide (`/`) and allow integer division (`%/%`).
   And, inverse units will always be able to multiply; #310 @billdenney
 
+* Compare units via `ut_compare()`, fixing inconsistent results for aliases
+  and symbols; #339
+
 # version 0.8-1
 
 * fix `%/%` and `%%` if arguments have different units; #313

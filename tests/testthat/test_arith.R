@@ -15,6 +15,26 @@ test_that("we can compare vectors with equal units", {
   expect_false(any(x > y))
   expect_false(any(x != y))
   expect_true(all(x != z))
+
+  expect_error(x == set_units(1, "kg"))
+})
+
+test_that("vectors are correctly recycled in comparisons", {
+  x <- 1:4 * as_units("m")
+  y <- 1:2 * as_units("m")
+  res <- drop_units(x) == drop_units(y)
+  expect_equal(x == y, res)
+  expect_equal(y == x, res)
+
+  y <- 1:3 * as_units("m")
+  expect_warning(res <- drop_units(x) == drop_units(y))
+  expect_warning(expect_equal(x == y, res))
+  expect_warning(expect_equal(y == x, res))
+})
+
+test_that("aliases are correctly handled in comparisons (#339)", {
+  expect_true(as_units("foot") == as_units("feet"))
+  expect_true(as_units("foot") == as_units("ft"))
 })
 
 test_that("we can scale units with scalars", {

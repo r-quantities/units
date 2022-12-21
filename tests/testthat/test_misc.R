@@ -101,7 +101,7 @@ test_that("all.equal works", {
   expect_true(all.equal(set_units(1, m/s), set_units(3.6, km/h)))
   expect_true(set_units(1, m/s) == set_units(3.6, km/h))
   expect_true(all.equal(set_units(3.6, km/h), set_units(1, m/s)))
-  expect_false(set_units(3.6, km/h) == set_units(1, m/s))
+  expect_true(set_units(3.6, km/h) == set_units(1, m/s))
   expect_false(isTRUE(all.equal(set_units(1, m), 1)))
 })
 
