@@ -7,27 +7,6 @@ name: pkgdown
 
 jobs:
   pkgdown:
-    runs-on: macOS-latest
-    env:
-      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-    steps:
-    - uses: actions/checkout@v2
-    - uses: r-lib/actions/setup-r@v2
-    - uses: r-lib/actions/setup-pandoc@v2
-
-    - name: Install macOS dependencies
-      run: brew install automake udunits
-
-    - name: Install dependencies
-      run: |
-        install.packages("remotes", type="binary")
-        remotes::install_deps(dependencies=TRUE, type="binary")
-        remotes::install_cran("pkgdown", type="binary")
-      shell: Rscript {0}
-
-    - name: Install package
-      run: R CMD INSTALL .
-
-    - name: Deploy site
-      run: pkgdown::deploy_to_branch(new_process=FALSE)
-      shell: Rscript {0}
+    name: Build and deploy site
+    uses: r-quantities/workflows/.github/workflows/pkgdown.yml@main
+    secrets: inherit
