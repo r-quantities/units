@@ -38,7 +38,7 @@
 #' class(x)
 #' y = 2:5
 `units<-.numeric` <- function(x, value) {
-  if(is.null(value))
+  if(!length(value))
     return(x)
 
   if(!inherits(value, "units") && !inherits(value, "symbolic_units"))
@@ -70,7 +70,7 @@
 #' units(a) <- c("m/s", "km/h", "km/h")
 #' a
 `units<-.units` <- function(x, value) {
-  if(is.null(value))
+  if(!length(value))
     return(drop_units(x))
 
   if(!inherits(value, "units") && !inherits(value, "symbolic_units")) {

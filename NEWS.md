@@ -8,6 +8,8 @@
 * Compare units via `ut_compare()`, fixing inconsistent results for aliases
   and symbols; #339
 
+* Fix `units<-()` to treat an empty unit the same as `NULL`; #332
+
 # version 0.8-1
 
 * fix `%/%` and `%%` if arguments have different units; #313
