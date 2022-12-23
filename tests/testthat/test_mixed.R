@@ -67,3 +67,16 @@ test_that("unique.mixed_units works", {
    z <- c(set_units(c(1, 2), kg), set_units(c(3, 4), s), set_units(c(2, 3), kg), allow_mixed = TRUE)
    expect_equal(unique(z), c(set_units(c(1, 2), kg), set_units(c(3, 4), s), set_units(3, kg), allow_mixed = TRUE))
 })
+
+test_that("as.data.frame.mixed_units works", {
+  x <- 1:3
+  x_units <- set_units(x, "m")
+  x_mixed <- mixed_units(x_units)
+
+  df1 <- data.frame(x)
+  df1$x_units <- x_units
+  df1$x_mixed <- x_mixed
+  df2 <- data.frame(x, x_units, x_mixed)
+
+  expect_equal(df1, df2)
+})

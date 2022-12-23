@@ -147,3 +147,6 @@ Ops.mixed_units = function(e1, e2) {
 unique.mixed_units <- function(x, incomparables = FALSE, ...) {
   .as.mixed_units(NextMethod())
 }
+
+#' @export
+as.data.frame.mixed_units <- as.data.frame.AsIs

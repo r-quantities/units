@@ -160,9 +160,16 @@ test_that("a NULL value returns NULL", {
   expect_null(as_units(NULL))
 })
 
-#test_that("as.data.frame.units works", {
-#  expect_silent(as.data.frame(set_units(matrix(1:9,3), m)))
-#})
+test_that("as.data.frame.units works", {
+  x <- matrix(1:9, 3)
+
+  df1 <- as.data.frame(x)
+  for (col in names(df1))
+    df1[[col]] <- set_units(df1[[col]], m)
+  df2 <- as.data.frame(set_units(x, m))
+
+  expect_equal(df1, df2)
+})
 
 test_that("units.symbolic_units works", {
   m = set_units(1, m)

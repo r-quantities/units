@@ -10,6 +10,8 @@
 
 * Fix `units<-()` to treat an empty unit the same as `NULL`; #332
 
+* New `as.data.frame()` method for `mixed_units`; #309
+
 # version 0.8-1
 
 * fix `%/%` and `%%` if arguments have different units; #313
