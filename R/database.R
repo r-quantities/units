@@ -51,6 +51,8 @@ default_units_xml <- function(warn = FALSE) {
 #'
 #' @export
 load_units_xml <- function(path = default_units_xml()) {
+  if (.Platform$OS.type == "windows")
+    path <- shortPathName(path)
   ud_init(path)
 }
 

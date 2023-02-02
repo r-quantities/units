@@ -12,6 +12,8 @@
 
 * New `as.data.frame()` method for `mixed_units`; #309
 
+* Use short paths for database loading on Windows to fix UTF-16 issues; #342
+
 # version 0.8-1
 
 * fix `%/%` and `%%` if arguments have different units; #313
