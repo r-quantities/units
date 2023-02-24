@@ -14,6 +14,8 @@
 
 * Use short paths for database loading on Windows to fix UTF-16 issues; #342
 
+* Add example in the docs about reversing a ggplot2 units scale; #343
+
 # version 0.8-1
 
 * fix `%/%` and `%%` if arguments have different units; #313

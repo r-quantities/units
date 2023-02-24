@@ -3,7 +3,8 @@
 #' These are the default scales for the \code{units} class. These will usually
 #' be added automatically. To override manually, use \code{scale_*_units}.
 #'
-#' @param ... arguments passed on to \code{\link[ggplot2]{continuous_scale}}.
+#' @param ... arguments passed on to \code{\link[ggplot2]{continuous_scale}}
+#' (e.g. scale transformations via the \code{trans} argument; see examples).
 #' @inheritParams ggplot2::scale_x_continuous
 #'
 #' @param unit A unit specification to use for the axis. If given, the values
@@ -34,6 +35,11 @@
 #' # Resolve units when transforming data
 #' ggplot(mtcars) +
 #'   geom_point(aes(power, 1 / consumption))
+#'
+#' # Reverse the y axis
+#' ggplot(mtcars) +
+#'   geom_point(aes(power, consumption)) +
+#'   scale_y_units(trans="reverse")
 #'
 #' }
 NULL

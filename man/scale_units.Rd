@@ -12,7 +12,8 @@ scale_y_units(..., guide = ggplot2::waiver(), position = "left",
   sec.axis = ggplot2::waiver(), unit = NULL)
 }
 \arguments{
-\item{...}{arguments passed on to \code{\link[ggplot2]{continuous_scale}}.}
+\item{...}{arguments passed on to \code{\link[ggplot2]{continuous_scale}}
+(e.g. scale transformations via the \code{trans} argument; see examples).}
 
 \item{guide}{A function used to create a guide or its name. See
 \code{\link[ggplot2:guides]{guides()}} for more information.}
@@ -51,6 +52,11 @@ ggplot(mtcars) +
 # Resolve units when transforming data
 ggplot(mtcars) +
   geom_point(aes(power, 1 / consumption))
+
+# Reverse the y axis
+ggplot(mtcars) +
+  geom_point(aes(power, consumption)) +
+  scale_y_units(trans="reverse")
 
 }
 }
