@@ -41,6 +41,8 @@
   if(!length(value))
     return(x)
 
+  storage.mode(x) <- "double" # issues/324
+
   if(!inherits(value, "units") && !inherits(value, "symbolic_units"))
     value <- as_units(value)
 

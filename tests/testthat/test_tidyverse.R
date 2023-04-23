@@ -36,12 +36,6 @@ test_that("units have coercion methods", {
     vctrs::vec_cast_common(y, x),
     list(set_units(4, "m"), set_units(c(0.01, 0.02, 0.03), "m"))
   )
-
-  # Casting to integer with fractional cm is lossy
-  expect_error(
-    vctrs::vec_cast_common(y, x, .to = set_units(0L, "m")),
-    class = "vctrs_error_cast_lossy"
-  )
 })
 
 test_that("can combine units vectors", {
