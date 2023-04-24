@@ -94,3 +94,11 @@ test_that("split-apply-combine with dplyr and base agree", {
   exp <- lapply(split(iris2[1:4], iris2$Species), lapply, mean)
   expect_equal(out, exp)
 })
+
+test_that("storage mode is uniformly set to double (see #324)", {
+  skip_if_not_installed("vctrs", "0.3.1")
+
+  x <- set_units(1:10, cm)
+  br <- set_units(2:4, `in`)
+  vctrs::vec_cast_common(x, br)
+})
