@@ -20,13 +20,13 @@ test_that("we can compare vectors with equal units", {
 })
 
 test_that("vectors are correctly recycled in comparisons", {
-  x <- 1:4 * as_units("m")
-  y <- 1:2 * as_units("m")
+  x <- 0:3 * as_units("m")
+  y <- 0:1 * as_units("m")
   res <- drop_units(x) == drop_units(y)
   expect_equal(x == y, res)
   expect_equal(y == x, res)
 
-  y <- 1:3 * as_units("m")
+  y <- 0:2 * as_units("m")
   expect_warning(res <- drop_units(x) == drop_units(y))
   expect_warning(expect_equal(x == y, res))
   expect_warning(expect_equal(y == x, res))

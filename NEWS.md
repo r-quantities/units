@@ -6,7 +6,7 @@
   And, inverse units will always be able to multiply; #310 @billdenney
 
 * Compare units via `ut_compare()`, fixing inconsistent results for aliases
-  and symbols; #339
+  and symbols; #339, #346
 
 * Fix `units<-()` to treat an empty unit the same as `NULL`; #332
 

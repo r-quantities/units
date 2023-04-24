@@ -100,7 +100,16 @@ IntegerVector ud_compare(NumericVector x, NumericVector y,
   for (int i=0, j=0; i < x.size(); i++, j++) {
     if (j == y.size())
       j = 0;
-    out[i] = ut_compare(ut_scale(x[i], ux), ut_scale(y[j], uy));
+    if (x[i] == 0 || y[j] == 0) { // issues/346
+      double diff = x[i] - y[j];
+      out[i] = diff < 0 ? -1 : diff == 0 ? 0 : 1;
+    } else {
+      ut_unit *uxs = ut_scale(x[i], ux);
+      ut_unit *uys = ut_scale(y[j], uy);
+      out[i] = ut_compare(uxs, uys);
+      ut_free(uxs);
+      ut_free(uys);
+    }
   }
 
   ut_free(ux);
