@@ -112,7 +112,7 @@ test_that("various forms of unit creation and destruction work", {
   expect_error(drop_units(x))
 
 
-  ox <- x <- data.frame(x=1:4, y=1:4)
+  ox <- x <- data.frame(x=ox, y=ox)
 
   units(x[[1]]) <- "m/s"
   expect_s3_class(x[[1]], "units")

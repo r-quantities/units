@@ -36,12 +36,6 @@ test_that("units have coercion methods", {
     vctrs::vec_cast_common(y, x),
     list(set_units(4, "m"), set_units(c(0.01, 0.02, 0.03), "m"))
   )
-
-  # Casting to integer with fractional cm is lossy
-  expect_error(
-    vctrs::vec_cast_common(y, x, .to = set_units(0L, "m")),
-    class = "vctrs_error_cast_lossy"
-  )
 })
 
 test_that("can combine units vectors", {
@@ -99,4 +93,12 @@ test_that("split-apply-combine with dplyr and base agree", {
 
   exp <- lapply(split(iris2[1:4], iris2$Species), lapply, mean)
   expect_equal(out, exp)
+})
+
+test_that("storage mode is uniformly set to double (see #324)", {
+  skip_if_not_installed("vctrs", "0.3.1")
+
+  x <- set_units(1:10, cm)
+  br <- set_units(2:4, `in`)
+  vctrs::vec_cast_common(x, br)
 })
