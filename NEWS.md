@@ -16,6 +16,8 @@
 
 * Add example in the docs about reversing a ggplot2 units scale; #343
 
+* Force storage mode to double; #344 addressing #324
+
 # version 0.8-1
 
 * fix `%/%` and `%%` if arguments have different units; #313
