@@ -112,8 +112,10 @@ IntegerVector ud_compare(NumericVector x, NumericVector y,
     if (j == y.size())
       j = 0;
     double diff = x[i] - y[j];
-    if (std::abs(diff) < std::numeric_limits<float>::epsilon())
+    if (x[i] == y[j] || std::abs(diff) < std::numeric_limits<float>::epsilon())
       out[i] = 0;
+    else if (ISNAN(diff))
+      out[i] = NA_INTEGER;
     else out[i] = diff < 0 ? -1 : 1;
   }
 

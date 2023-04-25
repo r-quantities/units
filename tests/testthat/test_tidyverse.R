@@ -100,5 +100,5 @@ test_that("storage mode is uniformly set to double (see #324)", {
 
   x <- set_units(1:10, cm)
   br <- set_units(2:4, `in`)
-  vctrs::vec_cast_common(x, br)
+  expect_silent(vctrs::vec_cast_common(x, br))
 })

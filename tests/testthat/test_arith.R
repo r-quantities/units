@@ -19,6 +19,16 @@ test_that("we can compare vectors with equal units", {
   expect_error(x == set_units(1, "kg"))
 })
 
+test_that("comparing special values gives correct results", {
+  x <- c(-Inf, NaN, NA, Inf) * as_units("m")
+  expect_equal(x == x, drop_units(x) == drop_units(x))
+  expect_equal(x > x, drop_units(x) > drop_units(x))
+  expect_equal(x < x, drop_units(x) < drop_units(x))
+  expect_equal(x == rev(x), drop_units(x) == rev(drop_units(x)))
+  expect_equal(x > rev(x), drop_units(x) > rev(drop_units(x)))
+  expect_equal(x < rev(x), drop_units(x) < rev(drop_units(x)))
+})
+
 test_that("vectors are correctly recycled in comparisons", {
   x <- 0:3 * as_units("m")
   y <- 0:1 * as_units("m")
