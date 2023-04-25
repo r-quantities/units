@@ -13,7 +13,6 @@ Issues with CRAN packages are summarised below.
 * quantities
   checking tests ...
 
-* tealeaves
-  checking examples ... ERROR
+* santoku
   checking tests ...
 

@@ -37,40 +37,21 @@ Run `revdepcheck::revdep_details(, "quantities")` for more info
       Execution halted
     ```
 
-# tealeaves
+# santoku
 
 <details>
 
-* Version: 1.0.6
-* GitHub: NA
-* Source code: https://github.com/cran/tealeaves
-* Date/Publication: 2022-07-20 14:30:02 UTC
-* Number of recursive dependencies: 89
+* Version: 0.9.1
+* GitHub: https://github.com/hughjonesd/santoku
+* Source code: https://github.com/cran/santoku
+* Date/Publication: 2023-03-08 13:10:02 UTC
+* Number of recursive dependencies: 90
 
-Run `revdepcheck::revdep_details(, "tealeaves")` for more info
+Run `revdepcheck::revdep_details(, "santoku")` for more info
 
 </details>
 
 ## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘tealeaves-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: Ar
-    > ### Title: Ar: Archimedes number
-    > ### Aliases: Ar
-    > 
-    > ### ** Examples
-    > 
-    > cs <- make_constants()
-    > ep <- make_enviropar()
-    Error in enviro_par(.) : 
-      .x$r >= set_units(0) & .x$r <= set_units(1) is not TRUE
-    Calls: make_enviropar -> %<>% -> enviro_par -> stopifnot
-    Execution halted
-    ```
 
 *   checking tests ...
     ```
@@ -78,19 +59,19 @@ Run `revdepcheck::revdep_details(, "tealeaves")` for more info
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
     Last 13 lines of output:
-       3. └─tealeaves::leaf_par(.)
-       4.   └─base::stopifnot(.x$abs_l >= set_units(0) & .x$abs_l <= set_units(1))
-      ── Error ('test-unitless.R:7:3'): unitless values match unit-ed values ─────────
-      Error in `leaf_par(list(abs_l = set_units(runif(1)), abs_s = set_units(runif(1)), 
-          g_sw = set_units(runif(1, 0, 10), "umol/m^2/s/Pa"), g_uw = set_units(runif(1), 
-              "umol/m^2/s/Pa"), leafsize = set_units(runif(1), "m"), 
-          logit_sr = set_units(runif(1, -10, 10))))`: .x$abs_l >= set_units(0) & .x$abs_l <= set_units(1) is not TRUE
-      Backtrace:
-          ▆
-       1. └─tealeaves::leaf_par(...) at test-unitless.R:7:2
-       2.   └─base::stopifnot(.x$abs_l >= set_units(0) & .x$abs_l <= set_units(1))
+        5. │   │ │ └─base::force(code)
+        6. │   │ ├─base::withCallingHandlers(...)
+        7. │   │ └─base::withVisible(code)
+        8. │   └─rlang::eval_bare(quo_get_expr(.quo), quo_get_env(.quo))
+        9. └─santoku::chop(x, br, extend = TRUE)
+       10.   └─santoku (local) breaks(x, extend, left, close_end)
+       11.     └─santoku:::create_extended_breaks(breaks, x, extend, left, close_end)
+       12.       └─santoku:::extend_and_close(...)
+       13.         └─santoku:::extend_endpoint_left(breaks, x, extend)
+       14.           └─santoku:::create_breaks(breaks, c(TRUE, left))
+       15.             └─base::stopifnot(all(obj == sort(obj)))
       
-      [ FAIL 9 | WARN 0 | SKIP 0 | PASS 45 ]
+      [ FAIL 1 | WARN 0 | SKIP 0 | PASS 10501 ]
       Error: Test failures
       Execution halted
     ```

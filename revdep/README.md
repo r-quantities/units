@@ -17,7 +17,7 @@
 
 |package |old    |new     |Δ  |
 |:-------|:------|:-------|:--|
-|units   |0.8-1  |0.8-1.7 |*  |
+|units   |0.8-1  |0.8-1.8 |*  |
 |Rcpp    |1.0.10 |1.0.10  |   |
 
 # Revdeps
@@ -27,5 +27,5 @@
 |package    |version |error  |warning |note |
 |:----------|:-------|:------|:-------|:----|
 |[quantities](problems.md#quantities)|0.2.0   |__+1__ |        |     |
-|[tealeaves](problems.md#tealeaves)|1.0.6   |__+2__ |        |     |
+|[santoku](problems.md#santoku)|0.9.1   |__+1__ |        |     |
 
