@@ -17,15 +17,14 @@
 
 |package |old    |new     |Δ  |
 |:-------|:------|:-------|:--|
-|units   |0.8-1  |0.8-1.8 |*  |
+|units   |0.8-1  |0.8-1.9 |*  |
 |Rcpp    |1.0.10 |1.0.10  |   |
 
 # Revdeps
 
-## New problems (2)
+## New problems (1)
 
 |package    |version |error  |warning |note |
 |:----------|:-------|:------|:-------|:----|
 |[quantities](problems.md#quantities)|0.2.0   |__+1__ |        |     |
-|[santoku](problems.md#santoku)|0.9.1   |__+1__ |        |     |
 

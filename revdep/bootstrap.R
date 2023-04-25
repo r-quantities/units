@@ -5,14 +5,20 @@ options(
     CRAN = "https://packagemanager.rstudio.com/all/__linux__/jammy/latest"),
   pak.no_extra_messages = TRUE
 )
-install.packages("pak", repos="https://r-lib.github.io/p/pak/stable/")
 
-deps <- pak::pkg_deps("r-lib/revdepcheck")$package
-rdeps <- tools::package_dependencies("units", reverse=TRUE)[[1]]
-cmds <- lapply(unique(c(deps, rdeps)), function(i)
-  tryCatch(pak::pkg_system_requirements(i), error=function(e) NULL))
-cmds <- unique(unlist(cmds, use.names=FALSE))
+if (!nchar(n <- Sys.getenv("workers"))) {
+  install.packages("pak", repos="https://r-lib.github.io/p/pak/stable/")
 
-system("apt-get update -y")
-for (cmd in cmds) system(cmd)
-pak::pkg_install("r-lib/revdepcheck")
+  deps <- pak::pkg_deps("r-lib/revdepcheck")$package
+  rdeps <- tools::package_dependencies("units", reverse=TRUE)[[1]]
+  cmds <- lapply(unique(c(deps, rdeps)), function(i)
+    tryCatch(pak::pkg_system_requirements(i), error=function(e) NULL))
+  cmds <- unique(unlist(cmds, use.names=FALSE))
+
+  system("apt-get update -y")
+  for (cmd in cmds) system(cmd)
+  pak::pkg_install("r-lib/revdepcheck")
+} else {
+  revdepcheck::revdep_check(
+    timeout=as.difftime(2, units="hours"), num_workers=as.numeric(n))
+}
