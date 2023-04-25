@@ -97,23 +97,26 @@ IntegerVector ud_compare(NumericVector x, NumericVector y,
   ut_unit *ux = ut_parse(sys, ut_trim(xn[0], enc), enc);
   ut_unit *uy = ut_parse(sys, ut_trim(yn[0], enc), enc);
 
-  for (int i=0, j=0; i < x.size(); i++, j++) {
-    if (j == y.size())
-      j = 0;
-    if (x[i] == 0 || y[j] == 0) { // issues/346
-      double diff = x[i] - y[j];
-      out[i] = diff < 0 ? -1 : diff == 0 ? 0 : 1;
-    } else {
-      ut_unit *uxs = ut_scale(x[i], ux);
-      ut_unit *uys = ut_scale(y[j], uy);
-      out[i] = ut_compare(uxs, uys);
-      ut_free(uxs);
-      ut_free(uys);
-    }
+  if (ut_compare(ux, uy) != 0) {
+    NumericVector y_cv = clone(y);
+    cv_converter *cv = ut_get_converter(uy, ux);
+    cv_convert_doubles(cv, &(y_cv[0]), y_cv.size(), &(y_cv[0]));
+    cv_free(cv);
+    std::swap(y, y_cv);
   }
 
   ut_free(ux);
   ut_free(uy);
+
+  for (int i=0, j=0; i < x.size(); i++, j++) {
+    if (j == y.size())
+      j = 0;
+    double diff = x[i] - y[j];
+    if (std::abs(diff) < std::numeric_limits<float>::epsilon())
+      diff = 0;
+    out[i] = diff < 0 ? -1 : diff == 0 ? 0 : 1;
+  }
+
   if (swapped)
     out = -out;
   return out;

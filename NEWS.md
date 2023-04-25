@@ -5,8 +5,8 @@
 * Identical units will always divide (`/`) and allow integer division (`%/%`).
   And, inverse units will always be able to multiply; #310 @billdenney
 
-* Compare units via `ut_compare()`, fixing inconsistent results for aliases
-  and symbols; #339, #346
+* Compare units via `ud_compare()`, fixing inconsistent results for aliases
+  and symbols; #339, #346, #347
 
 * Fix `units<-()` to treat an empty unit the same as `NULL`; #332
 
