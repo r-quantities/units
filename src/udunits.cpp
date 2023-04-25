@@ -113,8 +113,8 @@ IntegerVector ud_compare(NumericVector x, NumericVector y,
       j = 0;
     double diff = x[i] - y[j];
     if (std::abs(diff) < std::numeric_limits<float>::epsilon())
-      diff = 0;
-    out[i] = diff < 0 ? -1 : diff == 0 ? 0 : 1;
+      out[i] = 0;
+    else out[i] = diff < 0 ? -1 : 1;
   }
 
   if (swapped)
