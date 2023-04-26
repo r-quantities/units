@@ -1,4 +1,4 @@
-# development version
+# version 0.8-2
 
 * Names are preserved when doing unit conversions; #305 @billdenney
 

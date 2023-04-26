@@ -2,7 +2,7 @@
 
 <!-- badges: start -->
 [![Build Status](https://github.com/r-quantities/units/workflows/build/badge.svg)](https://github.com/r-quantities/units/actions)
-[![Coverage Status](https://img.shields.io/codecov/c/github/r-quantities/units/master.svg)](https://codecov.io/github/r-quantities/units?branch=master)
+[![Coverage Status](https://img.shields.io/codecov/c/github/r-quantities/units/master.svg)](https://app.codecov.io/github/r-quantities/units?branch=master)
 [![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html) [![CRAN](https://www.r-pkg.org/badges/version/units)](https://cran.r-project.org/package=units)
 [![Downloads](https://cranlogs.r-pkg.org/badges/units?color=brightgreen)](https://www.r-pkg.org/pkg/units)
 <!-- badges: end -->
@@ -76,19 +76,19 @@ If the installation fails due to a missing udunits2 system library, either insta
 ```
 sudo apt-get install libudunits2-dev
 ```
-on CentOS7 with
+on Fedora or RHEL/CentOS with
 ```
-sudo yum install udunits2-devel
+sudo dnf install udunits2-devel
 ```
 or on MacOS with
 ```
 brew install udunits
 ```
-or equivalent in your distribution. Alternatively, install it from the sources by downloading `udunits-2.2.20.tar.gz` from [ftp://ftp.unidata.ucar.edu/pub/udunits/](ftp://ftp.unidata.ucar.edu/pub/udunits/), and executing the following commands in the download directory:
+or equivalent in your distribution. Alternatively, install it from the sources by downloading the latest version from [UDUNITS downloads](https://downloads.unidata.ucar.edu/udunits/), and executing the following commands in the download directory:
 
 ```
-tar zxf udunits-2.2.20.tar.gz
-cd ./udunits-2.2.20/
+tar zxf udunits-<version>.tar.gz
+cd ./udunits-<version>/
 ./configure
 make
 sudo make install
