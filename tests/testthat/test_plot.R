@@ -62,4 +62,18 @@ test_that("ggplot2 plots work as expected", {
   vdiffr::expect_doppelganger("ggplot2 nolab", p3)
 })
 
+test_that("axis transformations do not affect displayed units", {
+  skip_if_not_installed("vdiffr")
+  skip_if_not_installed("ggplot2")
+  library(ggplot2)
+
+  df <- data.frame(a = set_units(1:10, "m"))
+
+  p0 <- ggplot(df, aes(y=a, x=a)) + geom_point()
+  p1 <- p0 + scale_x_units(trans='log10') + scale_y_units(trans='sqrt')
+
+  vdiffr::expect_doppelganger("ggplot2 default", p0)
+  vdiffr::expect_doppelganger("ggplot2 transformed", p1)
+})
+
 do.call(units_options, units:::.default_options)

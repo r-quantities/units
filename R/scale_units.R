@@ -106,6 +106,12 @@ MakeScaleContinuousPositionUnits <- function() {
         ggplot2::ScaleContinuousPosition, self)$map(x, limits)
     },
 
+    transform = function(self, x) {
+      new_x <- ggplot2::ggproto_parent(
+        ggplot2::ScaleContinuousPosition, self)$transform(drop_units(x))
+      as_units(new_x, units(x))
+    },
+
     make_title = function(self, title) {
       if (!is.null(title))
         title <- make_unit_label(title, as_units(1, self$units))

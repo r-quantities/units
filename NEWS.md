@@ -18,6 +18,8 @@
 
 * Force storage mode to double; #344 addressing #324
 
+* Fix units in transformed axis; #323
+
 # version 0.8-1
 
 * fix `%/%` and `%%` if arguments have different units; #313
