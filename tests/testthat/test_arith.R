@@ -169,6 +169,8 @@ test_that("we can undo logatithms", {
   expect_equal(expm1(3^log(log1p(x), base=3)), set_units(x, m^2))
   expect_equal(expm1(3^log(log1p(y), base=3)), set_units(y, m^2))
   expect_error(exp(log10(x)), "wrong base in power operation")
+  expect_error(exp(x), "only allowed with logarithmic unit")
+  expect_error(exp(set_units(1, 1)), "only allowed with logarithmic unit")
 })
 
 test_that("%/% and %% work", {

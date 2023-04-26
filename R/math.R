@@ -75,7 +75,7 @@ Math.units = function(x, ...) {
 
   rad = units(as_units("rad"))
   deg = units(as_units("degree"))
-  if (!OK && (units(x) == rad || units(x) == deg)) {
+  if (!OK && (units(x) == rad || units(x) == deg || units(x) == unitless)) {
     OK <- switch(.Generic, sin =, cos =, tan =, sinpi =, cospi =, tanpi = TRUE, FALSE)
     if (OK) {
       units(x) <- "rad" # convert deg -> rad

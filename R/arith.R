@@ -134,7 +134,8 @@ Ops.units <- function(e1, e2) {
       # code to manage things like exp(log(...)) and 10^log10(...) follows
       # this is not supported in udunits2, so we are on our own
       u <- units(e2)
-      if (length(u$numerator) > 1 || !grepl("\\(re", u$numerator) || length(u$denominator))
+      invalid_lengths <- length(u$numerator) > 1 || length(u$denominator)
+      if (u == unitless || invalid_lengths || !grepl("\\(re", u$numerator))
         stop("power operation only allowed with logarithmic unit")
 
       sp <- strsplit(u$numerator, "\\(re ")[[1]]
