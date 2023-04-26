@@ -10,21 +10,15 @@
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |UTC                          |
-|date     |2023-04-25                   |
+|date     |2023-04-26                   |
 |pandoc   |2.9.2.1 @ /usr/bin/pandoc    |
 
 # Dependencies
 
-|package |old    |new     |Δ  |
-|:-------|:------|:-------|:--|
-|units   |0.8-1  |0.8-1.9 |*  |
-|Rcpp    |1.0.10 |1.0.10  |   |
+|package |old    |new      |Δ  |
+|:-------|:------|:--------|:--|
+|units   |0.8-1  |0.8-1.11 |*  |
+|Rcpp    |1.0.10 |1.0.10   |   |
 
 # Revdeps
-
-## New problems (1)
-
-|package    |version |error  |warning |note |
-|:----------|:-------|:------|:-------|:----|
-|[quantities](problems.md#quantities)|0.2.0   |__+1__ |        |     |
 
