@@ -2,7 +2,7 @@
 
 |field    |value                        |
 |:--------|:----------------------------|
-|version  |R version 4.2.3 (2023-03-15) |
+|version  |R version 4.3.0 (2023-04-21) |
 |os       |Ubuntu 22.04.1 LTS           |
 |system   |x86_64, linux-gnu            |
 |ui       |X11                          |
@@ -15,10 +15,16 @@
 
 # Dependencies
 
-|package |old    |new      |Δ  |
-|:-------|:------|:--------|:--|
-|units   |0.8-1  |0.8-1.11 |*  |
-|Rcpp    |1.0.10 |1.0.10   |   |
+|package |old   |new   |Δ  |
+|:-------|:-----|:-----|:--|
+|units   |0.8-1 |0.8-2 |*  |
 
 # Revdeps
+
+## New problems (2)
+
+|package  |version |error  |warning |note |
+|:--------|:-------|:------|:-------|:----|
+|[gtfs2gps](problems.md#gtfs2gps)|2.1-0   |__+1__ |        |     |
+|[vein](problems.md#vein)|1.0.0   |__+1__ |        |1    |
 
