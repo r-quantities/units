@@ -1,24 +1,67 @@
-options(
-  HTTPUserAgent = sprintf("R/%s R (%s)", getRversion(), paste(
-    getRversion(), R.version$platform, R.version$arch, R.version$os)),
-  repos = c(
-    CRAN = "https://packagemanager.rstudio.com/all/__linux__/jammy/latest"),
-  pak.no_extra_messages = TRUE
-)
-
 if (!nchar(n <- Sys.getenv("workers"))) {
-  install.packages("pak", repos="https://r-lib.github.io/p/pak/stable/")
 
-  deps <- pak::pkg_deps("r-lib/revdepcheck")$package
-  rdeps <- tools::package_dependencies("units", reverse=TRUE)[[1]]
-  cmds <- lapply(unique(c(deps, rdeps)), function(i)
-    tryCatch(pak::pkg_system_requirements(i), error=function(e) NULL))
-  cmds <- unique(unlist(cmds, use.names=FALSE))
+  # https://github.com/Enchufa2/bspm/issues/67
+  ns <- asNamespace("bspm")
+  unlockBinding("ask_user", ns)
+  assignInNamespace("ask_user", function(later, ...) later, ns)
+  lockBinding("ask_user", ns)
 
-  system("apt-get update -y")
-  for (cmd in cmds) system(cmd)
-  pak::pkg_install("r-lib/revdepcheck")
+  options(bspm.version.check=TRUE)
+  rdeps <- tools::package_dependencies("units", which="all", reverse=TRUE)[[1]]
+  install.packages(c(rdeps, "pak"), dependencies=TRUE)
+  pkgs <- lapply(rdeps, function(i) tryCatch({
+    sapply(strsplit(pak::pkg_system_requirements(i), " "), "[", -(1:3))
+  }, error=function(e) NULL))
+  system(paste("apt-get install -y", paste(unique(unlist(pkgs)), collapse=" ")))
+  remotes::install_github("r-lib/revdepcheck")
+
 } else {
+
+  bspm::disable()
+
+  setHook(packageEvent("revdepcheck", "onLoad"), function(...) {
+    deps_opts <- getFromNamespace("deps_opts", "revdepcheck")
+    pkg_name <- getFromNamespace("pkg_name", "revdepcheck")
+    dir_find <- getFromNamespace("dir_find", "revdepcheck")
+    r_process_options <- getFromNamespace("r_process_options", "callr")
+
+    assignInNamespace(
+      "deps_install_opts", ns="revdepcheck",
+      function(pkgdir, pkgname, quiet = FALSE, env = character()) {
+
+        ## just link the system library
+        func <- function(libdir, packages, quiet, repos) {
+          unlink(libdir[1], force=TRUE, recursive=TRUE)
+          system(paste("cd", dirname(libdir[1]), " && ln -s /usr/lib/R/site-library", basename(libdir[1])))
+        }
+
+        args <- c(
+          ## We don't want to install the revdep checked package again,
+          ## that's in a separate library, hence the `exclude` argument
+          deps_opts(pkgname, exclude = pkg_name(pkgdir)),
+
+          list(
+            libdir = dir_find(pkgdir, "pkg", pkgname),
+            quiet = quiet
+          )
+        )
+
+        ## CRANCACHE_REPOS makes sure that we only use cached CRAN packages,
+        ## but not packages that were installed from elsewhere
+        r_process_options(
+          func = func,
+          args = args,
+          system_profile = FALSE,
+          user_profile = FALSE,
+          env = c(CRANCACHE_REPOS = "cran,bioc",
+                  CRANCACHE_QUIET = if (quiet) "yes" else "no",
+                  env)
+        )
+      }
+    )
+  })
+
   revdepcheck::revdep_check(
     timeout=as.difftime(2, units="hours"), num_workers=as.numeric(n))
+
 }
