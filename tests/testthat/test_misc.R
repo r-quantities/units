@@ -98,11 +98,14 @@ test_that("set_units works with symbols in character data, and resolves names", 
 })
 
 test_that("all.equal works", {
-  expect_true(all.equal(set_units(1, m/s), set_units(3.6, km/h)))
-  expect_true(set_units(1, m/s) == set_units(3.6, km/h))
-  expect_true(all.equal(set_units(3.6, km/h), set_units(1, m/s)))
-  expect_true(set_units(3.6, km/h) == set_units(1, m/s))
   expect_false(isTRUE(all.equal(set_units(1, m), 1)))
+
+  expect_true(all.equal(set_units(1, m/s), set_units(3.6, km/h)))
+  expect_true(all.equal(set_units(3.6, km/h), set_units(1, m/s)))
+
+  expect_true(set_units(1, m/s) == set_units(3.6, km/h))
+  expect_false(set_units(3.6, km/h) == set_units(1, m/s)) # see R FAQ 7.31
+  expect_true(set_units(1e-20, g) < set_units(1e-10, g))  # see #351
 })
 
 test_that("seq works", {
