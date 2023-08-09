@@ -1,3 +1,8 @@
+# version 0.8-3
+
+* Remove tolerance from comparisons with logical operators, restoring behavior
+  changed in previous release; #353 addressing #351
+
 # version 0.8-2
 
 * Names are preserved when doing unit conversions; #305 @billdenney
