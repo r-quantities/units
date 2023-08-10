@@ -18,6 +18,7 @@
 #' ud_are_convertible(units(a), "km/h")
 #' ud_are_convertible("s", "kg")
 ud_are_convertible = function(x, y) {
+	stopifnot(inherits(x, c("character", "symbolic_units")), inherits(y, c("character", "symbolic_units")))
 	res <- try(R_ut_are_convertible(
 	  R_ut_parse(as.character(x)), R_ut_parse(as.character(y))), silent = TRUE)
 	! inherits(res, "try-error") && res
