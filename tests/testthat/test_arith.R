@@ -250,3 +250,51 @@ test_that("inverse units can always be multiplied and return unitless (related t
   )
 })
 
+test_that("identical unit multiplication and division respect `units_options(simplify = FALSE)` (#355)", {
+  initial_unit_simplify <- units_options("simplify")
+  units_options(simplify = FALSE)
+  x1 <- log(set_units(100, "g"))
+  x2 <- log(set_units(4, "g"))
+  expect_equal(
+    x1*(1/x2),
+    structure(
+      log(100)/log(4),
+      units = structure(list(numerator = "ln(re 1 g)", denominator = "ln(re 1 g)"), class = "symbolic_units"),
+      class = "units"
+    )
+  )
+  x1 <- set_units(100, "g")
+  x2 <- set_units(4, "g")
+  expect_equal(
+    x1*(1/x2),
+    set_units(25, "g/g")
+  )
+  units_options(simplify = TRUE)
+  x1 <- log(set_units(100, "g"))
+  x2 <- log(set_units(4, "g"))
+  expect_equal(
+    x1*(1/x2),
+    set_units(log(100)/log(4), 1)
+  )
+  x1 <- set_units(100, "g")
+  x2 <- set_units(4, "g")
+  expect_equal(
+    x1*(1/x2),
+    set_units(25, 1)
+  )
+  units_options(simplify = NA)
+  x1 <- log(set_units(100, "g"))
+  x2 <- log(set_units(4, "g"))
+  expect_equal(
+    x1*(1/x2),
+    set_units(log(100)/log(4), 1)
+  )
+  x1 <- set_units(100, "g")
+  x2 <- set_units(4, "g")
+  expect_equal(
+    x1*(1/x2),
+    set_units(25, 1)
+  )
+  # Reset the state
+  units_options(simplify = initial_unit_simplify)
+})

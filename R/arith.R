@@ -90,9 +90,12 @@ Ops.units <- function(e1, e2) {
     identical(units(e1)$numerator, units(e2)$denominator) &&
     identical(units(e1)$denominator, units(e2)$numerator)
 
-  if ((div && identical_units) || (mul && inverse_units)) {
+  if (((div && identical_units) || (mul && inverse_units)) & !isFALSE(.units.simplify())) {
     # Special cases for identical unit division and inverse unit multiplication
     # which may not be otherwise divisible by udunits (see #310)
+
+    # This block only runs with `!isFALSE(.units.simplify())` due to #355
+
     e1 <- drop_units(e1)
     e2 <- drop_units(e2)
     return(set_units(NextMethod(), 1))
