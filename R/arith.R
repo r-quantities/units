@@ -81,25 +81,26 @@ Ops.units <- function(e1, e2) {
     return(NextMethod())
   }
 
-  identical_units <-
-    both_inherit_units &&
-    identical(units(e1), units(e2))
-
-  inverse_units <-
-    both_inherit_units &&
-    identical(units(e1)$numerator, units(e2)$denominator) &&
-    identical(units(e1)$denominator, units(e2)$numerator)
-
-  if (((div && identical_units) || (mul && inverse_units)) & !isFALSE(.units.simplify())) {
+  if (!isFALSE(.units.simplify())) { # see #355
     # Special cases for identical unit division and inverse unit multiplication
     # which may not be otherwise divisible by udunits (see #310)
+    identical_units <-
+      both_inherit_units &&
+      identical(units(e1), units(e2))
 
-    # This block only runs with `!isFALSE(.units.simplify())` due to #355
+    inverse_units <-
+      both_inherit_units &&
+      identical(units(e1)$numerator, units(e2)$denominator) &&
+      identical(units(e1)$denominator, units(e2)$numerator)
 
-    e1 <- drop_units(e1)
-    e2 <- drop_units(e2)
-    return(set_units(NextMethod(), 1))
-  } else if (mod) {
+    if ((div && identical_units) || (mul && inverse_units)) {
+      e1 <- drop_units(e1)
+      e2 <- drop_units(e2)
+      return(set_units(NextMethod(), 1))
+    }
+  }
+
+  if (mod) {
     div <- e1 / e2
     int <- round(div)
     if (.Generic == "%/%") {
