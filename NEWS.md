@@ -1,10 +1,13 @@
+# version 0.8-4
+
+* Identical unit division and multiplication will now respect
+  `units_options(simplify = FALSE)` reverting a change from #310; #355
+  @billdenney
+
 # version 0.8-3
 
 * Remove tolerance from comparisons with logical operators, restoring behavior
   changed in previous release; #353 addressing #351
-* Identical unit division and multiplication will now respect
-  `units_options(simplify = FALSE)` reverting a change from #310; #355
-  @billdenney
 
 # version 0.8-2
 
