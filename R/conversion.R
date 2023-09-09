@@ -49,8 +49,8 @@
   if (inherits(value, "units")) {
 	if (any(is.na(value)))
 	  stop("a missing value for units is not allowed")
-    if (isTRUE(.units.simplify()))
-      x <- x * unclass(value)
+  if (isTRUE(.units.simplify()))
+    x <- x * unclass(value)
 	else if (any(unclass(value) != 1.0))
 	  warning(paste("numeric value", unclass(value), "is ignored in unit assignment"))
     value <- units(value)
