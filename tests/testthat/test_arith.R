@@ -195,11 +195,11 @@ test_that("%/% and %% work", {
   expect_error(drop_units(set_units(x, foot^2)) %% y)
 })
 
-test_that("%*% work", {
+#test_that("%*% work", {
   # mat = set_units(matrix(1:5, 1), m)
   # expect_equal(mat %*% t(mat), set_units(matrix(55), m^2))
   # expect_equal(t(mat) %*% mat, set_units(t(unclass(mat)) %*% unclass(mat), m^2))
-})
+#})
 
 test_that("The order of multiplication for basic units is commutative", {
   a <- set_units(1:4, m^-3)
@@ -250,51 +250,23 @@ test_that("inverse units can always be multiplied and return unitless (related t
   )
 })
 
-test_that("identical unit multiplication and division respect `units_options(simplify = FALSE)` (#355)", {
+test_that("identical unit multiplication and division respect 'simplify' option (#355)", {
   initial_unit_simplify <- units_options("simplify")
+  on.exit(units_options(simplify=initial_unit_simplify))
+
+  gg <- structure(list(numerator="g", denominator="g"), class="symbolic_units")
+  x_gg <- set_units(1, gg, mode="standard")
+  x_ul <- set_units(1, unitless, mode="standard")
+
   units_options(simplify = FALSE)
-  x1 <- log(set_units(100, "g"))
-  x2 <- log(set_units(4, "g"))
-  expect_equal(
-    x1*(1/x2),
-    structure(
-      log(100)/log(4),
-      units = structure(list(numerator = "ln(re 1 g)", denominator = "ln(re 1 g)"), class = "symbolic_units"),
-      class = "units"
-    )
-  )
-  x1 <- set_units(100, "g")
-  x2 <- set_units(4, "g")
-  expect_equal(
-    x1*(1/x2),
-    set_units(25, "g/g")
-  )
+  expect_equal(set_units(1, "g/g"), x_gg)
+  expect_equal(set_units(1, "g") / set_units(1, "g"), x_gg)
+
   units_options(simplify = TRUE)
-  x1 <- log(set_units(100, "g"))
-  x2 <- log(set_units(4, "g"))
-  expect_equal(
-    x1*(1/x2),
-    set_units(log(100)/log(4), 1)
-  )
-  x1 <- set_units(100, "g")
-  x2 <- set_units(4, "g")
-  expect_equal(
-    x1*(1/x2),
-    set_units(25, 1)
-  )
+  expect_equal(set_units(1, "g/g"), x_ul)
+  expect_equal(set_units(1, "g") / set_units(1, "g"), x_ul)
+
   units_options(simplify = NA)
-  x1 <- log(set_units(100, "g"))
-  x2 <- log(set_units(4, "g"))
-  expect_equal(
-    x1*(1/x2),
-    set_units(log(100)/log(4), 1)
-  )
-  x1 <- set_units(100, "g")
-  x2 <- set_units(4, "g")
-  expect_equal(
-    x1*(1/x2),
-    set_units(25, 1)
-  )
-  # Reset the state
-  units_options(simplify = initial_unit_simplify)
+  expect_equal(set_units(1, "g/g"), x_gg)
+  expect_equal(set_units(1, "g") / set_units(1, "g"), x_ul)
 })
