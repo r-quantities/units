@@ -4,6 +4,8 @@
   `units_options(simplify = FALSE)` reverting a change from #310; #355
   @billdenney
 
+* Fix `scale_units` when both `unit` and `trans` are specified; #357
+
 # version 0.8-3
 
 * Remove tolerance from comparisons with logical operators, restoring behavior

@@ -88,13 +88,6 @@ MakeScaleContinuousPositionUnits <- function() {
     ggplot2::ScaleContinuousPosition,
     units = NULL,
 
-    train = function(self, x) {
-      if (length(x) == 0) return()
-      if (!is.null(self$units))
-        units(x) <- as_units(1, self$units)
-      self$range$train(x)
-    },
-
     map = function(self, x, limits = self$get_limits()) {
       if (inherits(x, "units")) {
         if (is.null(self$units))
@@ -107,6 +100,9 @@ MakeScaleContinuousPositionUnits <- function() {
     },
 
     transform = function(self, x) {
+      if (!is.null(self$units))
+        units(x) <- as_units(1, self$units)
+
       new_x <- ggplot2::ggproto_parent(
         ggplot2::ScaleContinuousPosition, self)$transform(drop_units(x))
       as_units(new_x, units(x))

@@ -71,9 +71,11 @@ test_that("axis transformations do not affect displayed units", {
 
   p0 <- ggplot(df, aes(y=a, x=a)) + geom_point()
   p1 <- p0 + scale_x_units(trans='log10') + scale_y_units(trans='sqrt')
+  p2 <- p0 + scale_x_units(trans="log10", unit="mm")
 
   vdiffr::expect_doppelganger("ggplot2 default", p0)
   vdiffr::expect_doppelganger("ggplot2 transformed", p1)
+  vdiffr::expect_doppelganger("ggplot2 trans + unit", p2)
 })
 
 do.call(units_options, units:::.default_options)
