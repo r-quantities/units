@@ -1,3 +1,7 @@
+# version 0.8-5
+
+* avoid -Wformat-security warning on CRAN
+
 # version 0.8-4
 
 * Identical unit division and multiplication will now respect
