@@ -1,3 +1,7 @@
+# version devel
+
+* Performance improvements in `data.frame` methods; suggested in #361 @grcatlin
+
 # version 0.8-5
 
 * avoid -Wformat-security warning on CRAN

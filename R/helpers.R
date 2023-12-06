@@ -21,3 +21,10 @@
 keep_units <- function(FUN, x, ..., unit=units(x)) {
   set_units(do.call(FUN, list(x, ...)), unit, mode="standard")
 }
+
+dfapply <- function(X, FUN, ...) {
+  attrs <- attributes(X)
+  X <- lapply(X, FUN, ...)
+  attributes(X) <- attrs
+  X
+}
