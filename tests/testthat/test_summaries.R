@@ -27,7 +27,7 @@ test_that("we can compute summary functions on units", {
 
 test_that("we can compute means and medians and quantiles", {
   x <- 1:4
-  ux <- x * as_units("m")
+  ux <- set_units(x, "lb/ton")
   w <- x / 5:8
   uw <- w * as_units("g")
 

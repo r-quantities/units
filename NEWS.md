@@ -2,6 +2,8 @@
 
 * Performance improvements in `data.frame` methods; suggested in #361 @grcatlin
 
+* Unclass object for summaries, instead of using `NextMethod`; #363
+
 # version 0.8-5
 
 * avoid -Wformat-security warning on CRAN
