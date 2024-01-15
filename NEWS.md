@@ -2,7 +2,7 @@
 
 * Performance improvements in `data.frame` methods; suggested in #361 @grcatlin
 
-* Unclass object for summaries, instead of using `NextMethod`; #363
+* Fix `weighted.mean.units` for unitless objects; #363
 
 # version 0.8-5
 

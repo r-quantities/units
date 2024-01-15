@@ -33,12 +33,16 @@ print.units = function (x, ...) { # nocov start
 
 #' @export
 mean.units = function(x, ...) {
-  .as.units(mean(unclass(x), ...), units(x))
+  .as.units(NextMethod(), units(x))
 }
 
 #' @export
 weighted.mean.units = function(x, w, ...) {
-  .as.units(weighted.mean(unclass(x), unclass(w), ...), units(x))
+  u <- units(x)
+  x <- drop_units(x)
+  if (!missing(w))
+    w <- unclass(w)
+  .as.units(NextMethod(), u)
 }
 
 #' @export
