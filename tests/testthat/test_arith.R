@@ -174,7 +174,7 @@ test_that("we can undo logatithms", {
 })
 
 test_that("%/% and %% work", {
-  x <- set_units(3, m^2)
+  x <- set_units(1:5, m^2)
   y <- set_units(1.4, foot)
 
   expect_true(all.equal(x, y * (x %/% y) + x %% y))
@@ -193,6 +193,8 @@ test_that("%/% and %% work", {
   expect_equal(set_units(x, foot^2) %% drop_units(y), z)
   expect_equal(set_units(x, foot^2) %% set_units(drop_units(y), 1), z)
   expect_error(drop_units(set_units(x, foot^2)) %% y)
+
+  expect_true(all(x %% y >= set_units(0, m^2)))
 })
 
 #test_that("%*% work", {
