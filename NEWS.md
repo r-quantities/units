@@ -4,6 +4,8 @@
 
 * Fix `weighted.mean.units` for unitless objects; #363
 
+* Fix incorrect use of `round()` in `%%` and `%/%` methods; #365 @UchidaMizuki
+
 # version 0.8-5
 
 * avoid -Wformat-security warning on CRAN
