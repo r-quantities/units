@@ -102,7 +102,7 @@ Ops.units <- function(e1, e2) {
 
   if (mod) {
     div <- e1 / e2
-    int <- round(div)
+    int <- floor(div)
     if (.Generic == "%/%") {
       return(int)
     } else {
