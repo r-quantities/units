@@ -54,7 +54,7 @@ scale_x_units <- function(..., guide = ggplot2::waiver(), position = "bottom",
   sc <- ggplot2::continuous_scale(
     c("x", "xmin", "xmax", "xend", "xintercept", "xmin_final", "xmax_final",
       "xlower", "xmiddle", "xupper"),
-    "position_c", identity, ...,
+    palette = identity, ...,
     guide = guide,
     position = position,
     super = MakeScaleContinuousPositionUnits()
@@ -73,7 +73,7 @@ scale_y_units <- function(..., guide = ggplot2::waiver(), position = "left",
   sc <- ggplot2::continuous_scale(
     c("y", "ymin", "ymax", "yend", "yintercept", "ymin_final", "ymax_final",
       "lower", "middle", "upper"),
-    "position_c", identity, ...,
+    palette = identity, ...,
     guide = guide,
     position = position,
     super = MakeScaleContinuousPositionUnits()
