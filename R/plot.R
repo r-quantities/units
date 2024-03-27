@@ -121,6 +121,7 @@ hist.units <- function(x, xlab = NULL, main = paste("Histogram of", xname), ...)
   # the default plotting function take over...
   xname <- deparse1(substitute(x))
   xlab <- .make_unit_label(xlab, x, xname)
+  x = drop_units(x)
   NextMethod("hist", xlab=xlab, main=main)
 }
 
