@@ -6,6 +6,10 @@
 
 * Fix incorrect use of `round()` in `%%` and `%/%` methods; #365 @UchidaMizuki
 
+* Fix `ggplot2` deprecation warnings; #367
+
+* Fix `hist()` error; #368
+
 # version 0.8-5
 
 * avoid -Wformat-security warning on CRAN
