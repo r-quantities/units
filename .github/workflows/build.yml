@@ -8,16 +8,8 @@ jobs:
     uses: r-quantities/workflows/.github/workflows/build.yml@main
     secrets: inherit
 
-  quantities-devel:
-    name: Check upstream (devel)
+  upstream:
+    name: Check upstream
     needs: build
     uses: r-quantities/workflows/.github/workflows/upstream.yml@main
-    with:
-      version: devel
-
-  quantities-cran:
-    name: Check upstream (CRAN)
-    needs: build
-    uses: r-quantities/workflows/.github/workflows/upstream.yml@main
-    with:
-      version: cran
+    secrets: inherit
