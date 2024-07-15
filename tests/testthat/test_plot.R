@@ -79,4 +79,23 @@ test_that("axis transformations do not affect displayed units", {
   vdiffr::expect_doppelganger("ggplot2 trans + unit", p2)
 })
 
+test_that("axis limits can be changed", {
+  skip_if_not_installed("vdiffr")
+  skip_if_not_installed("ggplot2", "3.5.0")
+  library(ggplot2)
+
+  df <- data.frame(a = set_units(1:10, "m"))
+
+  p0 <- ggplot(df, aes(y=a, x=a)) + geom_point()
+  p1 <- p0 + scale_x_units(limits=c(0, 20))
+  p2 <- p0 + scale_x_units(limits=set_units(c(0, 20), "m"))
+  p3 <- p0 + xlim(set_units(c(0, 20), "m"))
+  p4 <- p0 + xlim(set_units(c(0, 20), "km"))
+
+  vdiffr::expect_doppelganger("ggplot2 limits via scale", p1)
+  vdiffr::expect_doppelganger("ggplot2 limits via scale with units", p2)
+  vdiffr::expect_doppelganger("ggplot2 limits via xlim", p3)
+  vdiffr::expect_doppelganger("ggplot2 limits other units", p4)
+})
+
 do.call(units_options, units:::.default_options)

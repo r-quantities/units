@@ -57,7 +57,7 @@ scale_x_units <- function(..., guide = ggplot2::waiver(), position = "bottom",
     palette = identity, ...,
     guide = guide,
     position = position,
-    super = MakeScaleContinuousPositionUnits()
+    super = make_scale_units()
   )
   sc$units <- as_units(unit)
   set_sec_axis(sec.axis, sc)
@@ -76,16 +76,16 @@ scale_y_units <- function(..., guide = ggplot2::waiver(), position = "left",
     palette = identity, ...,
     guide = guide,
     position = position,
-    super = MakeScaleContinuousPositionUnits()
+    super = make_scale_units()
   )
   sc$units <- as_units(unit)
   set_sec_axis(sec.axis, sc)
 }
 
-MakeScaleContinuousPositionUnits <- function() {
+make_scale_units <- function(parent=ggplot2::ScaleContinuousPosition) {
   ggplot2::ggproto(
     "ScaleContinuousPositionUnits",
-    ggplot2::ScaleContinuousPosition,
+    parent,
     units = NULL,
 
     map = function(self, x, limits = self$get_limits()) {
@@ -95,16 +95,19 @@ MakeScaleContinuousPositionUnits <- function() {
         else units(x) <- as_units(1, self$units)
         x <- drop_units(x)
       }
-      ggplot2::ggproto_parent(
-        ggplot2::ScaleContinuousPosition, self)$map(x, limits)
+      ggplot2::ggproto_parent(parent, self)$map(x, limits)
     },
 
     transform = function(self, x) {
       if (!is.null(self$units))
         units(x) <- as_units(1, self$units)
 
-      new_x <- ggplot2::ggproto_parent(
-        ggplot2::ScaleContinuousPosition, self)$transform(drop_units(x))
+      if (inherits(self$limits, "units")) {
+        units(self$limits) <- units(x)
+        self$limits <- drop_units(self$limits)
+      }
+
+      new_x <- ggplot2::ggproto_parent(parent, self)$transform(drop_units(x))
       as_units(new_x, units(x))
     },
 
@@ -134,4 +137,19 @@ scale_type.units <- function(x) {
     stop("Variable of class 'units' found, but 'units' package is not attached.\n",
          "  Please, attach it using 'library(units)' to properly show scales with units.")
   c("units", "continuous")
+}
+
+utils::globalVariables("caller_env")
+
+# registered in .onLoad()
+limits.units <- function(lims, var, call = caller_env())  {
+  if (length(lims) != 2)
+    stop("`", var, "` must be a two-element vector", call.=FALSE)
+
+  trans <- if (!any(is.na(lims)) && lims[1] > lims[2])
+    "reverse" else "identity"
+  name <- paste0("scale_", var, "_units")
+  sc <- match.fun(name)(limits=lims, transform=trans)
+  sc$call <- if (!is.null(call)) call else str2lang(paste0(name, "()"))
+  sc
 }

@@ -10,6 +10,8 @@
 
 * Fix `hist()` error; #368
 
+* Add support for `lims()` in `ggplot2` scales; #370
+
 # version 0.8-5
 
 * avoid -Wformat-security warning on CRAN
