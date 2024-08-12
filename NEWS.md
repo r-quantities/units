@@ -1,5 +1,7 @@
 # version devel
 
+* Add methods for `cbind` and `rbind`; fixes #311
+
 * Performance improvements in `data.frame` methods; suggested in #361 @grcatlin
 
 * Fix `weighted.mean.units` for unitless objects; #363

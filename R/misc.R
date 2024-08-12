@@ -136,3 +136,49 @@ unique.units <- function(x, incomparables = FALSE, ...) {
     NextMethod() else unique.array(x, incomparables, ...)
   .as.units(xx, units(x))
 }
+
+#' Combine R Objects by Rows or Columns
+#'
+#' S3 methods for \code{units} objects (see \code{\link[base]{cbind}}).
+#'
+#' @inheritParams base::cbind
+#' @name cbind.units
+#'
+#' @examples
+#' x <- set_units(1, m/s)
+#' y <- set_units(1:3, m/s)
+#' z <- set_units(8:10, m/s)
+#' (m <- cbind(x, y)) # the '1' (= shorter vector) is recycled
+#' (m <- cbind(m, z)[, c(1, 3, 2)]) # insert a column
+#' (m <- rbind(m, z)) # insert a row
+#' @export
+cbind.units <- function(..., deparse.level = 1) {
+  dots <- list(...)
+  stopifnot(all(sapply(dots, inherits, "units")))
+  u <- units(dots[[1]])
+  dots <- lapply(dots, function(x) {
+    d <- dim(x)
+    dn <- dimnames(x)
+    dots_unified <- set_units(x, u, mode = "standard")
+    ret <- as.numeric(dots_unified)
+    dim(ret) <- d
+    if (!is.null(dn)) dimnames(ret) <- dn
+    return(ret)
+  })
+  
+  nm <- names(as.list(match.call()))
+  nm <- nm[nm != "" & nm != "deparse.level"]
+  if (is.null(nm))
+    names(dots) <- sapply(substitute(list(...))[-1], deparse)
+  else names(dots) <- nm
+  
+  call <- as.character(match.call()[[1]])
+  value <- do.call(call, c(dots, deparse.level=deparse.level))
+  attr(value, "units") <- u
+  class(value) <- "units"
+  return(value)
+}
+
+#' @rdname cbind.units
+#' @export
+rbind.units <- cbind.units
