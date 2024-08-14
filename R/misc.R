@@ -154,15 +154,11 @@ unique.units <- function(x, incomparables = FALSE, ...) {
 #' @export
 cbind.units <- function(..., deparse.level = 1) {
   dots <- list(...)
-  stopifnot(all(sapply(dots, inherits, "units")))
-  u <- units(dots[[1]])
+  units_first_arg <- units(dots[[1]])
+  class_first_arg <- class(dots[[1]])
   dots <- lapply(dots, function(x) {
-    d <- dim(x)
-    dn <- dimnames(x)
-    dots_unified <- set_units(x, u, mode = "standard")
-    ret <- as.numeric(dots_unified)
-    dim(ret) <- d
-    if (!is.null(dn)) dimnames(ret) <- dn
+    dots_unified <- set_units(x, units_first_arg, mode = "standard")
+    ret <- drop_units(dots_unified)
     return(ret)
   })
   
@@ -174,8 +170,8 @@ cbind.units <- function(..., deparse.level = 1) {
   
   call <- as.character(match.call()[[1]])
   value <- do.call(call, c(dots, deparse.level=deparse.level))
-  attr(value, "units") <- u
-  class(value) <- "units"
+  attr(value, "units") <- units_first_arg
+  class(value) <- class_first_arg
   return(value)
 }
 
