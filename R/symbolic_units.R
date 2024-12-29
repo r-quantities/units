@@ -1,7 +1,7 @@
 
 .symbolic_units <- function(numerator, denominator = vector("character")) {
-  structure(list(numerator = numerator, 
-                 denominator = denominator), 
+  structure(list(numerator = numerator,
+                 denominator = denominator),
             class = "symbolic_units")
 }
 
@@ -30,12 +30,12 @@
 Ops.symbolic_units <- function(e1, e2) {
   if (nargs() == 1)
     stop(paste("unary", .Generic, "not defined for \"units\" objects"))
-  
+
   eq <- switch(.Generic, "==" = , "!=" = TRUE, FALSE)
   if (eq) {
-    if (.Generic == "==") 
+    if (.Generic == "==")
       .same_units(e1, e2)
-    else 
+    else
       !.same_units(e1, e2)
   } else
     stop(paste("operation", .Generic, "not allowed for symbolic operators")) # nocov
@@ -56,7 +56,7 @@ unitless <- .symbolic_units(vector("character"), vector("character"))
   }
   fixed <- vapply(terms, fix, "")
   fixed_tbl <- table(fixed)
-  
+
   names <- names(fixed_tbl)
   result <- vector("character", length(fixed_tbl))
   for (i in seq_along(fixed_tbl)) {
@@ -70,13 +70,13 @@ unitless <- .symbolic_units(vector("character"), vector("character"))
       result[i] <- name
     }
   }
-  
+
   paste0(result, collapse = paste0(op, sep))
 }
 
 #' @export
-as.character.symbolic_units <- function(x, ..., 
-		neg_power = get(".units.negative_power", envir = .units_options), 
+as.character.symbolic_units <- function(x, ...,
+		neg_power = get(".units.negative_power", envir = .units_options),
 		escape_units = FALSE, plot_sep = "") {
   sep <- plot_sep
 
@@ -86,10 +86,10 @@ as.character.symbolic_units <- function(x, ...,
     numerator <- unlist(Map(function(name) paste0("`", name, "`", sep = ""), numerator))
     denominator <- unlist(Map(function(name) paste0("`", name, "`", sep = ""), denominator))
   }
-  
+
   if (x == unitless) { # xxx
 	 u <- if (escape_units)
-       unlist(Map(function(name) paste0("`", name, "`", sep = ""), 
+       unlist(Map(function(name) paste0("`", name, "`", sep = ""),
 	      units_options("unitless_symbol")))
 	 else
 	    units_options("unitless_symbol")
@@ -104,7 +104,7 @@ as.character.symbolic_units <- function(x, ...,
 	  else
 	    character(0)
     }
-  
+
   denom_str <- if (length(denominator) > 0) {
     sep <- if (neg_power)
       paste0("*", plot_sep)
@@ -139,7 +139,7 @@ as.character.symbolic_units <- function(x, ...,
 
   drop_ones = function(u) u[ u != "1" ]
   class(value) <- "units"
-  
+
   new_numerator <- drop_ones(sym_units$numerator)
   new_denominator <- drop_ones(sym_units$denominator)
   delete_num <- c()
@@ -149,18 +149,18 @@ as.character.symbolic_units <- function(x, ...,
     for (j in seq_along(new_denominator)) {
       str2 <- new_denominator[j]
 
-      if (ud_are_convertible(str1, str2)) {
+      if (ud_are_same(str1, str2)) {
         attr(value, "units") <- units(as_units(str1))
         units(value) <- str2
         delete_num <- c(delete_num, i)
         new_denominator <- new_denominator[-j]
         break
       }
-      
+
     }
   }
   if (length(delete_num) > 0)
     new_numerator <- new_numerator[-delete_num]
-  
+
   as_units(drop_units(value), .symbolic_units(new_numerator, new_denominator))
 }

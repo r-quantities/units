@@ -12,6 +12,8 @@
 
 * Add support for `lims()` in `ggplot2` scales; #370
 
+* Fix simplification of inverse units; #378
+
 # version 0.8-5
 
 * avoid -Wformat-security warning on CRAN

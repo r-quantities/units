@@ -131,6 +131,17 @@ test_that("we can convert units and simplify after multiplication", {
   expect_equal(as.character(units(ux/uy/uz)), "1/s")
 })
 
+test_that("inverse units are not simplified", {
+  x <- 1:4
+  s <- as_units("s")
+  Hz <- as_units("Hz")
+  ux <- x * s
+  uy <- x * Hz
+
+  expect_equal(as.character(units(ux/uy)), "s/Hz")
+  expect_equal(as.character(units(uy/ux)), "Hz/s")
+})
+
 test_that("unit one is handled correctly", {
   one <- set_units(1)
   onem <- set_units(1, m)
