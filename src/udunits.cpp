@@ -20,7 +20,7 @@ extern "C" {
   void r_error_fn(const char* fmt, va_list args) {
     char buf[256];
     vsnprintf(buf, (size_t) 256, fmt, args);
-    Rf_error("%s", buf);
+    Rcpp::stop("%s", buf);
   }
 }
 
