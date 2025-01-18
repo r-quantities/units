@@ -24,6 +24,12 @@ ud_are_convertible = function(x, y) {
 	! inherits(res, "try-error") && res
 }
 
+ud_are_same <- function(x, y) {
+  get_base <- function(x)
+    tail(strsplit(R_ut_format(R_ut_parse(x), definition=TRUE), " ")[[1]], 1)
+  identical(get_base(x), get_base(y))
+}
+
 ud_get_symbol = function(u) {
   u <- R_ut_parse(u)
 	sym = R_ut_get_symbol(u)

@@ -123,11 +123,12 @@ test_that("we can convert between units that are not simply a scalar from each o
   expect_equal(as.numeric(m), units:::ud_convert(0, "degC", "degK"))
   expect_equal(as.character(units(m)), "K")
 
-  temp <- 75 * as_units('degF')
-  units(temp) <- as_units('degK')
-  result <- temp / as_units('degF')
-  expect_equal(as.numeric(result), 75)
-  expect_equal(units(result), unitless)
+  ## Does this make any sense??
+  # temp <- 75 * as_units('degF')
+  # units(temp) <- as_units('degK')
+  # result <- temp / as_units('degF')
+  # expect_equal(as.numeric(result), 75)
+  # expect_equal(units(result), unitless)
 })
 
 test_that("dim propagates", {

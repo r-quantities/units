@@ -20,7 +20,7 @@ extern "C" {
   void r_error_fn(const char* fmt, va_list args) {
     char buf[256];
     vsnprintf(buf, (size_t) 256, fmt, args);
-    Rf_error("%s", buf);
+    Rcpp::stop("%s", buf);
   }
 }
 
@@ -80,7 +80,7 @@ void ud_set_encoding(std::string enc_str) {
 
 // [[Rcpp::export]]
 IntegerVector ud_compare(NumericVector x, NumericVector y,
-                         CharacterVector xn, CharacterVector yn)
+                         std::string xn, std::string yn)
 {
   bool swapped = false;
 
@@ -91,11 +91,12 @@ IntegerVector ud_compare(NumericVector x, NumericVector y,
   }
 
   IntegerVector out(x.size());
+  if (y.size() == 0) return IntegerVector(0);
   for (std::string &attr : x.attributeNames())
     out.attr(attr) = x.attr(attr);
 
-  ut_unit *ux = ut_parse(sys, ut_trim(xn[0], enc), enc);
-  ut_unit *uy = ut_parse(sys, ut_trim(yn[0], enc), enc);
+  ut_unit *ux = ut_parse(sys, ut_trim(xn.data(), enc), enc);
+  ut_unit *uy = ut_parse(sys, ut_trim(yn.data(), enc), enc);
 
   if (ut_compare(ux, uy) != 0) {
     NumericVector y_cv = clone(y);
@@ -127,9 +128,11 @@ IntegerVector ud_compare(NumericVector x, NumericVector y,
 }
 
 // [[Rcpp::export]]
-NumericVector ud_convert(NumericVector val, CharacterVector from, CharacterVector to) {
-  ut_unit *u_from = ut_parse(sys, ut_trim(from[0], enc), enc);
-  ut_unit *u_to = ut_parse(sys, ut_trim(to[0], enc), enc);
+NumericVector ud_convert(NumericVector val, std::string from, std::string to) {
+  if (val.size() == 0) return val;
+
+  ut_unit *u_from = ut_parse(sys, ut_trim(from.data(), enc), enc);
+  ut_unit *u_to = ut_parse(sys, ut_trim(to.data(), enc), enc);
 
   cv_converter *cv = ut_get_converter(u_from, u_to);
   cv_convert_doubles(cv, &(val[0]), val.size(), &(val[0]));
@@ -256,35 +259,27 @@ SEXP R_ut_divide(SEXP numer, SEXP denom) {
 }
 
 // [[Rcpp::export]]
-SEXP R_ut_raise(SEXP a, IntegerVector i) {
-  if (i.length() != 1)
-    stop("i should have length 1");
-  return ut_wrap(ut_raise(ut_unwrap(a), i[0]));
+SEXP R_ut_raise(SEXP a, int i) {
+  return ut_wrap(ut_raise(ut_unwrap(a), i));
 }
 
 // [[Rcpp::export]]
-SEXP R_ut_root(SEXP a, IntegerVector i) {
-  if (i.length() != 1)
-    stop("i should have length 1");
-  return ut_wrap(ut_root(ut_unwrap(a), i[0]));
+SEXP R_ut_root(SEXP a, int i) {
+  return ut_wrap(ut_root(ut_unwrap(a), i));
 }
 
 // # nocov end
 
 // [[Rcpp::export]]
-SEXP R_ut_log(SEXP a, NumericVector base) {
-  if (base.length() != 1)
-    stop("base should have length 1");
-  if (base[0] <= 0)
-    stop("base should be positive");
-  return ut_wrap(ut_log(base[0], ut_unwrap(a)));
+SEXP R_ut_log(SEXP a, double base) {
+  return ut_wrap(ut_log(base, ut_unwrap(a)));
 }
 
 // [[Rcpp::export]]
-SEXP R_ut_parse(CharacterVector name) {
-  ut_unit *u = ut_parse(sys, ut_trim(name[0], enc), enc);
+SEXP R_ut_parse(std::string name) {
+  ut_unit *u = ut_parse(sys, ut_trim(name.data(), enc), enc);
   if (u == NULL)
-    stop("syntax error, cannot parse '%s'", (char*)name[0]);
+    stop("syntax error, cannot parse '%s'", name);
   return ut_wrap(u);
 }
 

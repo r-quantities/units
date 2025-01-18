@@ -14,6 +14,12 @@
 
 * Add support for `lims()` in `ggplot2` scales; #370
 
+* Fix simplification of inverse units; #378
+
+* Replace call to `Rf_error()` with `Rcpp::stop()`; RcppCore/Rcpp#1247
+
+* Fix UBs in the C++ glue code; #380
+
 # version 0.8-5
 
 * avoid -Wformat-security warning on CRAN
