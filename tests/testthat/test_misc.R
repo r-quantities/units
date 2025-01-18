@@ -157,3 +157,35 @@ test_that("duplicated-related methods work as expected", {
   expect_equal(anyDuplicated(x), anyDuplicated(drop_units(x)))
   expect_equal(unique(x), x[1, , drop=FALSE])
 })
+
+test_that("bind methods work properly", {
+  a <- set_units(1:10, m)
+  b <- set_units((1:10) * 0.001, km)
+  
+  x <- rbind(x=a, y=a)
+  y <- rbind(x=a, y=b)
+  expect_equal(as.numeric(x), as.numeric(y))
+  expect_equal(rownames(x), c("x", "y"))
+  expect_equal(rownames(y), c("x", "y"))
+  x <- rbind(rbind(a, a), a)
+  y <- rbind(b, rbind(b, b))
+  expect_equal(as.numeric(x), as.numeric(y) * 1000)
+  expect_equal(rownames(x), c("a", "a", "a"))
+  expect_equal(rownames(y), c("b", "b", "b"))
+  
+  x <- cbind(x=a, y=a)
+  y <- cbind(x=a, y=b)
+  expect_equal(as.numeric(x), as.numeric(y))
+  expect_equal(colnames(x), c("x", "y"))
+  expect_equal(colnames(y), c("x", "y"))
+  x <- cbind(cbind(a, a), a)
+  y <- cbind(b, cbind(b, b))
+  expect_equal(as.numeric(x), as.numeric(y) * 1000)
+  expect_equal(colnames(x), c("a", "a", "a"))
+  expect_equal(colnames(y), c("b", "b", "b"))
+  
+  z <- cbind(
+    rbind(a, b),
+    rbind(x = a, y = b))
+  expect_equal(dimnames(z), list(c("a", "b"), NULL))
+})
