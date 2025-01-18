@@ -1,4 +1,4 @@
-# version devel
+# version 0.8-6
 
 * Add methods for `cbind` and `rbind`; fixes #311
 

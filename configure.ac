@@ -45,7 +45,7 @@ else
 fi
 
 AC_CHECK_LIB(expat, XML_ParserCreate, [],[], ${LIBS})
-if test "${ac_cv_lib_expat_XML_ParserCreate}" == yes; then
+if test "${ac_cv_lib_expat_XML_ParserCreate}" = yes; then
    LIBS="${LIBS} -lexpat"
 fi
 
@@ -54,7 +54,7 @@ CPPFLAGS="${UD_CPPFLAGS} ${CPPFLAGS}"
 AC_CHECK_HEADER(udunits2.h, UDUNITS2_DIR=0, [
   AC_CHECK_HEADER(udunits2/udunits2.h, UDUNITS2_DIR=1,
                   UD_ERROR="udunits2.h was not found") ])
-AC_CHECK_LIB(udunits2, ut_read_xml, 
+AC_CHECK_LIB(udunits2, ut_read_xml,
              LIBS="${LIBS} -ludunits2",
              UD_ERROR="libudunits2.so was not found")
 
