@@ -169,8 +169,6 @@ cbind.units <- function(..., deparse.level = 1) {
 }
 
 .deparse <- function(dots, symarg, deparse.level) {
-  if (!is.null(names(dots))) return(dots)
-
   deparse.level <- as.integer(deparse.level)
   if (identical(deparse.level, -1L)) deparse.level <- 0L # R Core's hack
   stopifnot(0 <= deparse.level, deparse.level <= 2)
@@ -184,7 +182,9 @@ cbind.units <- function(..., deparse.level = 1) {
   Nms <- function(i) { if(!is.null(s <- names(symarg)[i]) && nzchar(s)) s else nm(i) }
 
   symarg <- as.list(symarg)[-1L]
-  names(dots) <- sapply(seq_along(dots), Nms)
+  dnames <- sapply(seq_along(dots), Nms)
+  if (!all(sapply(dnames, is.null)))
+    names(dots) <- dnames
   dots
 }
 
