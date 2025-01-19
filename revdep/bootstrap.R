@@ -8,14 +8,12 @@ if (!nchar(n <- Sys.getenv("workers"))) {
 
   options(bspm.version.check=TRUE)
   rdeps <- tools::package_dependencies("units", which="all", reverse=TRUE)[[1]]
-  install.packages(rdeps, dependencies=TRUE)
   install.packages("pak", type="source", repos=sprintf(
     "https://r-lib.github.io/p/pak/stable/%s/%s/%s",
     .Platform$pkgType, R.Version()$os, R.Version()$arch))
-  pkgs <- lapply(rdeps, function(i) tryCatch({
-    sapply(strsplit(pak::pkg_system_requirements(i), " "), "[", -(1:3))
-  }, error=function(e) NULL))
-  system(paste("apt-get install -y", paste(unique(unlist(pkgs)), collapse=" ")))
+  pkgs <- pak::pkg_sysreqs(rdeps)
+  system(paste("apt-get update -y &&", pkgs$install_scripts))
+  install.packages(rdeps, dependencies=TRUE)
   remotes::install_github("r-lib/revdepcheck")
 
 } else {
