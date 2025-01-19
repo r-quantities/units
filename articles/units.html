@@ -5,67 +5,49 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="units">
 <title>Units of Measurement for R Vectors: an Introduction • units</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Units of Measurement for R Vectors: an Introduction">
-<meta property="og:description" content="units">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Units of Measurement for R Vectors: an Introduction">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
-    
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
-    
+
+    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+
     <a class="navbar-brand me-2" href="../index.html">units</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8-4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8-5</small>
 
-    
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="active nav-item">
-  <a class="nav-link" href="../articles/units.html">Get started</a>
-</li>
-<li class="nav-item">
-  <a class="nav-link" href="../reference/index.html">Reference</a>
-</li>
+<li class="active nav-item"><a class="nav-link" href="../articles/units.html">Get started</a></li>
+<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/measurement_units_in_R.html">Measurement units in R</a>
-  </div>
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="../articles/measurement_units_in_R.html">Measurement units in R</a></li>
+  </ul>
 </li>
-<li class="nav-item">
-  <a class="nav-link" href="../news/index.html">Changelog</a>
-</li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
-<form class="form-inline my-2 my-lg-0" role="search">
-        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
-</form>
-
-      <ul class="navbar-nav">
-<li class="nav-item">
-  <a class="external-link nav-link" href="https://github.com/r-quantities/units/" aria-label="github">
-    <span class="fab fa fab fa-github fa-lg"></span>
-     
-  </a>
-</li>
+<ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
+</form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/r-quantities/units/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
-    
+
   </div>
 </nav><div class="container template-article">
 
@@ -74,10 +56,11 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="" class="logo" alt=""><h1>Units of Measurement for R Vectors: an Introduction</h1>
+
+      <h1>Units of Measurement for R Vectors: an Introduction</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/r-quantities/units/blob/HEAD/vignettes/units.Rmd" class="external-link"><code>vignettes/units.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/r-quantities/units/blob/v0.8-5/vignettes/units.Rmd" class="external-link"><code>vignettes/units.Rmd</code></a></small>
       <div class="d-none name"><code>units.Rmd</code></div>
     </div>
 
@@ -129,8 +112,8 @@ way as <code>difftime</code> objects behave.</p>
 <span><span class="co">## udunits database from /usr/share/xml/udunits/udunits2.xml</span></span>
 <span><span class="op">(</span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/units.html">set_units</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>,  <span class="va">m</span><span class="op">/</span><span class="va">s</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## Units: [m/s]</span></span>
-<span><span class="co">##  [1] 0.85175947 0.09059982 0.25062882 0.75417699 0.62319401 0.87051726</span></span>
-<span><span class="co">##  [7] 0.21836772 0.02032796 0.29164721 0.62715972</span></span></code></pre></div>
+<span><span class="co">##  [1] 0.080750138 0.834333037 0.600760886 0.157208442 0.007399441 0.466393497</span></span>
+<span><span class="co">##  [7] 0.497777389 0.289767245 0.732881987 0.772521511</span></span></code></pre></div>
 <p>the result, e.g. </p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/units.html">set_units</a></span><span class="op">(</span><span class="fl">10</span>, <span class="va">m</span><span class="op">/</span><span class="va">s</span><span class="op">)</span></span>
@@ -148,8 +131,8 @@ vector</p>
 <span><span class="fu"><a href="../reference/units.html">units</a></span><span class="op">(</span><span class="va">b</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/units.html">make_units</a></span><span class="op">(</span><span class="va">km</span><span class="op">/</span><span class="va">h</span><span class="op">)</span></span>
 <span><span class="va">b</span></span>
 <span><span class="co">## Units: [km/h]</span></span>
-<span><span class="co">##  [1] 3.06633409 0.32615934 0.90226374 2.71503715 2.24349844 3.13386215</span></span>
-<span><span class="co">##  [7] 0.78612379 0.07318065 1.04992995 2.25777499</span></span></code></pre></div>
+<span><span class="co">##  [1] 0.29070050 3.00359893 2.16273919 0.56595039 0.02663799 1.67901659</span></span>
+<span><span class="co">##  [7] 1.79199860 1.04316208 2.63837515 2.78107744</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -162,26 +145,26 @@ vector</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">a</span> <span class="op">+</span> <span class="va">a</span></span>
 <span><span class="co">## Units: [m/s]</span></span>
-<span><span class="co">##  [1] 1.70351894 0.18119963 0.50125763 1.50835397 1.24638802 1.74103453</span></span>
-<span><span class="co">##  [7] 0.43673544 0.04065592 0.58329441 1.25431944</span></span>
+<span><span class="co">##  [1] 0.16150028 1.66866607 1.20152177 0.31441688 0.01479888 0.93278699</span></span>
+<span><span class="co">##  [7] 0.99555478 0.57953449 1.46576397 1.54504302</span></span>
 <span><span class="va">a</span> <span class="op">*</span> <span class="va">a</span></span>
 <span><span class="co">## Units: [m^2/s^2]</span></span>
-<span><span class="co">##  [1] 0.7254941952 0.0082083266 0.0628148033 0.5687829279 0.3883707738</span></span>
-<span><span class="co">##  [6] 0.7578003063 0.0476844609 0.0004132259 0.0850580936 0.3933293136</span></span>
+<span><span class="co">##  [1] 6.520585e-03 6.961116e-01 3.609136e-01 2.471449e-02 5.475173e-05</span></span>
+<span><span class="co">##  [6] 2.175229e-01 2.477823e-01 8.396506e-02 5.371160e-01 5.967895e-01</span></span>
 <span><span class="va">a</span> <span class="op">^</span> <span class="fl">2</span></span>
 <span><span class="co">## Units: [m^2/s^2]</span></span>
-<span><span class="co">##  [1] 0.7254941952 0.0082083266 0.0628148033 0.5687829279 0.3883707738</span></span>
-<span><span class="co">##  [6] 0.7578003063 0.0476844609 0.0004132259 0.0850580936 0.3933293136</span></span>
+<span><span class="co">##  [1] 6.520585e-03 6.961116e-01 3.609136e-01 2.471449e-02 5.475173e-05</span></span>
+<span><span class="co">##  [6] 2.175229e-01 2.477823e-01 8.396506e-02 5.371160e-01 5.967895e-01</span></span>
 <span><span class="va">a</span> <span class="op">**</span> <span class="op">-</span><span class="fl">2</span></span>
 <span><span class="co">## Units: [s^2/m^2]</span></span>
-<span><span class="co">##  [1]    1.378371  121.827511   15.919814    1.758140    2.574859    1.319609</span></span>
-<span><span class="co">##  [7]   20.971192 2419.983800   11.756671    2.542399</span></span></code></pre></div>
+<span><span class="co">##  [1]   153.360480     1.436551     2.770746    40.462087 18264.262998</span></span>
+<span><span class="co">##  [6]     4.597217     4.035800    11.909716     1.861795     1.675633</span></span></code></pre></div>
 <p>and convert to the units of the first argument if necessary:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">a</span> <span class="op">+</span> <span class="va">b</span> <span class="co"># m/s + km/h -&gt; m/s</span></span>
 <span><span class="co">## Units: [m/s]</span></span>
-<span><span class="co">##  [1] 1.70351894 0.18119963 0.50125763 1.50835397 1.24638802 1.74103453</span></span>
-<span><span class="co">##  [7] 0.43673544 0.04065592 0.58329441 1.25431944</span></span></code></pre></div>
+<span><span class="co">##  [1] 0.16150028 1.66866607 1.20152177 0.31441688 0.01479888 0.93278699</span></span>
+<span><span class="co">##  [7] 0.99555478 0.57953449 1.46576397 1.54504302</span></span></code></pre></div>
 <p>Currently, powers are only supported for integer powers, so using
 <code>a ** 2.5</code> would result in an error.</p>
 </div>
@@ -193,23 +176,23 @@ vector</p>
 <code class="sourceCode R"><span><span class="va">t</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/units.html">make_units</a></span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span>
 <span><span class="va">a</span> <span class="op">*</span> <span class="va">t</span></span>
 <span><span class="co">## Units: [m]</span></span>
-<span><span class="co">##  [1] 0.85175947 0.09059982 0.25062882 0.75417699 0.62319401 0.87051726</span></span>
-<span><span class="co">##  [7] 0.21836772 0.02032796 0.29164721 0.62715972</span></span></code></pre></div>
+<span><span class="co">##  [1] 0.080750138 0.834333037 0.600760886 0.157208442 0.007399441 0.466393497</span></span>
+<span><span class="co">##  [7] 0.497777389 0.289767245 0.732881987 0.772521511</span></span></code></pre></div>
 <p>which also work when units need to be converted before they can be
 simplified:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">t</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/units.html">make_units</a></span><span class="op">(</span><span class="va">min</span><span class="op">)</span></span>
 <span><span class="va">a</span> <span class="op">*</span> <span class="va">t</span></span>
 <span><span class="co">## Units: [m]</span></span>
-<span><span class="co">##  [1] 51.105568  5.435989 15.037729 45.250619 37.391641 52.231036 13.102063</span></span>
-<span><span class="co">##  [8]  1.219678 17.498832 37.629583</span></span></code></pre></div>
+<span><span class="co">##  [1]  4.8450083 50.0599822 36.0456532  9.4325065  0.4439665 27.9836098</span></span>
+<span><span class="co">##  [7] 29.8666433 17.3860347 43.9729192 46.3512907</span></span></code></pre></div>
 <p>Simplification to unit-less values gives the “1” as unit:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/units.html">make_units</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span>
 <span><span class="va">a</span> <span class="op">*</span> <span class="va">t</span> <span class="op">/</span> <span class="va">m</span></span>
 <span><span class="co">## Units: [1]</span></span>
-<span><span class="co">##  [1] 51.105568  5.435989 15.037729 45.250619 37.391641 52.231036 13.102063</span></span>
-<span><span class="co">##  [8]  1.219678 17.498832 37.629583</span></span></code></pre></div>
+<span><span class="co">##  [1]  4.8450083 50.0599822 36.0456532  9.4325065  0.4439665 27.9836098</span></span>
+<span><span class="co">##  [7] 29.8666433 17.3860347 43.9729192 46.3512907</span></span></code></pre></div>
 <p>Allowed operations that require convertible units are <code>+</code>,
 <code>-</code>, <code>==</code>, <code>!=</code>, <code>&lt;</code>,
 <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>. Operations
@@ -227,24 +210,24 @@ operations <code>**</code> and <code>^</code>.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">signif</a></span><span class="op">(</span><span class="va">a</span> <span class="op">**</span> <span class="fl">2</span> <span class="op">/</span> <span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="co">## Units: [m^2/s^2]</span></span>
-<span><span class="co">##  [1] 0.242000 0.002740 0.020900 0.190000 0.129000 0.253000 0.015900 0.000138</span></span>
-<span><span class="co">##  [9] 0.028400 0.131000</span></span>
+<span><span class="co">##  [1] 2.17e-03 2.32e-01 1.20e-01 8.24e-03 1.83e-05 7.25e-02 8.26e-02 2.80e-02</span></span>
+<span><span class="co">##  [9] 1.79e-01 1.99e-01</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cumsum.html" class="external-link">cumsum</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span></span>
 <span><span class="co">## Units: [m/s]</span></span>
-<span><span class="co">##  [1] 0.8517595 0.9423593 1.1929881 1.9471651 2.5703591 3.4408764 3.6592441</span></span>
-<span><span class="co">##  [8] 3.6795720 3.9712192 4.5983790</span></span>
+<span><span class="co">##  [1] 0.08075014 0.91508317 1.51584406 1.67305250 1.68045194 2.14684544</span></span>
+<span><span class="co">##  [7] 2.64462283 2.93439007 3.66727206 4.43979357</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span> <span class="co"># base defaults to exp(1)</span></span>
 <span><span class="co">## Units: [(ln(re 1 m.s-1))]</span></span>
-<span><span class="co">##  [1] -0.1604511 -2.4013031 -1.3837823 -0.2821282 -0.4728974 -0.1386677</span></span>
-<span><span class="co">##  [7] -1.5215749 -3.8957581 -1.2322104 -0.4665540</span></span>
+<span><span class="co">##  [1] -2.5163956 -0.1811226 -0.5095583 -1.8501827 -4.9063508 -0.7627256</span></span>
+<span><span class="co">##  [7] -0.6976023 -1.2386773 -0.3107706 -0.2580954</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">a</span>, base <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="co">## Units: [(lg(re 1 m.s-1))]</span></span>
-<span><span class="co">##  [1] -0.06968303 -1.04287269 -0.60096900 -0.12252672 -0.20537673 -0.06022261</span></span>
-<span><span class="co">##  [7] -0.66081156 -1.69190623 -0.53514218 -0.20262184</span></span>
+<span><span class="co">##  [1] -1.09285673 -0.07866056 -0.22129835 -0.80352414 -2.13080108 -0.33124751</span></span>
+<span><span class="co">##  [7] -0.30296483 -0.53795071 -0.13496595 -0.11208942</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">a</span>, base <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="co">## Units: [(lb(re 1 m.s-1))]</span></span>
-<span><span class="co">##  [1] -0.2314820 -3.4643481 -1.9963758 -0.4070250 -0.6822467 -0.2000552</span></span>
-<span><span class="co">##  [7] -2.1951685 -5.6203908 -1.7777038 -0.6730952</span></span></code></pre></div>
+<span><span class="co">##  [1] -3.6303915 -0.2613047 -0.7351372 -2.6692494 -7.0783680 -1.1003804</span></span>
+<span><span class="co">##  [7] -1.0064274 -1.7870336 -0.4483472 -0.3723530</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="summary-functions">Summary functions<a class="anchor" aria-label="anchor" href="#summary-functions"></a>
@@ -253,14 +236,14 @@ operations <code>**</code> and <code>^</code>.</p>
 <code>max</code>, and <code>range</code> are allowed:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span></span>
-<span><span class="co">## 4.598379 [m/s]</span></span>
+<span><span class="co">## 4.439794 [m/s]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span></span>
-<span><span class="co">## 0.02032796 [m/s]</span></span>
+<span><span class="co">## 0.007399441 [m/s]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span></span>
-<span><span class="co">## 0.8705173 [m/s]</span></span>
+<span><span class="co">## 0.834333 [m/s]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span></span>
 <span><span class="co">## Units: [m/s]</span></span>
-<span><span class="co">## [1] 0.02032796 0.87051726</span></span>
+<span><span class="co">## [1] 0.007399441 0.834333037</span></span>
 <span><span class="fu"><a href="../reference/units.html">make_units</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">m</span><span class="op">/</span><span class="va">s</span>, <span class="va">km</span><span class="op">/</span><span class="va">h</span><span class="op">)</span><span class="op">)</span> <span class="co"># converts to first unit:</span></span>
 <span><span class="co">## 0.2777778 [m/s]</span></span></code></pre></div>
 </div>
@@ -272,10 +255,10 @@ length-one vectors:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">a</span></span>
 <span><span class="co">## Units: [m/s]</span></span>
-<span><span class="co">##  [1] 0.85175947 0.09059982 0.25062882 0.75417699 0.62319401 0.87051726</span></span>
-<span><span class="co">##  [7] 0.21836772 0.02032796 0.29164721 0.62715972</span></span>
+<span><span class="co">##  [1] 0.080750138 0.834333037 0.600760886 0.157208442 0.007399441 0.466393497</span></span>
+<span><span class="co">##  [7] 0.497777389 0.289767245 0.732881987 0.772521511</span></span>
 <span><span class="va">a</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
-<span><span class="co">## 0.8517595 [m/s]</span></span></code></pre></div>
+<span><span class="co">## 0.08075014 [m/s]</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="subsetting">Subsetting<a class="anchor" aria-label="anchor" href="#subsetting"></a>
@@ -284,9 +267,9 @@ length-one vectors:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">a</span><span class="op">[</span><span class="fl">2</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
 <span><span class="co">## Units: [m/s]</span></span>
-<span><span class="co">## [1] 0.09059982 0.25062882 0.75417699 0.62319401</span></span>
+<span><span class="co">## [1] 0.834333037 0.600760886 0.157208442 0.007399441</span></span>
 <span><span class="va">a</span><span class="op">[</span><span class="op">-</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">9</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="co">## 0.6271597 [m/s]</span></span></code></pre></div>
+<span><span class="co">## 0.7725215 [m/s]</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="concatenation">Concatenation<a class="anchor" aria-label="anchor" href="#concatenation"></a>
@@ -294,25 +277,25 @@ length-one vectors:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">a</span>,<span class="va">a</span><span class="op">)</span></span>
 <span><span class="co">## Units: [m/s]</span></span>
-<span><span class="co">##  [1] 0.85175947 0.09059982 0.25062882 0.75417699 0.62319401 0.87051726</span></span>
-<span><span class="co">##  [7] 0.21836772 0.02032796 0.29164721 0.62715972 0.85175947 0.09059982</span></span>
-<span><span class="co">## [13] 0.25062882 0.75417699 0.62319401 0.87051726 0.21836772 0.02032796</span></span>
-<span><span class="co">## [19] 0.29164721 0.62715972</span></span></code></pre></div>
+<span><span class="co">##  [1] 0.080750138 0.834333037 0.600760886 0.157208442 0.007399441 0.466393497</span></span>
+<span><span class="co">##  [7] 0.497777389 0.289767245 0.732881987 0.772521511 0.080750138 0.834333037</span></span>
+<span><span class="co">## [13] 0.600760886 0.157208442 0.007399441 0.466393497 0.497777389 0.289767245</span></span>
+<span><span class="co">## [19] 0.732881987 0.772521511</span></span></code></pre></div>
 <p>concatenation converts to the units of the first argument, if
 necessary:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">a</span>,<span class="va">b</span><span class="op">)</span> <span class="co"># m/s, km/h -&gt; m/s</span></span>
 <span><span class="co">## Units: [m/s]</span></span>
-<span><span class="co">##  [1] 0.85175947 0.09059982 0.25062882 0.75417699 0.62319401 0.87051726</span></span>
-<span><span class="co">##  [7] 0.21836772 0.02032796 0.29164721 0.62715972 0.85175947 0.09059982</span></span>
-<span><span class="co">## [13] 0.25062882 0.75417699 0.62319401 0.87051726 0.21836772 0.02032796</span></span>
-<span><span class="co">## [19] 0.29164721 0.62715972</span></span>
+<span><span class="co">##  [1] 0.080750138 0.834333037 0.600760886 0.157208442 0.007399441 0.466393497</span></span>
+<span><span class="co">##  [7] 0.497777389 0.289767245 0.732881987 0.772521511 0.080750138 0.834333037</span></span>
+<span><span class="co">## [13] 0.600760886 0.157208442 0.007399441 0.466393497 0.497777389 0.289767245</span></span>
+<span><span class="co">## [19] 0.732881987 0.772521511</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">b</span>,<span class="va">a</span><span class="op">)</span> <span class="co"># km/h, m/s -&gt; km/h</span></span>
 <span><span class="co">## Units: [km/h]</span></span>
-<span><span class="co">##  [1] 3.06633409 0.32615934 0.90226374 2.71503715 2.24349844 3.13386215</span></span>
-<span><span class="co">##  [7] 0.78612379 0.07318065 1.04992995 2.25777499 3.06633409 0.32615934</span></span>
-<span><span class="co">## [13] 0.90226374 2.71503715 2.24349844 3.13386215 0.78612379 0.07318065</span></span>
-<span><span class="co">## [19] 1.04992995 2.25777499</span></span></code></pre></div>
+<span><span class="co">##  [1] 0.29070050 3.00359893 2.16273919 0.56595039 0.02663799 1.67901659</span></span>
+<span><span class="co">##  [7] 1.79199860 1.04316208 2.63837515 2.78107744 0.29070050 3.00359893</span></span>
+<span><span class="co">## [13] 2.16273919 0.56595039 0.02663799 1.67901659 1.79199860 1.04316208</span></span>
+<span><span class="co">## [19] 2.63837515 2.78107744</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -463,28 +446,26 @@ divisions, by modifying one of <code>units</code>’s global options using
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="va">displacement</span>, <span class="fl">1</span><span class="op">/</span><span class="va">consumption</span><span class="op">)</span></span></code></pre></div>
 <p><img src="units_files/figure-html/unnamed-chunk-30-2.png" width="672"></p>
 </div>
-  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
 
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p>
-<p>Developed by Edzer Pebesma, Thomas Mailund, Tomasz Kalinowski, Iñaki Ucar.</p>
+  <p>Developed by Edzer Pebesma, Thomas Mailund, Tomasz Kalinowski, Iñaki Ucar.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer>
 </div>
 
-  
 
-  
+
+
 
   </body>
 </html>

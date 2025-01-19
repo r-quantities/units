@@ -1,87 +1,31 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>/articles/measurement_units_in_R.html</loc>
-  </url>
-  <url>
-    <loc>/articles/units.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/news/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Math.units.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Ops.units.html</loc>
-  </url>
-  <url>
-    <loc>/reference/as_difftime.html</loc>
-  </url>
-  <url>
-    <loc>/reference/boxplot.units.html</loc>
-  </url>
-  <url>
-    <loc>/reference/deparse_unit.html</loc>
-  </url>
-  <url>
-    <loc>/reference/drop_units.html</loc>
-  </url>
-  <url>
-    <loc>/reference/hist.units.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/install_unit.html</loc>
-  </url>
-  <url>
-    <loc>/reference/keep_units.html</loc>
-  </url>
-  <url>
-    <loc>/reference/load_units_xml.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mixed_units.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot.units.html</loc>
-  </url>
-  <url>
-    <loc>/reference/scale_units.html</loc>
-  </url>
-  <url>
-    <loc>/reference/seq.units.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ud_are_convertible.html</loc>
-  </url>
-  <url>
-    <loc>/reference/unitless.html</loc>
-  </url>
-  <url>
-    <loc>/reference/units-defunct.html</loc>
-  </url>
-  <url>
-    <loc>/reference/units.html</loc>
-  </url>
-  <url>
-    <loc>/reference/units_options.html</loc>
-  </url>
-  <url>
-    <loc>/reference/valid_udunits.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/articles/index.html</loc></url>
+<url><loc>/articles/measurement_units_in_R.html</loc></url>
+<url><loc>/articles/units.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/news/index.html</loc></url>
+<url><loc>/reference/Math.units.html</loc></url>
+<url><loc>/reference/Ops.units.html</loc></url>
+<url><loc>/reference/as_difftime.html</loc></url>
+<url><loc>/reference/boxplot.units.html</loc></url>
+<url><loc>/reference/deparse_unit.html</loc></url>
+<url><loc>/reference/drop_units.html</loc></url>
+<url><loc>/reference/hist.units.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/install_unit.html</loc></url>
+<url><loc>/reference/keep_units.html</loc></url>
+<url><loc>/reference/load_units_xml.html</loc></url>
+<url><loc>/reference/mixed_units.html</loc></url>
+<url><loc>/reference/plot.units.html</loc></url>
+<url><loc>/reference/scale_units.html</loc></url>
+<url><loc>/reference/seq.units.html</loc></url>
+<url><loc>/reference/ud_are_convertible.html</loc></url>
+<url><loc>/reference/unitless.html</loc></url>
+<url><loc>/reference/units-defunct.html</loc></url>
+<url><loc>/reference/units.html</loc></url>
+<url><loc>/reference/units_options.html</loc></url>
+<url><loc>/reference/valid_udunits.html</loc></url>
 </urlset>
+
