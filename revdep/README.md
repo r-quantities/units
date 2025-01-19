@@ -21,14 +21,13 @@
 
 # Revdeps
 
-## New problems (6)
+## New problems (5)
 
 |package   |version |error    |warning |note |
 |:---------|:-------|:--------|:-------|:----|
 |[divvy](problems.md#divvy)|1.0.0   |__+3__   |        |     |
-|[gtfs2emis](problems.md#gtfs2emis)|0.1.1   |__+1__   |        |     |
 |[move2](problems.md#move2)|0.4.2   |1 __+1__ |        |     |
 |[Rdistance](problems.md#rdistance)|3.0.0   |__+1__   |        |1    |
 |[stars](problems.md#stars)|0.6-7   |__+1__   |        |2    |
-|[vein](problems.md#vein)|1.1.3   |__+2__   |        |1    |
+|[vein](problems.md#vein)|1.1.3   |__+1__   |        |1    |
 

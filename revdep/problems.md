@@ -82,47 +82,6 @@ Run `revdepcheck::revdep_details(, "divvy")` for more info
     Execution halted
     ```
 
-# gtfs2emis
-
-<details>
-
-* Version: 0.1.1
-* GitHub: https://github.com/ipeaGIT/gtfs2emis
-* Source code: https://github.com/cran/gtfs2emis
-* Date/Publication: 2024-12-02 15:40:12 UTC
-* Number of recursive dependencies: 94
-
-Run `revdepcheck::revdep_details(, "gtfs2emis")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking running R code from vignettes ...
-    ```
-      ‘gtfs2emis_emission_factor.Rmd’ using ‘UTF-8’... OK
-      ‘gtfs2emis_fleet_data.Rmd’ using ‘UTF-8’... OK
-      ‘gtfs2emis_intro_vignette.Rmd’ using ‘UTF-8’... failed
-      ‘gtfs2emis_non_exhaust_ef.Rmd’ using ‘UTF-8’... failed
-     ERROR
-    Errors in running code in vignettes:
-    when running code in ‘gtfs2emis_intro_vignette.Rmd’
-      ...
-    > emi_list <- emission_model(tp_model = tp_model, ef_model = "ef_europe_emep", 
-    +     fleet_data = fleet_df, pollutant = c("CO2", "PM10"), reference_y .... [TRUNCATED] 
-    ...
-    
-      When sourcing ‘gtfs2emis_non_exhaust_ef.R’:
-    Error: 'names' attribute [2] must be the same length as the vector [1]
-    Execution halted
-    sh: 0: getcwd() failed: No such file or directory
-    sh: 0: getcwd() failed: No such file or directory
-    sh: 0: getcwd() failed: No such file or directory
-    sh: 0: getcwd() failed: No such file or directory
-    sh: 0: getcwd() failed: No such file or directory
-    sh: 0: getcwd() failed: No such file or directory
-    ```
-
 # move2
 
 <details>
@@ -314,48 +273,23 @@ Run `revdepcheck::revdep_details(, "vein")` for more info
 
 ## Newly broken
 
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘vein-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: emis_long
-    > ### Title: Estimation with long format
-    > ### Aliases: emis_long
-    > 
-    > ### ** Examples
-    > 
-    > {
-    ...
-    old-style crs object detected; please recreate object with a recent sf::st_crs()
-    old-style crs object detected; please recreate object with a recent sf::st_crs()
-    
-    Processing Vehicles
-    Estimating Base EF
-    Estimating emissions
-    Error in do.call(call, c(dots, deparse.level = deparse.level)) : 
-      variable names are limited to 10000 bytes
-    Calls: emis_long -> Emissions -> do.call -> cbind -> cbind -> do.call
-    Execution halted
-    ```
-
 *   checking tests ...
     ```
       Running ‘testthat.R’
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
     Last 13 lines of output:
-      ── Error ('test-long_to_wide.R:9:3'): long_to_wide works ───────────────────────
-      Error in `names(dots) <- sapply(substitute(list(...))[-1], deparse)`: 'names' attribute [6] must be the same length as the vector [3]
-      Backtrace:
-          ▆
-       1. ├─testthat::expect_equal(long_to_wide(df)$CO[1], 1) at test-long_to_wide.R:9:3
-       2. │ └─testthat::quasi_label(enquo(object), label, arg = "object")
-       3. │   └─rlang::eval_bare(expr, quo_get_env(quo))
-       4. └─vein::long_to_wide(df)
-       5.   ├─base::do.call(...)
-       6.   └─base::cbind(`<[g]>`, `<[g]>`, `<[g]>`)
-       7.     └─units (local) cbind(deparse.level, ...)
+      Weighted mean =  1.5 
+      [ FAIL 1 | WARN 0 | SKIP 0 | PASS 701 ]
+      
+      ══ Failed tests ════════════════════════════════════════════════════════════════
+      ── Failure ('test-long_to_wide.R:9:3'): long_to_wide works ─────────────────────
+      long_to_wide(df)$CO[1] not equal to 1.
+      Attributes: < Modes: list, NULL >
+      Attributes: < Lengths: 2, 0 >
+      Attributes: < names for target but not for current >
+      Attributes: < current is not list-like >
+      target is units, current is numeric
       
       [ FAIL 1 | WARN 0 | SKIP 0 | PASS 701 ]
       Error: Test failures

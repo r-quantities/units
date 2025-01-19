@@ -153,7 +153,7 @@ unique.units <- function(x, incomparables = FALSE, ...) {
 #' (m <- rbind(m, z)) # insert a row
 #' @export
 cbind.units <- function(..., deparse.level = 1) {
-  dots <- list(...)
+  dots <- .deparse(list(...), substitute(list(...)), deparse.level)
   units_first_arg <- units(dots[[1]])
   class_first_arg <- class(dots[[1]])
   dots <- lapply(dots, function(x) {
@@ -161,18 +161,31 @@ cbind.units <- function(..., deparse.level = 1) {
     ret <- drop_units(dots_unified)
     return(ret)
   })
-  
-  nm <- names(as.list(match.call()))
-  nm <- nm[nm != "" & nm != "deparse.level"]
-  if (is.null(nm))
-    names(dots) <- sapply(substitute(list(...))[-1], deparse)
-  else names(dots) <- nm
-  
   call <- as.character(match.call()[[1]])
   value <- do.call(call, c(dots, deparse.level=deparse.level))
   attr(value, "units") <- units_first_arg
   class(value) <- class_first_arg
   return(value)
+}
+
+.deparse <- function(dots, symarg, deparse.level) {
+  if (!is.null(names(dots))) return(dots)
+
+  deparse.level <- as.integer(deparse.level)
+  if (identical(deparse.level, -1L)) deparse.level <- 0L # R Core's hack
+  stopifnot(0 <= deparse.level, deparse.level <= 2)
+
+  nm <- c( ## 0:
+    function(i) NULL,
+    ## 1:
+    function(i) if(is.symbol(s <- symarg[[i]])) deparse(s) else NULL,
+    ## 2:
+    function(i) deparse(symarg[[i]])[[1L]])[[ 1L + deparse.level ]]
+  Nms <- function(i) { if(!is.null(s <- names(symarg)[i]) && nzchar(s)) s else nm(i) }
+
+  symarg <- as.list(symarg)[-1L]
+  names(dots) <- sapply(seq_along(dots), Nms)
+  dots
 }
 
 #' @rdname cbind.units

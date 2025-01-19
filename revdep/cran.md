@@ -2,7 +2,7 @@
 
 We checked 123 reverse dependencies, comparing R CMD check results across CRAN and dev versions of this package.
 
- * We saw 6 new problems
+ * We saw 5 new problems
  * We failed to check 0 packages
 
 Issues with CRAN packages are summarised below.
@@ -15,9 +15,6 @@ Issues with CRAN packages are summarised below.
   checking tests ...
   checking running R code from vignettes ...
 
-* gtfs2emis
-  checking running R code from vignettes ...
-
 * move2
   checking tests ...
 
@@ -28,6 +25,5 @@ Issues with CRAN packages are summarised below.
   checking tests ...
 
 * vein
-  checking examples ... ERROR
   checking tests ...
 
