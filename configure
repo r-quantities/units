@@ -643,6 +643,7 @@ ac_header_cxx_list=
 ac_subst_vars='LTLIBOBJS
 UDUNITS2_DIR
 UD_CPPFLAGS
+BREW
 ac_ct_CC
 CFLAGS
 CC
@@ -4160,6 +4161,57 @@ ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ex
 ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
 
+# Extract the first word of "brew", so it can be a program name with args.
+set dummy brew; ac_word=$2
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+printf %s "checking for $ac_word... " >&6; }
+if test ${ac_cv_path_BREW+y}
+then :
+  printf %s "(cached) " >&6
+else case e in #(
+  e) case $BREW in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_BREW="$BREW" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  case $as_dir in #(((
+    '') as_dir=./ ;;
+    */) ;;
+    *) as_dir=$as_dir/ ;;
+  esac
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir$ac_word$ac_exec_ext"; then
+    ac_cv_path_BREW="$as_dir$ac_word$ac_exec_ext"
+    printf "%s\n" "$as_me:${as_lineno-$LINENO}: found $as_dir$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  ;;
+esac ;;
+esac
+fi
+BREW=$ac_cv_path_BREW
+if test -n "$BREW"; then
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $BREW" >&5
+printf "%s\n" "$BREW" >&6; }
+else
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+fi
+
+
+if test  -n "${ac_cv_path_BREW}"  ; then
+    UD_CPPFLAGS="-I`${ac_cv_path_BREW} --prefix`/include"
+    LIBS="-L`${ac_cv_path_BREW} --prefix`/lib ${LIBS}"
+fi
+
 
 # Check whether --with-udunits2-include was given.
 if test ${with_udunits2_include+y}
@@ -4168,12 +4220,11 @@ then :
 fi
 
 if test  -n "$udunits2_include_path"  ; then
-   UD_CPPFLAGS="-I${udunits2_include_path}"
-else
-   if test  -n "${UDUNITS2_INCLUDE}"  ; then
-      UD_CPPFLAGS="-I${UDUNITS2_INCLUDE}"
-   fi
+    UD_CPPFLAGS="-I${udunits2_include_path} ${UD_CPPFLAGS}"
+elif test  -n "${UDUNITS2_INCLUDE}"  ; then
+    UD_CPPFLAGS="-I${UDUNITS2_INCLUDE} ${UD_CPPFLAGS}"
 fi
+CPPFLAGS="${UD_CPPFLAGS} ${CPPFLAGS}"
 
 
 # Check whether --with-udunits2-lib was given.
@@ -4183,11 +4234,9 @@ then :
 fi
 
 if test  -n "$udunits2_lib_path"  ; then
-   LIBS="-L${udunits2_lib_path} ${LIBS}"
-else
-   if test  -n "${UDUNITS2_LIBS}"  ; then
-      LIBS="-L${UDUNITS2_LIBS} ${LIBS}"
-   fi
+    LIBS="-L${udunits2_lib_path} ${LIBS}"
+elif test  -n "${UDUNITS2_LIBS}"  ; then
+    LIBS="-L${UDUNITS2_LIBS} ${LIBS}"
 fi
 
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for XML_ParserCreate in -lexpat" >&5
@@ -4237,8 +4286,6 @@ fi
 if test "${ac_cv_lib_expat_XML_ParserCreate}" = yes; then
    LIBS="${LIBS} -lexpat"
 fi
-
-CPPFLAGS="${UD_CPPFLAGS} ${CPPFLAGS}"
 
 ac_fn_cxx_check_header_compile "$LINENO" "udunits2.h" "ac_cv_header_udunits2_h" "$ac_includes_default"
 if test "x$ac_cv_header_udunits2_h" = xyes
@@ -4321,7 +4368,6 @@ as_fn_error $? "
 
 See 'config.log' for more details" "$LINENO" 5; } fi
 
-UD_CPPFLAGS="${UD_CPPFLAGS} ${CPPFLAGS}"
 
 
 

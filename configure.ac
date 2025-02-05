@@ -20,36 +20,37 @@ AC_FUNC_ERROR_AT_LINE
 AC_PREREQ
 AC_PROG_CC
 
+AC_PATH_PROG([BREW], [brew])
+if test [ -n "${ac_cv_path_BREW}" ] ; then
+    UD_CPPFLAGS="-I`${ac_cv_path_BREW} --prefix`/include"
+    LIBS="-L`${ac_cv_path_BREW} --prefix`/lib ${LIBS}"
+fi
+
 AC_ARG_WITH([udunits2-include],
     AS_HELP_STRING([--with-udunits2-include=DIR],
 		[location of the udunits2 header files]),
 		[udunits2_include_path=$withval])
 if test [ -n "$udunits2_include_path" ] ; then
-   UD_CPPFLAGS="-I${udunits2_include_path}"
-else
-   if test [ -n "${UDUNITS2_INCLUDE}" ] ; then
-      UD_CPPFLAGS="-I${UDUNITS2_INCLUDE}"
-   fi
+    UD_CPPFLAGS="-I${udunits2_include_path} ${UD_CPPFLAGS}"
+elif test [ -n "${UDUNITS2_INCLUDE}" ] ; then
+    UD_CPPFLAGS="-I${UDUNITS2_INCLUDE} ${UD_CPPFLAGS}"
 fi
+CPPFLAGS="${UD_CPPFLAGS} ${CPPFLAGS}"
 
 AC_ARG_WITH([udunits2-lib],
     AS_HELP_STRING([--with-udunits2-lib=DIR],
 		[location of the udunits2 libraries]),
 		[udunits2_lib_path=$withval])
 if test [ -n "$udunits2_lib_path" ] ; then
-   LIBS="-L${udunits2_lib_path} ${LIBS}"
-else
-   if test [ -n "${UDUNITS2_LIBS}" ] ; then
-      LIBS="-L${UDUNITS2_LIBS} ${LIBS}"
-   fi
+    LIBS="-L${udunits2_lib_path} ${LIBS}"
+elif test [ -n "${UDUNITS2_LIBS}" ] ; then
+    LIBS="-L${UDUNITS2_LIBS} ${LIBS}"
 fi
 
 AC_CHECK_LIB(expat, XML_ParserCreate, [],[], ${LIBS})
 if test "${ac_cv_lib_expat_XML_ParserCreate}" = yes; then
    LIBS="${LIBS} -lexpat"
 fi
-
-CPPFLAGS="${UD_CPPFLAGS} ${CPPFLAGS}"
 
 AC_CHECK_HEADER(udunits2.h, UDUNITS2_DIR=0, [
   AC_CHECK_HEADER(udunits2/udunits2.h, UDUNITS2_DIR=1,
@@ -73,7 +74,6 @@ if test "${UD_ERROR}" != ""  ; then AC_MSG_FAILURE([
 --------------------------------------------------------------------------------
 ]) fi
 
-UD_CPPFLAGS="${UD_CPPFLAGS} ${CPPFLAGS}"
 AC_SUBST([LIBS])
 AC_SUBST([UD_CPPFLAGS])
 AC_SUBST([UDUNITS2_DIR])
