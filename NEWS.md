@@ -20,6 +20,8 @@
 
 * Fix UBs in the C++ glue code; #380
 
+* Add support for `brew` path discovery in macOS; #384
+
 # version 0.8-5
 
 * avoid -Wformat-security warning on CRAN
