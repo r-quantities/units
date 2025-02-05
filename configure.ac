@@ -21,9 +21,9 @@ AC_PREREQ
 AC_PROG_CC
 
 AC_PATH_PROG([BREW], [brew])
-if test [ -n "${ac_cv_path_BREW}" ] ; then
-    UD_CPPFLAGS="-I`${ac_cv_path_BREW} --prefix`/include"
-    LIBS="-L`${ac_cv_path_BREW} --prefix`/lib ${LIBS}"
+if test [ -n "${BREW}" ] ; then
+    UD_CPPFLAGS="-I`${BREW} --prefix`/include"
+    LIBS="-L`${BREW} --prefix`/lib ${LIBS}"
 fi
 
 AC_ARG_WITH([udunits2-include],
