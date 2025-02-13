@@ -82,69 +82,88 @@ Run `revdepcheck::revdep_details(, "divvy")` for more info
     Execution halted
     ```
 
-# move2
+# gasanalyzer
 
 <details>
 
-* Version: 0.4.2
+* Version: 0.4.3
 * GitHub: NA
-* Source code: https://github.com/cran/move2
-* Date/Publication: 2024-12-18 23:00:02 UTC
-* Number of recursive dependencies: 124
+* Source code: https://github.com/cran/gasanalyzer
+* Date/Publication: 2025-01-29 10:20:06 UTC
+* Number of recursive dependencies: 102
 
-Run `revdepcheck::revdep_details(, "move2")` for more info
+Run `revdepcheck::revdep_details(, "gasanalyzer")` for more info
 
 </details>
 
 ## Newly broken
 
+*   checking examples ... ERROR
+    ```
+    Running examples in ‘gasanalyzer-Ex.R’ failed
+    The error most likely occurred in:
+    
+    > ### Name: read_6800_txt
+    > ### Title: Reads 6800 text files and creates a tibble with gas-exchange
+    > ###   data.
+    > ### Aliases: read_6800_txt
+    > 
+    > ### ** Examples
+    > 
+    ...
+      4.     ├─base::do.call(...)
+      5.     └─vctrs (local) `<fn>`(`<tibble[,250]>`)
+      6.       └─vctrs (local) `<fn>`()
+      7.         └─units:::vec_cast.units.units(...)
+      8.           └─vctrs::stop_incompatible_cast(x, to, x_arg = x_arg, to_arg = to_arg)
+      9.             └─vctrs::stop_incompatible_type(...)
+     10.               └─vctrs:::stop_incompatible(...)
+     11.                 └─vctrs:::stop_vctrs(...)
+     12.                   └─rlang::abort(message, class = c(class, "vctrs_error"), ..., call = call)
+    Execution halted
+    ```
+
 *   checking tests ...
     ```
+      Running ‘spelling.R’
       Running ‘testthat.R’
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
     Last 13 lines of output:
-      `expected`: " NA [°]" " 45 [°]" "-90 [°]" " 90 [°]" " NA [°]"
-      ── Failure ('test-calculate_properties.R:124:3'): turn angles in -180 180 range ──
-      set_units(...) (`actual`) not identical to set_units(c(NA, 45L, -90L, 90L, NA), "degrees") (`expected`).
+        2.   └─gasanalyzer::recalculate(out)
+        3.     ├─(function(x) {...
+        4.     ├─base::do.call(...)
+        5.     └─vctrs (local) `<fn>`(`<tibble[,250]>`)
+        6.       └─vctrs (local) `<fn>`()
+    ...
+        7.         └─units:::vec_cast.units.units(...)
+        8.           └─vctrs::stop_incompatible_cast(x, to, x_arg = x_arg, to_arg = to_arg)
+        9.             └─vctrs::stop_incompatible_type(...)
+       10.               └─vctrs:::stop_incompatible(...)
+       11.                 └─vctrs:::stop_vctrs(...)
+       12.                   └─rlang::abort(message, class = c(class, "vctrs_error"), ..., call = call)
       
-      `actual`:   " NA [°]" " 45 [°]" "270 [°]" " 90 [°]" " NA [°]"
-      `expected`: " NA [°]" " 45 [°]" "-90 [°]" " 90 [°]" " NA [°]"
-      ── Failure ('test-calculate_properties.R:129:3'): turn angles in -180 180 range ──
-      set_units(...) (`actual`) not identical to set_units(c(NA, -45L, 90L, -90L, NA), "degrees") (`expected`).
-      
-      `actual`:   " NA [°]" "315 [°]" " 90 [°]" "270 [°]" " NA [°]"
-      `expected`: " NA [°]" "-45 [°]" " 90 [°]" "-90 [°]" " NA [°]"
-      
-      [ FAIL 6 | WARN 0 | SKIP 17 | PASS 750 ]
+      [ FAIL 2 | WARN 0 | SKIP 0 | PASS 14 ]
       Error: Test failures
       Execution halted
     ```
 
-## In both
-
 *   checking running R code from vignettes ...
     ```
-      ‘albatross.Rmd’ using ‘UTF-8’... failed
-      ‘convert.Rmd’ using ‘UTF-8’... OK
-      ‘filtering_tracks.Rmd’ using ‘UTF-8’... failed
-      ‘movebank.Rmd’ using ‘UTF-8’... failed
-      ‘programming_move2_object.Rmd’ using ‘UTF-8’... failed
-      ‘trajectory_analysis.Rmd’ using ‘UTF-8’... failed
+      ‘gasanalyzer.Rmd’ using ‘UTF-8’... failed
      ERROR
     Errors in running code in vignettes:
-    when running code in ‘albatross.Rmd’
+    when running code in ‘gasanalyzer.Rmd’
       ...
-    ...
-    > Sys.setlocale("LC_TIME", "en_US.utf8")
-    [1] "en_US.utf8"
     
-    > library(move2)
+    > import_factory_cals(exampleFiles)
+    Loaded 1 factory calibrations from /mnt/revdep/checks/gasanalyzer/new/gasanalyzer.Rcheck/gasanalyzer/extdata.
     
-    > vulture_data <- movebank_download_study("Turkey vultures in North and South America")
+    > xlsxfile <- read_6800_xlsx(paste(exampleFiles, "lowo2.xlsx", 
+    +     sep = "/"))
     
-      When sourcing ‘trajectory_analysis.R’:
-    Error: The 'system' keyring does not exists, create it first!
+      When sourcing ‘gasanalyzer.R’:
+    Error: Can't convert `..1$FlrStats.dF_dt` <units> to match type of `FlrStats.dF_dt` <units>.
     Execution halted
     ```
 
@@ -199,62 +218,6 @@ Run `revdepcheck::revdep_details(, "Rdistance")` for more info
     checkRd: (-1) secondDeriv.Rd:15: Lost braces
         15 | This must be a function of the form FUN <- function(x, ...){...}
            |                                                            ^
-    ```
-
-# stars
-
-<details>
-
-* Version: 0.6-7
-* GitHub: https://github.com/r-spatial/stars
-* Source code: https://github.com/cran/stars
-* Date/Publication: 2024-11-07 20:40:02 UTC
-* Number of recursive dependencies: 165
-
-Run `revdepcheck::revdep_details(, "stars")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking tests ...
-    ```
-      Running ‘aggregate.R’
-      Comparing ‘aggregate.Rout’ to ‘aggregate.Rout.save’ ... OK
-      Running ‘align.R’
-      Comparing ‘align.Rout’ to ‘align.Rout.save’ ... OK
-      Running ‘area.R’
-      Comparing ‘area.Rout’ to ‘area.Rout.save’ ... OK
-      Running ‘crop.R’
-      Comparing ‘crop.Rout’ to ‘crop.Rout.save’ ... OK
-      Running ‘curvilinear.R’
-      Comparing ‘curvilinear.Rout’ to ‘curvilinear.Rout.save’ ... OK
-    ...
-      ══ Failed tests ════════════════════════════════════════════════════════════════
-      ── Failure ('test-cubble.R:32:3'): cubble ──────────────────────────────────────
-      all.equal(drop_units(a), a2, check.attributes = FALSE) is not TRUE
-      
-      `actual` is a character vector ('Component 1: target is matrix, current is units')
-      `expected` is a logical vector (TRUE)
-      
-      [ FAIL 1 | WARN 1 | SKIP 4 | PASS 70 ]
-      Error: Test failures
-      Execution halted
-    ```
-
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘starsdata’
-    ```
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  6.9Mb
-      sub-directories of 1Mb or more:
-        doc   2.9Mb
-        nc    1.7Mb
     ```
 
 # vein

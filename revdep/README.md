@@ -10,7 +10,7 @@
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |UTC                          |
-|date     |2025-01-19                   |
+|date     |2025-02-13                   |
 |pandoc   |2.9.2.1 @ /usr/bin/pandoc    |
 
 # Dependencies
@@ -21,13 +21,12 @@
 
 # Revdeps
 
-## New problems (5)
+## New problems (4)
 
-|package   |version |error    |warning |note |
-|:---------|:-------|:--------|:-------|:----|
-|[divvy](problems.md#divvy)|1.0.0   |__+3__   |        |     |
-|[move2](problems.md#move2)|0.4.2   |1 __+1__ |        |     |
-|[Rdistance](problems.md#rdistance)|3.0.0   |__+1__   |        |1    |
-|[stars](problems.md#stars)|0.6-7   |__+1__   |        |2    |
-|[vein](problems.md#vein)|1.1.3   |__+1__   |        |1    |
+|package     |version |error  |warning |note |
+|:-----------|:-------|:------|:-------|:----|
+|[divvy](problems.md#divvy)|1.0.0   |__+3__ |        |     |
+|[gasanalyzer](problems.md#gasanalyzer)|0.4.3   |__+3__ |        |     |
+|[Rdistance](problems.md#rdistance)|3.0.0   |__+1__ |        |1    |
+|[vein](problems.md#vein)|1.1.3   |__+1__ |        |1    |
 
