@@ -12,15 +12,24 @@ c.units <- function(..., recursive = FALSE, allow_mixed = units_options("allow_m
   args <- list(...)
   args[sapply(args, is.null)] <- NULL # remove NULLs
   u <- units(args[[1]])
+
   if (length(args) == 1)
-  	.as.units(NextMethod(), u)
-  else if (.units_are_convertible(args[-1], u)) {
-    args <- lapply(args, set_units, u, mode="standard")
-    .as.units(do.call(c, lapply(args, drop_units)), u)
-  } else if (allow_mixed)
-    do.call(c, lapply(args, mixed_units))
-  else
-  	stop("units are not convertible, and cannot be mixed; try setting units_options(allow_mixed = TRUE)?")
+    return(.as.units(NextMethod(), u))
+
+  dup <- c(TRUE, duplicated(lapply(args, units))[-1])
+
+  if (all(dup))
+    return(.as.units(do.call(c, lapply(args, drop_units)), u))
+
+  if (.units_are_convertible(args[!dup], u)) {
+    args[!dup] <- lapply(args[!dup], set_units, u, mode = "standard")
+    return(.as.units(do.call(c, lapply(args, drop_units)), u))
+  }
+
+  if (allow_mixed)
+    return(do.call(c, lapply(args, mixed_units)))
+
+  stop("units are not convertible, and cannot be mixed; try setting units_options(allow_mixed = TRUE)?")
 }
 
 .units_are_convertible = function(x, u) {
