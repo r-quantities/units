@@ -46,32 +46,13 @@ Ops.symbolic_units <- function(e1, e2) {
 unitless <- .symbolic_units(vector("character"), vector("character"))
 
 .pretty_print_sequence <- function(terms, op, neg_power = FALSE, sep = "") {
-  # `fix` handles cases where a unit is actually an expression. We would have to
-  # deparse these to really do a pretty printing, but for now we leave them alone...
-  fix <- function(term) {
-    if (length(grep("/", term)) || length(grep("-", term)))
-      paste0("(", term, ")")
-    else
-      term
-  }
-  fixed <- vapply(terms, fix, "")
-  fixed_tbl <- table(fixed)
+  sym <- unique(terms)
+  pwr <- tabulate(factor(terms, sym))
+  if (neg_power) pwr <- pwr * -1
 
-  names <- names(fixed_tbl)
-  result <- vector("character", length(fixed_tbl))
-  for (i in seq_along(fixed_tbl)) {
-    name <- names[i]
-    value <- fixed_tbl[i]
-    if (value > 1 || (value == 1 && neg_power)) {
-	  if (neg_power)
-	  	value <- value * -1.
-      result[i] <- paste0(name, "^", value)
-    } else {
-      result[i] <- name
-    }
-  }
-
-  paste0(result, collapse = paste0(op, sep))
+  for (i in seq_along(sym)) if (pwr[i] != 1)
+    sym[i] <- paste(sym[i], pwr[i], sep = "^")
+  paste0(sym, collapse = paste0(op, sep))
 }
 
 #' @export
