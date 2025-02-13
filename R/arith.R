@@ -181,17 +181,16 @@ Ops.units <- function(e1, e2) {
     if (e2 == 0) {
       u <- units(as_units(1))
     } else {
-      if (any((table(units(e1)$denominator)*e2) %% 1 != 0) ||
-          any((table(units(e1)$numerator)*e2)   %% 1 != 0))
-            stop("powers not divisible") # work on wording
-      if (e2 > 0)
-        u <- .symbolic_units(
-          rep(unique(units(e1)$numerator),table(units(e1)$numerator)*e2),
-          rep(unique(units(e1)$denominator),table(units(e1)$denominator)*e2))
-      else
-        u <- .symbolic_units(
-          rep(unique(units(e1)$denominator),table(units(e1)$denominator)*abs(e2)),
-          rep(unique(units(e1)$numerator),table(units(e1)$numerator)*abs(e2)))
+      tbl_den <- tabulate(factor(units(e1)$denominator))
+      tbl_num <- tabulate(factor(units(e1)$numerator))
+      if (any((tbl_den*e2) %% 1 != 0) || any((tbl_num*e2) %% 1 != 0))
+        stop("powers not divisible") # work on wording
+      u <- if (e2 > 0) .symbolic_units(
+        rep(unique(units(e1)$numerator), tbl_num*e2),
+        rep(unique(units(e1)$denominator), tbl_den*e2))
+      else .symbolic_units(
+        rep(unique(units(e1)$denominator), tbl_den*abs(e2)),
+        rep(unique(units(e1)$numerator), tbl_num*abs(e2)))
     }
   } else { # pm:
     units(e2) <- units(e1)

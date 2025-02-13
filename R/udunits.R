@@ -20,8 +20,16 @@
 ud_are_convertible = function(x, y) {
 	stopifnot(inherits(x, c("character", "symbolic_units")), inherits(y, c("character", "symbolic_units")))
 	res <- try(R_ut_are_convertible(
-	  R_ut_parse(as.character(x)), R_ut_parse(as.character(y))), silent = TRUE)
+	  R_ut_parse(ud_char(x)), R_ut_parse(ud_char(y))), silent = TRUE)
 	! inherits(res, "try-error") && res
+}
+
+ud_char <- function(x) {
+  if (is.character(x)) return(x)
+  res <- paste(x$numerator, collapse=" ")
+  if (length(x$denominator))
+    res <- paste0(res, " (", paste(x$denominator, collapse=" "), ")-1")
+  res
 }
 
 ud_are_same <- function(x, y) {

@@ -22,6 +22,8 @@
 
 * Add support for `brew` path discovery in macOS; #384
 
+* Several performance improvements; #387 addressing #386
+
 # version 0.8-5
 
 * avoid -Wformat-security warning on CRAN

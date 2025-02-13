@@ -101,10 +101,10 @@ as.character.mixed_symbolic_units = function(x, ...) {
 .cat_units_table <- function(x) {
   cat("Mixed units: ")
   if (!length(x)) return()
-
-  tbl = table(as.character(units(x)))
-  tbl = paste(names(tbl), " (", as.numeric(tbl), ")", sep = "")
-  cat(paste(tbl, collapse = ", "), "\n")
+  x <- as.character(units(x))
+  u <- unique(x)
+  n <- tabulate(factor(x, u))
+  cat(paste(u, " (", n, ")", sep = "", collapse = ", "), "\n")
 }
 
 #' @export
