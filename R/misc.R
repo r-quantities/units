@@ -24,6 +24,7 @@ c.units <- function(..., recursive = FALSE, allow_mixed = units_options("allow_m
 }
 
 .units_are_convertible = function(x, u) {
+  u <- ud_char(u)
 	for (i in seq_along(x))
 		if (! ud_are_convertible(units(x[[i]]), u))
 			return(FALSE)
