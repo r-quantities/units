@@ -38,12 +38,15 @@ test_that("We can't concatenate units if they have different units", {
 test_that("We can concatenate units if their units can be converted", {
   x <- 1:4 * as_units("m")
   y <- 5:8 * as_units("km")
-  z <- c(x, y)
+  z <- c(x, y, x, y)
 
-  expect_equal(length(z), length(x) + length(y))
+  expect_equal(length(z), 2 * (length(x) + length(y)))
   expect_equal(as.character(units(z)), "m")
   expect_equal(x, z[1:4])
-  expect_equal(set_units(y, units(as_units("m")), mode = "standard"), z[1:4 + 4])
+  expect_equal(x, z[1:4 + 8])
+  y <- set_units(y, units(as_units("m")), mode = "standard")
+  expect_equal(y, z[1:4 + 4])
+  expect_equal(y, z[1:4 + 12])
 })
 
 test_that("We can use diff on a units object", {
@@ -161,7 +164,7 @@ test_that("duplicated-related methods work as expected", {
 test_that("bind methods work properly", {
   a <- set_units(1:10, m)
   b <- set_units((1:10) * 0.001, km)
-  
+
   x <- rbind(x=a, y=a)
   y <- rbind(x=a, y=b)
   expect_equal(as.numeric(x), as.numeric(y))
@@ -172,7 +175,7 @@ test_that("bind methods work properly", {
   expect_equal(as.numeric(x), as.numeric(y) * 1000)
   expect_equal(rownames(x), c("a", "a", "a"))
   expect_equal(rownames(y), c("b", "b", "b"))
-  
+
   x <- cbind(x=a, y=a)
   y <- cbind(x=a, y=b)
   expect_equal(as.numeric(x), as.numeric(y))
@@ -183,7 +186,7 @@ test_that("bind methods work properly", {
   expect_equal(as.numeric(x), as.numeric(y) * 1000)
   expect_equal(colnames(x), c("a", "a", "a"))
   expect_equal(colnames(y), c("b", "b", "b"))
-  
+
   z <- cbind(
     rbind(a, b),
     rbind(x = a, y = b))
