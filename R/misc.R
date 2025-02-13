@@ -16,7 +16,7 @@ c.units <- function(..., recursive = FALSE, allow_mixed = units_options("allow_m
   if (length(args) == 1)
     return(.as.units(NextMethod(), u))
 
-  dup <- c(TRUE, duplicated(lapply(args, units))[-1])
+  dup <- vapply(args, function(x) identical(units(x), u), TRUE)
 
   if (all(dup))
     return(.as.units(do.call(c, lapply(args, drop_units)), u))
