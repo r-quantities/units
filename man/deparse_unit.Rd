@@ -16,7 +16,7 @@ length one character vector
 deparse unit to string in product power form (e.g. km m-2 s-1)
 }
 \examples{
-u = as_units("kg m-2 s-1", implicit_exponents = TRUE)
+u = as_units("kg m-2 s-1")
 u
 deparse_unit(u)
 }

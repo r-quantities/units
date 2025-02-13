@@ -46,19 +46,20 @@ Ops.symbolic_units <- function(e1, e2) {
 unitless <- .symbolic_units(vector("character"), vector("character"))
 
 .pretty_print_sequence <- function(terms, op, neg_power = FALSE, sep = "") {
+  pwr_op <- if (op == " ") "" else "^"
   sym <- unique(terms)
   pwr <- tabulate(factor(terms, sym))
   if (neg_power) pwr <- pwr * -1
 
   for (i in seq_along(sym)) if (pwr[i] != 1)
-    sym[i] <- paste(sym[i], pwr[i], sep = "^")
+    sym[i] <- paste(sym[i], pwr[i], sep = pwr_op)
   paste0(sym, collapse = paste0(op, sep))
 }
 
 #' @export
 as.character.symbolic_units <- function(x, ...,
 		neg_power = get(".units.negative_power", envir = .units_options),
-		escape_units = FALSE, plot_sep = "") {
+		escape_units = FALSE, prod_sep = "*", plot_sep = "") {
   sep <- plot_sep
 
   numerator <- x$numerator
@@ -78,7 +79,7 @@ as.character.symbolic_units <- function(x, ...,
   }
 
   num_str <- if (length(numerator) > 0)
-      .pretty_print_sequence(numerator, "*", FALSE, plot_sep)
+      .pretty_print_sequence(numerator, prod_sep, FALSE, plot_sep)
     else  { # only denominator:
       if (! neg_power)
 	    "1" # 1/cm^2/h
@@ -88,9 +89,7 @@ as.character.symbolic_units <- function(x, ...,
 
   denom_str <- if (length(denominator) > 0) {
     sep <- if (neg_power)
-      paste0("*", plot_sep)
-    else
-       "/"
+      paste0(prod_sep, plot_sep) else "/"
     .pretty_print_sequence(denominator, sep, neg_power, plot_sep)
   } else
     character(0)

@@ -50,21 +50,13 @@ rep.units = function(x, ...) {
 #' @param x object of class units
 #' @return length one character vector
 #' @examples
-#' u = as_units("kg m-2 s-1", implicit_exponents = TRUE)
+#' u = as_units("kg m-2 s-1")
 #' u
 #' deparse_unit(u)
 #' @export
 deparse_unit = function(x) {
   stopifnot(inherits(x, "units"))
-  u = units(x)
-  tn = table(u$numerator)
-  nm1 = names(tn)
-  vals1 = as.character(tn)
-  vals1[vals1 == "1"] = ""
-  td = - table(u$denominator)
-  nm2 = names(td)
-  vals2 = as.character(td)
-  paste(c(paste0(nm1, vals1), paste0(nm2, vals2)), collapse=" ")
+  as.character(units(x), neg_power=TRUE, prod_sep=" ")
 }
 # This should perhaps be an option in format.symbolic_units
 
