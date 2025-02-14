@@ -1,7 +1,7 @@
 # <img src="https://avatars1.githubusercontent.com/u/32303769?s=40&v=4"> Measurement Units for R
 
 <!-- badges: start -->
-[![Build Status](https://github.com/r-quantities/units/workflows/build/badge.svg)](https://github.com/r-quantities/units/actions)
+[![Build Status](https://github.com/r-quantities/units/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/r-quantities/units/actions/workflows/build.yml)
 [![Coverage Status](https://img.shields.io/codecov/c/github/r-quantities/units/master.svg)](https://app.codecov.io/github/r-quantities/units?branch=master)
 [![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html) [![CRAN](https://www.r-pkg.org/badges/version/units)](https://cran.r-project.org/package=units)
 [![Downloads](https://cranlogs.r-pkg.org/badges/units?color=brightgreen)](https://www.r-pkg.org/pkg/units)
