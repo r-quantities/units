@@ -26,7 +26,8 @@ ud_are_convertible = function(x, y) {
 
 ud_char <- function(x) {
   if (is.character(x)) return(x)
-  res <- paste(x$numerator, collapse=" ")
+  res <- if (length(x$numerator))
+    paste(x$numerator, collapse=" ") else "1"
   if (length(x$denominator))
     res <- paste0(res, " (", paste(x$denominator, collapse=" "), ")-1")
   res

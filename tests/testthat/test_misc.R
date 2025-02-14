@@ -47,6 +47,16 @@ test_that("We can concatenate units if their units can be converted", {
   y <- set_units(y, units(as_units("m")), mode = "standard")
   expect_equal(y, z[1:4 + 4])
   expect_equal(y, z[1:4 + 12])
+
+  x <- 1:4 * as_units("Hz")
+  y <- 5:8 * as_units("1/min")
+  z <- c(x, y)
+
+  expect_equal(length(z), length(x) + length(y))
+  expect_equal(as.character(units(z)), "Hz")
+  expect_equal(x, z[1:4])
+  y <- set_units(y, units(as_units("Hz")), mode = "standard")
+  expect_equal(y, z[1:4 + 4])
 })
 
 test_that("We can use diff on a units object", {
