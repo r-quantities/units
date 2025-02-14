@@ -19,7 +19,12 @@
 #'
 #' @export
 keep_units <- function(FUN, x, ..., unit=units(x)) {
-  set_units(do.call(FUN, list(x, ...)), unit, mode="standard")
+  if (inherits(try(unit, silent = TRUE), "symbolic_units")) {
+    set_units(do.call(FUN, list(x, ...)), unit, mode = "standard")
+  } else {
+    warning("`x` does not have units.")
+    do.call(FUN, list(x, ...))
+  }
 }
 
 dfapply <- function(X, FUN, ...) {
