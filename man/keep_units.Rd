@@ -39,7 +39,9 @@ keep_units(drop_units, x)
 mu <- as_units(10, "years")
 keep_units(rnorm, n = 1, x = mu)
 
-# units can be directly specified if needed:
+# units can be directly specified if needed; for example, with
+# `rexp()`, the units of the rate parameter are the inverse of
+# the units of the output:
 rate <- as_units(3, "1/year")
 keep_units(rexp, n = 1, x = rate, unit = units(1/rate))
 
