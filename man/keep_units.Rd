@@ -25,9 +25,29 @@ the original units.
 \details{
 Provided for incompatible functions that do not preserve units. The user is
 responsible for ensuring the correctness of the output.
+
+If \code{x} is not a \code{units} object
+and \code{unit} is not provided by the user,
+a warning is issued, and the output will also have no units
+(see examples).
 }
 \examples{
 x <- set_units(1:5, m)
 keep_units(drop_units, x)
+
+# An example use case is with random number generating functions:
+mu <- as_units(10, "years")
+keep_units(rnorm, n = 1, x = mu)
+
+# units can be directly specified if needed; for example, with
+# `rexp()`, the units of the rate parameter are the inverse of
+# the units of the output:
+rate <- as_units(3, "1/year")
+keep_units(rexp, n = 1, x = rate, unit = units(1/rate))
+
+# if `x` does not actually have units, a warning is issued,
+# and the output has no units:
+rate2 <- 3
+keep_units(rexp, n = 1, x = rate2)
 
 }
