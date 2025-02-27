@@ -350,7 +350,7 @@ units_eval_env$lb <- function(x) base::log(x, base = 2)
 #' @export
 #'
 #' @param check_is_valid throw an error if all the unit symbols are not either
-#'   recognized by udunits2 via \code{ud_is_parseable()}, or a custom
+#'   recognized by udunits2, or a custom
 #'   user defined via \code{install_unit()}. If \code{FALSE}, no check
 #'   for validity is performed.
 #'
@@ -362,7 +362,7 @@ units_eval_env$lb <- function(x) base::log(x, base = 2)
 #'
 #'   In \code{as_units()}, each of the symbols in the unit expression is treated
 #'   individually, such that each symbol must be recognized by the udunits
-#'   database (checked by \code{ud_is_parseable()}, \emph{or} be a custom,
+#'   database, \emph{or} be a custom,
 #'   user-defined unit symbol that was defined by \code{install_unit()}. To
 #'   see which symbols and names are currently recognized by the udunits
 #'   database, see \code{valid_udunits()}.
