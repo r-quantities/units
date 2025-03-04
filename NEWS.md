@@ -1,5 +1,7 @@
 # version 0.8-6
 
+* Add `convert_units` to convert units of a vector; #398
+
 * Add methods for `cbind` and `rbind`; fixes #311
 
 * Performance improvements in `data.frame` methods; suggested in #361 @grcatlin
