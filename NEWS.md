@@ -1,6 +1,6 @@
 # version 0.8-6
 
-* Add `convert_units` to convert units of a vector; #398
+* Add `ud_convert` to convert units of a vector; #398
 
 * Add methods for `cbind` and `rbind`; fixes #311
 
