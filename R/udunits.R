@@ -24,6 +24,24 @@ ud_are_convertible = function(x, y) {
 	! inherits(res, "try-error") && res
 }
 
+#' Convert between units
+#'
+#' Convert numeric vector from one unit to another compatible unit
+#'
+#' @param x numeric vector
+#' @param from character; unit of \code{x}
+#' @param to character; unit to convert \code{x} to
+#'
+#' @return numeric vector with \code{x} converted to new unit
+#' @export
+#'
+#' @examples
+#' ud_convert(100, "m", "km")
+#' ud_convert(32, "degF", "degC")
+ud_convert <- function(x, from, to) {
+  .Call("_units_ud_convert", PACKAGE = "units", x, from, to)
+}
+
 ud_char <- function(x) {
   if (is.character(x)) return(x)
   res <- if (length(x$numerator))
