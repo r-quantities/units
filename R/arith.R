@@ -68,12 +68,12 @@ Ops.units <- function(e1, e2) {
       stop("cannot compare non-convertible units")
 
     if (length(e1) >= length(e2)) {
-      e1 <- ud_compare(e1, e2, as.character(units(e1)), as.character(units(e2)))
+      e1 <- ud_compare(e1, e2, ud_char(units(e1)), ud_char(units(e2)))
       attr <- attributes(e2)
       e2 <- rep(0, length(e2))
       attributes(e2) <- attr
     } else {
-      e2 <- ud_compare(e2, e1, as.character(units(e2)), as.character(units(e1)))
+      e2 <- ud_compare(e2, e1, ud_char(units(e2)), ud_char(units(e1)))
       attr <- attributes(e1)
       e1 <- rep(0, length(e1))
       attributes(e1) <- attr

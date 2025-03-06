@@ -91,8 +91,8 @@
   if (identical(units(x), value)) # do nothing; possibly user-defined units:
     return(x)
 
-  str1 <- as.character(units(x))
-  str2 <- as.character(value)
+  str1 <- ud_char(units(x))
+  str2 <- ud_char(value)
 
   if (ud_are_convertible(str1, str2))
     .as.units(ud_convert(unclass(x), str1, str2), value, dim = dimx)
