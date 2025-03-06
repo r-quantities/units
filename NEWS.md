@@ -1,7 +1,5 @@
 # version 0.8-6
 
-* Add `ud_convert` to convert units of a vector; #398
-
 * Add methods for `cbind` and `rbind`; fixes #311
 
 * Performance improvements in `data.frame` methods; suggested in #361 @grcatlin
@@ -28,6 +26,8 @@
 
 * Improve `keep_units()` helper for more general usage scenarios;
   #394 @d-morrison addressing #392
+
+* Add `ud_convert()` to convert units of a vector; #399 @dlebauer addressing #398
 
 # version 0.8-5
 

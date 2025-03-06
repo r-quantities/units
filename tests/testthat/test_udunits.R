@@ -1,5 +1,15 @@
+test_that("ud_are_convertible return the expected value", {
+  x <- 1:10 * as_units("m")
+  expect_type(ud_are_convertible("m", "km"), "logical")
+  expect_true(ud_are_convertible("m", "km"))
+  expect_true(ud_are_convertible(units(x), "km"))
+  expect_false(ud_are_convertible("s", "kg"))
+})
+
 test_that("ud_convert works with simple conversions", {
+  x <- 1:10 * as_units("m")
   expect_equal(ud_convert(1, "m", "km"), 1/1000)
+  expect_equal(ud_convert(as.numeric(x), units(x), "km"), as.numeric(x)/1000)
   expect_equal(ud_convert(1, "km", "m"), 1000)
   expect_equal(ud_convert(32, "degF", "degC"), 0)
   expect_equal(ud_convert(0, "degC", "K"), 273.15)
@@ -12,15 +22,4 @@ test_that("ud_convert works with vectors", {
 
 test_that("ud_convert returns Error for incompatible units", {
   expect_error(ud_convert(100, "m", "kg"), "Units not convertible")
-})
-
-test_that("ud_convert produces same results as .Call", {
-  x <- 1:3
-  from <- "m"
-  to <- "km"
-  
-  .call_result <- .Call("_units_ud_convert", PACKAGE = "units", x, from, to)
-  fn_result <- ud_convert(x, from, to)
-  
-  expect_identical(fn_result, .call_result)
 })
