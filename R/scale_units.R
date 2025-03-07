@@ -111,10 +111,18 @@ make_scale_units <- function(parent=ggplot2::ScaleContinuousPosition) {
       as_units(new_x, units(x))
     },
 
-    make_title = function(self, title) {
-      if (!is.null(title))
-        title <- make_unit_label(title, as_units(1, self$units))
-      title
+    make_title = function(self, guide_title, scale_title, label_title) {
+      if (missing(label_title)) { # ggplot2 <= 3.5.1
+        title <- guide_title
+        if (!is.null(title))
+          title <- make_unit_label(title, as_units(1, self$units))
+        return(title)
+      }
+
+      if (!is.null(label_title))
+        label_title <- make_unit_label(label_title, as_units(1, self$units))
+      ggplot2::ggproto_parent(parent, self)$make_title(
+        guide_title, scale_title, label_title)
     }
   )
 }

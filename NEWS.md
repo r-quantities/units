@@ -29,6 +29,8 @@
 
 * Add `ud_convert()` to convert units of a vector; #399 @dlebauer addressing #398
 
+* Fix `scale_units` for upcoming version of ggplot2; #401
+
 # version 0.8-5
 
 * avoid -Wformat-security warning on CRAN
