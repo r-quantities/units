@@ -8,6 +8,7 @@
 #' for the symbol of the original unit.
 #' @param to   character or object of class \code{symbolic_units},
 #' for the symbol of the unit to convert.
+#' @param ...  unused.
 #'
 #' @return \code{ud_are_convertible}
 #' returns \code{TRUE} if both units exist and are convertible,
@@ -15,7 +16,13 @@
 #'
 #' @name udunits2
 #' @export
-ud_are_convertible <- function(from, to) {
+ud_are_convertible <- function(from, to, ...) {
+  if (length(dots <- list(...))) {
+    if (exists("x", dots)) from <- dots$x
+    if (exists("y", dots)) to   <- dots$y
+    warning("variables `x` and `y` were unfortunate names, and are deprecated",
+            "; please use `from` and `to` instead")
+  }
   ud_convertible(ud_char(from), ud_char(to))
 }
 

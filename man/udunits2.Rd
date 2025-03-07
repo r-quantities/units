@@ -6,7 +6,7 @@
 \alias{ud_convert}
 \title{\pkg{udunits2} utilities}
 \usage{
-ud_are_convertible(from, to)
+ud_are_convertible(from, to, ...)
 
 ud_convert(x, from, to)
 }
@@ -16,6 +16,8 @@ for the symbol of the original unit.}
 
 \item{to}{character or object of class \code{symbolic_units},
 for the symbol of the unit to convert.}
+
+\item{...}{unused.}
 
 \item{x}{numeric vector}
 }
