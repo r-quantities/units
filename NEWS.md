@@ -22,7 +22,7 @@
 
 * Add support for `brew` path discovery in macOS; #384
 
-* Several performance improvements; #387, #388, #393 addressing #386, #389
+* Several performance improvements; #387, #388, #393, #400 addressing #386, #389
 
 * Improve `keep_units()` helper for more general usage scenarios;
   #394 @d-morrison addressing #392
