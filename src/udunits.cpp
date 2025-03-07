@@ -128,7 +128,24 @@ IntegerVector ud_compare(NumericVector x, NumericVector y,
 }
 
 // [[Rcpp::export]]
-NumericVector ud_convert(NumericVector val, std::string from, std::string to) {
+LogicalVector ud_convertible(std::string from, std::string to) {
+  bool convertible = false;
+
+  ut_unit *u_from = ut_parse(sys, ut_trim(from.data(), enc), enc);
+  ut_unit *u_to = ut_parse(sys, ut_trim(to.data(), enc), enc);
+
+  if (u_from == NULL || u_to == NULL)
+    goto finished;  	// #nocov
+  convertible = ut_are_convertible(u_from, u_to) != 0;
+
+finished:
+  ut_free(u_from);
+  ut_free(u_to);
+  return convertible;
+}
+
+// [[Rcpp::export]]
+NumericVector ud_convert_doubles(NumericVector val, std::string from, std::string to) {
   if (val.size() == 0) return val;
 
   ut_unit *u_from = ut_parse(sys, ut_trim(from.data(), enc), enc);
@@ -220,15 +237,6 @@ CharacterVector R_ut_get_symbol(SEXP unit) {
   if (s == NULL)
     return CharacterVector::create();
   return CharacterVector::create(s);
-}
-
-// [[Rcpp::export]]
-LogicalVector R_ut_are_convertible(SEXP a, SEXP b) {
-  ut_unit *u1 = ut_unwrap(a);
-  ut_unit *u2 = ut_unwrap(b);
-  if (u1 == NULL || u2 == NULL)
-    return false;  	// #nocov
-  return ut_are_convertible(u1, u2) != 0;
 }
 
 // # nocov start

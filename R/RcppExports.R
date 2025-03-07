@@ -17,8 +17,12 @@ ud_compare <- function(x, y, xn, yn) {
     .Call('_units_ud_compare', PACKAGE = 'units', x, y, xn, yn)
 }
 
-ud_convert <- function(val, from, to) {
-    .Call('_units_ud_convert', PACKAGE = 'units', val, from, to)
+ud_convertible <- function(from, to) {
+    .Call('_units_ud_convertible', PACKAGE = 'units', from, to)
+}
+
+ud_convert_doubles <- function(val, from, to) {
+    .Call('_units_ud_convert_doubles', PACKAGE = 'units', val, from, to)
 }
 
 ud_map_names <- function(names, inunit) {
@@ -55,10 +59,6 @@ R_ut_get_name <- function(unit) {
 
 R_ut_get_symbol <- function(unit) {
     .Call('_units_R_ut_get_symbol', PACKAGE = 'units', unit)
-}
-
-R_ut_are_convertible <- function(a, b) {
-    .Call('_units_R_ut_are_convertible', PACKAGE = 'units', a, b)
 }
 
 R_ut_scale <- function(unit, factor) {
