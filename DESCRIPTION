@@ -26,6 +26,7 @@ Suggests:
     testthat (>= 3.0.0),
     vdiffr,
     knitr,
+    rvest,
     rmarkdown
 VignetteBuilder: knitr
 Description: Support for measurement units in R vectors, matrices
