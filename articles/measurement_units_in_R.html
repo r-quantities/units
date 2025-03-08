@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">units</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8-5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8-6</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -62,7 +62,7 @@
 Thomas Mailund, and James Hiebert</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/r-quantities/units/blob/v0.8-5/vignettes/measurement_units_in_R.Rmd" class="external-link"><code>vignettes/measurement_units_in_R.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/r-quantities/units/blob/v0.8-6/vignettes/measurement_units_in_R.Rmd" class="external-link"><code>vignettes/measurement_units_in_R.Rmd</code></a></small>
       <div class="d-none name"><code>measurement_units_in_R.Rmd</code></div>
     </div>
 
@@ -351,7 +351,7 @@ of fixed strings:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">m100_a</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"m"</span>, <span class="fl">100</span><span class="op">)</span>, collapse <span class="op">=</span> <span class="st">"*"</span><span class="op">)</span></span>
 <span><span class="va">dm100_b</span> <span class="op">=</span> <span class="st">"dm^100"</span></span>
-<span><span class="fu">units</span><span class="fu">::</span><span class="fu"><a href="../reference/ud_are_convertible.html">ud_are_convertible</a></span><span class="op">(</span><span class="va">m100_a</span>, <span class="va">dm100_b</span><span class="op">)</span></span>
+<span><span class="fu">units</span><span class="fu">::</span><span class="fu"><a href="../reference/udunits2.html">ud_are_convertible</a></span><span class="op">(</span><span class="va">m100_a</span>, <span class="va">dm100_b</span><span class="op">)</span></span>
 <span><span class="co">## [1] TRUE</span></span></code></pre></div>
 <p>This has the advantage that through complex computations,
 intermediate objects can have units that are arbitrarily complex, and
@@ -453,12 +453,12 @@ objects is shown by</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/methods.html" class="external-link">methods</a></span><span class="op">(</span>class <span class="op">=</span> <span class="st">"units"</span><span class="op">)</span></span>
 <span><span class="co">##  [1] [             [[            [[&lt;-          [&lt;-           all.equal    </span></span>
 <span><span class="co">##  [6] anyDuplicated as_units      as.data.frame as.Date       as.list      </span></span>
-<span><span class="co">## [11] as.POSIXct    boxplot       c             diff          drop_units   </span></span>
-<span><span class="co">## [16] duplicated    format        hist          log10         log2         </span></span>
-<span><span class="co">## [21] Math          mean          median        mixed_units   Ops          </span></span>
-<span><span class="co">## [26] plot          print         quantile      rep           seq          </span></span>
-<span><span class="co">## [31] set_units     str           summary       Summary       unique       </span></span>
-<span><span class="co">## [36] units         units&lt;-       weighted.mean</span></span>
+<span><span class="co">## [11] as.POSIXct    boxplot       c             cbind         diff         </span></span>
+<span><span class="co">## [16] drop_units    duplicated    format        hist          log10        </span></span>
+<span><span class="co">## [21] log2          Math          mean          median        mixed_units  </span></span>
+<span><span class="co">## [26] Ops           plot          print         quantile      rbind        </span></span>
+<span><span class="co">## [31] rep           seq           set_units     str           summary      </span></span>
+<span><span class="co">## [36] Summary       unique        units         units&lt;-       weighted.mean</span></span>
 <span><span class="co">## see '?methods' for accessing help and source code</span></span></code></pre></div>
 <p>where the method groups</p>
 <ul>
@@ -525,12 +525,7 @@ automatic unit placement in default axis label is also provided;
 <p><img src="measurement_units_in_R_files/figure-html/unnamed-chunk-21-1.png" width="672"></p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="va">displacement</span>, y <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="va">consumption</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">## Warning: The `scale_name` argument of `continuous_scale()` is deprecated as of ggplot2</span></span>
-<span><span class="co">## 3.5.0.</span></span>
-<span><span class="co">## <span style="color: #555555;">This warning is displayed once every 8 hours.</span></span></span>
-<span><span class="co">## <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
-<span><span class="co">## <span style="color: #555555;">generated.</span></span></span></code></pre></div>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="va">displacement</span>, y <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="va">consumption</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="measurement_units_in_R_files/figure-html/unnamed-chunk-22-1.png" width="672"></p>
 <p>Automatic conversion between <code>units</code> and
 <code>difftime</code> is provided:</p>
@@ -546,11 +541,11 @@ automatic unit placement in default axis label is also provided;
 <p>as well as to and from <code>POSIXct</code> or <code>Date</code>:</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">t1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/units.html">as_units</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="st">"2017-08-20 17:03:00"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">## 1503248580 [(seconds since 1970-01-01 00:00:00 +00:00)]</span></span>
+<span><span class="co">## 1503248580 [seconds since 1970-01-01 00:00:00 +00:00]</span></span>
 <span><span class="op">(</span><span class="va">t2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/units.html">as_units</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="st">"2017-08-20 17:03:00"</span><span class="op">)</span>, <span class="st">"hours since 2017-08-20"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">## 17.05 [(hours since 2017-08-20)]</span></span>
+<span><span class="co">## 17.05 [hours since 2017-08-20]</span></span>
 <span><span class="op">(</span><span class="va">d1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/units.html">as_units</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2017-08-20"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">## 17398 [(days since 1970-01-01)]</span></span>
+<span><span class="co">## 17398 [days since 1970-01-01]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="va">t1</span><span class="op">)</span></span>
 <span><span class="co">## [1] "2017-08-20 17:03:00 UTC"</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="va">d1</span><span class="op">)</span></span>

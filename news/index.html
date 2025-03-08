@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">units</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8-5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8-6</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,9 +34,27 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/r-quantities/units/blob/v0.8-5/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/r-quantities/units/blob/v0.8-6/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.8-6" id="version-08-6">version 0.8-6<a class="anchor" aria-label="anchor" href="#version-08-6"></a></h2><p class="text-muted">CRAN release: 2025-03-07</p>
+<ul><li><p>Add methods for <code>cbind</code> and <code>rbind</code>; fixes <a href="https://github.com/r-quantities/units/issues/311" class="external-link">#311</a></p></li>
+<li><p>Performance improvements in <code>data.frame</code> methods; suggested in <a href="https://github.com/r-quantities/units/issues/361" class="external-link">#361</a> <a href="https://github.com/grcatlin" class="external-link">@grcatlin</a></p></li>
+<li><p>Fix <code>weighted.mean.units</code> for unitless objects; <a href="https://github.com/r-quantities/units/issues/363" class="external-link">#363</a></p></li>
+<li><p>Fix incorrect use of <code><a href="https://rdrr.io/r/base/Round.html" class="external-link">round()</a></code> in <code>%%</code> and <code>%/%</code> methods; <a href="https://github.com/r-quantities/units/issues/365" class="external-link">#365</a> <a href="https://github.com/UchidaMizuki" class="external-link">@UchidaMizuki</a></p></li>
+<li><p>Fix <code>ggplot2</code> deprecation warnings; <a href="https://github.com/r-quantities/units/issues/367" class="external-link">#367</a></p></li>
+<li><p>Fix <code><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist()</a></code> error; <a href="https://github.com/r-quantities/units/issues/368" class="external-link">#368</a></p></li>
+<li><p>Add support for <code><a href="https://ggplot2.tidyverse.org/reference/lims.html" class="external-link">lims()</a></code> in <code>ggplot2</code> scales; <a href="https://github.com/r-quantities/units/issues/370" class="external-link">#370</a></p></li>
+<li><p>Fix simplification of inverse units; <a href="https://github.com/r-quantities/units/issues/378" class="external-link">#378</a></p></li>
+<li><p>Replace call to <code>Rf_error()</code> with <code>Rcpp::stop()</code>; RcppCore/Rcpp#1247</p></li>
+<li><p>Fix UBs in the C++ glue code; <a href="https://github.com/r-quantities/units/issues/380" class="external-link">#380</a></p></li>
+<li><p>Add support for <code>brew</code> path discovery in macOS; <a href="https://github.com/r-quantities/units/issues/384" class="external-link">#384</a></p></li>
+<li><p>Several performance improvements; <a href="https://github.com/r-quantities/units/issues/387" class="external-link">#387</a>, <a href="https://github.com/r-quantities/units/issues/388" class="external-link">#388</a>, <a href="https://github.com/r-quantities/units/issues/393" class="external-link">#393</a>, <a href="https://github.com/r-quantities/units/issues/400" class="external-link">#400</a> addressing <a href="https://github.com/r-quantities/units/issues/386" class="external-link">#386</a>, <a href="https://github.com/r-quantities/units/issues/389" class="external-link">#389</a></p></li>
+<li><p>Improve <code><a href="../reference/keep_units.html">keep_units()</a></code> helper for more general usage scenarios; <a href="https://github.com/r-quantities/units/issues/394" class="external-link">#394</a> <a href="https://github.com/d-morrison" class="external-link">@d-morrison</a> addressing <a href="https://github.com/r-quantities/units/issues/392" class="external-link">#392</a></p></li>
+<li><p>Add <code><a href="../reference/udunits2.html">ud_convert()</a></code> to convert units of a vector; <a href="https://github.com/r-quantities/units/issues/399" class="external-link">#399</a> <a href="https://github.com/dlebauer" class="external-link">@dlebauer</a> addressing <a href="https://github.com/r-quantities/units/issues/398" class="external-link">#398</a></p></li>
+<li><p>Fix <code>scale_units</code> for upcoming version of ggplot2; <a href="https://github.com/r-quantities/units/issues/401" class="external-link">#401</a></p></li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.8-5" id="version-08-5">version 0.8-5<a class="anchor" aria-label="anchor" href="#version-08-5"></a></h2><p class="text-muted">CRAN release: 2023-11-28</p>
 <ul><li>avoid -Wformat-security warning on CRAN</li>

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">units</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8-5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8-6</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,7 +34,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Create or convert to a mixed units list-column</h1>
-      <small class="dont-index">Source: <a href="https://github.com/r-quantities/units/blob/v0.8-5/R/mixed.R" class="external-link"><code>R/mixed.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/r-quantities/units/blob/v0.8-6/R/mixed.R" class="external-link"><code>R/mixed.R</code></a></small>
       <div class="d-none name"><code>mixed_units.Rd</code></div>
     </div>
 
@@ -80,7 +80,7 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span></span></span>
 <span class="r-in"><span><span class="va">u</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"m/s"</span>, <span class="st">"km/h"</span>, <span class="st">"mg/L"</span>, <span class="st">"g"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">mixed_units</span><span class="op">(</span><span class="va">a</span>, <span class="va">u</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Mixed units: g (1), km/h (1), m/s (1), mg/L (1) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Mixed units: m/s (1), km/h (1), mg/L (1), g (1) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 [m/s], 2 [km/h], 3 [mg/L], 4 [g] </span>
 <span class="r-in"><span><span class="fu"><a href="units.html">units</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span> <span class="op">=</span> <span class="fu"><a href="units.html">as_units</a></span><span class="op">(</span><span class="st">"m/s"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">mixed_units</span><span class="op">(</span><span class="va">a</span><span class="op">)</span> <span class="co"># converts to mixed representation</span></span></span>

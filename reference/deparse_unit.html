@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">units</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8-5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8-6</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,7 +34,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>deparse unit to string in product power form (e.g. km m-2 s-1)</h1>
-      <small class="dont-index">Source: <a href="https://github.com/r-quantities/units/blob/v0.8-5/R/misc.R" class="external-link"><code>R/misc.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/r-quantities/units/blob/v0.8-6/R/misc.R" class="external-link"><code>R/misc.R</code></a></small>
       <div class="d-none name"><code>deparse_unit.Rd</code></div>
     </div>
 
@@ -62,7 +62,7 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">u</span> <span class="op">=</span> <span class="fu"><a href="units.html">as_units</a></span><span class="op">(</span><span class="st">"kg m-2 s-1"</span>, implicit_exponents <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">u</span> <span class="op">=</span> <span class="fu"><a href="units.html">as_units</a></span><span class="op">(</span><span class="st">"kg m-2 s-1"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">u</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 [kg/m^2/s]</span>
 <span class="r-in"><span><span class="fu">deparse_unit</span><span class="op">(</span><span class="va">u</span><span class="op">)</span></span></span>

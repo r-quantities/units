@@ -10,6 +10,7 @@
 <url><loc>/reference/Ops.units.html</loc></url>
 <url><loc>/reference/as_difftime.html</loc></url>
 <url><loc>/reference/boxplot.units.html</loc></url>
+<url><loc>/reference/cbind.units.html</loc></url>
 <url><loc>/reference/deparse_unit.html</loc></url>
 <url><loc>/reference/drop_units.html</loc></url>
 <url><loc>/reference/hist.units.html</loc></url>
@@ -21,7 +22,7 @@
 <url><loc>/reference/plot.units.html</loc></url>
 <url><loc>/reference/scale_units.html</loc></url>
 <url><loc>/reference/seq.units.html</loc></url>
-<url><loc>/reference/ud_are_convertible.html</loc></url>
+<url><loc>/reference/udunits2.html</loc></url>
 <url><loc>/reference/unitless.html</loc></url>
 <url><loc>/reference/units-defunct.html</loc></url>
 <url><loc>/reference/units.html</loc></url>

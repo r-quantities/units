@@ -37,7 +37,7 @@ set_units, a pipe-friendly version of `units&amp;lt;-`. By
 
     <a class="navbar-brand me-2" href="../index.html">units</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8-5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8-6</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,7 +64,7 @@ set_units, a pipe-friendly version of `units&amp;lt;-`. By
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Handle measurement units</h1>
-      <small class="dont-index">Source: <a href="https://github.com/r-quantities/units/blob/v0.8-5/R/conversion.R" class="external-link"><code>R/conversion.R</code></a>, <a href="https://github.com/r-quantities/units/blob/v0.8-5/R/make_units.R" class="external-link"><code>R/make_units.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/r-quantities/units/blob/v0.8-6/R/conversion.R" class="external-link"><code>R/conversion.R</code></a>, <a href="https://github.com/r-quantities/units/blob/v0.8-6/R/make_units.R" class="external-link"><code>R/make_units.R</code></a></small>
       <div class="d-none name"><code>units.Rd</code></div>
     </div>
 
@@ -170,7 +170,7 @@ syntax (reserved R syntax words like <code>in</code> must be backticked)</p></dd
 
 <dt id="arg-check-is-valid">check_is_valid<a class="anchor" aria-label="anchor" href="#arg-check-is-valid"></a></dt>
 <dd><p>throw an error if all the unit symbols are not either
-recognized by udunits2 via <code>ud_is_parseable()</code>, or a custom
+recognized by udunits2, or a custom
 user defined via <code><a href="install_unit.html">install_unit()</a></code>. If <code>FALSE</code>, no check
 for validity is performed.</p></dd>
 
@@ -260,7 +260,7 @@ value is ignored unless <code>units_options("simplifiy")</code> is <code>TRUE</c
 
 <p>In <code>as_units()</code>, each of the symbols in the unit expression is treated
   individually, such that each symbol must be recognized by the udunits
-  database (checked by <code>ud_is_parseable()</code>, <em>or</em> be a custom,
+  database, <em>or</em> be a custom,
   user-defined unit symbol that was defined by <code><a href="install_unit.html">install_unit()</a></code>. To
   see which symbols and names are currently recognized by the udunits
   database, see <code><a href="valid_udunits.html">valid_udunits()</a></code>.</p>
@@ -287,7 +287,7 @@ value is ignored unless <code>units_options("simplifiy")</code> is <code>TRUE</c
 <span class="r-in"><span><span class="co"># convert to a mixed_units object:</span></span></span>
 <span class="r-in"><span><span class="fu">units</span><span class="op">(</span><span class="va">a</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"m/s"</span>, <span class="st">"km/h"</span>, <span class="st">"km/h"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">a</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Mixed units: km*h^-1 (2), m*s^-1 (1) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Mixed units: m*s^-1 (1), km*h^-1 (2) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 [m*s^-1], 7.2 [km*h^-1], 10.8 [km*h^-1] </span>
 <span class="r-in"><span><span class="co"># The easiest way to assign units to a numeric vector is like this:</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">y</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span></span></span>
