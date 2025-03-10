@@ -21,8 +21,8 @@ ud_convertible <- function(from, to) {
     .Call('_units_ud_convertible', PACKAGE = 'units', from, to)
 }
 
-ud_convert_doubles <- function(val, from, to) {
-    .Call('_units_ud_convert_doubles', PACKAGE = 'units', val, from, to)
+ud_convert_doubles <- function(x, from, to) {
+    .Call('_units_ud_convert_doubles', PACKAGE = 'units', x, from, to)
 }
 
 ud_map_names <- function(names, inunit) {

@@ -66,15 +66,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // ud_convert_doubles
-NumericVector ud_convert_doubles(NumericVector val, std::string from, std::string to);
-RcppExport SEXP _units_ud_convert_doubles(SEXP valSEXP, SEXP fromSEXP, SEXP toSEXP) {
+NumericVector ud_convert_doubles(NumericVector x, std::string from, std::string to);
+RcppExport SEXP _units_ud_convert_doubles(SEXP xSEXP, SEXP fromSEXP, SEXP toSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type val(valSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
     Rcpp::traits::input_parameter< std::string >::type from(fromSEXP);
     Rcpp::traits::input_parameter< std::string >::type to(toSEXP);
-    rcpp_result_gen = Rcpp::wrap(ud_convert_doubles(val, from, to));
+    rcpp_result_gen = Rcpp::wrap(ud_convert_doubles(x, from, to));
     return rcpp_result_gen;
 END_RCPP
 }

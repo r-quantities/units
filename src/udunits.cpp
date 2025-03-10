@@ -145,19 +145,20 @@ finished:
 }
 
 // [[Rcpp::export]]
-NumericVector ud_convert_doubles(NumericVector val, std::string from, std::string to) {
-  if (val.size() == 0) return val;
+NumericVector ud_convert_doubles(NumericVector x, std::string from, std::string to) {
+  if (x.size() == 0) return x;
+  NumericVector out = clone(x);
 
   ut_unit *u_from = ut_parse(sys, ut_trim(from.data(), enc), enc);
   ut_unit *u_to = ut_parse(sys, ut_trim(to.data(), enc), enc);
 
   cv_converter *cv = ut_get_converter(u_from, u_to);
-  cv_convert_doubles(cv, &(val[0]), val.size(), &(val[0]));
+  cv_convert_doubles(cv, &(x[0]), x.size(), &(out[0]));
 
   cv_free(cv);
   ut_free(u_from);
   ut_free(u_to);
-  return val;
+  return out;
 }
 
 // [[Rcpp::export]]

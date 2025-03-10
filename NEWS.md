@@ -1,5 +1,7 @@
 # version 0.8-7
 
+* Deep copy of `ud_convert()` input to avoid side effects; #403
+
 # version 0.8-6
 
 * Add methods for `cbind` and `rbind`; fixes #311
