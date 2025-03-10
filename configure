@@ -643,6 +643,7 @@ ac_header_cxx_list=
 ac_subst_vars='LTLIBOBJS
 UDUNITS2_DIR
 UD_CPPFLAGS
+CXX_STD
 BREW
 ac_ct_CC
 CFLAGS
@@ -2580,6 +2581,13 @@ ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ex
 ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
 
+STD_VER=`$CXX -dM -E -x c++ /dev/null | grep -F __cplusplus | sed 's/.* //' | sed 's/L//'`
+printf %s "checking for default C++ standard... $STD_VER" >&6
+if test  $STD_VER -lt 201703  ; then
+    printf %s ", setting 201703" >&6
+    CXX_STD="CXX_STD = CXX17"
+fi; echo ""
+
 
 
 
@@ -4367,6 +4375,7 @@ as_fn_error $? "
 --------------------------------------------------------------------------------
 
 See 'config.log' for more details" "$LINENO" 5; } fi
+
 
 
 

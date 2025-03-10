@@ -2,6 +2,8 @@
 
 * Deep copy of `ud_convert()` input to avoid side effects; #403
 
+* Set C++17 standard for old versions of R; #402
+
 # version 0.8-6
 
 * Add methods for `cbind` and `rbind`; fixes #311

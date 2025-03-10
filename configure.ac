@@ -15,6 +15,13 @@ CXX=`"${R_HOME}/bin/R" CMD config CXX`
 CXXFLAGS=`"${R_HOME}/bin/R" CMD config CXXFLAGS`
 AC_LANG(C++)
 
+STD_VER=`$CXX -dM -E -x c++ /dev/null | grep -F __cplusplus | sed 's/.* //' | sed 's/L//'`
+printf %s "checking for default C++ standard... $STD_VER" >&6
+if test [ $STD_VER -lt 201703 ] ; then
+    printf %s ", setting 201703" >&6
+    CXX_STD="CXX_STD = CXX17"
+fi; echo ""
+
 AC_CHECK_HEADER_STDBOOL
 AC_FUNC_ERROR_AT_LINE
 AC_PREREQ
@@ -74,6 +81,7 @@ if test "${UD_ERROR}" != ""  ; then AC_MSG_FAILURE([
 --------------------------------------------------------------------------------
 ]) fi
 
+AC_SUBST([CXX_STD])
 AC_SUBST([LIBS])
 AC_SUBST([UD_CPPFLAGS])
 AC_SUBST([UDUNITS2_DIR])
