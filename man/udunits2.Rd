@@ -11,11 +11,8 @@ ud_are_convertible(from, to, ...)
 ud_convert(x, from, to)
 }
 \arguments{
-\item{from}{character or object of class \code{symbolic_units},
-for the symbol of the original unit.}
-
-\item{to}{character or object of class \code{symbolic_units},
-for the symbol of the unit to convert.}
+\item{from, to}{character vector or object of class \code{symbolic_units},
+for the symbol(s) of the original unit(s) and the unit to convert to respectively.}
 
 \item{...}{unused.}
 
@@ -33,10 +30,11 @@ returns a numeric vector with \code{x} converted to new unit.
 Some \pkg{udunits2} utilities are exposed to the user. These functions are
 useful for checking whether units are convertible or converting between units
 without having to create \pkg{units} objects.
+Arguments are recycled if necessary.
 }
 \examples{
-ud_are_convertible("m", "km")
-ud_convert(100, "m", "km")
+ud_are_convertible(c("m", "mm"), "km")
+ud_convert(c(100, 100000), c("m", "mm"), "km")
 
 a <- set_units(1:3, m/s)
 ud_are_convertible(units(a), "km/h")
