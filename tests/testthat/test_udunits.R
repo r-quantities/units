@@ -4,6 +4,12 @@ test_that("ud_are_convertible return the expected value", {
   expect_true(ud_are_convertible("m", "km"))
   expect_true(ud_are_convertible(units(x), "km"))
   expect_false(ud_are_convertible("s", "kg"))
+
+  x <- c("m", "l")
+  y <- c("km", "ml", "cm", "kg")
+  conv <- c(TRUE, TRUE, TRUE, FALSE)
+  expect_equal(ud_are_convertible(x, y), conv)
+  expect_equal(ud_are_convertible(y, x), conv)
 })
 
 test_that("ud_convert works with simple conversions", {
@@ -16,7 +22,7 @@ test_that("ud_convert works with simple conversions", {
 })
 
 test_that("ud_convert works with vectors", {
-  expect_equal(ud_convert(1:2, "m", "km"), 1:2/1000)
+  expect_equal(ud_convert(1:2, c("m", "mm"), "km"), 1:2/c(1e3,1e6))
   expect_equal(ud_convert(c(32, 212), "degF", "degC"), c(0, 100))
 })
 

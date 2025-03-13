@@ -3,11 +3,10 @@
 #' Some \pkg{udunits2} utilities are exposed to the user. These functions are
 #' useful for checking whether units are convertible or converting between units
 #' without having to create \pkg{units} objects.
+#' Arguments are recycled if necessary.
 #'
-#' @param from character or object of class \code{symbolic_units},
-#' for the symbol of the original unit.
-#' @param to   character or object of class \code{symbolic_units},
-#' for the symbol of the unit to convert.
+#' @param from,to character vector or object of class \code{symbolic_units},
+#' for the symbol(s) of the original unit(s) and the unit to convert to respectively.
 #' @param ...  unused.
 #'
 #' @return \code{ud_are_convertible}
@@ -23,7 +22,7 @@ ud_are_convertible <- function(from, to, ...) {
     warning("variables `x` and `y` were unfortunate names, and are deprecated",
             "; please use `from` and `to` instead")
   }
-  ud_convertible(ud_char(from), ud_char(to))
+  mapply(ud_convertible, ud_char(from), ud_char(to), USE.NAMES=FALSE)
 }
 
 #' @param x numeric vector
@@ -35,8 +34,8 @@ ud_are_convertible <- function(from, to, ...) {
 #' @export
 #'
 #' @examples
-#' ud_are_convertible("m", "km")
-#' ud_convert(100, "m", "km")
+#' ud_are_convertible(c("m", "mm"), "km")
+#' ud_convert(c(100, 100000), c("m", "mm"), "km")
 #'
 #' a <- set_units(1:3, m/s)
 #' ud_are_convertible(units(a), "km/h")
@@ -45,7 +44,7 @@ ud_are_convertible <- function(from, to, ...) {
 #' ud_are_convertible("degF", "degC")
 #' ud_convert(32, "degF", "degC")
 ud_convert <- function(x, from, to) {
-  ud_convert_doubles(x, ud_char(from), ud_char(to))
+  mapply(ud_convert_doubles, x, ud_char(from), ud_char(to))
 }
 
 ud_char <- function(x) {
