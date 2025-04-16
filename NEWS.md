@@ -2,6 +2,8 @@
 
 * Vectorize `ud_*()` helpers; #405 addressing #404
 
+* Loading units no longer initializes the RNG state; #409
+
 # version 0.8-7
 
 * Deep copy of `ud_convert()` input to avoid side effects; #403

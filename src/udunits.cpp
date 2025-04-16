@@ -44,14 +44,14 @@ ut_unit *ut_unwrap(SEXP u) {
 
 /* High-level functions *******************************************************/
 
-// [[Rcpp::export]]
+// [[Rcpp::export(rng=false)]]
 void ud_exit() {
   R_gc();
   ut_free_system(sys);
   sys = NULL;
 }
 
-// [[Rcpp::export]]
+// [[Rcpp::export(rng=false)]]
 void ud_init(CharacterVector path) {
   ut_set_error_message_handler(ut_ignore);
   ud_exit();
@@ -66,7 +66,7 @@ void ud_init(CharacterVector path) {
     stop("no database found!"); // #nocov
 }
 
-// [[Rcpp::export]]
+// [[Rcpp::export(rng=false)]]
 void ud_set_encoding(std::string enc_str) {
   if (enc_str.compare("utf8") == 0)
     enc = UT_UTF8;
@@ -78,7 +78,7 @@ void ud_set_encoding(std::string enc_str) {
     stop("Valid encoding string parameters are ('utf8'|'ascii'|'iso-8859-1','latin1')");
 }
 
-// [[Rcpp::export]]
+// [[Rcpp::export(rng=false)]]
 IntegerVector ud_compare(NumericVector x, NumericVector y,
                          std::string xn, std::string yn)
 {
@@ -127,7 +127,7 @@ IntegerVector ud_compare(NumericVector x, NumericVector y,
   return out;
 }
 
-// [[Rcpp::export]]
+// [[Rcpp::export(rng=false)]]
 LogicalVector ud_convertible(std::string from, std::string to) {
   bool convertible = false;
 
@@ -144,7 +144,7 @@ finished:
   return convertible;
 }
 
-// [[Rcpp::export]]
+// [[Rcpp::export(rng=false)]]
 NumericVector ud_convert_doubles(NumericVector x, std::string from, std::string to) {
   if (x.size() == 0) return x;
   NumericVector out = clone(x);
@@ -161,7 +161,7 @@ NumericVector ud_convert_doubles(NumericVector x, std::string from, std::string 
   return out;
 }
 
-// [[Rcpp::export]]
+// [[Rcpp::export(rng=false)]]
 void ud_map_names(CharacterVector names, SEXP inunit) {
   if (!names.size()) return;
 
@@ -171,7 +171,7 @@ void ud_map_names(CharacterVector names, SEXP inunit) {
   ut_map_unit_to_name(unit, ut_trim(names[0], enc), enc);
 }
 
-// [[Rcpp::export]]
+// [[Rcpp::export(rng=false)]]
 void ud_unmap_names(CharacterVector names) {
   if (!names.size()) return;
 
@@ -182,7 +182,7 @@ void ud_unmap_names(CharacterVector names) {
     ut_unmap_name_to_unit(sys, ut_trim(names[i], enc), enc);
 }
 
-// [[Rcpp::export]]
+// [[Rcpp::export(rng=false)]]
 void ud_map_symbols(CharacterVector symbols, SEXP inunit) {
   if (!symbols.size()) return;
 
@@ -192,7 +192,7 @@ void ud_map_symbols(CharacterVector symbols, SEXP inunit) {
   ut_map_unit_to_symbol(unit, ut_trim(symbols[0], enc), enc);
 }
 
-// [[Rcpp::export]]
+// [[Rcpp::export(rng=false)]]
 void ud_unmap_symbols(CharacterVector symbols) {
   if (!symbols.size()) return;
 
@@ -207,24 +207,24 @@ void ud_unmap_symbols(CharacterVector symbols) {
 
 // # nocov start
 
-// [[Rcpp::export]]
+// [[Rcpp::export(rng=false)]]
 SEXP R_ut_get_dimensionless_unit_one() {
   return ut_wrap(ut_get_dimensionless_unit_one(sys));
 }
 
 // # nocov end
 
-// [[Rcpp::export]]
+// [[Rcpp::export(rng=false)]]
 SEXP R_ut_new_base_unit() {
   return ut_wrap(ut_new_base_unit(sys));
 }
 
-// [[Rcpp::export]]
+// [[Rcpp::export(rng=false)]]
 SEXP R_ut_new_dimensionless_unit() {
   return ut_wrap(ut_new_dimensionless_unit(sys));
 }
 
-// [[Rcpp::export]]
+// [[Rcpp::export(rng=false)]]
 CharacterVector R_ut_get_name(SEXP unit) {
   const char *s = ut_get_name(ut_unwrap(unit), enc);
   if (s == NULL)
@@ -232,7 +232,7 @@ CharacterVector R_ut_get_name(SEXP unit) {
   return CharacterVector::create(s); // #nocov
 }
 
-// [[Rcpp::export]]
+// [[Rcpp::export(rng=false)]]
 CharacterVector R_ut_get_symbol(SEXP unit) {
   const char *s = ut_get_symbol(ut_unwrap(unit), enc);
   if (s == NULL)
@@ -242,49 +242,49 @@ CharacterVector R_ut_get_symbol(SEXP unit) {
 
 // # nocov start
 
-// [[Rcpp::export]]
+// [[Rcpp::export(rng=false)]]
 SEXP R_ut_scale(SEXP unit, double factor) {
   return ut_wrap(ut_scale(factor, ut_unwrap(unit)));
 }
 
-// [[Rcpp::export]]
+// [[Rcpp::export(rng=false)]]
 SEXP R_ut_offset(SEXP unit, double origin) {
   return ut_wrap(ut_offset(ut_unwrap(unit), origin));
 }
 
-// [[Rcpp::export]]
+// [[Rcpp::export(rng=false)]]
 SEXP R_ut_multiply(SEXP a, SEXP b) {
   return ut_wrap(ut_multiply(ut_unwrap(a), ut_unwrap(b)));
 }
 
-// [[Rcpp::export]]
+// [[Rcpp::export(rng=false)]]
 SEXP R_ut_invert(SEXP a) {
   return ut_wrap(ut_invert(ut_unwrap(a)));
 }
 
-// [[Rcpp::export]]
+// [[Rcpp::export(rng=false)]]
 SEXP R_ut_divide(SEXP numer, SEXP denom) {
   return ut_wrap(ut_divide(ut_unwrap(numer), ut_unwrap(denom)));
 }
 
-// [[Rcpp::export]]
+// [[Rcpp::export(rng=false)]]
 SEXP R_ut_raise(SEXP a, int i) {
   return ut_wrap(ut_raise(ut_unwrap(a), i));
 }
 
-// [[Rcpp::export]]
+// [[Rcpp::export(rng=false)]]
 SEXP R_ut_root(SEXP a, int i) {
   return ut_wrap(ut_root(ut_unwrap(a), i));
 }
 
 // # nocov end
 
-// [[Rcpp::export]]
+// [[Rcpp::export(rng=false)]]
 SEXP R_ut_log(SEXP a, double base) {
   return ut_wrap(ut_log(base, ut_unwrap(a)));
 }
 
-// [[Rcpp::export]]
+// [[Rcpp::export(rng=false)]]
 SEXP R_ut_parse(std::string name) {
   ut_unit *u = ut_parse(sys, ut_trim(name.data(), enc), enc);
   if (u == NULL)
@@ -292,7 +292,7 @@ SEXP R_ut_parse(std::string name) {
   return ut_wrap(u);
 }
 
-// [[Rcpp::export]]
+// [[Rcpp::export(rng=false)]]
 CharacterVector R_ut_format(SEXP p, bool names = false, bool definition = false,
                             bool ascii = false)
 {
