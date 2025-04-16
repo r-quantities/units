@@ -6,6 +6,18 @@
 NULL
 
 .onLoad = function(libname, pkgname) {
+  ## Avoid updating the RNG state
+  rng <- .GlobalEnv[[".Random.seed"]]
+  on.exit({
+    if (is.null(rng)) {
+      if (exists(".Random.seed", envir = .GlobalEnv, inherits = FALSE)) {
+        rm(".Random.seed", envir = .GlobalEnv, inherits = FALSE)
+      }
+    } else {
+      .GlobalEnv[[".Random.seed"]] <- rng
+    }
+  })
+  
   load_units_xml()
 
   if (ud_is_parseable("B"))
