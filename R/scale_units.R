@@ -88,14 +88,24 @@ make_scale_units <- function(parent=ggplot2::ScaleContinuousPosition) {
     parent,
     units = NULL,
 
+    set_convert = function(self, x) {
+      if (!inherits(x, "units"))
+        return(x)
+
+      if (is.null(self$units))
+        self$units <- units(x)
+      else units(x) <- as_units(1, self$units)
+      drop_units(x)
+    },
+
     map = function(self, x, limits = self$get_limits()) {
-      if (inherits(x, "units")) {
-        if (is.null(self$units))
-          self$units <- units(x)
-        else units(x) <- as_units(1, self$units)
-        x <- drop_units(x)
-      }
+      x <- self$set_convert(x)
       ggplot2::ggproto_parent(parent, self)$map(x, limits)
+    },
+
+    train = function(self, x) {
+      x <- self$set_convert(x)
+      ggplot2::ggproto_parent(parent, self)$train(x)
     },
 
     transform = function(self, x) {

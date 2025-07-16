@@ -4,6 +4,8 @@
 
 * Loading units no longer initializes the RNG state; #409
 
+* Fix scale training in `ggplot2` scales; #412
+
 # version 0.8-7
 
 * Deep copy of `ud_convert()` input to avoid side effects; #403

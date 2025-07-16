@@ -98,4 +98,24 @@ test_that("axis limits can be changed", {
   vdiffr::expect_doppelganger("ggplot2 limits other units", p4)
 })
 
+test_that("ranges are correctly computed", {
+  skip_if_not_installed("vdiffr")
+  skip_if_not_installed("ggplot2", "3.5.0")
+  library(ggplot2)
+
+  p0 <- data.frame(x = 0, y = make_units(m) * c(1, 2)) |>
+    ggplot() + aes(x, y) + geom_point()
+
+  p <- data.frame(x = 0, y = make_units(m) * 1) |>
+    ggplot() + aes(x, y) + geom_point()
+  p1 <- p + geom_point(data = data.frame(x = 0, y = make_units(mm) * 2000))
+  p2 <- p + geom_point(data = data.frame(x = 0, y = make_units(m)  * 2))
+  p3 <- p + geom_point(data = data.frame(x = 0, y = make_units(km) * 0.002))
+
+  vdiffr::expect_doppelganger("ggplot2 range", p0)
+  vdiffr::expect_doppelganger("ggplot2 range", p1)
+  vdiffr::expect_doppelganger("ggplot2 range", p2)
+  vdiffr::expect_doppelganger("ggplot2 range", p3)
+})
+
 do.call(units_options, units:::.default_options)
