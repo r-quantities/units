@@ -112,7 +112,8 @@
   if (!all(is.na(x)))
     stop("x must be numeric, non-NA logical not supported")
 
-  x <- as.numeric(x)
+  # x <- as.numeric(x) ## see https://github.com/r-quantities/units/issues/413
+  storage.mode(x) = "numeric"
   units(x) <- value
   x
 }
