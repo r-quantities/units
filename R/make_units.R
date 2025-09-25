@@ -190,10 +190,17 @@ as_units.difftime <- function(x, value, ...) {
 #  ----- as_units.character helpers ------
 
 backtick <- function(x) {
-  # backtick all character runs uninterupted by one of ^()*^/`- or a space
-  # don't double up backticks
+  if (!length(x)) return(x)
+  # Protect scientific notation with negative exponents so the '-' is not
+  # interpreted as a separator (e.g. 1e-6 should remain one numeric token and
+  # not become `1e` - 6). We temporarily swap the minus for a placeholder.
+  x <- gsub("([+-]?\\d+(?:\\.\\d+)?[eE])-(\\d+)", "\\1MINUSPLACEHOLDER\\2", x, perl = TRUE)
+  # Backtick runs not containing control symbols; avoid backticking pure numbers
   x <- gsub("`?([^() \\*^/`-]+)`?", "`\\1`", x)
-  gsub("`([0-9]*\\.?[0-9]+)`", "\\1", x) # unbacktick bare numbers
+  x <- gsub("`([0-9]*\\.?[0-9]+)`", "\\1", x)
+  # Restore placeholder to minus inside scientific notation
+  x <- gsub("([+-]?\\d+(?:\\.\\d+)?[eE])MINUSPLACEHOLDER(\\d+)", "\\1-\\2", x, perl = TRUE)
+  x
 }
 
 are_exponents_implicit <- function(s) {
@@ -279,6 +286,26 @@ as_units.character <- function(x,
 
   if(force_single_symbol || is_udunits_time(x))
     return(symbolic_unit(x, check_is_valid = check_is_valid))
+
+  # Detect leading numeric (including scientific) followed by space and a unit token.
+  # Instead of relying on parsing the multiplication expression (which may
+  # be brittle with edge cases in backticking), short‑circuit by splitting
+  # and returning numeric * unit directly.
+  m <- regexec("^([+-]?\\d+(?:\\.\\d+)?(?:[eE][+-]?\\d+)?)[[:space:]]+([^[:space:]].*)$", x, perl = TRUE)
+  regm <- regmatches(x, m)[[1]]
+  if (length(regm)) {
+    leading_num <- regm[2]
+    rest <- regm[3]
+    # Recursively parse the remainder as a unit (force_single_symbol = FALSE so full syntax works)
+    # but guard against infinite recursion by ensuring rest != original x
+    if (nzchar(rest)) {
+      # parse the unit part without triggering numeric split again
+      unit_part <- as_units.character(rest, check_is_valid = check_is_valid,
+                                      implicit_exponents = implicit_exponents,
+                                      force_single_symbol = force_single_symbol, ...)
+      return(as.numeric(leading_num) * unit_part)
+    }
+  }
 
   if(is.null(implicit_exponents))
     implicit_exponents <- are_exponents_implicit(x)
