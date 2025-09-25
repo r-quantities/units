@@ -1,3 +1,16 @@
+
+test_that("leading scientific numeric with space before unit parses correctly", {
+  a <- as_units("1e-6 m")
+  b <- as_units("1e6 m")
+  expect_equal(as.numeric(a), 1e-6)
+  expect_equal(units(a), units(as_units("m")))
+  expect_equal(as.numeric(b), 1e6)
+  expect_equal(units(b), units(as_units("m")))
+  # Multiplication preserves magnitude
+  a2 <- a * 1.5
+  expect_equal(as.numeric(a2), 1.5e-6)
+  expect_equal(units(a2), units(a))
+})
 test_that("we can convert numbers to unit-less units", {
   x <- as_units(1:4)
   expect_equal(length(x), 4)
