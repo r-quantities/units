@@ -289,7 +289,7 @@ as_units.character <- function(x, ...,
   if(force_single_symbol || is_udunits_time(x))
     return(symbolic_unit(x, check_is_valid = check_is_valid))
 
-  o <- try(su <- parse_unit(x), silent = TRUE)
+  o <- try(su <- parse_unit(x, units_options("strict_tokenizer")), silent=TRUE)
   if(inherits(o, "try-error")) {
     warning("Could not parse expression: ", sQuote(x),                # nocov
             ". Returning as a single symbolic unit()", call. = FALSE) # nocov

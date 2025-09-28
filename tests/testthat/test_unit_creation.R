@@ -148,8 +148,13 @@ test_that("exotic units work", {
   expect_symbolic("m/s-2", c("m", "s", "s"), character(0))
   expect_symbolic("m/s^-2", c("m", "s", "s"), character(0))
 
-  expect_symbolic("ml/min/1.73m^2", c("ml", "m", "m"), c("min", "1.73"))
   expect_symbolic("ml/min/(1.73m^2)", "ml", c("min", "1.73", "m", "m"))
   expect_symbolic("ml/min/1.73/m^2", "ml", c("min", "1.73", "m", "m"))
+  expect_symbolic("ml/min/1.73m^2", "ml", c("min", "1.73", "m", "m"))
+  expect_symbolic("ml/min/1.73m-2", c("ml", "m", "m"), c("min", "1.73"))
+
+  old <- unlist(units_options(strict_tokenizer=TRUE))
+  on.exit(units_options(strict_tokenizer=old))
+  expect_symbolic("ml/min/1.73m^2", c("ml", "m", "m"), c("min", "1.73"))
   expect_symbolic("ml/min/1.73m-2", "ml", c("min", "1.73", "m", "m"))
 })

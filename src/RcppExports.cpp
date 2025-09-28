@@ -11,13 +11,14 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // parse_unit
-SEXP parse_unit(std::string_view x);
-RcppExport SEXP _units_parse_unit(SEXP xSEXP) {
+SEXP parse_unit(std::string_view x, bool strict);
+RcppExport SEXP _units_parse_unit(SEXP xSEXP, SEXP strictSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< std::string_view >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(parse_unit(x));
+    Rcpp::traits::input_parameter< bool >::type strict(strictSEXP);
+    rcpp_result_gen = Rcpp::wrap(parse_unit(x, strict));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -280,7 +281,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_units_parse_unit", (DL_FUNC) &_units_parse_unit, 1},
+    {"_units_parse_unit", (DL_FUNC) &_units_parse_unit, 2},
     {"_units_ud_exit", (DL_FUNC) &_units_ud_exit, 0},
     {"_units_ud_init", (DL_FUNC) &_units_ud_init, 1},
     {"_units_ud_set_encoding", (DL_FUNC) &_units_ud_set_encoding, 1},

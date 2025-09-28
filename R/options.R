@@ -6,6 +6,7 @@
   negative_power = FALSE,
   parse = TRUE,
   set_units_mode = "symbols",
+  strict_tokenizer = FALSE,
   auto_convert_names_to_symbols = TRUE,
   simplify = NA,
   allow_mixed = FALSE,
@@ -29,6 +30,7 @@
 #' @param negative_power logical, default \code{FALSE}; should denominators have negative power, or follow a division symbol?
 #' @param parse logical, default \code{TRUE}; should the units be made into an expression (so we get subscripts)? Setting to \code{FALSE} may be useful if \link{parse} fails, e.g. if the unit contains symbols that assume a particular encoding
 #' @param set_units_mode character; either \code{"symbols"} or \code{"standard"}; see \link{set_units}; default is \code{"symbols"}
+#' @param strict_tokenizer logical, default \code{FALSE}; non-strict tokenization attaches constants to the following symbol.
 #' @param auto_convert_names_to_symbols logical, default \code{TRUE}: should names, such as \code{degree_C} be converted to their usual symbol?
 #' @param simplify logical, default \code{NA}; simplify units in expressions?
 #' @param allow_mixed logical; if \code{TRUE}, combining mixed units creates a \code{mixed_units} object, if \code{FALSE} it generates an error
@@ -45,8 +47,10 @@
 #' units_options(sep = c("~", "~"), group = c("[", "]"), negative_power = FALSE, parse = TRUE)
 #' units_options("group")
 #' @export
-units_options = function(..., sep, group, negative_power, parse, set_units_mode, auto_convert_names_to_symbols, simplify,
-		allow_mixed, unitless_symbol, define_bel) {
+units_options = function(..., sep, group, negative_power, parse, set_units_mode,
+                         strict_tokenizer, auto_convert_names_to_symbols, simplify,
+                         allow_mixed, unitless_symbol, define_bel)
+{
 	# op = as.list(units:::.units_options)
 	ret = list()
 	if (!missing(sep)) {
@@ -68,6 +72,10 @@ units_options = function(..., sep, group, negative_power, parse, set_units_mode,
 	if (!missing(set_units_mode)) {
 		stopifnot(is.character(set_units_mode) && length(set_units_mode) == 1)
 		ret$set_units_mode = .setopt(set_units_mode)
+	}
+	if (!missing(strict_tokenizer)) {
+		stopifnot(is.logical(strict_tokenizer))
+		ret$strict_tokenizer = .setopt(strict_tokenizer)
 	}
 	if (!missing(auto_convert_names_to_symbols)) {
 		stopifnot(is.logical(auto_convert_names_to_symbols))

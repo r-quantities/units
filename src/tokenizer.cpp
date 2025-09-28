@@ -3,7 +3,8 @@ using namespace Rcpp;
 
 class SymbolicUnits {
 public:
-  SymbolicUnits(std::string_view x) : x(x), it(x.begin()) { tokenize(); }
+  SymbolicUnits(std::string_view x, bool strict=false)
+    : x(x), it(x.begin()), strict(strict) { tokenize(); }
   SymbolicUnits(std::string_view x, std::string_view::iterator start, std::string_view::iterator end)
     : x(x.substr(start - x.begin(), end - start)), it(this->x.end()) {
     numerator.push_back(std::string(this->x));
@@ -15,6 +16,8 @@ private:
   std::string_view::iterator it;
   std::vector<std::string> numerator, denominator;
   bool in_denominator = false;
+  bool stay = false;
+  bool strict = false;
 
   /* helpers -----------------------------------------------------------------*/
 
@@ -48,7 +51,7 @@ private:
     if (level != 0)
       stop("unmatched parenthesis");
 
-    return SymbolicUnits(x.substr(start - x.begin(), it++ - start));
+    return SymbolicUnits(x.substr(start - x.begin(), it++ - start), strict);
   }
 
   int get_exponent() {
@@ -85,6 +88,7 @@ private:
   SymbolicUnits get_number() {
     auto start = it++;
     for (; it != x.end() && is_number_char(*it); ++it);
+    stay = !strict;
     return SymbolicUnits(x, start, it);
   }
 
@@ -117,7 +121,7 @@ private:
         continue;
       }
       if (c == '/') {
-        in_denominator = !in_denominator;
+        in_denominator = true;
         ++it;
         continue;
       }
@@ -126,7 +130,10 @@ private:
       auto token = (c == '(') ? get_paren() :
         (std::isdigit(c) ? get_number() : get_name());
       combine(token, get_exponent());
-      in_denominator = false;
+
+      // switch to numerator if needed
+      if (!stay) in_denominator = false;
+      stay = false;
     }
   }
 };
@@ -143,7 +150,9 @@ SymbolicUnits::operator SEXP() {
 };
 
 // [[Rcpp::export]]
-SEXP parse_unit(std::string_view x) { return SymbolicUnits(x); }
+SEXP parse_unit(std::string_view x, bool strict=false) {
+  return SymbolicUnits(x, strict);
+}
 
 /*** R
 parse_unit("m")
