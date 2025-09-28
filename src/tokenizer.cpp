@@ -29,9 +29,15 @@ private:
     return std::isdigit(c) || c == '.' || c == 'e' || c == '-';
   }
 
-  bool is_name_char(const char& c) {
-    return !std::isdigit(c) && !is_multiplicative(c) && c != '/' &&
+  bool is_symbol_char(const char& c) {
+    if (!std::isdigit(c)) return !is_multiplicative(c) && c != '/' &&
       c != '(' && c != ')' && c != '^' && c != '-' && c != '+';
+
+    auto lookahead = it;
+    for (; lookahead != x.end() && std::isdigit(*lookahead); ++lookahead);
+    if (lookahead != x.end() && is_symbol_char(*lookahead))
+      return true;
+    return false;
   }
 
   /* getters -----------------------------------------------------------------*/
@@ -92,9 +98,9 @@ private:
     return SymbolicUnits(x, start, it);
   }
 
-  SymbolicUnits get_name() {
+  SymbolicUnits get_symbol() {
     auto start = (*it == '`') ? ++it : it++;
-    for (; it != x.end() && is_name_char(*it); ++it);
+    for (; it != x.end() && is_symbol_char(*it); ++it);
     return SymbolicUnits(x, start, it - (*(it-1) == '`' ? 1 : 0));
   }
 
@@ -128,7 +134,7 @@ private:
 
       // handle parenthesis, digits, and symbols/names
       auto token = (c == '(') ? get_paren() :
-        (std::isdigit(c) ? get_number() : get_name());
+        (std::isdigit(c) ? get_number() : get_symbol());
       combine(token, get_exponent());
 
       // switch to numerator if needed
@@ -163,4 +169,6 @@ parse_unit("ml / min / 1.73 / m^2")
 parse_unit("ml/min/1.73m^2")
 parse_unit("ml/min/1.73/m^2")
 parse_unit("ml/min/(1.73m^2)")
+parse_unit("inH2O")
+parse_unit("inH2O2")
 */
