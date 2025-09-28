@@ -125,3 +125,31 @@ test_that("set_units default enforces NSE", {
   # is it bad if this works?
   # expect_error(set_units(1:3, "m/s"))
 })
+
+expect_symbolic <- function(u, n, d)
+  expect_equal(units(as_units(u)), units:::.symbolic_units(n, d))
+
+test_that("exotic units work", {
+  # check what udunits support
+  # units:::R_ut_format(units:::R_ut_parse(some_string))
+
+  expect_symbolic("2.2 m s", c("2.2", "m", "s"), character(0))
+  expect_symbolic("2.2*m*s", c("2.2", "m", "s"), character(0))
+  #expect_symbolic("2.2.m.s", c("2.2", "m", "s"), character(0))
+
+  expect_symbolic("m2/s", c("m", "m"), "s")
+  expect_symbolic("m^2/s", c("m", "m"), "s")
+  expect_symbolic("m 2/s", c("m", "2"), "s")
+  expect_symbolic("m-2/s", character(0), c("m", "m", "s"))
+  expect_symbolic("m^-2/s", character(0), c("m", "m", "s"))
+  expect_symbolic("m/s2", "m", c("s", "s"))
+  expect_symbolic("m/s^2", "m", c("s", "s"))
+  expect_symbolic("m/s 2", c("m", "2"), "s")
+  expect_symbolic("m/s-2", c("m", "s", "s"), character(0))
+  expect_symbolic("m/s^-2", c("m", "s", "s"), character(0))
+
+  expect_symbolic("ml/min/1.73m^2", c("ml", "m", "m"), c("min", "1.73"))
+  expect_symbolic("ml/min/(1.73m^2)", "ml", c("min", "1.73", "m", "m"))
+  expect_symbolic("ml/min/1.73/m^2", "ml", c("min", "1.73", "m", "m"))
+  expect_symbolic("ml/min/1.73m-2", "ml", c("min", "1.73", "m", "m"))
+})
