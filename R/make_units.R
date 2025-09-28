@@ -305,7 +305,7 @@ as_units.character <- function(x, ...,
 
   if (units_options("auto_convert_names_to_symbols")) {
     name_to_symbol <- function(chr)
-      if (length(sym <- ud_get_symbol(chr))) sym else chr
+      if (ud_is_parseable(chr) && length(sym <- ud_get_symbol(chr))) sym else chr
     su$numerator <- vapply(su$numerator, name_to_symbol, character(1), USE.NAMES=FALSE)
     su$denominator <- vapply(su$denominator, name_to_symbol, character(1), USE.NAMES=FALSE)
   }
