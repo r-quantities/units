@@ -123,42 +123,36 @@ test_that("additional continuous scales work as expected", {
   skip_if_not_installed("ggplot2", "3.5.0")
   library(ggplot2)
 
-  dat <- data.frame(
-    x = set_units(rnorm(100), m),
-    y = set_units(rnorm(100), m),
-    color = set_units(rnorm(100), m),
-    fill = set_units(rnorm(100), m),
-    alpha = set_units(rnorm(100), m),
-    size = set_units(rnorm(100), m)
-  )
+  dat <- data.frame(x=rnorm(100), y=rnorm(100), z=set_units(rnorm(100), m))
 
-  p1 <- ggplot(dat) +
-    aes(x, y, color=color, fill=fill, alpha=alpha, size=size) +
-    geom_point() +
-    scale_color_units(unit="in") +
-    scale_fill_units(unit="mm") +
-    scale_alpha_units(unit="feet") +
-    scale_size_units(unit="km")
+  p1 <- ggplot(dat) + aes(x, y, color=z) +
+    geom_point() + scale_color_units(unit="in")
 
-  p2 <- ggplot(dat) +
-    aes(x, y, size=size) +
-    geom_point() +
-    scale_size_area_units(unit="km")
+  p2 <- ggplot(dat) + aes(x, y, fill=z) +
+    geom_point() + scale_fill_units(unit="mm")
 
-  p3 <- ggplot(dat) +
-    aes(x, y, size=size) +
-    geom_point() +
-    scale_radius_units(unit="km")
+  p3 <- ggplot(dat) + aes(x, y, alpha=z) + geom_point() +
+    scale_alpha_units(unit="feet")
 
-  p4 <- ggplot(dat) +
-    aes(x, y, linewidth=size) +
-    geom_path() +
-    scale_linewidth_units(unit="cm")
+  p4 <- ggplot(dat) + aes(x, y, size=z) +
+    geom_point() + scale_size_units(unit="km")
 
-  vdiffr::expect_doppelganger("ggplot2 other size", p1)
-  vdiffr::expect_doppelganger("ggplot2 other size area", p2)
-  vdiffr::expect_doppelganger("ggplot2 other radius", p3)
-  vdiffr::expect_doppelganger("ggplot2 other linewidth", p4)
+  p5 <- ggplot(dat) + aes(x, y, size=z) +
+    geom_point() + scale_size_area_units(unit="km")
+
+  p6 <- ggplot(dat) + aes(x, y, size=z) +
+    geom_point() + scale_radius_units(unit="km")
+
+  p7 <- ggplot(dat) + aes(x, y, linewidth=z) +
+    geom_path() + scale_linewidth_units(unit="cm")
+
+  vdiffr::expect_doppelganger("ggplot2 other color", p1)
+  vdiffr::expect_doppelganger("ggplot2 other fill", p2)
+  vdiffr::expect_doppelganger("ggplot2 other alpha", p3)
+  vdiffr::expect_doppelganger("ggplot2 other size", p4)
+  vdiffr::expect_doppelganger("ggplot2 other size area", p5)
+  vdiffr::expect_doppelganger("ggplot2 other radius", p6)
+  vdiffr::expect_doppelganger("ggplot2 other linewidth", p7)
 })
 
 do.call(units_options, units:::.default_options)
