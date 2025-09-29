@@ -11,6 +11,8 @@
 
 * Implement `matrixOps.units`, with support for `%*%` (R >= 4.3.0); #226
 
+* New `convert_to_base()` implements conversion to base units; #132 @jamarav
+
 # version 0.8-7
 
 * Deep copy of `ud_convert()` input to avoid side effects; #403

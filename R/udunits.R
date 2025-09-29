@@ -76,3 +76,7 @@ ud_is_parseable = function(u) {
 	res <- try(R_ut_parse(u), silent = TRUE)
 	! inherits(res, "try-error")
 }
+
+ud_parse <- function(u, names=FALSE, definition=FALSE, ascii=FALSE) {
+  R_ut_format(R_ut_parse(u), names, definition, ascii)
+}

@@ -144,3 +144,60 @@ as.character.symbolic_units <- function(x, ...,
 
   as_units(drop_units(value), .symbolic_units(new_numerator, new_denominator))
 }
+
+#' Convert units to their base units
+#'
+#' Convert the units of a \code{units} object to their base units, as defined by
+#' the udunits database (SI units).
+#'
+#' @param x object of class \code{units}.
+#' @param simplify logical; if TRUE (default), the resulting units are simplified.
+#' @param keep_fraction logical; if TRUE (default), the result is kept as a fractio.n
+#'
+#' @return object of class \code{units} with units converted to base units.
+#' @export
+#'
+#' @examples
+#' x <- set_units(32, mJ/g)
+#' convert_to_base(x)
+#' convert_to_base(x, keep_fraction=FALSE)
+#' convert_to_base(x, simplify=FALSE)
+#' convert_to_base(x, simplify=FALSE, keep_fraction=FALSE)
+convert_to_base <- function(x, simplify = TRUE, keep_fraction = TRUE) {
+  stopifnot(inherits(x, "units"))
+
+  u_strBase <- function(u_str, simplify) {
+    u_new <- ud_parse(u_str, names=FALSE, definition=TRUE, ascii=TRUE)
+    u_new <- strsplit(x = u_new, split = " @ ")[[1]][1]
+    u_new <- strsplit(x = u_new, split = " ")[[1]]
+    u_new <- u_new[length(u_new)]
+
+    if (simplify)
+      u_new <- ud_parse(u_new, names=FALSE, definition=FALSE, ascii=TRUE)
+    gsub(".", " ", u_new, fixed = TRUE)
+  }
+
+  u <- sapply(units(x), function(i) paste0(i, collapse = "*", recycle0=TRUE))
+  u[u == ""] <- "1"
+
+  u["numerator"]   <- sprintf("(%s)", u["numerator"])
+  u["denominator"] <- sprintf("(%s)", u["denominator"])
+
+  if (!keep_fraction) u <- paste(u, collapse = "/")
+
+  u_base <- sapply(u, function(j) u_strBase(u_str = j, simplify = simplify))
+
+  if (!keep_fraction) {
+    u_base <- sprintf("(%s)", u_base)
+  } else {
+    is_unitless <- u_base == "1"
+
+    u_base["numerator"] <- sprintf("(%s)", u_base["numerator"])
+    u_base["denominator"] <- sprintf("(%s)-1", u_base["denominator"])
+
+    u_base <- u_base[!is_unitless]
+    u_base <- paste(u_base, collapse = " ")
+  }
+
+  set_units(x, u_base, mode = "standard")
+}
