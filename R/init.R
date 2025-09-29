@@ -18,6 +18,8 @@ NULL
   ud_set_encoding(native)
 
   register_all_s3_methods()
+  if (exists("matrixOps"))
+    registerS3method("matrixOps", "units", matrixOps.units)
 }
 
 .onAttach <- function(libname, pkgname) {

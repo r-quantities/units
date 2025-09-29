@@ -200,34 +200,30 @@ Ops.units <- function(e1, e2) {
   .as.units(NextMethod(), u)
 }
 
-#' #' matrix multiplication
-#' #' @name matmult
-#' #' @param x numeric matrix or vector
-#' #' @param y numeric matrix or vector
-#' #' @export
-#' #' @details see \code{"\link[base]{\%*\%}"} for the base function, reimplemented
-#' #'   as default method
-#' `%*%` = function(x, y) UseMethod("%*%")
+#' S3 matrixOps Group Generic Functions for units objects
 #'
-#' #' @name matmult
-#' #' @export
-#' `%*%.default` = function(x, y) {
-#' 	if (inherits(y, "units"))
-#' 		`%*%.units`(x, y)
-#' 	else
-#' 		base::`%*%`(x, y)
-#' }
+#' matrixOps functions for units objects.
 #'
-#' #' @name matmult
-#' #' @export
-#' #' @examples
-#' #' a = set_units(1:5, m)
-#' #' a %*% a
-#' #' a %*% t(a)
-#' #' a %*% set_units(1:5, 1)
-#' #' set_units(1:5, 1) %*% a
-#' `%*%.units` = function(x, y) {
-#' 	ret = `%*%.default`(unclass(x), unclass(y))
-#' 	units(ret) = .multiply_symbolic_units(1, units(x), units(y))
-#' 	ret
-#' }
+#' @param x object of class \code{units},
+#'        or something that can be coerced to it by \code{as_units(x)}
+#' @param y object of class \code{units},
+#'        or something that can be coerced to it by \code{as_units(y)}
+#'
+#' @return object of class \code{units}
+#'
+#' @examples
+#' a = set_units(1:5, m)
+#' a %*% a
+#' a %*% t(a)
+#' a %*% 1:5
+#' 1:5 %*% a
+matrixOps.units <- function(x, y) {
+  mul <- .Generic %in% c("%*%") # multiplication-only
+
+  if (! any(mul))
+    stop(paste("operation", .Generic, "not allowed"))
+
+  u <- units(x[0] * y[0])
+  .as.units(NextMethod(), u)
+}
+# registered .onLoad
