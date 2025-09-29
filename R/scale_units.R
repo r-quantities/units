@@ -1,13 +1,12 @@
-#' Position scales for units data
+#' Continuous scales for units data
 #'
 #' These are the default scales for the \code{units} class. These will usually
-#' be added automatically. To override manually, use \code{scale_*_units}.
+#' be added automatically. To override manually, use \code{scale_{type}_units}.
 #'
-#' @param ... arguments passed on to \code{\link[ggplot2]{continuous_scale}}
-#' (e.g. scale transformations via the \code{trans} argument; see examples).
+#' @param ... arguments passed on to the corresponding continuous scale
+#' (see the manual page for each \code{scale_{type}} for details).
 #' @inheritParams ggplot2::scale_x_continuous
-#'
-#' @param unit A unit specification to use for the axis. If given, the values
+#' @param unit A unit specification to use for the guide. If given, the values
 #' will be converted to this unit before plotting. An error will be thrown if
 #' the specified unit is incompatible with the unit of the data.
 #'
@@ -39,54 +38,79 @@
 #' # Reverse the y axis
 #' ggplot(mtcars) +
 #'   geom_point(aes(power, consumption)) +
-#'   scale_y_units(trans="reverse")
+#'   scale_y_units(transform="reverse")
 #'
 #' }
 NULL
 
 #' @rdname scale_units
 #' @export
-scale_x_units <- function(..., guide = ggplot2::waiver(), position = "bottom",
-                          sec.axis = ggplot2::waiver(), unit = NULL) {
-  if (!requireNamespace("ggplot2", quietly=TRUE))
-    stop("package 'ggplot2' is required for this functionality", call.=FALSE)
-
-  sc <- ggplot2::continuous_scale(
-    c("x", "xmin", "xmax", "xend", "xintercept", "xmin_final", "xmax_final",
-      "xlower", "xmiddle", "xupper"),
-    palette = identity, ...,
-    guide = guide,
-    position = position,
-    super = make_scale_units()
-  )
-  sc$units <- as_units(unit)
+scale_x_units <- function(..., sec.axis = ggplot2::waiver(), unit = NULL) {
+  sc <- make_scale_units(ggplot2::scale_x_continuous(...), unit)
   set_sec_axis(sec.axis, sc)
 }
 
 #' @rdname scale_units
 #' @export
-scale_y_units <- function(..., guide = ggplot2::waiver(), position = "left",
-                          sec.axis = ggplot2::waiver(), unit = NULL) {
-  if (!requireNamespace("ggplot2", quietly=TRUE))
-    stop("package 'ggplot2' is required for this functionality", call.=FALSE)
-
-  sc <- ggplot2::continuous_scale(
-    c("y", "ymin", "ymax", "yend", "yintercept", "ymin_final", "ymax_final",
-      "lower", "middle", "upper"),
-    palette = identity, ...,
-    guide = guide,
-    position = position,
-    super = make_scale_units()
-  )
-  sc$units <- as_units(unit)
+scale_y_units <- function(..., sec.axis = ggplot2::waiver(), unit = NULL) {
+  sc <- make_scale_units(ggplot2::scale_y_continuous(...), unit)
   set_sec_axis(sec.axis, sc)
 }
 
-make_scale_units <- function(parent=ggplot2::ScaleContinuousPosition) {
+#' @rdname scale_units
+#' @export
+scale_colour_units <- function(..., unit = NULL) {
+  make_scale_units(ggplot2::scale_colour_continuous(...), unit)
+}
+
+#' @rdname scale_units
+#' @export
+scale_color_units <- scale_colour_units
+
+#' @rdname scale_units
+#' @export
+scale_fill_units <- function(..., unit = NULL) {
+  make_scale_units(ggplot2::scale_fill_continuous(...), unit)
+}
+
+#' @rdname scale_units
+#' @export
+scale_alpha_units <- function(..., unit = NULL) {
+  make_scale_units(ggplot2::scale_alpha(...), unit)
+}
+
+#' @rdname scale_units
+#' @export
+scale_size_units <- function(..., unit = NULL) {
+  make_scale_units(ggplot2::scale_size(...), unit)
+}
+
+#' @rdname scale_units
+#' @export
+scale_size_area_units <- function(..., unit = NULL) {
+  make_scale_units(ggplot2::scale_size_area(...), unit)
+}
+
+#' @rdname scale_units
+#' @export
+scale_radius_units <- function(..., unit = NULL) {
+  make_scale_units(ggplot2::scale_radius(...), unit)
+}
+
+#' @rdname scale_units
+#' @export
+scale_linewidth_units <- function(..., unit = NULL) {
+  make_scale_units(ggplot2::scale_linewidth(...), unit)
+}
+
+make_scale_units <- function(parent, unit) {
+  if (!requireNamespace("ggplot2", quietly=TRUE))
+    stop("package 'ggplot2' is required for this functionality", call.=FALSE)
+
   ggplot2::ggproto(
-    "ScaleContinuousPositionUnits",
+    paste0(class(parent)[1], "Units"),
     parent,
-    units = NULL,
+    units = as_units(unit),
 
     set_convert = function(self, x) {
       if (!inherits(x, "units"))

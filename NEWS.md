@@ -6,6 +6,9 @@
 
 * Fix scale training in `ggplot2` scales; #412
 
+* Add `scale_{type}_units()` scales for additional continuous aesthetics
+  (colour, fill, alpha, size, linewidth); #369
+
 # version 0.8-7
 
 * Deep copy of `ud_convert()` input to avoid side effects; #403

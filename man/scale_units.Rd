@@ -3,33 +3,49 @@
 \name{scale_units}
 \alias{scale_x_units}
 \alias{scale_y_units}
-\title{Position scales for units data}
+\alias{scale_colour_units}
+\alias{scale_color_units}
+\alias{scale_fill_units}
+\alias{scale_alpha_units}
+\alias{scale_size_units}
+\alias{scale_size_area_units}
+\alias{scale_radius_units}
+\alias{scale_linewidth_units}
+\title{Continuous scales for units data}
 \usage{
-scale_x_units(..., guide = ggplot2::waiver(), position = "bottom",
-  sec.axis = ggplot2::waiver(), unit = NULL)
+scale_x_units(..., sec.axis = ggplot2::waiver(), unit = NULL)
 
-scale_y_units(..., guide = ggplot2::waiver(), position = "left",
-  sec.axis = ggplot2::waiver(), unit = NULL)
+scale_y_units(..., sec.axis = ggplot2::waiver(), unit = NULL)
+
+scale_colour_units(..., unit = NULL)
+
+scale_color_units(..., unit = NULL)
+
+scale_fill_units(..., unit = NULL)
+
+scale_alpha_units(..., unit = NULL)
+
+scale_size_units(..., unit = NULL)
+
+scale_size_area_units(..., unit = NULL)
+
+scale_radius_units(..., unit = NULL)
+
+scale_linewidth_units(..., unit = NULL)
 }
 \arguments{
-\item{...}{arguments passed on to \code{\link[ggplot2]{continuous_scale}}
-(e.g. scale transformations via the \code{trans} argument; see examples).}
-
-\item{guide}{A function used to create a guide or its name. See
-\code{\link[ggplot2:guides]{guides()}} for more information.}
-
-\item{position}{For position scales, The position of the axis.
-\code{left} or \code{right} for y axes, \code{top} or \code{bottom} for x axes.}
+\item{...}{arguments passed on to the corresponding continuous scale
+(see the manual page for each \code{scale_{type}} for details).}
 
 \item{sec.axis}{\code{\link[ggplot2:sec_axis]{sec_axis()}} is used to specify a secondary axis.}
 
-\item{unit}{A unit specification to use for the axis. If given, the values
+\item{unit}{A unit specification to use for the guide. If given, the values
 will be converted to this unit before plotting. An error will be thrown if
 the specified unit is incompatible with the unit of the data.}
 }
 \description{
 These are the default scales for the \code{units} class. These will usually
-be added automatically. To override manually, use \code{scale_*_units}.
+be added automatically. To override manually, use \code{scale_{type}_units}.
 }
 \examples{
 if (requireNamespace("ggplot2", quietly=TRUE)) {
@@ -56,7 +72,7 @@ ggplot(mtcars) +
 # Reverse the y axis
 ggplot(mtcars) +
   geom_point(aes(power, consumption)) +
-  scale_y_units(trans="reverse")
+  scale_y_units(transform="reverse")
 
 }
 }
