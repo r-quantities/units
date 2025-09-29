@@ -1,4 +1,11 @@
-# version devel
+# version 1.0-0
+
+* Breaking change: a new tokenizer fixes longstanding issues with parsing
+  complex unit expressions, but may break existing code that relied on the
+  previous (buggy) behavior. The major change is that now numbers are
+  consistently treated as prefixes, so that units like `ml / min / 1.73m^2`
+  used in physiology are now correctly parsed as `ml / (min * 1.73 * m^2)`.
+  See `?as_units` for details; #416 addressing #221, #383
 
 * Vectorize `ud_*()` helpers; #405 addressing #404
 
