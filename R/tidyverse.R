@@ -15,8 +15,8 @@ pillar_shaft.units <- function(x, ...) {
 
 pillar_shaft.mixed_units <- function(x, ...) {
   u_char <- pillar::style_subtle(sapply(x, function(unit) format(unit[0])))
-  out <- paste0(format(unclass(x), ...), u_char)
-  pillar::new_pillar_shaft_simple(out, align = "right", min_width = 6)
+  out <- paste0(as.numeric(x), u_char)
+  pillar::new_pillar_shaft_simple(out, ..., align = "right", min_width = 6)
 }
 
 format_type_sum.type_sum_units <- function(x, width, ...) {
