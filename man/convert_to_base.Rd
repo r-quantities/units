@@ -11,7 +11,7 @@ convert_to_base(x, simplify = TRUE, keep_fraction = TRUE)
 
 \item{simplify}{logical; if TRUE (default), the resulting units are simplified.}
 
-\item{keep_fraction}{logical; if TRUE (default), the result is kept as a fractio.n}
+\item{keep_fraction}{logical; if TRUE (default), the result is kept as a fraction.}
 }
 \value{
 object of class \code{units} with units converted to base units.

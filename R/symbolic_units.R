@@ -152,7 +152,7 @@ as.character.symbolic_units <- function(x, ...,
 #'
 #' @param x object of class \code{units}.
 #' @param simplify logical; if TRUE (default), the resulting units are simplified.
-#' @param keep_fraction logical; if TRUE (default), the result is kept as a fractio.n
+#' @param keep_fraction logical; if TRUE (default), the result is kept as a fraction.
 #'
 #' @return object of class \code{units} with units converted to base units.
 #' @export
@@ -177,7 +177,7 @@ convert_to_base <- function(x, simplify = TRUE, keep_fraction = TRUE) {
     gsub(".", " ", u_new, fixed = TRUE)
   }
 
-  u <- sapply(units(x), function(i) paste0(i, collapse = "*", recycle0=TRUE))
+  u <- vapply(units(x), paste0, character(1L), collapse = "*", recycle0=TRUE)
   u[u == ""] <- "1"
 
   u["numerator"]   <- sprintf("(%s)", u["numerator"])
@@ -185,18 +185,15 @@ convert_to_base <- function(x, simplify = TRUE, keep_fraction = TRUE) {
 
   if (!keep_fraction) u <- paste(u, collapse = "/")
 
-  u_base <- sapply(u, function(j) u_strBase(u_str = j, simplify = simplify))
+  u_base <- vapply(u, u_strBase, character(1L), simplify = simplify)
 
-  if (!keep_fraction) {
-    u_base <- sprintf("(%s)", u_base)
-  } else {
+  if (keep_fraction) {
     is_unitless <- u_base == "1"
 
-    u_base["numerator"] <- sprintf("(%s)", u_base["numerator"])
+    u_base["numerator"]   <- sprintf("(%s)", u_base["numerator"])
     u_base["denominator"] <- sprintf("(%s)-1", u_base["denominator"])
 
-    u_base <- u_base[!is_unitless]
-    u_base <- paste(u_base, collapse = " ")
+    u_base <- paste(u_base[!is_unitless], collapse = " ")
   }
 
   set_units(x, u_base, mode = "standard")
