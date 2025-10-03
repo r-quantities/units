@@ -1,5 +1,5 @@
 Package: units
-Version: 0.8-7.4
+Version: 1.0-0
 Title: Measurement Units for R Vectors
 Authors@R: c(person("Edzer", "Pebesma", role = c("aut", "cre"), email = "edzer.pebesma@uni-muenster.de", comment = c(ORCID = "0000-0001-8049-7069")),
     person("Thomas", "Mailund", role = "aut", email = "mailund@birc.au.dk"),
@@ -9,7 +9,7 @@ Authors@R: c(person("Edzer", "Pebesma", role = c("aut", "cre"), email = "edzer.p
     person("Thomas Lin", "Pedersen", role = "ctb")
     )
 Depends:
-    R (>= 3.0.2)
+    R (>= 3.5.0)
 Imports:
     Rcpp
 LinkingTo:
