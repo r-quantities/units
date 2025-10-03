@@ -1,47 +1,3 @@
-
-test_that("parse_units() backticks strings correctly", {
-
-  x <- matrix(ncol = 2, byrow = TRUE, c(
-    "in",      "`in`",
-    "`in`",    "`in`",
-    "kelvin",  "`kelvin`",
-    "%",       "`%`",
-    "T",       "`T`",
-    "'/s",     "`'`/`s`",
-    "'",       "`'`" ,
-    '"',       '`"`' ,
-    '"/s' ,    '`"`/`s`',
-    "s/'" ,    "`s`/`'`"  ,
-    "C" ,      "`C`" ,
-    "F" ,      "`F`",
-    "\u00B0C", "`\u00B0C`",
-    "\u2103" , "`\u2103`",
-    "\u00B0F", "`\u00B0F`",
-    "\u2109",  "`\u2109`",
-    "log(ug)", "`log`(`ug`)",
-    "log(ug/l)", "`log`(`ug`/`l`)",
-    "kg*m/s^2", "`kg`*`m`/`s`^2"
-  ))
-  colnames(x) <- c("input", "expected_output")
-
-  expect_identical(units:::backtick(x[,"input"]), x[,"expected_output"])
-})
-
-test_that("explicit exponents identified correctly", {
-  expect_true( are_exponents_implicit("m s") )
-  expect_true( are_exponents_implicit("m2") )
-  expect_true( are_exponents_implicit("m-2") )
-  expect_true( are_exponents_implicit("2 m") )
-  expect_true( are_exponents_implicit("m s-2") )
-  expect_true( are_exponents_implicit("m s-2 kg") )
-  expect_true( are_exponents_implicit("2 m s") )
-
-  expect_false( are_exponents_implicit("m") )
-  expect_false( are_exponents_implicit("m/s") )
-  expect_false( are_exponents_implicit("m^2") )
-  expect_false( are_exponents_implicit("m*s") )
-})
-
 test_that("global options are respected", {
   # rt: round trip
   rt <- function(x) as.character(units(as_units(x)))
@@ -168,4 +124,47 @@ test_that("set_units default enforces NSE", {
 
   # is it bad if this works?
   # expect_error(set_units(1:3, "m/s"))
+})
+
+expect_symbolic <- function(u, n, d)
+  expect_equal(units(as_units(u)), units:::.symbolic_units(n, d))
+expect_symbolic_nocheck <- function(u, n, d)
+  expect_equal(units(as_units(u, check_is_valid=FALSE)), units:::.symbolic_units(n, d))
+
+test_that("exotic units work", {
+  # check what udunits support
+  # units:::R_ut_format(units:::R_ut_parse(some_string))
+
+  expect_symbolic("2.2 m s", c("2.2", "m", "s"), character(0))
+  expect_symbolic("2.2*m*s", c("2.2", "m", "s"), character(0))
+  #expect_symbolic("2.2.m.s", c("2.2", "m", "s"), character(0))
+
+  expect_symbolic("m2/s", c("m", "m"), "s")
+  expect_symbolic("m20/s", rep("m", 20), "s")
+  expect_symbolic("m^2/s", c("m", "m"), "s")
+  expect_symbolic("m 2/s", c("m", "2"), "s")
+  expect_symbolic("m-2/s", character(0), c("m", "m", "s"))
+  expect_symbolic("m^-2/s", character(0), c("m", "m", "s"))
+  expect_symbolic("m/s2", "m", c("s", "s"))
+  expect_symbolic("m/s^2", "m", c("s", "s"))
+  expect_symbolic("m/s 2", c("m", "2"), "s")
+  expect_symbolic("m/s-2", c("m", "s", "s"), character(0))
+  expect_symbolic("m/s^-2", c("m", "s", "s"), character(0))
+
+  expect_symbolic("ml/min/(1.73m^2)", "ml", c("min", "1.73", "m", "m"))
+  expect_symbolic("ml/min/1.73/m^2", "ml", c("min", "1.73", "m", "m"))
+  expect_symbolic("ml/min/1.73m^2", "ml", c("min", "1.73", "m", "m"))
+  expect_symbolic("ml/min/1.73m-2", c("ml", "m", "m"), c("min", "1.73"))
+
+  old <- unlist(units_options(strict_tokenizer=TRUE))
+  expect_symbolic("ml/min/1.73m^2", c("ml", "m", "m"), c("min", "1.73"))
+  expect_symbolic("ml/min/1.73m-2", "ml", c("min", "1.73", "m", "m"))
+  units_options(strict_tokenizer=old)
+
+  expect_symbolic_nocheck("inH2O", "inH2O", character(0))
+  expect_symbolic_nocheck("inH2O2", c("inH2O", "inH2O"), character(0))
+
+  expect_symbolic("m/(g/(s/L))", c("m", "s"), c("g", "L"))
+  expect_error(expect_warning(as_units("m/(g/s")))
+  expect_error(expect_warning(as_units("m^m")))
 })

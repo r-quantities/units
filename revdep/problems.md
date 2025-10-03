@@ -1,14 +1,14 @@
-# divvy
+# epocakir
 
 <details>
 
-* Version: 1.0.0
-* GitHub: https://github.com/GawainAntell/divvy
-* Source code: https://github.com/cran/divvy
-* Date/Publication: 2023-10-26 08:20:03 UTC
-* Number of recursive dependencies: 91
+* Version: 0.9.9
+* GitHub: https://github.com/alwinw/epocakir
+* Source code: https://github.com/cran/epocakir
+* Date/Publication: 2023-01-06 15:30:06 UTC
+* Number of recursive dependencies: 78
 
-Run `revdepcheck::revdep_details(, "divvy")` for more info
+Run `revdepcheck::revdep_details(, "epocakir")` for more info
 
 </details>
 
@@ -16,26 +16,22 @@ Run `revdepcheck::revdep_details(, "divvy")` for more info
 
 *   checking examples ... ERROR
     ```
-    Running examples in ‘divvy-Ex.R’ failed
+    Running examples in ‘epocakir-Ex.R’ failed
     The error most likely occurred in:
     
-    > ### Name: rangeSize
-    > ### Title: Calculate common metrics of spatial distribution
-    > ### Aliases: rangeSize
+    > ### Name: GFR_staging
+    > ### Title: GFR Staging
+    > ### Aliases: GFR_staging GFR_staging.data.frame GFR_staging.units
+    > ###   GFR_staging.numeric
     > 
     > ### ** Examples
     > 
-    > # generate 20 occurrences for a pseudo-species
-    ...
-    > set.seed(2)
-    > x <- rnorm(20, 110.5885, 2)
-    > y <- rnorm(20,  44.4280, 1)
-    > pts <- cbind(x,y)
+    > df <- tibble::tibble(
+    +   eGFR = units::set_units(c(-1, NA, 100, 70, 50, 35, 20, 10), "mL/min/1.73m2")
+    + )
     > 
-    > rangeSize(pts)
-    Error in UseMethod("units") : 
-      no applicable method for 'units' applied to an object of class "c('integer', 'numeric')"
-    Calls: rangeSize -> cbind -> cbind -> units
+    > GFR_staging(df, "eGFR")
+    Error: cannot convert mL/min/1.73m^2 into mL/min
     Execution halted
     ```
 
@@ -45,139 +41,20 @@ Run `revdepcheck::revdep_details(, "divvy")` for more info
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
     Last 13 lines of output:
-      Expected `rangeSize(bivAlt[, xyCell], crs = prj)` to run without any conditions.
-      i Actually got a <simpleError> with text:
-        no applicable method for 'units' applied to an object of class "c('integer', 'numeric')"
-      ── Error ('test_calc_eco_variables.R:43:3'): rangeSize and sdSumry accept projected coords ──
-      Error in `UseMethod("units")`: no applicable method for 'units' applied to an object of class "c('integer', 'numeric')"
-      Backtrace:
-          ▆
-       1. └─divvy::rangeSize(bivAlt[, xyCell], crs = prj) at test_calc_eco_variables.R:43:3
-       2.   └─base::cbind(...)
-       3.     └─units (local) cbind(deparse.level, ...)
-       4.       └─base::units(dots[[1]])
+           ▆
+        1. ├─epocakir::GFR_staging(df, "eGFR") at test-ckd.R:378:3
+        2. └─epocakir:::GFR_staging.data.frame(df, "eGFR")
+        3.   ├─epocakir::GFR_staging(.data[[rlang::as_name(rlang::enquo(GFR))]])
+        4.   └─epocakir:::GFR_staging.units(.data[[rlang::as_name(rlang::enquo(GFR))]])
+        5.     ├─epocakir::GFR_staging(as_metric(GFR = GFR, value_only = TRUE))
+        6.     └─epocakir::as_metric(GFR = GFR, value_only = TRUE)
+        7.       ├─units::set_units(meas, conversion$metric_units, mode = "standard")
+        8.       └─units:::set_units.units(meas, conversion$metric_units, mode = "standard")
+        9.         ├─base::`units<-`(`*tmp*`, value = as_units(value, ...))
+       10.         └─units:::`units<-.units`(`*tmp*`, value = as_units(value, ...))
       
-      [ FAIL 4 | WARN 0 | SKIP 0 | PASS 22 ]
+      [ FAIL 1 | WARN 9 | SKIP 0 | PASS 598 ]
       Error: Test failures
       Execution halted
-    ```
-
-*   checking running R code from vignettes ...
-    ```
-      ‘habitat-rangesize-case-study.Rmd’ using ‘UTF-8’... OK
-      ‘subsampling-vignette.Rmd’ using ‘UTF-8’... failed
-     ERROR
-    Errors in running code in vignettes:
-    when running code in ‘subsampling-vignette.Rmd’
-      ...
-    > unique(names(bandLocs))
-    [1] "[-50,-30)" "[-10,10)"  "[10,30)"   "[30,50)"   "[50,70)"  
-    
-    > unsamp <- sdSumry(dat = bivalves, taxVar = "genus", 
-    +     collections = "collection_no", xy = xyCell, quotaQ = 0.8, 
-    +     quotaN = 100, omitDom =  .... [TRUNCATED] 
-    
-      When sourcing ‘subsampling-vignette.R’:
-    Error: no applicable method for 'units' applied to an object of class "c('integer', 'numeric')"
-    Execution halted
-    ```
-
-# Rdistance
-
-<details>
-
-* Version: 3.0.0
-* GitHub: https://github.com/tmcd82070/Rdistance
-* Source code: https://github.com/cran/Rdistance
-* Date/Publication: 2023-06-13 07:30:05 UTC
-* Number of recursive dependencies: 95
-
-Run `revdepcheck::revdep_details(, "Rdistance")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘Rdistance-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: plot.dfunc
-    > ### Title: plot.dfunc - Plot method for distance (detection) functions
-    > ### Aliases: plot.dfunc
-    > ### Keywords: models
-    > 
-    > ### ** Examples
-    > 
-    ...
-    +    , col="wheat"
-    +    , density=30
-    +    , angle=c(-45,0,45)
-    +    , cex.axis=1.5
-    +    , cex.lab=2
-    +    , ylab="Probability") 
-    Error in UseMethod("units") : 
-      no applicable method for 'units' applied to an object of class "logical"
-    Calls: plot ... barplot.default -> xyrect -> rect -> rbind -> rbind -> units
-    Execution halted
-    ```
-
-## In both
-
-*   checking Rd files ... NOTE
-    ```
-    checkRd: (-1) halfnorm.like.Rd:105: Lost braces; missing escapes or markup?
-       105 |   {f(x|a,b,c_1,c_2,...,c_k) = f(x|a,b)(1 + c(1) h_i1(x) + c(2) h_i2(x) + ... + c(k) h_ik(x)). }
-           |   ^
-    checkRd: (-1) secondDeriv.Rd:15: Lost braces
-        15 | This must be a function of the form FUN <- function(x, ...){...}
-           |                                                            ^
-    ```
-
-# vein
-
-<details>
-
-* Version: 1.1.3
-* GitHub: https://github.com/atmoschem/vein
-* Source code: https://github.com/cran/vein
-* Date/Publication: 2024-05-01 13:50:02 UTC
-* Number of recursive dependencies: 56
-
-Run `revdepcheck::revdep_details(, "vein")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking tests ...
-    ```
-      Running ‘testthat.R’
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      Weighted mean =  1.5 
-      [ FAIL 1 | WARN 0 | SKIP 0 | PASS 701 ]
-      
-      ══ Failed tests ════════════════════════════════════════════════════════════════
-      ── Failure ('test-long_to_wide.R:9:3'): long_to_wide works ─────────────────────
-      long_to_wide(df)$CO[1] not equal to 1.
-      Attributes: < Modes: list, NULL >
-      Attributes: < Lengths: 2, 0 >
-      Attributes: < names for target but not for current >
-      Attributes: < current is not list-like >
-      target is units, current is numeric
-      
-      [ FAIL 1 | WARN 0 | SKIP 0 | PASS 701 ]
-      Error: Test failures
-      Execution halted
-    ```
-
-## In both
-
-*   checking data for non-ASCII characters ... NOTE
-    ```
-      Note: found 49 marked UTF-8 strings
     ```
 

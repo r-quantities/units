@@ -46,14 +46,14 @@ as_units(x, ...)
 
 \method{as_units}{difftime}(x, value, ...)
 
-\method{as_units}{character}(x, check_is_valid = TRUE,
-  implicit_exponents = NULL, force_single_symbol = FALSE, ...)
+\method{as_units}{character}(x, ..., check_is_valid = TRUE,
+  force_single_symbol = FALSE)
 
-\method{as_units}{call}(x, check_is_valid = TRUE, ...)
+\method{as_units}{call}(x, ...)
 
-\method{as_units}{expression}(x, check_is_valid = TRUE, ...)
+\method{as_units}{expression}(x, ...)
 
-\method{as_units}{name}(x, check_is_valid = TRUE, ...)
+\method{as_units}{name}(x, ...)
 
 \method{as_units}{POSIXt}(x, value, ...)
 
@@ -79,11 +79,6 @@ syntax (reserved R syntax words like \code{in} must be backticked)}
 recognized by udunits2, or a custom
 user defined via \code{install_unit()}. If \code{FALSE}, no check
 for validity is performed.}
-
-\item{implicit_exponents}{If the unit string is in product power form (e.g.
-\code{"km m-2 s-1"}). Defaults to \code{NULL}, in which case a guess is made
-based on the supplied string. Set to \code{TRUE} or \code{FALSE} if the guess is
-incorrect.}
 
 \item{force_single_symbol}{Whether to perform no string parsing and force
 treatment of the string as a single symbol.}
@@ -128,29 +123,10 @@ By default, unit names are automatically substituted with unit names
   Generally speaking, there are 3 types of unit strings are accepted in
   \code{as_units} (and by extension, \code{`units<-`}).
 
-  The first, and likely most common, is a "standard" format unit
+  The first type, and likely most common, is a "standard" format unit
   specification where the relationship between unit symbols or names is
   specified explicitly with arithmetic symbols for division \code{/},
-  multiplication \code{*} and power exponents \code{^}, or other mathematical
-  functions like \code{log()}. In this case, the string is parsed as an R
-  expression via \code{parse(text = )} after backticking all unit symbols and
-  names, and then passed on to \code{as_units.call()}. A heuristic is used to
-  perform backticking, such that any continuous set of characters
-  uninterrupted by one of \code{()\\*^-} are backticked (unless the character
-  sequence consists solely of numbers \code{0-9}), with some care to not
-  double up on pre-existing backticks. This heuristic appears to be quite
-  robust, and works for units would otherwise not be valid R syntax. For
-  example, percent (\code{"\%"}), feet (\code{"'"}), inches (\code{"in"}),
-  and Tesla (\code{"T"}) are all backticked and parsed correctly.
-
-  Nevertheless, for certain complex unit expressions, this backticking heuristic
-  may give incorrect results.  If the string supplied fails to parse as an R
-  expression, then the string is treated as a single symbolic unit and
-  \code{symbolic_unit(chr)} is used as a fallback with a warning. In that
-  case, automatic unit simplification may not work properly when performing
-  operations on unit objects, but unit conversion and other Math operations
-  should still give correct results so long as the unit string supplied
-  returns \code{TRUE} for \code{ud_is_parsable()}.
+  multiplication \code{*} and power exponents \code{^}.
 
   The second type of unit string accepted is one with implicit exponents. In
   this format, \code{/}, \code{*}, and \code{^}, may not be present in the
@@ -158,11 +134,16 @@ By default, unit names are automatically substituted with unit names
   symbol may optionally be followed by a single number, specifying the power.
   For example \code{"m2 s-2"} is equivalent to \code{"(m^2)*(s^-2)"}.
 
-  It must be noted that prepended numbers are supported too, but their
-  interpretation slightly varies depending on whether they are separated from
-  the unit string or not. E.g., \code{"1000 m"} is interpreted as magnitude
-  and unit, but \code{"1000m"} is interpreted as a prefixed unit, and it is
-  equivalent to \code{"km"} to all effects.
+  If the string supplied fails to parse, then the string is treated as a
+  single symbolic unit and \code{symbolic_unit(chr)} is used as a fallback
+  with a warning. In that case, automatic unit simplification may not work
+  properly when performing operations on unit objects, but unit conversion
+  and other Math operations should still give correct results so long as
+  the unit string supplied returns \code{TRUE} for \code{ud_is_parsable()}.
+
+  It must be noted that prepended numbers are supported too, but are not
+  treated as magnitudes. For example, \code{"1000 m"} is interpreted as
+  a prefixed unit, and it is equivalent to \code{"km"} to all effects.
 
   The third type of unit string format accepted is the special case of
   udunits time duration with a reference origin, for example \code{"hours
@@ -172,17 +153,6 @@ By default, unit names are automatically substituted with unit names
   users that work with udunits time data, e.g., with NetCDF files. Users are
   otherwise encouraged to use \code{R}'s date and time functionality provided
   by \code{Date} and \code{POSIXt} classes.
-}
-
-\section{Expressions}{
-
-
-  In \code{as_units()}, each of the symbols in the unit expression is treated
-  individually, such that each symbol must be recognized by the udunits
-  database, \emph{or} be a custom,
-  user-defined unit symbol that was defined by \code{install_unit()}. To
-  see which symbols and names are currently recognized by the udunits
-  database, see \code{valid_udunits()}.
 }
 
 \examples{

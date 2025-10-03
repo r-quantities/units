@@ -233,9 +233,10 @@ set_units.numeric <- function(x, value, ..., mode = units_options("set_units_mod
     value <- unitless
   else if (mode == "symbols") {
     value <- substitute(value)
-
     if(is.numeric(value) && !identical(value, 1) && !identical(value, 1L))
       stop("The only valid number defining a unit is '1', signifying a unitless unit")
+    if (is.name(value) || is.call(value))
+      value <- format(value)
   }
 
   units(x) <- as_units(value, ...)

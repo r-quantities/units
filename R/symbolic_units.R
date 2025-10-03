@@ -53,12 +53,16 @@ unitless <- .symbolic_units(vector("character"), vector("character"))
 
   for (i in seq_along(sym)) if (pwr[i] != 1)
     sym[i] <- paste(sym[i], pwr[i], sep = pwr_op)
-  paste0(sym, collapse = paste0(op, sep))
+
+  s <- matrix(c(sym, rep(paste0(op, sep), length(sym)-1), ""), nrow=length(sym))
+  if (!units_options("strict_tokenizer"))
+    s[sym >= "0" & sym <= "9", 2] <- ""
+  paste0(t(s), collapse="")
 }
 
 #' @export
 as.character.symbolic_units <- function(x, ...,
-		neg_power = get(".units.negative_power", envir = .units_options),
+		neg_power = units_options("negative_power"),
 		escape_units = FALSE, prod_sep = "*", plot_sep = "") {
   sep <- plot_sep
 

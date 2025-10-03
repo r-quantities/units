@@ -121,7 +121,7 @@
 #' # or
 #' drop_units(y)
 make_units <- function(bare_expression, check_is_valid = TRUE) {
-  as_units.call(substitute(bare_expression), check_is_valid = check_is_valid)
+  as_units(format(substitute(bare_expression)), check_is_valid = check_is_valid)
 }
 
 #' @name units
@@ -189,125 +189,9 @@ as_units.difftime <- function(x, value, ...) {
 
 #  ----- as_units.character helpers ------
 
-backtick <- function(x) {
-  # backtick all character runs uninterupted by one of ^()*^/`- or a space
-  # don't double up backticks
-  x <- gsub("`?([^() \\*^/`-]+)`?", "`\\1`", x)
-  gsub("`([0-9]*\\.?[0-9]+)`", "\\1", x) # unbacktick bare numbers
-}
-
-are_exponents_implicit <- function(s) {
-  s <- trimws(s)
-  has <- function(chr, regex = FALSE)
-    grepl(chr, s, fixed = !regex, perl = regex)
-  !has("^") && !has("*") && !has("/") && has("\\s|\\D.*\\d$", regex = TRUE)
-}
-
 is_udunits_time <- function(s) {
   ud_is_parseable(s) && ud_are_convertible(s, "seconds since 1970-01-01")
 }
-
-#' @name units
-#' @export
-#'
-#' @param force_single_symbol Whether to perform no string parsing and force
-#'   treatment of the string as a single symbol.
-#'
-#' @param implicit_exponents If the unit string is in product power form (e.g.
-#'   \code{"km m-2 s-1"}). Defaults to \code{NULL}, in which case a guess is made
-#'   based on the supplied string. Set to \code{TRUE} or \code{FALSE} if the guess is
-#'   incorrect.
-#'
-#' @section Character strings:
-#'
-#'   Generally speaking, there are 3 types of unit strings are accepted in
-#'   \code{as_units} (and by extension, \code{`units<-`}).
-#'
-#'   The first, and likely most common, is a "standard" format unit
-#'   specification where the relationship between unit symbols or names is
-#'   specified explicitly with arithmetic symbols for division \code{/},
-#'   multiplication \code{*} and power exponents \code{^}, or other mathematical
-#'   functions like \code{log()}. In this case, the string is parsed as an R
-#'   expression via \code{parse(text = )} after backticking all unit symbols and
-#'   names, and then passed on to \code{as_units.call()}. A heuristic is used to
-#'   perform backticking, such that any continuous set of characters
-#'   uninterrupted by one of \code{()\\*^-} are backticked (unless the character
-#'   sequence consists solely of numbers \code{0-9}), with some care to not
-#'   double up on pre-existing backticks. This heuristic appears to be quite
-#'   robust, and works for units would otherwise not be valid R syntax. For
-#'   example, percent (\code{"\%"}), feet (\code{"'"}), inches (\code{"in"}),
-#'   and Tesla (\code{"T"}) are all backticked and parsed correctly.
-#'
-#'   Nevertheless, for certain complex unit expressions, this backticking heuristic
-#'   may give incorrect results.  If the string supplied fails to parse as an R
-#'   expression, then the string is treated as a single symbolic unit and
-#'   \code{symbolic_unit(chr)} is used as a fallback with a warning. In that
-#'   case, automatic unit simplification may not work properly when performing
-#'   operations on unit objects, but unit conversion and other Math operations
-#'   should still give correct results so long as the unit string supplied
-#'   returns \code{TRUE} for \code{ud_is_parsable()}.
-#'
-#'   The second type of unit string accepted is one with implicit exponents. In
-#'   this format, \code{/}, \code{*}, and \code{^}, may not be present in the
-#'   string, and unit symbol or names must be separated by a space. Each unit
-#'   symbol may optionally be followed by a single number, specifying the power.
-#'   For example \code{"m2 s-2"} is equivalent to \code{"(m^2)*(s^-2)"}.
-#'
-#'   It must be noted that prepended numbers are supported too, but their
-#'   interpretation slightly varies depending on whether they are separated from
-#'   the unit string or not. E.g., \code{"1000 m"} is interpreted as magnitude
-#'   and unit, but \code{"1000m"} is interpreted as a prefixed unit, and it is
-#'   equivalent to \code{"km"} to all effects.
-#'
-#'   The third type of unit string format accepted is the special case of
-#'   udunits time duration with a reference origin, for example \code{"hours
-#'   since 1970-01-01 00:00:00"}. Note, that the handling of time and calendar
-#'   operations via the udunits library is subtly different from the way R
-#'   handles date and time operations. This functionality is mostly exported for
-#'   users that work with udunits time data, e.g., with NetCDF files. Users are
-#'   otherwise encouraged to use \code{R}'s date and time functionality provided
-#'   by \code{Date} and \code{POSIXt} classes.
-#'
-as_units.character <- function(x,
-                               check_is_valid = TRUE,
-                               implicit_exponents = NULL,
-                               force_single_symbol = FALSE, ...) {
-
-  stopifnot(is.character(x), length(x) == 1)
-
-  if (isTRUE(x == "")) return(unitless)
-
-  if(force_single_symbol || is_udunits_time(x))
-    return(symbolic_unit(x, check_is_valid = check_is_valid))
-
-  if(is.null(implicit_exponents))
-    implicit_exponents <- are_exponents_implicit(x)
-
-  if(implicit_exponents)
-    x <- convert_implicit_to_explicit_exponents(x)
-
-  x <- backtick(x)
-  o <- try(expr <- parse(text = x)[[1]], silent = TRUE)
-
-  if(inherits(o, "try-error")) {
-    warning("Could not parse expression: ", sQuote(x),          # nocov
-      ". Returning as a single symbolic unit()", call. = FALSE) # nocov
-    return(symbolic_unit(x, check_is_valid = check_is_valid))   # nocov
-  }
-
-  as_units.call(expr, check_is_valid = check_is_valid)
-}
-
-
-convert_implicit_to_explicit_exponents <- function(x) {
-  if (length(grep(c("[*/]"), x)) > 0)
-    stop("If 'implicit_exponents = TRUE', strings cannot contain `*' or `/'")
-  x <- gsub("\\b([^\\d-]+)([-]?\\d+)\\b", "\\1^(\\2)", x, perl =TRUE)
-  x <- gsub("\\s+", " * ", trimws(x), perl = TRUE)
-  x
-}
-
-#  ----- as_units.call helpers ------
 
 # from package:yasp, paste collapse with serial (oxford) comma
 pc_and <- function(..., sep = "") {
@@ -323,8 +207,6 @@ pc_and <- function(..., sep = "") {
     paste0( paste0(x[-lx], collapse = ", "), ", and ", x[lx])
 }
 
-#`%not_in%` <- function(x, table) match(x, table, nomatch = 0L) == 0L
-
 .msg_units_not_recognized <- function(unrecognized_symbols, full_expr) {
 
   if (is.language(full_expr))
@@ -333,18 +215,12 @@ pc_and <- function(..., sep = "") {
   is_are <- if (length(unrecognized_symbols) > 1L) "are" else "is"
 
   paste0("In ", sQuote(full_expr), ", ",
-    pc_and(sQuote(unrecognized_symbols)), " ", is_are, " not recognized by udunits.\n\n",
-    "See a table of valid unit symbols and names with valid_udunits().\n",
-    "Custom user-defined units can be added with install_unit().\n\n",
-    "See a table of valid unit prefixes with valid_udunits_prefixes().\n",
-    "Prefixes will automatically work with any user-defined unit.")
+         pc_and(sQuote(unrecognized_symbols)), " ", is_are, " not recognized by udunits.\n\n",
+         "See a table of valid unit symbols and names with valid_udunits().\n",
+         "Custom user-defined units can be added with install_unit().\n\n",
+         "See a table of valid unit prefixes with valid_udunits_prefixes().\n",
+         "Prefixes will automatically work with any user-defined unit.")
 }
-
-units_eval_env <- new.env(parent = baseenv())
-units_eval_env$ln <- function(x) base::log(x)
-units_eval_env$lg <- function(x) base::log(x, base = 10)
-units_eval_env$lb <- function(x) base::log(x, base = 2)
-
 
 #' @name units
 #' @export
@@ -354,71 +230,108 @@ units_eval_env$lb <- function(x) base::log(x, base = 2)
 #'   user defined via \code{install_unit()}. If \code{FALSE}, no check
 #'   for validity is performed.
 #'
+#' @param force_single_symbol Whether to perform no string parsing and force
+#'   treatment of the string as a single symbol.
+#'
+#' @section Character strings:
+#'
+#'   Generally speaking, there are 3 types of unit strings are accepted in
+#'   \code{as_units} (and by extension, \code{`units<-`}).
+#'
+#'   The first type, and likely most common, is a "standard" format unit
+#'   specification where the relationship between unit symbols or names is
+#'   specified explicitly with arithmetic symbols for division \code{/},
+#'   multiplication \code{*} and power exponents \code{^}.
+#'
+#'   The second type of unit string accepted is one with implicit exponents. In
+#'   this format, \code{/}, \code{*}, and \code{^}, may not be present in the
+#'   string, and unit symbol or names must be separated by a space. Each unit
+#'   symbol may optionally be followed by a single number, specifying the power.
+#'   For example \code{"m2 s-2"} is equivalent to \code{"(m^2)*(s^-2)"}.
+#'
+#'   If the string supplied fails to parse, then the string is treated as a
+#'   single symbolic unit and \code{symbolic_unit(chr)} is used as a fallback
+#'   with a warning. In that case, automatic unit simplification may not work
+#'   properly when performing operations on unit objects, but unit conversion
+#'   and other Math operations should still give correct results so long as
+#'   the unit string supplied returns \code{TRUE} for \code{ud_is_parsable()}.
+#'
+#'   It must be noted that prepended numbers are supported too, but are not
+#'   treated as magnitudes. For example, \code{"1000 m"} is interpreted as
+#'   a prefixed unit, and it is equivalent to \code{"km"} to all effects.
+#'
+#'   The third type of unit string format accepted is the special case of
+#'   udunits time duration with a reference origin, for example \code{"hours
+#'   since 1970-01-01 00:00:00"}. Note, that the handling of time and calendar
+#'   operations via the udunits library is subtly different from the way R
+#'   handles date and time operations. This functionality is mostly exported for
+#'   users that work with udunits time data, e.g., with NetCDF files. Users are
+#'   otherwise encouraged to use \code{R}'s date and time functionality provided
+#'   by \code{Date} and \code{POSIXt} classes.
+#'
 #' @note By default, unit names are automatically substituted with unit names
 #'   (e.g., kilogram --> kg). To turn off this behavior, set
 #'   \code{units_options(auto_convert_names_to_symbols = FALSE)}
 #'
-#' @section Expressions:
-#'
-#'   In \code{as_units()}, each of the symbols in the unit expression is treated
-#'   individually, such that each symbol must be recognized by the udunits
-#'   database, \emph{or} be a custom,
-#'   user-defined unit symbol that was defined by \code{install_unit()}. To
-#'   see which symbols and names are currently recognized by the udunits
-#'   database, see \code{valid_udunits()}.
-#'
 #' @seealso \code{\link{install_unit}}, \code{\link{valid_udunits}}
-as_units.call <- function(x, check_is_valid = TRUE, ...) {
+as_units.character <- function(x, ...,
+                               check_is_valid = TRUE,
+                               force_single_symbol = FALSE) {
 
-  if(missing(x) || identical(x, quote(expr =)) ||
-     identical(x, 1) || identical(x, 1L))
+  stopifnot(is.character(x), length(x) == 1)
+
+  if (any(is.na(x)))
+    stop("a missing value for units is not allowed")
+
+  if (isTRUE(x == "" || x == "1"))
     return(.as.units(1, unitless))
 
-  if (is.vector(x) && !is.expression(x) && any(is.na(x)))
-  	stop("a missing value for units is not allowed")
+  if(force_single_symbol || is_udunits_time(x))
+    return(symbolic_unit(x, check_is_valid = check_is_valid))
 
-  stopifnot(is.language(x))
-
-  vars <- all.vars(x)
-  if(!length(vars))
-    stop(call. = FALSE,
-"No symbols found. Please supply bare expressions with this approach.
-See ?as_units for usage examples.")
+  o <- try(su <- parse_unit(x, units_options("strict_tokenizer")), silent=TRUE)
+  if(inherits(o, "try-error")) {
+    warning("Could not parse expression: ", sQuote(x),                # nocov
+            ". Returning as a single symbolic unit()", call. = FALSE) # nocov
+    return(symbolic_unit(x, check_is_valid = check_is_valid))         # nocov
+  }
 
   if (check_is_valid) {
+    vars <- c(su$numerator, su$denominator)
     valid <- vapply(vars, ud_is_parseable, logical(1L))
     if (!all(valid))
       stop(.msg_units_not_recognized(vars[!valid], x), call. = FALSE)
   }
 
-  names(vars) <- vars
-  tmp_env <- lapply(vars, symbolic_unit, check_is_valid = FALSE)
-
-  if (dont_simplify_here <- is.na(.units.simplify())) {
-  	units_options(simplify = FALSE)
-  	on.exit(units_options(simplify = NA))
+  if (units_options("auto_convert_names_to_symbols")) {
+    name_to_symbol <- function(chr)
+      if (ud_is_parseable(chr) && length(sym <- ud_get_symbol(chr))) sym else chr
+    su$numerator <- vapply(su$numerator, name_to_symbol, character(1), USE.NAMES=FALSE)
+    su$denominator <- vapply(su$denominator, name_to_symbol, character(1), USE.NAMES=FALSE)
   }
 
-  unit <- tryCatch( eval(x, tmp_env, units_eval_env),
-    error = function(e) stop( paste0( conditionMessage(e), "\n",
-          "Did you try to supply a value in a context where a bare expression was expected?"
-        ), call. = FALSE ))
-
-#  if(as.numeric(unit) %not_in% c(1, 0)) # 0 if log() used.
-#    stop(call. = FALSE,
-#"In ", sQuote(deparse(x)), " the numeric multiplier ", sQuote(as.numeric(unit)), " is invalid.
-#Use `install_unit()` to define a new unit that is a multiple of another unit.")
-
-  .as.units(as.numeric(unit), units(unit))
+  if (is.na(.units.simplify())) {
+    units_options(simplify = FALSE)
+    on.exit(units_options(simplify = NA))
+  }
+  .simplify_units(1, su)
 }
 
 #' @name units
 #' @export
-as_units.expression <- as_units.call
+as_units.call <- function(x, ...) {
+  as_units(format(x), ...)
+}
 
 #' @name units
 #' @export
-as_units.name       <- as_units.call
+as_units.expression <- function(x, ...) {
+  as_units(as.character(x), ...)
+}
+
+#' @name units
+#' @export
+as_units.name       <- as_units.expression
 
 #' @name units
 #' @export
@@ -442,7 +355,6 @@ as_units.Date = function(x, value, ...) {
 
 
 symbolic_unit <- function(chr, check_is_valid = TRUE) {
-
   stopifnot(is.character(chr), length(chr) == 1)
 
   if (check_is_valid && !ud_is_parseable(chr)) {

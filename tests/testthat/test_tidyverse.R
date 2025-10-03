@@ -9,8 +9,8 @@ test_that("pillar methods are available for units objects", {
   expect_equal(pillar::type_sum(m), "mixed_units")
 
   expect_snapshot({
-    pillar::pillar(x[1])
-    pillar::pillar(m[1])
+    pillar::pillar(x)
+    pillar::pillar(m)
   })
 })
 
