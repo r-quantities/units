@@ -7,6 +7,10 @@
   used in physiology are now correctly parsed as `ml / (min * 1.73 * m^2)`.
   See `?as_units` for details; #416 addressing #221, #383
 
+* Printing: follow NIST recommendations. In particular, numerator and
+  denominator are separated by a single slash, and a parenthesis is used when
+  the denominator contains several symbols (see example above); #86
+
 * Vectorize `ud_*()` helpers; #405 addressing #404
 
 * Loading units no longer initializes the RNG state; #409

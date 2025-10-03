@@ -62,41 +62,39 @@ unitless <- .symbolic_units(vector("character"), vector("character"))
 
 #' @export
 as.character.symbolic_units <- function(x, ...,
-		neg_power = units_options("negative_power"),
-		escape_units = FALSE, prod_sep = "*", plot_sep = "") {
+                                        neg_power = units_options("negative_power"),
+                                        escape_units = FALSE, prod_sep = "*", plot_sep = "") {
   sep <- plot_sep
 
-  numerator <- x$numerator
-  denominator <- x$denominator
+  numerator <- x$numerator[x$numerator != "1"]
+  denominator <- x$denominator[x$denominator != "1"]
   if (escape_units) {
     numerator <- unlist(Map(function(name) paste0("`", name, "`", sep = ""), numerator))
     denominator <- unlist(Map(function(name) paste0("`", name, "`", sep = ""), denominator))
   }
 
   if (x == unitless) { # xxx
-	 u <- if (escape_units)
-       unlist(Map(function(name) paste0("`", name, "`", sep = ""),
-	      units_options("unitless_symbol")))
-	 else
-	    units_options("unitless_symbol")
-	 return(u)
+    u <- if (escape_units)
+      unlist(Map(function(name) paste0("`", name, "`", sep = ""),
+                 units_options("unitless_symbol")))
+    else
+      units_options("unitless_symbol")
+    return(u)
   }
 
-  num_str <- if (length(numerator) > 0)
-      .pretty_print_sequence(numerator, prod_sep, FALSE, plot_sep)
-    else  { # only denominator:
-      if (! neg_power)
-	    "1" # 1/cm^2/h
-	  else
-	    character(0)
-    }
+  num_str <- denom_str <- character(0)
 
-  denom_str <- if (length(denominator) > 0) {
+  num_str <- if (length(numerator) > 0)
+    .pretty_print_sequence(numerator, prod_sep, FALSE, plot_sep)
+  else if (! neg_power) "1" # only denominator: 1/(cm^2*h)
+
+  if (length(denominator) > 0) {
     sep <- if (neg_power)
       paste0(prod_sep, plot_sep) else "/"
-    .pretty_print_sequence(denominator, sep, neg_power, plot_sep)
-  } else
-    character(0)
+    denom_str <- .pretty_print_sequence(denominator, prod_sep, neg_power, plot_sep)
+    if (!neg_power && length(unique(denominator)) > 1)
+      denom_str <- paste0("(", denom_str, ")")
+  }
 
   if (length(num_str) == 0)
     denom_str
@@ -111,9 +109,9 @@ as.character.symbolic_units <- function(x, ...,
   isFALSE <- function(x) is.logical(x) && length(x) == 1L && !is.na(x) && !x
 
   if (isFALSE(.units.simplify())) {
-  	value = unclass(value)
-	  units(value) = sym_units
-  	return(value)
+    value = unclass(value)
+    units(value) = sym_units
+    return(value)
   }
 
   # This is just a brute force implementation that takes each element in the

@@ -10,6 +10,9 @@ test_that("we can multiply and divide symbolic units", {
   expect_equal(as.character(units(units:::.multiply_symbolic_units(1, m, m))), "m^2")
   expect_equal(as.character(units(units:::.divide_symbolic_units(1, m, s))), "m/s")
   expect_equal(as.character(units(units:::.divide_symbolic_units(1, units(units:::.divide_symbolic_units(1, m, s)), s))), "m/s^2")
+
+  expect_equal(as.character(units(as_units("1/m2/kg/L"))), "1/(m^2*kg*L)")
+  expect_equal(deparse_unit(as_units("1/m2/kg/L")), "m-2 kg-1 L-1")
 })
 
 test_that("we can simplify basic units", {
