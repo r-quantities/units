@@ -37,7 +37,7 @@ set_units, a pipe-friendly version of `units&amp;lt;-`. By
 
     <a class="navbar-brand me-2" href="../index.html">units</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8-7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0-0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,7 +64,7 @@ set_units, a pipe-friendly version of `units&amp;lt;-`. By
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Handle measurement units</h1>
-      <small class="dont-index">Source: <a href="https://github.com/r-quantities/units/blob/v0.8-7/R/conversion.R" class="external-link"><code>R/conversion.R</code></a>, <a href="https://github.com/r-quantities/units/blob/v0.8-7/R/make_units.R" class="external-link"><code>R/make_units.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/r-quantities/units/blob/v1.0-0/R/conversion.R" class="external-link"><code>R/conversion.R</code></a>, <a href="https://github.com/r-quantities/units/blob/v1.0-0/R/make_units.R" class="external-link"><code>R/make_units.R</code></a></small>
       <div class="d-none name"><code>units.Rd</code></div>
     </div>
 
@@ -120,17 +120,17 @@ set_units, a pipe-friendly version of `units&amp;lt;-`. By
 <span><span class="fu">as_units</span><span class="op">(</span><span class="va">x</span>, <span class="va">value</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'character'</span></span>
-<span><span class="fu">as_units</span><span class="op">(</span><span class="va">x</span>, check_is_valid <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  implicit_exponents <span class="op">=</span> <span class="cn">NULL</span>, force_single_symbol <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span><span class="fu">as_units</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span>, check_is_valid <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  force_single_symbol <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'call'</span></span>
-<span><span class="fu">as_units</span><span class="op">(</span><span class="va">x</span>, check_is_valid <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span><span class="fu">as_units</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'expression'</span></span>
-<span><span class="fu">as_units</span><span class="op">(</span><span class="va">x</span>, check_is_valid <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span><span class="fu">as_units</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'name'</span></span>
-<span><span class="fu">as_units</span><span class="op">(</span><span class="va">x</span>, check_is_valid <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span><span class="fu">as_units</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'POSIXt'</span></span>
 <span><span class="fu">as_units</span><span class="op">(</span><span class="va">x</span>, <span class="va">value</span>, <span class="va">...</span><span class="op">)</span></span>
@@ -175,13 +175,6 @@ user defined via <code><a href="install_unit.html">install_unit()</a></code>. If
 for validity is performed.</p></dd>
 
 
-<dt id="arg-implicit-exponents">implicit_exponents<a class="anchor" aria-label="anchor" href="#arg-implicit-exponents"></a></dt>
-<dd><p>If the unit string is in product power form (e.g.
-<code>"km m-2 s-1"</code>). Defaults to <code>NULL</code>, in which case a guess is made
-based on the supplied string. Set to <code>TRUE</code> or <code>FALSE</code> if the guess is
-incorrect.</p></dd>
-
-
 <dt id="arg-force-single-symbol">force_single_symbol<a class="anchor" aria-label="anchor" href="#arg-force-single-symbol"></a></dt>
 <dd><p>Whether to perform no string parsing and force
 treatment of the string as a single symbol.</p></dd>
@@ -212,38 +205,24 @@ value is ignored unless <code>units_options("simplifiy")</code> is <code>TRUE</c
 
 <p>Generally speaking, there are 3 types of unit strings are accepted in
   <code>as_units</code> (and by extension, <code>`units&lt;-`</code>).</p>
-<p>The first, and likely most common, is a "standard" format unit
+<p>The first type, and likely most common, is a "standard" format unit
   specification where the relationship between unit symbols or names is
   specified explicitly with arithmetic symbols for division <code>/</code>,
-  multiplication <code>*</code> and power exponents <code>^</code>, or other mathematical
-  functions like <code><a href="https://rdrr.io/r/base/Log.html" class="external-link">log()</a></code>. In this case, the string is parsed as an R
-  expression via <code>parse(text = )</code> after backticking all unit symbols and
-  names, and then passed on to <code>as_units.call()</code>. A heuristic is used to
-  perform backticking, such that any continuous set of characters
-  uninterrupted by one of <code>()\*^-</code> are backticked (unless the character
-  sequence consists solely of numbers <code>0-9</code>), with some care to not
-  double up on pre-existing backticks. This heuristic appears to be quite
-  robust, and works for units would otherwise not be valid R syntax. For
-  example, percent (<code>"%"</code>), feet (<code>"'"</code>), inches (<code>"in"</code>),
-  and Tesla (<code>"T"</code>) are all backticked and parsed correctly.</p>
-<p>Nevertheless, for certain complex unit expressions, this backticking heuristic
-  may give incorrect results.  If the string supplied fails to parse as an R
-  expression, then the string is treated as a single symbolic unit and
-  <code>symbolic_unit(chr)</code> is used as a fallback with a warning. In that
-  case, automatic unit simplification may not work properly when performing
-  operations on unit objects, but unit conversion and other Math operations
-  should still give correct results so long as the unit string supplied
-  returns <code>TRUE</code> for <code>ud_is_parsable()</code>.</p>
+  multiplication <code>*</code> and power exponents <code>^</code>.</p>
 <p>The second type of unit string accepted is one with implicit exponents. In
   this format, <code>/</code>, <code>*</code>, and <code>^</code>, may not be present in the
   string, and unit symbol or names must be separated by a space. Each unit
   symbol may optionally be followed by a single number, specifying the power.
   For example <code>"m2 s-2"</code> is equivalent to <code>"(m^2)*(s^-2)"</code>.</p>
-<p>It must be noted that prepended numbers are supported too, but their
-  interpretation slightly varies depending on whether they are separated from
-  the unit string or not. E.g., <code>"1000 m"</code> is interpreted as magnitude
-  and unit, but <code>"1000m"</code> is interpreted as a prefixed unit, and it is
-  equivalent to <code>"km"</code> to all effects.</p>
+<p>If the string supplied fails to parse, then the string is treated as a
+  single symbolic unit and <code>symbolic_unit(chr)</code> is used as a fallback
+  with a warning. In that case, automatic unit simplification may not work
+  properly when performing operations on unit objects, but unit conversion
+  and other Math operations should still give correct results so long as
+  the unit string supplied returns <code>TRUE</code> for <code>ud_is_parsable()</code>.</p>
+<p>It must be noted that prepended numbers are supported too, but are not
+  treated as magnitudes. For example, <code>"1000 m"</code> is interpreted as
+  a prefixed unit, and it is equivalent to <code>"km"</code> to all effects.</p>
 <p>The third type of unit string format accepted is the special case of
   udunits time duration with a reference origin, for example <code>"hours
   since 1970-01-01 00:00:00"</code>. Note, that the handling of time and calendar
@@ -252,18 +231,6 @@ value is ignored unless <code>units_options("simplifiy")</code> is <code>TRUE</c
   users that work with udunits time data, e.g., with NetCDF files. Users are
   otherwise encouraged to use <code>R</code>'s date and time functionality provided
   by <code>Date</code> and <code>POSIXt</code> classes.</p>
-    </div>
-    <div class="section level2">
-    <h2 id="expressions">Expressions<a class="anchor" aria-label="anchor" href="#expressions"></a></h2>
-
-
-
-<p>In <code>as_units()</code>, each of the symbols in the unit expression is treated
-  individually, such that each symbol must be recognized by the udunits
-  database, <em>or</em> be a custom,
-  user-defined unit symbol that was defined by <code><a href="install_unit.html">install_unit()</a></code>. To
-  see which symbols and names are currently recognized by the udunits
-  database, see <code><a href="valid_udunits.html">valid_udunits()</a></code>.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -434,7 +401,7 @@ value is ignored unless <code>units_options("simplifiy")</code> is <code>TRUE</c
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer></div>
