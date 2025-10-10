@@ -51,10 +51,11 @@ ud_char <- function(x) {
   if (is.character(x)) return(x)
   if (!inherits(x, "symbolic_units")) stop("not a unit")
 
+  # using * instead of space to workaround #414
   res <- if (length(x$numerator))
-    paste(x$numerator, collapse=" ") else "1"
+    paste(x$numerator, collapse="*") else "1"
   if (length(x$denominator))
-    res <- paste0(res, " (", paste(x$denominator, collapse=" "), ")-1")
+    res <- paste0(res, "*(", paste(x$denominator, collapse="*"), ")-1")
   res
 }
 
