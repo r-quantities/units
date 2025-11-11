@@ -3,6 +3,8 @@
 * Add internal workaround for udunits2 bug with parsing of units that contain
   "per", e.g. "percent" or "person"; #414
 
+* Update minimum Rcpp version; #421
+
 # version 1.0-0
 
 * Breaking change: a new tokenizer fixes longstanding issues with parsing
