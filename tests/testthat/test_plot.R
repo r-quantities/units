@@ -112,10 +112,10 @@ test_that("ranges are correctly computed", {
   p2 <- p + geom_point(data = data.frame(x = 0, y = make_units(m)  * 2))
   p3 <- p + geom_point(data = data.frame(x = 0, y = make_units(km) * 0.002))
 
-  vdiffr::expect_doppelganger("ggplot2 range", p0)
-  vdiffr::expect_doppelganger("ggplot2 range", p1)
-  vdiffr::expect_doppelganger("ggplot2 range", p2)
-  vdiffr::expect_doppelganger("ggplot2 range", p3)
+  vdiffr::expect_doppelganger("ggplot2 range 0", p0)
+  vdiffr::expect_doppelganger("ggplot2 range 1", p1)
+  vdiffr::expect_doppelganger("ggplot2 range 2", p2)
+  vdiffr::expect_doppelganger("ggplot2 range 3", p3)
 })
 
 test_that("additional continuous scales work as expected", {
