@@ -16,11 +16,21 @@
 # include <udunits2.h>
 #endif
 
+static std::string ud_error_msg = "";
+
+void check_ud_error() {
+  if (!ud_error_msg.empty()) {
+    std::string msg = ud_error_msg;
+    ud_error_msg = "";
+    Rcpp::stop(msg);
+  }
+}
+
 extern "C" {
   void r_error_fn(const char* fmt, va_list args) {
     char buf[256];
     vsnprintf(buf, (size_t) 256, fmt, args);
-    Rcpp::stop("%s", buf);
+    ud_error_msg = buf;
   }
 }
 
@@ -62,8 +72,10 @@ void ud_init(CharacterVector path) {
   if (sys == NULL)
     sys = ut_read_xml(NULL); // #nocov
   ut_set_error_message_handler((ut_error_message_handler) r_error_fn);
-  if (sys == NULL)
+  if (sys == NULL) {
+    check_ud_error();
     stop("no database found!"); // #nocov
+  }
 }
 
 // [[Rcpp::export(rng=false)]]
@@ -97,10 +109,18 @@ IntegerVector ud_compare(NumericVector x, NumericVector y,
 
   ut_unit *ux = ut_parse(sys, ut_trim(xn.data(), enc), enc);
   ut_unit *uy = ut_parse(sys, ut_trim(yn.data(), enc), enc);
+  check_ud_error();
+  if (!ux || !uy) Rcpp::stop("Parsing unit failed");
 
   if (ut_compare(ux, uy) != 0) {
     NumericVector y_cv = clone(y);
     cv_converter *cv = ut_get_converter(uy, ux);
+    if (!cv) {
+      ut_free(ux);
+      ut_free(uy);
+      check_ud_error();
+      Rcpp::stop("Units not convertible");
+    }
     cv_convert_doubles(cv, &(y_cv[0]), y_cv.size(), &(y_cv[0]));
     cv_free(cv);
     std::swap(y, y_cv);
@@ -133,6 +153,7 @@ LogicalVector ud_convertible(std::string from, std::string to) {
 
   ut_unit *u_from = ut_parse(sys, ut_trim(from.data(), enc), enc);
   ut_unit *u_to = ut_parse(sys, ut_trim(to.data(), enc), enc);
+  check_ud_error();
 
   if (u_from == NULL || u_to == NULL)
     goto finished;  	// #nocov
@@ -151,8 +172,16 @@ NumericVector ud_convert_doubles(NumericVector x, std::string from, std::string 
 
   ut_unit *u_from = ut_parse(sys, ut_trim(from.data(), enc), enc);
   ut_unit *u_to = ut_parse(sys, ut_trim(to.data(), enc), enc);
+  check_ud_error();
+  if (!u_from || !u_to) Rcpp::stop("Parsing unit failed");
 
   cv_converter *cv = ut_get_converter(u_from, u_to);
+  if (!cv) {
+    ut_free(u_from);
+    ut_free(u_to);
+    check_ud_error();
+    Rcpp::stop("Units not convertible");
+  }
   cv_convert_doubles(cv, &(x[0]), x.size(), &(out[0]));
 
   cv_free(cv);
@@ -164,43 +193,63 @@ NumericVector ud_convert_doubles(NumericVector x, std::string from, std::string 
 // [[Rcpp::export(rng=false)]]
 void ud_map_names(CharacterVector names, SEXP inunit) {
   if (!names.size()) return;
+  ud_error_msg = "";
 
   ut_unit *unit = ut_unwrap(inunit);
-  for (int i = 0; i < names.size(); i++)
+  for (int i = 0; i < names.size(); i++) {
     ut_map_name_to_unit(ut_trim(names[i], enc), enc, unit);
+    check_ud_error();
+  }
   ut_map_unit_to_name(unit, ut_trim(names[0], enc), enc);
+  check_ud_error();
 }
 
 // [[Rcpp::export(rng=false)]]
 void ud_unmap_names(CharacterVector names) {
   if (!names.size()) return;
+  ud_error_msg = "";
 
   ut_unit *unit = ut_parse(sys, ut_trim(names[0], enc), enc);
-  ut_unmap_unit_to_name(unit, enc);
-  ut_free(unit);
-  for (int i = 0; i < names.size(); i++)
+  check_ud_error();
+  if (unit) {
+    ut_unmap_unit_to_name(unit, enc);
+    ut_free(unit);
+  }
+  for (int i = 0; i < names.size(); i++) {
     ut_unmap_name_to_unit(sys, ut_trim(names[i], enc), enc);
+    check_ud_error();
+  }
 }
 
 // [[Rcpp::export(rng=false)]]
 void ud_map_symbols(CharacterVector symbols, SEXP inunit) {
   if (!symbols.size()) return;
+  ud_error_msg = "";
 
   ut_unit *unit = ut_unwrap(inunit);
-  for (int i = 0; i < symbols.size(); i++)
+  for (int i = 0; i < symbols.size(); i++) {
     ut_map_symbol_to_unit(ut_trim(symbols[i], enc), enc, unit);
+    check_ud_error();
+  }
   ut_map_unit_to_symbol(unit, ut_trim(symbols[0], enc), enc);
+  check_ud_error();
 }
 
 // [[Rcpp::export(rng=false)]]
 void ud_unmap_symbols(CharacterVector symbols) {
   if (!symbols.size()) return;
+  ud_error_msg = "";
 
   ut_unit *unit = ut_parse(sys, ut_trim(symbols[0], enc), enc);
-  ut_unmap_unit_to_symbol(unit, enc);
-  ut_free(unit);
-  for (int i = 0; i < symbols.size(); i++)
+  check_ud_error();
+  if (unit) {
+    ut_unmap_unit_to_symbol(unit, enc);
+    ut_free(unit);
+  }
+  for (int i = 0; i < symbols.size(); i++) {
     ut_unmap_symbol_to_unit(sys, ut_trim(symbols[i], enc), enc);
+    check_ud_error();
+  }
 }
 
 /* Thin wrappers **************************************************************/
@@ -287,8 +336,10 @@ SEXP R_ut_log(SEXP a, double base) {
 // [[Rcpp::export(rng=false)]]
 SEXP R_ut_parse(std::string name) {
   ut_unit *u = ut_parse(sys, ut_trim(name.data(), enc), enc);
-  if (u == NULL)
+  if (u == NULL) {
+    check_ud_error();
     stop("syntax error, cannot parse '%s'", name);
+  }
   return ut_wrap(u);
 }
 
