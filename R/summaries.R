@@ -18,18 +18,18 @@ Summary.units = function(..., na.rm = FALSE) {
 
 
 #' @export
-print.units = function (x, ...) { # nocov start
+print.units = function (x, ...) {
   gr = units_options("group")
   if (is.array(x) || length(x) > 1L) {
     cat("Units: ", paste0(gr[1], as.character(attr(x, "units")), gr[2]), "\n", sep = "")
-    x <- drop_units(x)
-    attr(x, "pillar") <- NULL
-    NextMethod()
+    x_next <- drop_units(x)
+    attr(x_next, "pillar") <- NULL
+    NextMethod(x=x_next)
   } else {
     cat(format(x, ...), "\n", sep="")
-    invisible(x)
   }
-} # nocov end
+  invisible(x)
+}
 
 #' @export
 mean.units = function(x, ...) {

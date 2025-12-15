@@ -111,6 +111,7 @@ as.character.mixed_symbolic_units = function(x, ...) {
 print.mixed_units = function(x, ...) {
   .cat_units_table(x)
 	cat(paste(format(x, ...), collapse = ", "), "\n")
+	invisible(x)
 }
 
 #' @export

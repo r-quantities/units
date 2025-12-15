@@ -5,6 +5,9 @@
 
 * Update minimum Rcpp version; #421
 
+* Fix `print` methods for `units` and `mixed_units`, which now correctly return
+  invisibly the object being printed; #422
+
 # version 1.0-0
 
 * Breaking change: a new tokenizer fixes longstanding issues with parsing

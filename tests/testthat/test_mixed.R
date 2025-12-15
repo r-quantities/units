@@ -1,6 +1,10 @@
 test_that("mixed units work", {
    m = c(set_units(1:3, km), set_units(4:6, g), allow_mixed = TRUE)
 
+   # print returns the same object
+   expect_output(m1 <- print(m))
+   expect_equal(m, m1)
+
    # select a subset
    expect_s3_class(m[3:4], "mixed_units")
    expect_s3_class(m[3], "mixed_units")
