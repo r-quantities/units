@@ -24,7 +24,7 @@ print.units = function (x, ...) {
     cat("Units: ", paste0(gr[1], as.character(attr(x, "units")), gr[2]), "\n", sep = "")
     x_next <- drop_units(x)
     attr(x_next, "pillar") <- NULL
-    NextMethod(x=x_next)
+    print(x_next, ...)
   } else {
     cat(format(x, ...), "\n", sep="")
   }
