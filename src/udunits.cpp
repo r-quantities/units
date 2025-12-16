@@ -8,13 +8,7 @@
   Functions to support the R interface to the udunits (API version 2) library
 */
 
-#include <Rcpp.h>
-
-#if UDUNITS2_DIR != 0
-# include <udunits2/udunits2.h>
-#else
-# include <udunits2.h>
-#endif
+#include "units_types.h"
 
 extern "C" {
   void r_error_fn(const char* fmt, va_list args) {
@@ -25,22 +19,9 @@ extern "C" {
 }
 
 using namespace Rcpp;
-typedef XPtr<ut_unit, PreserveStorage, ut_free, true> XPtrUT;
 
 static ut_system *sys = NULL;
 static ut_encoding enc = UT_UTF8;
-
-// wrap a ut_unit pointer in an XPtr
-SEXP ut_wrap(ut_unit *u) {
-  XPtrUT p(u);
-  return p;
-}
-
-// fetch the ut_unit pointer from an XPtr wrapper
-ut_unit *ut_unwrap(SEXP u) {
-  XPtrUT ptr(u);
-  return ((ut_unit *) ptr);
-}
 
 /* High-level functions *******************************************************/
 
@@ -95,19 +76,15 @@ IntegerVector ud_compare(NumericVector x, NumericVector y,
   for (std::string &attr : x.attributeNames())
     out.attr(attr) = x.attr(attr);
 
-  ut_unit *ux = ut_parse(sys, ut_trim(xn.data(), enc), enc);
-  ut_unit *uy = ut_parse(sys, ut_trim(yn.data(), enc), enc);
+  xut_unit ux(ut_parse(sys, ut_trim(xn.data(), enc), enc));
+  xut_unit uy(ut_parse(sys, ut_trim(yn.data(), enc), enc));
 
-  if (ut_compare(ux, uy) != 0) {
+  if (ut_compare(ux.get(), uy.get()) != 0) {
     NumericVector y_cv = clone(y);
-    cv_converter *cv = ut_get_converter(uy, ux);
+    xcv_converter cv(ut_get_converter(uy.get(), ux.get()));
     cv_convert_doubles(cv, &(y_cv[0]), y_cv.size(), &(y_cv[0]));
-    cv_free(cv);
     std::swap(y, y_cv);
   }
-
-  ut_free(ux);
-  ut_free(uy);
 
   for (int i=0, j=0; i < x.size(); i++, j++) {
     if (j == y.size())
@@ -129,19 +106,12 @@ IntegerVector ud_compare(NumericVector x, NumericVector y,
 
 // [[Rcpp::export(rng=false)]]
 LogicalVector ud_convertible(std::string from, std::string to) {
-  bool convertible = false;
+  xut_unit u_from(ut_parse(sys, ut_trim(from.data(), enc), enc));
+  xut_unit u_to(ut_parse(sys, ut_trim(to.data(), enc), enc));
 
-  ut_unit *u_from = ut_parse(sys, ut_trim(from.data(), enc), enc);
-  ut_unit *u_to = ut_parse(sys, ut_trim(to.data(), enc), enc);
-
-  if (u_from == NULL || u_to == NULL)
-    goto finished;  	// #nocov
-  convertible = ut_are_convertible(u_from, u_to) != 0;
-
-finished:
-  ut_free(u_from);
-  ut_free(u_to);
-  return convertible;
+  if (!u_from || !u_to)
+    return false;
+  return ut_are_convertible(u_from, u_to) != 0;
 }
 
 // [[Rcpp::export(rng=false)]]
@@ -149,23 +119,19 @@ NumericVector ud_convert_doubles(NumericVector x, std::string from, std::string 
   if (x.size() == 0) return x;
   NumericVector out = clone(x);
 
-  ut_unit *u_from = ut_parse(sys, ut_trim(from.data(), enc), enc);
-  ut_unit *u_to = ut_parse(sys, ut_trim(to.data(), enc), enc);
+  xut_unit u_from(ut_parse(sys, ut_trim(from.data(), enc), enc));
+  xut_unit u_to(ut_parse(sys, ut_trim(to.data(), enc), enc));
 
-  cv_converter *cv = ut_get_converter(u_from, u_to);
+  xcv_converter cv(ut_get_converter(u_from.get(), u_to.get()));
   cv_convert_doubles(cv, &(x[0]), x.size(), &(out[0]));
 
-  cv_free(cv);
-  ut_free(u_from);
-  ut_free(u_to);
   return out;
 }
 
 // [[Rcpp::export(rng=false)]]
-void ud_map_names(CharacterVector names, SEXP inunit) {
-  if (!names.size()) return;
+void ud_map_names(CharacterVector names, xut_unit unit) {
+  if (!names.size() || !unit) return;
 
-  ut_unit *unit = ut_unwrap(inunit);
   for (int i = 0; i < names.size(); i++)
     ut_map_name_to_unit(ut_trim(names[i], enc), enc, unit);
   ut_map_unit_to_name(unit, ut_trim(names[0], enc), enc);
@@ -175,18 +141,18 @@ void ud_map_names(CharacterVector names, SEXP inunit) {
 void ud_unmap_names(CharacterVector names) {
   if (!names.size()) return;
 
-  ut_unit *unit = ut_parse(sys, ut_trim(names[0], enc), enc);
+  xut_unit unit(ut_parse(sys, ut_trim(names[0], enc), enc));
+  if (!unit) return;
+
   ut_unmap_unit_to_name(unit, enc);
-  ut_free(unit);
   for (int i = 0; i < names.size(); i++)
     ut_unmap_name_to_unit(sys, ut_trim(names[i], enc), enc);
 }
 
 // [[Rcpp::export(rng=false)]]
-void ud_map_symbols(CharacterVector symbols, SEXP inunit) {
-  if (!symbols.size()) return;
+void ud_map_symbols(CharacterVector symbols, xut_unit unit) {
+  if (!symbols.size() || !unit) return;
 
-  ut_unit *unit = ut_unwrap(inunit);
   for (int i = 0; i < symbols.size(); i++)
     ut_map_symbol_to_unit(ut_trim(symbols[i], enc), enc, unit);
   ut_map_unit_to_symbol(unit, ut_trim(symbols[0], enc), enc);
@@ -196,9 +162,10 @@ void ud_map_symbols(CharacterVector symbols, SEXP inunit) {
 void ud_unmap_symbols(CharacterVector symbols) {
   if (!symbols.size()) return;
 
-  ut_unit *unit = ut_parse(sys, ut_trim(symbols[0], enc), enc);
+  xut_unit unit(ut_parse(sys, ut_trim(symbols[0], enc), enc));
+  if (!unit) return;
+
   ut_unmap_unit_to_symbol(unit, enc);
-  ut_free(unit);
   for (int i = 0; i < symbols.size(); i++)
     ut_unmap_symbol_to_unit(sys, ut_trim(symbols[i], enc), enc);
 }
@@ -208,33 +175,33 @@ void ud_unmap_symbols(CharacterVector symbols) {
 // # nocov start
 
 // [[Rcpp::export(rng=false)]]
-SEXP R_ut_get_dimensionless_unit_one() {
-  return ut_wrap(ut_get_dimensionless_unit_one(sys));
+xut_unit R_ut_get_dimensionless_unit_one() {
+  return xut_unit(ut_get_dimensionless_unit_one(sys));
 }
 
 // # nocov end
 
 // [[Rcpp::export(rng=false)]]
-SEXP R_ut_new_base_unit() {
-  return ut_wrap(ut_new_base_unit(sys));
+xut_unit R_ut_new_base_unit() {
+  return xut_unit(ut_new_base_unit(sys));
 }
 
 // [[Rcpp::export(rng=false)]]
-SEXP R_ut_new_dimensionless_unit() {
-  return ut_wrap(ut_new_dimensionless_unit(sys));
+xut_unit R_ut_new_dimensionless_unit() {
+  return xut_unit(ut_new_dimensionless_unit(sys));
 }
 
 // [[Rcpp::export(rng=false)]]
-CharacterVector R_ut_get_name(SEXP unit) {
-  const char *s = ut_get_name(ut_unwrap(unit), enc);
+CharacterVector R_ut_get_name(xut_unit unit) {
+  const char *s = ut_get_name(unit, enc);
   if (s == NULL)
     return CharacterVector::create();
   return CharacterVector::create(s); // #nocov
 }
 
 // [[Rcpp::export(rng=false)]]
-CharacterVector R_ut_get_symbol(SEXP unit) {
-  const char *s = ut_get_symbol(ut_unwrap(unit), enc);
+CharacterVector R_ut_get_symbol(xut_unit unit) {
+  const char *s = ut_get_symbol(unit, enc);
   if (s == NULL)
     return CharacterVector::create();
   return CharacterVector::create(s);
@@ -243,58 +210,58 @@ CharacterVector R_ut_get_symbol(SEXP unit) {
 // # nocov start
 
 // [[Rcpp::export(rng=false)]]
-SEXP R_ut_scale(SEXP unit, double factor) {
-  return ut_wrap(ut_scale(factor, ut_unwrap(unit)));
+xut_unit R_ut_scale(xut_unit unit, double factor) {
+  return xut_unit(ut_scale(factor, unit));
 }
 
 // [[Rcpp::export(rng=false)]]
-SEXP R_ut_offset(SEXP unit, double origin) {
-  return ut_wrap(ut_offset(ut_unwrap(unit), origin));
+xut_unit R_ut_offset(xut_unit unit, double origin) {
+  return xut_unit(ut_offset(unit, origin));
 }
 
 // [[Rcpp::export(rng=false)]]
-SEXP R_ut_multiply(SEXP a, SEXP b) {
-  return ut_wrap(ut_multiply(ut_unwrap(a), ut_unwrap(b)));
+xut_unit R_ut_multiply(xut_unit a, xut_unit b) {
+  return xut_unit(ut_multiply(a, b));
 }
 
 // [[Rcpp::export(rng=false)]]
-SEXP R_ut_invert(SEXP a) {
-  return ut_wrap(ut_invert(ut_unwrap(a)));
+xut_unit R_ut_invert(xut_unit a) {
+  return xut_unit(ut_invert(a));
 }
 
 // [[Rcpp::export(rng=false)]]
-SEXP R_ut_divide(SEXP numer, SEXP denom) {
-  return ut_wrap(ut_divide(ut_unwrap(numer), ut_unwrap(denom)));
+xut_unit R_ut_divide(xut_unit numer, xut_unit denom) {
+  return xut_unit(ut_divide(numer, denom));
 }
 
 // [[Rcpp::export(rng=false)]]
-SEXP R_ut_raise(SEXP a, int i) {
-  return ut_wrap(ut_raise(ut_unwrap(a), i));
+xut_unit R_ut_raise(xut_unit a, int i) {
+  return xut_unit(ut_raise(a, i));
 }
 
 // [[Rcpp::export(rng=false)]]
-SEXP R_ut_root(SEXP a, int i) {
-  return ut_wrap(ut_root(ut_unwrap(a), i));
+xut_unit R_ut_root(xut_unit a, int i) {
+  return xut_unit(ut_root(a, i));
 }
 
 // # nocov end
 
 // [[Rcpp::export(rng=false)]]
-SEXP R_ut_log(SEXP a, double base) {
-  return ut_wrap(ut_log(base, ut_unwrap(a)));
+xut_unit R_ut_log(xut_unit a, double base) {
+  return xut_unit(ut_log(base, a));
 }
 
 // [[Rcpp::export(rng=false)]]
-SEXP R_ut_parse(std::string name) {
-  ut_unit *u = ut_parse(sys, ut_trim(name.data(), enc), enc);
-  if (u == NULL)
+xut_unit R_ut_parse(std::string name) {
+  xut_unit u(ut_parse(sys, ut_trim(name.data(), enc), enc));
+  if (!u)
     stop("syntax error, cannot parse '%s'", name);
-  return ut_wrap(u);
+  return u;
 }
 
 // [[Rcpp::export(rng=false)]]
-CharacterVector R_ut_format(SEXP p, bool names = false, bool definition = false,
-                            bool ascii = false)
+CharacterVector R_ut_format(xut_unit p, bool names = false,
+                            bool definition = false, bool ascii = false)
 {
   int opt = UT_ASCII;
   if (!ascii)
@@ -304,7 +271,7 @@ CharacterVector R_ut_format(SEXP p, bool names = false, bool definition = false,
   if (definition)
     opt = opt | UT_DEFINITION;
   char buf[256];
-  if (ut_format(ut_unwrap(p), buf, sizeof(buf), opt) == sizeof(buf))
+  if (ut_format(p, buf, sizeof(buf), opt) == sizeof(buf))
     warning("buffer too small!"); // #nocov
   return CharacterVector::create(buf);
 }

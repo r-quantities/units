@@ -8,6 +8,8 @@
 * Fix `print` methods for `units` and `mixed_units`, which now correctly return
   invisibly the object being printed; #422
 
+* Wrap all pointers to avoid memory leaks derived from errors.
+
 # version 1.0-0
 
 * Breaking change: a new tokenizer fixes longstanding issues with parsing
