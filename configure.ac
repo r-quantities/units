@@ -81,6 +81,60 @@ if test "${UD_ERROR}" != ""  ; then AC_MSG_FAILURE([
 --------------------------------------------------------------------------------
 ]) fi
 
+# Only run this check if we successfully found the library so far
+if test -z "${UD_ERROR}"; then
+  AC_MSG_CHECKING([whether udunits2 accepts exceptions])
+  AC_RUN_IFELSE([AC_LANG_PROGRAM(
+    [[
+      #include <stdexcept>
+      #include <cstdarg>
+      #ifdef HAVE_UDUNITS2_UDUNITS2_H
+      # include <udunits2/udunits2.h>
+      #else
+      # include <udunits2.h>
+      #endif
+      
+      // A custom handler that throws a C++ exception
+      int my_handler(const char* fmt, va_list args) {
+        throw std::runtime_error("udunits error");
+        return 0;
+      }
+    ]],
+    [[
+      // 1. Set the handler
+      ut_set_error_message_handler(my_handler);
+      
+      try {
+        // 2. Trigger an operation that uses the library.
+        // ut_read_xml(NULL) loads the default database.
+        ut_system* system = ut_read_xml(NULL);
+
+        if (system) {
+            // 3. Force an error by parsing nonsense
+            ut_parse(system, "ThisIsNotAUnit", UT_ASCII);
+        } else {
+            // If system is NULL, ut_read_xml failed. 
+            // If it failed, it should have called our handler and thrown.
+            // If we are here, it failed silently or handler didn't throw.
+            return 1;
+        }
+      } catch (const std::runtime_error& e) {
+        return 0; // Success: Exception caught!
+      } catch (...) {
+        return 0; // Success: Some exception caught!
+      }
+      
+      // Failure: No exception was caught
+      return 1;
+    ]])],
+    [AC_MSG_RESULT([yes])],
+    [AC_MSG_RESULT([no])
+     AC_MSG_ERROR([The linked udunits2 library does not support exception propagation. Please reinstall udunits2 with -fexceptions enabled.])],
+    [AC_MSG_RESULT([unknown (cross-compiling)])
+     AC_MSG_WARN([Cross-compiling: cannot verify exception propagation in udunits2. Assuming it works.])]
+  )
+fi
+
 AC_SUBST([CXX_STD])
 AC_SUBST([LIBS])
 AC_SUBST([UD_CPPFLAGS])
