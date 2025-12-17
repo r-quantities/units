@@ -59,8 +59,8 @@ if test "${ac_cv_lib_expat_XML_ParserCreate}" = yes; then
    LIBS="${LIBS} -lexpat"
 fi
 
-AC_CHECK_HEADER(udunits2.h, UDUNITS2_DIR=0, [
-  AC_CHECK_HEADER(udunits2/udunits2.h, UDUNITS2_DIR=1,
+AC_CHECK_HEADERS(udunits2.h, UDUNITS2_DIR=0, [
+  AC_CHECK_HEADERS(udunits2/udunits2.h, UDUNITS2_DIR=1,
                   UD_ERROR="udunits2.h was not found") ])
 AC_CHECK_LIB(udunits2, ut_read_xml,
              LIBS="${LIBS} -ludunits2",
@@ -80,6 +80,36 @@ if test "${UD_ERROR}" != ""  ; then AC_MSG_FAILURE([
   You can alternatively set UDUNITS2_INCLUDE and UDUNITS2_LIBS manually.
 --------------------------------------------------------------------------------
 ]) fi
+
+AC_MSG_CHECKING([for exception propagation in -ludunits2])
+AC_RUN_IFELSE([AC_LANG_PROGRAM(
+  [[
+    #include <stdexcept>
+    #include <cstdarg>
+    #ifdef HAVE_UDUNITS2_UDUNITS2_H
+    # include <udunits2/udunits2.h>
+    #else
+    # include <udunits2.h>
+    #endif
+    extern "C" {
+      int ud_handler(const char* fmt, va_list args) {
+        throw std::runtime_error("udunits error");
+        return 0;
+      }
+    }
+  ]],
+  [[
+    ut_set_error_message_handler(ud_handler);
+    try { ut_read_xml("nonexistent.xml"); }
+    catch (...) { return 0; }
+    return 1;
+  ]])],
+  [AC_MSG_RESULT([yes])],
+  [AC_MSG_RESULT([no])
+    AC_MSG_ERROR([The udunits2 library does not support exception propagation. Please reinstall it with -fexceptions enabled.])],
+  [AC_MSG_RESULT([unknown (cross-compiling)])
+    AC_MSG_WARN([Cross-compiling: cannot verify exception propagation in udunits2. Assuming it works.])]
+)
 
 AC_SUBST([CXX_STD])
 AC_SUBST([LIBS])

@@ -10,6 +10,8 @@
 
 * Wrap all pointers to avoid memory leaks derived from errors.
 
+* Check for exception propagation in udunits2; #423
+
 # version 1.0-0
 
 * Breaking change: a new tokenizer fixes longstanding issues with parsing

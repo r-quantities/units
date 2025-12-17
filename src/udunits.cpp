@@ -11,10 +11,11 @@
 #include "units_types.h"
 
 extern "C" {
-  void r_error_fn(const char* fmt, va_list args) {
+  int r_error_fn(const char* fmt, va_list args) {
     char buf[256];
     vsnprintf(buf, (size_t) 256, fmt, args);
     Rcpp::stop("%s", buf);
+    return 0;
   }
 }
 
@@ -42,7 +43,7 @@ void ud_init(CharacterVector path) {
   }
   if (sys == NULL)
     sys = ut_read_xml(NULL); // #nocov
-  ut_set_error_message_handler((ut_error_message_handler) r_error_fn);
+  ut_set_error_message_handler(r_error_fn);
   if (sys == NULL)
     stop("no database found!"); // #nocov
 }
