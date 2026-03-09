@@ -35,7 +35,7 @@ We see here that the `units` method is used to retrieve and modify the
 unit of time differences. 
 
 The `units` package generalizes this idea to other physical units, building upon the
-[udunits2](https://www.unidata.ucar.edu/software/udunits/) C library.
+[udunits2](https://www.unidata.ucar.edu/software/udunits) C library.
 The `udunits2` library provides the following operations:
 
 * validating whether an expression, such as `m/s` is a valid physical unit
@@ -45,7 +45,7 @@ The `udunits2` library provides the following operations:
 * handle different character encodings (utf8, ascii, iso-8859-1 and latin1)
 
 The `units` R package uses the
-[udunits2](https://www.unidata.ucar.edu/software/udunits/) C library to extend
+[udunits2](https://www.unidata.ucar.edu/software/udunits) C library to extend
 R with functionality for manipulating numeric vectors that have
 physical measurement units associated with them, in a similar way as
 `difftime` objects behave.

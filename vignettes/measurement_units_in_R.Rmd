@@ -177,7 +177,7 @@ in R.
 ## UNIDATA's udunits library
 
 Udunits, developed by UCAR/UNIDATA, advertises itself on [its web
-page](https://www.unidata.ucar.edu/software/udunits/)
+page](https://www.unidata.ucar.edu/software/udunits)
 as: "_The udunits package supports units of physical
 quantities. Its C library provides for arithmetic manipulation
 of units and for conversion of numeric values between compatible
