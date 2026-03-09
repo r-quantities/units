@@ -2,7 +2,7 @@
 
 |field    |value                        |
 |:--------|:----------------------------|
-|version  |R version 4.4.3 (2025-02-28) |
+|version  |R version 4.5.2 (2025-10-31) |
 |os       |Ubuntu 22.04.5 LTS           |
 |system   |x86_64, linux-gnu            |
 |ui       |X11                          |
@@ -10,22 +10,22 @@
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |UTC                          |
-|date     |2025-09-29                   |
+|date     |2026-03-09                   |
 |pandoc   |2.9.2.1 @ /usr/bin/pandoc    |
 |quarto   |NA                           |
 
 # Dependencies
 
-|package |old   |new     |Δ  |
-|:-------|:-----|:-------|:--|
-|units   |0.8-7 |0.8-7.3 |*  |
-|Rcpp    |NA    |1.1.0   |*  |
+|package |old   |new   |Δ  |
+|:-------|:-----|:-----|:--|
+|units   |1.0-0 |1.0-1 |*  |
 
 # Revdeps
 
-## New problems (1)
+## New problems (2)
 
-|package  |version |error  |warning |note |
-|:--------|:-------|:------|:-------|:----|
-|[epocakir](problems.md#epocakir)|0.9.9   |__+2__ |        |     |
+|package       |version |error  |warning |note |
+|:-------------|:-------|:------|:-------|:----|
+|[PKbioanalysis](problems.md#pkbioanalysis)|0.5.0   |__+1__ |        |1    |
+|[transfR](problems.md#transfr)|1.1.4   |__+1__ |        |     |
 

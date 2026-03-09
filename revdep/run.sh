@@ -34,7 +34,7 @@ case $1 in
     run $TAG Rscript -e "revdepcheck::revdep_reset()"
     ;;
   add_broken)
-    run $TAG Rscript -e "revdepcheck::revdep_add_broken()"
+    run $TAG Rscript -e "revdepcheck::revdep_add_broken(install_failures=TRUE)"
     ;;
   interactive)
     run $TAG R
