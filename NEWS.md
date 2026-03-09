@@ -1,4 +1,4 @@
-# version devel
+# version 1.0-1
 
 * Add internal workaround for udunits2 bug with parsing of units that contain
   "per", e.g. "percent" or "person"; #414
@@ -13,6 +13,8 @@
 * Check for exception propagation in udunits2; #423
 
 * Fix `ud_convert()` for empty input vectors; #428
+
+* Implement `as.character.units` as an alias of `format.units`; #418
 
 # version 1.0-0
 
