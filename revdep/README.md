@@ -22,10 +22,3 @@
 
 # Revdeps
 
-## New problems (2)
-
-|package       |version |error  |warning |note |
-|:-------------|:-------|:------|:-------|:----|
-|[PKbioanalysis](problems.md#pkbioanalysis)|0.5.0   |__+1__ |        |1    |
-|[transfR](problems.md#transfr)|1.1.4   |__+1__ |        |     |
-
