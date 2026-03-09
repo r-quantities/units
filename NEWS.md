@@ -14,8 +14,6 @@
 
 * Fix `ud_convert()` for empty input vectors; #428
 
-* Implement `as.character.units` as an alias of `format.units`; #418
-
 # version 1.0-0
 
 * Breaking change: a new tokenizer fixes longstanding issues with parsing
