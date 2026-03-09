@@ -62,6 +62,9 @@ format.units = function(x, ...) {
 }
 
 #' @export
+as.character.units = format.units
+
+#' @export
 summary.units = function(object, ...) {
   summary(unclass(object), ...)
 }
