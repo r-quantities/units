@@ -24,6 +24,7 @@ test_that("ud_convert works with simple conversions", {
 test_that("ud_convert works with vectors", {
   expect_equal(ud_convert(1:2, c("m", "mm"), "km"), 1:2/c(1e3,1e6))
   expect_equal(ud_convert(c(32, 212), "degF", "degC"), c(0, 100))
+  expect_equal(ud_convert(numeric(0), "m", "km"), numeric(0))
 })
 
 test_that("ud_convert returns Error for incompatible units", {

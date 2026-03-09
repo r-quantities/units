@@ -44,7 +44,8 @@ ud_are_convertible <- function(from, to, ...) {
 #' ud_are_convertible("degF", "degC")
 #' ud_convert(32, "degF", "degC")
 ud_convert <- function(x, from, to) {
-  setNames(as.vector(mapply(ud_convert_doubles, x, ud_char(from), ud_char(to)), mode = mode(x)), names(x))
+  if (!length(x)) return(x)
+  mapply(ud_convert_doubles, x, ud_char(from), ud_char(to))
 }
 
 ud_char <- function(x) {

@@ -12,6 +12,8 @@
 
 * Check for exception propagation in udunits2; #423
 
+* Fix `ud_convert()` for empty input vectors; #428
+
 # version 1.0-0
 
 * Breaking change: a new tokenizer fixes longstanding issues with parsing
