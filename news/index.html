@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">units</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0-0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0-1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,11 +34,20 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/r-quantities/units/blob/v1.0-0/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/r-quantities/units/blob/v1.0-1/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.0-0" id="version-10-0">version 1.0-0<a class="anchor" aria-label="anchor" href="#version-10-0"></a></h2>
+<h2 class="pkg-version" data-toc-text="1.0-1" id="version-10-1">version 1.0-1<a class="anchor" aria-label="anchor" href="#version-10-1"></a></h2><p class="text-muted">CRAN release: 2026-03-11</p>
+<ul><li><p>Add internal workaround for udunits2 bug with parsing of units that contain “per”, e.g. “percent” or “person”; <a href="https://github.com/r-quantities/units/issues/414" class="external-link">#414</a></p></li>
+<li><p>Update minimum Rcpp version; <a href="https://github.com/r-quantities/units/issues/421" class="external-link">#421</a></p></li>
+<li><p>Fix <code>print</code> methods for <code>units</code> and <code>mixed_units</code>, which now correctly return invisibly the object being printed; <a href="https://github.com/r-quantities/units/issues/422" class="external-link">#422</a></p></li>
+<li><p>Wrap all pointers to avoid memory leaks derived from errors.</p></li>
+<li><p>Check for exception propagation in udunits2; <a href="https://github.com/r-quantities/units/issues/423" class="external-link">#423</a></p></li>
+<li><p>Fix <code><a href="../reference/udunits2.html">ud_convert()</a></code> for empty input vectors; <a href="https://github.com/r-quantities/units/issues/428" class="external-link">#428</a></p></li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0-0" id="version-10-0">version 1.0-0<a class="anchor" aria-label="anchor" href="#version-10-0"></a></h2><p class="text-muted">CRAN release: 2025-10-09</p>
 <ul><li><p>Breaking change: a new tokenizer fixes longstanding issues with parsing complex unit expressions, but may break existing code that relied on the previous (buggy) behavior. The major change is that now numbers are consistently treated as prefixes, so that units like <code>ml / min / 1.73m^2</code> used in physiology are now correctly parsed as <code>ml / (min * 1.73 * m^2)</code>. See <code><a href="../reference/units.html">?as_units</a></code> for details; <a href="https://github.com/r-quantities/units/issues/416" class="external-link">#416</a> addressing <a href="https://github.com/r-quantities/units/issues/221" class="external-link">#221</a>, <a href="https://github.com/r-quantities/units/issues/383" class="external-link">#383</a></p></li>
 <li><p>Printing: follow NIST recommendations. In particular, numerator and denominator are separated by a single slash, and a parenthesis is used when the denominator contains several symbols (see example above); <a href="https://github.com/r-quantities/units/issues/86" class="external-link">#86</a></p></li>
 <li><p>Vectorize <code>ud_*()</code> helpers; <a href="https://github.com/r-quantities/units/issues/405" class="external-link">#405</a> addressing <a href="https://github.com/r-quantities/units/issues/404" class="external-link">#404</a></p></li>
@@ -241,7 +250,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>
