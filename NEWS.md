@@ -1,3 +1,7 @@
+# version devel
+
+* Document label parsing in `scale_{type}_units()`; #431
+
 # version 1.0-1
 
 * Add internal workaround for udunits2 bug with parsing of units that contain

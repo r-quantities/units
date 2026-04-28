@@ -47,6 +47,13 @@ the specified unit is incompatible with the unit of the data.}
 These are the default scales for the \code{units} class. These will usually
 be added automatically. To override manually, use \code{scale_{type}_units}.
 }
+\details{
+The scale internally uses \code{\link{make_unit_label}}, which by
+default parses the scale (e.g. typically needed for superscripts). However,
+if the scale name contains reserved words in R (e.g. "in"), the parsing may
+fail. In that case, the user can set \code{units_options(parse = FALSE)} to
+get a simple character string as label instead of a parseable expression.
+}
 \examples{
 if (requireNamespace("ggplot2", quietly=TRUE)) {
 
