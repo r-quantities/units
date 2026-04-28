@@ -1,4 +1,14 @@
 #' @export
+`[.units` <- function(x, i, j, ..., drop = TRUE) {
+  restore_units(NextMethod(), x)
+}
+
+#' @export
+`[[.units` <- function(x, i, j, ...) {
+  restore_units(NextMethod(), x)
+}
+
+#' @export
 `[<-.units` <- function(x, ..., value) {
   units(value) <- units(x)
   NextMethod()

@@ -49,7 +49,16 @@ format.mixed_units = function(x, ...) {
 
 #' @export
 `[.mixed_units` = function(x, i, ...) {
-	.as.mixed_units(unclass(x)[i])
+  x <- unclass(x)
+  .as.mixed_units(NextMethod())
+}
+
+#' @export
+`[<-.mixed_units` <- function(x, i, ..., value) {
+  if (inherits(value, "units"))
+    value <- mixed_units(value)
+  x <- unclass(x)
+  .as.mixed_units(NextMethod())
 }
 
 #' @export

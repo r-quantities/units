@@ -2,6 +2,7 @@
 
 S3method("[",mixed_units)
 S3method("[",units)
+S3method("[<-",mixed_units)
 S3method("[<-",units)
 S3method("[[",units)
 S3method("[[<-",units)

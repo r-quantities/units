@@ -192,17 +192,6 @@ as_difftime <- function(x) {
 # 	hms::as.hms(as_difftime(x), ...)
 # }
 
-
-#' @export
-`[.units` <- function(x, i, j, ..., drop = TRUE) {
-  restore_units(NextMethod(), x)
-}
-
-#' @export
-`[[.units` <- function(x, i, j, ...) {
-  restore_units(NextMethod(), x)
-}
-
 #' @export
 as.POSIXct.units = function (x, tz = "UTC", ...) {
 	units(x) = symbolic_unit("seconds since 1970-01-01 00:00:00 +00:00")

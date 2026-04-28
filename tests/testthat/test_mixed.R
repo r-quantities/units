@@ -9,7 +9,16 @@ test_that("mixed units work", {
    expect_s3_class(m[3:4], "mixed_units")
    expect_s3_class(m[3], "mixed_units")
 
-# select a single units object:
+   # replace a subset
+   m1[1:2] <- m1[5:6]
+   expect_equal(m1[1:2], m1[5:6])
+   expect_equal(m1[[1]], set_units(5, g))
+   expect_equal(m1[[2]], set_units(6, g))
+   m1[1:2] <- m1[[5]]
+   expect_equal(m1[[1]], set_units(5, g))
+   expect_equal(m1[[2]], set_units(5, g))
+
+   # select a single units object:
    expect_s3_class(m[[3]], "units")
 
    m <- set_units(m, c(rep(c("m", "kg"), each = 3)))
@@ -22,11 +31,11 @@ test_that("mixed units work", {
    # convert to units:
    expect_s3_class(as_units( m[1:3] ), "units")
 
-# round-trip via units:
+   # round-trip via units:
    m0 <- mixed_units(as_units(m[1:3]))
    expect_identical(m[1:3], m0)
 
-# Ops using by single unit: needs to be explicitly coerced to mixed_units:
+   # Ops using by single unit: needs to be explicitly coerced to mixed_units:
    expect_s3_class(m[1:3] * mixed_units(set_units(1, mm)), "mixed_units")
    expect_s3_class(m[1:3] / mixed_units(set_units(1, mm)), "mixed_units")
    expect_s3_class(m[1:3] + mixed_units(set_units(1, mm)), "mixed_units")

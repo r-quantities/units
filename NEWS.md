@@ -2,6 +2,8 @@
 
 * Document label parsing in `scale_{type}_units()`; #431
 
+* Add `[<-.mixed_units` method; #432
+
 # version 1.0-1
 
 * Add internal workaround for udunits2 bug with parsing of units that contain
