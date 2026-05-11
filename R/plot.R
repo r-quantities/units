@@ -2,19 +2,19 @@
 #'
 #' Create axis label with appropriate labels.
 #'
-#' @param lab length one character; name of the variable to plot
+#' @param lab character; name of the variable to plot
 #' @param u vector of class \code{units}
 #' @param sep length two character vector, defaulting to \code{c("~","~")}, with
 #'   the white space between unit name and unit symbols, and between subsequent
-#'   symbols.
+#'   symbols
 #' @param group length two character vector with grouping symbols, e.g.
 #'   \code{c("(",")")} for parenthesis, or \code{c("","")} for no group symbols
 #' @param parse logical; indicates whether a parseable expression should be
-#'   returned (typically needed for super scripts), or a simple character string
-#'   without special formatting.
+#'   returned (typically needed for superscripts), or a simple character string
+#'   without special formatting
 #'
-#' @details \link{units_options} can be used to set and change the defaults for
-#'   \code{sep}, \code{group} and \code{doParse}.
+#' @details \code{\link{units_options}} can be used to set and change the
+#'   defaults for \code{sep}, \code{group} and \code{doParse}.
 #'
 #' @name plot.units
 #' @export
@@ -51,7 +51,8 @@ make_unit_label = function(lab, u,
 
 #' @description Plot method for \code{units} objects.
 #'
-#' @param x object of class units, to plot along the x axis, or, if y is missing, along the y axis
+#' @param x object of class \code{units}, to plot along the x axis or (if
+#'   \code{y} is missing), along the y axis
 #' @param y object to plot along the y axis, or missing
 #' @param xlab character; x axis label
 #' @param ylab character; y axis label
@@ -67,16 +68,16 @@ make_unit_label = function(lab, u,
 #' units_options(group = c("(", ")") )  # parenthesis instead of square brackets
 #' plot(weight, displacement)
 #'
-#' units_options(sep = c("~~~", "~"), group = c("", ""))  # no brackets; extra space
+#' units_options(sep = c("~~~", "~"), group = c("", ""))  # extra space; no brackets
 #' plot(weight, displacement)
 #'
 #' units_options(sep = c("~", "~~"), group = c("[", "]"))
 #' gallon = as_units("gallon")
 #' consumption = mtcars$mpg * make_units(mi/gallon)
 #' units(consumption) = make_units(km/l)
-#' plot(displacement, consumption) # division in consumption
+#' plot(displacement, consumption)  # division in consumption
 #'
-#' units_options(negative_power = TRUE) # division becomes ^-1
+#' units_options(negative_power = TRUE)  # division becomes ^-1
 #' plot(displacement, consumption)
 #'
 #' plot(1/displacement, 1/consumption)
@@ -104,13 +105,13 @@ plot.units <- function(x, y, xlab = NULL, ylab = NULL, ...) {
   NextMethod("plot", xlab=xlab, ylab=ylab)
 }
 
-#' histogram for unit objects
+#' Histogram for \code{units} objects
 #'
-#' histogram for unit objects
-#' @param x object of class units, for which we want to plot the histogram
+#' Histogram for \code{units} objects
+#' @param x object of class \code{units}, for which we want to plot the histogram
 #' @param xlab character; x axis label
 #' @param main character; title of histogram
-#' @param ... parameters passed on to \link{hist.default}
+#' @param ... parameters passed on to \code{\link{hist.default}}
 #' @export
 #' @examples
 #' units_options(parse = FALSE) # otherwise we break on the funny symbol!
@@ -125,13 +126,13 @@ hist.units <- function(x, xlab = NULL, main = paste("Histogram of", xname), ...)
   NextMethod("hist", xlab=xlab, main=main)
 }
 
-#' boxplot for unit objects
+#' Boxplot for \code{units} objects
 #'
-#' boxplot for unit objects
-#' @param x object of class units, for which we want to plot the boxplot
-#' @param ... parameters passed on to \link{boxplot.default}
-#' @param horizontal logical indicating if the boxplots should be horizontal;
-#' default FALSE means vertical boxes.
+#' Boxplot for \code{units} objects
+#' @param x object of class \code{units}, for which we want to plot the boxplot
+#' @param ... parameters passed on to \code{\link{boxplot.default}}
+#' @param horizontal logical; whether boxplots should be horizontal;
+#' default \code{FALSE} means vertical boxes.
 #' @export
 #' @examples
 #' units_options(parse = FALSE) # otherwise we break on the funny symbol!

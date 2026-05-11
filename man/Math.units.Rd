@@ -22,13 +22,12 @@ library. If a natural logarithm is applied to some \code{unit}, the result is
 and \code{lg(...)} respectively instead of \code{ln(...)}.
 
 This is particularly important for some units that are typically expressed in
-a logarithmic scale (i.e., \emph{bels}, or, more commonly, \emph{decibels}),
+a logarithmic scale (e.g., \emph{bels}, or, more commonly, \emph{decibels}),
 such as Watts or Volts. For some of these units, the default \pkg{udunits2}
 database contains aliases: e.g., \code{BW} (bel-Watts) is an alias of
 \code{lg(re 1 W)}; \code{Bm} (bel-milliWatts) is an alias of
-\code{lg(re 0.001 W)}; \code{BV} is an alias of \code{lg(re 1 V)} (bel-Volts),
-and so on and so forth (see the output of \code{valid_udunits()} for further
-reference).
+\code{lg(re 0.001 W)}; \code{BV} is an alias of \code{lg(re 1 V)} (bel-Volts).
+See the output of \code{valid_udunits()} for further reference.
 
 Additionally, the \pkg{units} package defines \code{B}, the \emph{bel}, by
 default (because it is not defined by \pkg{udunits2}) as an alias of

@@ -4,6 +4,8 @@
 
 * Add `[<-.mixed_units` method; #432
 
+* Several fixes in documentation files; #433 @tszberkowitz
+
 # version 1.0-1
 
 * Add internal workaround for udunits2 bug with parsing of units that contain

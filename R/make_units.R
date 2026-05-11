@@ -10,7 +10,7 @@
 #' @export
 #'
 #' @param bare_expression a bare R expression describing units. Must be valid R
-#'   syntax (reserved R syntax words like \code{in} must be backticked)
+#'   syntax (reserved R syntax words like \code{in} must be backticked).
 #'
 #' @examples
 #' # The easiest way to assign units to a numeric vector is like this:
@@ -155,8 +155,10 @@ as_units.symbolic_units <- function(x, value, ...) {
 }
 
 #' @examples
+#' 
+#' # Use difftime object as units
 #' s = Sys.time()
-#' d  = s - (s+1)
+#' d = s - (s+1)
 #' as_units(d)
 #'
 #' @name units
@@ -225,12 +227,12 @@ pc_and <- function(..., sep = "") {
 #' @name units
 #' @export
 #'
-#' @param check_is_valid throw an error if all the unit symbols are not either
-#'   recognized by udunits2, or a custom
-#'   user defined via \code{install_unit()}. If \code{FALSE}, no check
+#' @param check_is_valid throw an error if all the unit symbols are either not
+#'   recognized by udunits2 or not custom units
+#'   defined via \code{install_unit()}. If \code{FALSE}, no check
 #'   for validity is performed.
 #'
-#' @param force_single_symbol Whether to perform no string parsing and force
+#' @param force_single_symbol whether to perform no string parsing and force
 #'   treatment of the string as a single symbol.
 #'
 #' @section Character strings:
@@ -269,7 +271,7 @@ pc_and <- function(..., sep = "") {
 #'   otherwise encouraged to use \code{R}'s date and time functionality provided
 #'   by \code{Date} and \code{POSIXt} classes.
 #'
-#' @note By default, unit names are automatically substituted with unit names
+#' @note By default, unit names are automatically substituted with unit symbols
 #'   (e.g., kilogram --> kg). To turn off this behavior, set
 #'   \code{units_options(auto_convert_names_to_symbols = FALSE)}
 #'

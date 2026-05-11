@@ -2,22 +2,22 @@
 % Please edit documentation in R/plot.R
 \name{hist.units}
 \alias{hist.units}
-\title{histogram for unit objects}
+\title{Histogram for \code{units} objects}
 \usage{
 \method{hist}{units}(x, xlab = NULL, main = paste("Histogram of", xname),
   ...)
 }
 \arguments{
-\item{x}{object of class units, for which we want to plot the histogram}
+\item{x}{object of class \code{units}, for which we want to plot the histogram}
 
 \item{xlab}{character; x axis label}
 
 \item{main}{character; title of histogram}
 
-\item{...}{parameters passed on to \link{hist.default}}
+\item{...}{parameters passed on to \code{\link{hist.default}}}
 }
 \description{
-histogram for unit objects
+Histogram for \code{units} objects
 }
 \examples{
 units_options(parse = FALSE) # otherwise we break on the funny symbol!

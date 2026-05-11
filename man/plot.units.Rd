@@ -11,22 +11,23 @@ make_unit_label(lab, u, sep = units_options("sep"),
 \method{plot}{units}(x, y, xlab = NULL, ylab = NULL, ...)
 }
 \arguments{
-\item{lab}{length one character; name of the variable to plot}
+\item{lab}{character; name of the variable to plot}
 
 \item{u}{vector of class \code{units}}
 
 \item{sep}{length two character vector, defaulting to \code{c("~","~")}, with
 the white space between unit name and unit symbols, and between subsequent
-symbols.}
+symbols}
 
 \item{group}{length two character vector with grouping symbols, e.g.
 \code{c("(",")")} for parenthesis, or \code{c("","")} for no group symbols}
 
 \item{parse}{logical; indicates whether a parseable expression should be
-returned (typically needed for super scripts), or a simple character string
-without special formatting.}
+returned (typically needed for superscripts), or a simple character string
+without special formatting}
 
-\item{x}{object of class units, to plot along the x axis, or, if y is missing, along the y axis}
+\item{x}{object of class \code{units}, to plot along the x axis or (if
+\code{y} is missing), along the y axis}
 
 \item{y}{object to plot along the y axis, or missing}
 
@@ -42,8 +43,8 @@ Create axis label with appropriate labels.
 Plot method for \code{units} objects.
 }
 \details{
-\link{units_options} can be used to set and change the defaults for
-  \code{sep}, \code{group} and \code{doParse}.
+\code{\link{units_options}} can be used to set and change the
+  defaults for \code{sep}, \code{group} and \code{doParse}.
 }
 \examples{
 displacement = mtcars$disp * as_units("in")^3
@@ -55,16 +56,16 @@ plot(weight, displacement)
 units_options(group = c("(", ")") )  # parenthesis instead of square brackets
 plot(weight, displacement)
 
-units_options(sep = c("~~~", "~"), group = c("", ""))  # no brackets; extra space
+units_options(sep = c("~~~", "~"), group = c("", ""))  # extra space; no brackets
 plot(weight, displacement)
 
 units_options(sep = c("~", "~~"), group = c("[", "]"))
 gallon = as_units("gallon")
 consumption = mtcars$mpg * make_units(mi/gallon)
 units(consumption) = make_units(km/l)
-plot(displacement, consumption) # division in consumption
+plot(displacement, consumption)  # division in consumption
 
-units_options(negative_power = TRUE) # division becomes ^-1
+units_options(negative_power = TRUE)  # division becomes ^-1
 plot(displacement, consumption)
 
 plot(1/displacement, 1/consumption)

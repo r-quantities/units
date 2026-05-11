@@ -12,7 +12,7 @@
 #'     \code{make_units(m/s)} is equivalent to \code{as_units(quote(m/s))}.
 #'     \item \code{set_units}, a pipe-friendly version of \code{`units<-`}. By
 #'     default it operates with bare expressions, but this
-#'     behavior can be disabled by a specifying \code{mode = "standard"} or setting
+#'     behavior can be disabled by specifying \code{mode = "standard"} or setting
 #'     \code{units_options(set_units_mode = "standard")}.
 #'     If \code{value} is missing or set to \code{1}, the object becomes unitless.
 #' }
@@ -25,7 +25,7 @@
 #'
 #' @details
 #' If \code{value} is of class \code{units} and has a value unequal to 1, this
-#' value is ignored unless \code{units_options("simplifiy")} is \code{TRUE}. If
+#' value is ignored unless \code{units_options("simplify")} is \code{TRUE}. If
 #' \code{simplify} is \code{TRUE}, \code{x} is multiplied by this value.
 #'
 #' @export
@@ -207,9 +207,9 @@ as.Date.units = function (x, ...) {
 
 #' @param ... passed on to other methods.
 #' @param mode if \code{"symbols"} (the default), then unit is constructed from
-#'   the expression supplied. Otherwise, if\code{mode = "standard"},
-#'   standard evaluation is used for the supplied value This argument can be set
-#'   via a global option \code{units_options(set_units_mode = "standard")}
+#'   the expression supplied. Otherwise, if \code{mode = "standard"},
+#'   standard evaluation is used for the supplied value. This argument can be set
+#'   via a global option \code{units_options(set_units_mode = "standard")}.
 #'
 #' @name units
 #' @export

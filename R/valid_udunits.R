@@ -7,26 +7,26 @@ pcc <- function(...) paste0(..., collapse = ", ")
 #' Get information about valid units
 #'
 #' These functions require the \pkg{xml2} package, and return data frames with
-#' complete information about pre-defined units from UDUNITS2. Inspect this data
-#' frames to determine what inputs are accepted by \code{as_units} (and the
-#' other functions it powers: \code{as_units}, \code{set_units} , \code{units<-}).
+#' complete information about pre-defined units from UDUNITS2. Inspect these
+#' data frames to determine what inputs are accepted by \code{as_units} (and the
+#' other functions it powers: \code{as_units}, \code{set_units}, \code{units<-}).
 #'
-#' Any entry listed under \code{symbol} , \code{symbol_aliases} , \code{
-#' name_singular} , \code{name_singular_aliases} , \code{name_plural} , or
+#' Any entry listed under \code{symbol}, \code{symbol_aliases},
+#' \code{name_singular}, \code{name_singular_aliases}, \code{name_plural} or
 #' \code{name_plural_aliases} is valid. Additionally, any entry under
-#' \code{symbol} or \code{symbol_aliases} may can also contain a valid prefix,
+#' \code{symbol} or \code{symbol_aliases} may also contain a valid prefix,
 #' as specified by \code{valid_udunits_prefixes()} .
 #'
-#' Note, this is primarily intended for interactive use, the exact format of the
+#' Note, this is primarily intended for interactive use. The exact format of the
 #' returned data frames may change in the future.
 #'
-#' @param quiet logical, defaults \code{TRUE} to give a message about the location of
+#' @param quiet logical; \code{FALSE} (default) prints a message about the location of
 #'   the udunits database being read.
 #'
-#' @return a data frame with columns \code{symbol} , \code{symbol_aliases} ,
-#'   \code{name_singular} , \code{name_singular_aliases} , \code{name_plural} ,
-#'   or \code{name_plural_aliases} , \code{def} , \code{definition} ,
-#'   \code{comment} , \code{dimensionless} and \code{source_xml}
+#' @return A data frame with columns \code{symbol}, \code{symbol_aliases},
+#'   \code{name_singular}, \code{name_singular_aliases}, \code{name_plural},
+#'   \code{name_plural_aliases}, \code{def}, \code{definition},
+#'   \code{comment}, \code{dimensionless} and \code{source_xml}.
 #'
 #' @export
 #'
@@ -104,7 +104,7 @@ valid_udunits <- function(quiet = FALSE) {
   })
 
   df <- do.call(rbind, c(l, stringsAsFactors=FALSE, make.row.names=FALSE))
-  class(df) <- c( "tbl_df", "tbl", "data.frame")
+  class(df) <- c("tbl_df", "tbl", "data.frame")
   df
 }
 
@@ -137,6 +137,6 @@ valid_udunits_prefixes <- function(quiet = FALSE) {
 
   df <- do.call(rbind.data.frame,
                 c(l, stringsAsFactors = FALSE, make.row.names = FALSE))
-  class(df) <- c( "tbl_df", "tbl", "data.frame")
+  class(df) <- c("tbl_df", "tbl", "data.frame")
   df
 }

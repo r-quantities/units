@@ -116,7 +116,7 @@ as.character.symbolic_units <- function(x, ...,
 
   # This is just a brute force implementation that takes each element in the
   # numerator and tries to find a value in the denominator that can be converted
-  # to the same unit. It modifies "value" to rescale the nominator to the denominator
+  # to the same unit. It modifies "value" to rescale the numerator to the denominator
   # before removing matching units.
 
   drop_ones = function(u) u[ u != "1" ]
@@ -153,10 +153,10 @@ as.character.symbolic_units <- function(x, ...,
 #' the udunits database (SI units).
 #'
 #' @param x object of class \code{units}.
-#' @param simplify logical; if TRUE (default), the resulting units are simplified.
-#' @param keep_fraction logical; if TRUE (default), the result is kept as a fraction.
+#' @param simplify logical; if \code{TRUE} (default), the resulting units are simplified.
+#' @param keep_fraction logical; if \code{TRUE} (default), the result is kept as a fraction.
 #'
-#' @return object of class \code{units} with units converted to base units.
+#' @return An object of class \code{units} with units converted to base units.
 #' @export
 #'
 #' @examples

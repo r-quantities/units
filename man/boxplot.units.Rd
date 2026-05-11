@@ -2,20 +2,20 @@
 % Please edit documentation in R/plot.R
 \name{boxplot.units}
 \alias{boxplot.units}
-\title{boxplot for unit objects}
+\title{Boxplot for \code{units} objects}
 \usage{
 \method{boxplot}{units}(x, ..., horizontal = FALSE)
 }
 \arguments{
-\item{x}{object of class units, for which we want to plot the boxplot}
+\item{x}{object of class \code{units}, for which we want to plot the boxplot}
 
-\item{...}{parameters passed on to \link{boxplot.default}}
+\item{...}{parameters passed on to \code{\link{boxplot.default}}}
 
-\item{horizontal}{logical indicating if the boxplots should be horizontal;
-default FALSE means vertical boxes.}
+\item{horizontal}{logical; whether boxplots should be horizontal;
+default \code{FALSE} means vertical boxes.}
 }
 \description{
-boxplot for unit objects
+Boxplot for \code{units} objects
 }
 \examples{
 units_options(parse = FALSE) # otherwise we break on the funny symbol!

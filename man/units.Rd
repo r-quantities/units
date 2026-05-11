@@ -68,19 +68,19 @@ case of \code{set_units} expression with symbols (see examples).}
 \item{...}{passed on to other methods.}
 
 \item{mode}{if \code{"symbols"} (the default), then unit is constructed from
-the expression supplied. Otherwise, if\code{mode = "standard"},
-standard evaluation is used for the supplied value This argument can be set
-via a global option \code{units_options(set_units_mode = "standard")}}
+the expression supplied. Otherwise, if \code{mode = "standard"},
+standard evaluation is used for the supplied value. This argument can be set
+via a global option \code{units_options(set_units_mode = "standard")}.}
 
 \item{bare_expression}{a bare R expression describing units. Must be valid R
-syntax (reserved R syntax words like \code{in} must be backticked)}
+syntax (reserved R syntax words like \code{in} must be backticked).}
 
-\item{check_is_valid}{throw an error if all the unit symbols are not either
-recognized by udunits2, or a custom
-user defined via \code{install_unit()}. If \code{FALSE}, no check
+\item{check_is_valid}{throw an error if all the unit symbols are either not
+recognized by udunits2 or not custom units
+defined via \code{install_unit()}. If \code{FALSE}, no check
 for validity is performed.}
 
-\item{force_single_symbol}{Whether to perform no string parsing and force
+\item{force_single_symbol}{whether to perform no string parsing and force
 treatment of the string as a single symbol.}
 }
 \value{
@@ -102,18 +102,18 @@ A number of functions are provided for handling unit objects.
     \code{make_units(m/s)} is equivalent to \code{as_units(quote(m/s))}.
     \item \code{set_units}, a pipe-friendly version of \code{`units<-`}. By
     default it operates with bare expressions, but this
-    behavior can be disabled by a specifying \code{mode = "standard"} or setting
+    behavior can be disabled by specifying \code{mode = "standard"} or setting
     \code{units_options(set_units_mode = "standard")}.
     If \code{value} is missing or set to \code{1}, the object becomes unitless.
 }
 }
 \details{
 If \code{value} is of class \code{units} and has a value unequal to 1, this
-value is ignored unless \code{units_options("simplifiy")} is \code{TRUE}. If
+value is ignored unless \code{units_options("simplify")} is \code{TRUE}. If
 \code{simplify} is \code{TRUE}, \code{x} is multiplied by this value.
 }
 \note{
-By default, unit names are automatically substituted with unit names
+By default, unit names are automatically substituted with unit symbols
   (e.g., kilogram --> kg). To turn off this behavior, set
   \code{units_options(auto_convert_names_to_symbols = FALSE)}
 }
@@ -274,8 +274,10 @@ units(x) <- NULL
 set_units(x, NULL)
 # or
 drop_units(y)
+
+# Use difftime object as units
 s = Sys.time()
-d  = s - (s+1)
+d = s - (s+1)
 as_units(d)
 
 }

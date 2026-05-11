@@ -9,12 +9,12 @@ convert_to_base(x, simplify = TRUE, keep_fraction = TRUE)
 \arguments{
 \item{x}{object of class \code{units}.}
 
-\item{simplify}{logical; if TRUE (default), the resulting units are simplified.}
+\item{simplify}{logical; if \code{TRUE} (default), the resulting units are simplified.}
 
-\item{keep_fraction}{logical; if TRUE (default), the result is kept as a fraction.}
+\item{keep_fraction}{logical; if \code{TRUE} (default), the result is kept as a fraction.}
 }
 \value{
-object of class \code{units} with units converted to base units.
+An object of class \code{units} with units converted to base units.
 }
 \description{
 Convert the units of a \code{units} object to their base units, as defined by
