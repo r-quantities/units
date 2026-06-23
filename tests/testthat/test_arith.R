@@ -91,8 +91,8 @@ test_that("we can take powers of units", {
 
   expect_equal(as.numeric(ux ** 0), x ** 0)
   expect_equal(as.numeric(ux ^ 0), x ^ 0)
-  expect_identical(units(ux ** 0), units(as_units(1)))
-  expect_identical(units(ux ^ 0), units(as_units(1)))
+  expect_identical(units(ux ** 0), unitless)
+  expect_identical(units(ux ^ 0), unitless)
 })
 
 test_that("we support unary +/-", {
