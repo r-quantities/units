@@ -6,6 +6,8 @@
 
 * Several fixes in documentation files; #433 @tszberkowitz
 
+* Simplify unitless powers automatically; #435 addressing #179, #434
+
 # version 1.0-1
 
 * Add internal workaround for udunits2 bug with parsing of units that contain
