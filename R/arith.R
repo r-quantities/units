@@ -128,12 +128,14 @@ Ops.units <- function(e1, e2) {
     return(.simplify_units(NextMethod(), .symbolic_units(numerator, denominator)))
 
   } else if (pw) {
-    if (e2_inherits_units) {
-      if (e1_inherits_units && identical(units(e1), units(as_units(1)))) {
+    if (e2_inherits_units && identical(units(e2), unitless)) {
+      e2 <- drop_units(e2)
+      if (!e1_inherits_units)
+        return(NextMethod())
+
+    } else if (e2_inherits_units) {
+      if (e1_inherits_units && identical(units(e1), unitless))
         e1 <- drop_units(e1)
-      } else if (e1_inherits_units) {
-        stop("power operation only allowed with numeric power")
-      }
 
       # code to manage things like exp(log(...)) and 10^log10(...) follows
       # this is not supported in udunits2, so we are on our own
@@ -179,7 +181,7 @@ Ops.units <- function(e1, e2) {
     # when the power is negative and we have a special case when it is zero where
     # units should be removed.
     if (e2 == 0) {
-      u <- units(as_units(1))
+      u <- unitless
     } else {
       tbl_den <- tabulate(factor(units(e1)$denominator))
       tbl_num <- tabulate(factor(units(e1)$numerator))

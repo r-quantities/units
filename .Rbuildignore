@@ -7,3 +7,5 @@
 README.md
 ^quantities$
 ^revdep$
+^\.positai$
+^\.claude$

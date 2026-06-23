@@ -91,8 +91,8 @@ test_that("we can take powers of units", {
 
   expect_equal(as.numeric(ux ** 0), x ** 0)
   expect_equal(as.numeric(ux ^ 0), x ^ 0)
-  expect_identical(units(ux ** 0), units(as_units(1)))
-  expect_identical(units(ux ^ 0), units(as_units(1)))
+  expect_identical(units(ux ** 0), unitless)
+  expect_identical(units(ux ^ 0), unitless)
 })
 
 test_that("we support unary +/-", {
@@ -181,7 +181,7 @@ test_that("we can undo logatithms", {
   expect_equal(expm1(3^log(log1p(y), base=3)), set_units(y, m^2))
   expect_error(exp(log10(x)), "wrong base in power operation")
   expect_error(exp(x), "only allowed with logarithmic unit")
-  expect_error(exp(set_units(1, 1)), "only allowed with logarithmic unit")
+  expect_equal(exp(x/y), exp(drop_units(x/y)))
 })
 
 test_that("%/% and %% work", {
