@@ -8,6 +8,8 @@
 
 * Simplify unitless powers automatically; #435 addressing #179, #434
 
+* Register ASCII versions of user-defined units; addressing #437
+
 # version 1.0-1
 
 * Add internal workaround for udunits2 bug with parsing of units that contain

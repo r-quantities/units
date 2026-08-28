@@ -133,8 +133,11 @@ NumericVector ud_convert_doubles(NumericVector x, std::string from, std::string 
 void ud_map_names(CharacterVector names, xut_unit unit) {
   if (!names.size() || !unit) return;
 
-  for (int i = 0; i < names.size(); i++)
+  for (int i = 0; i < names.size(); i++) {
+    ut_map_name_to_unit(ut_trim(names[i], UT_ASCII), UT_ASCII, unit);
     ut_map_name_to_unit(ut_trim(names[i], enc), enc, unit);
+  }
+  ut_map_unit_to_name(unit, ut_trim(names[0], UT_ASCII), UT_ASCII);
   ut_map_unit_to_name(unit, ut_trim(names[0], enc), enc);
 }
 
@@ -146,16 +149,22 @@ void ud_unmap_names(CharacterVector names) {
   if (!unit) return;
 
   ut_unmap_unit_to_name(unit, enc);
-  for (int i = 0; i < names.size(); i++)
+  ut_unmap_unit_to_name(unit, UT_ASCII);
+  for (int i = 0; i < names.size(); i++) {
     ut_unmap_name_to_unit(sys, ut_trim(names[i], enc), enc);
+    ut_unmap_name_to_unit(sys, ut_trim(names[i], UT_ASCII), UT_ASCII);
+  }
 }
 
 // [[Rcpp::export(rng=false)]]
 void ud_map_symbols(CharacterVector symbols, xut_unit unit) {
   if (!symbols.size() || !unit) return;
 
-  for (int i = 0; i < symbols.size(); i++)
+  for (int i = 0; i < symbols.size(); i++) {
+    ut_map_symbol_to_unit(ut_trim(symbols[i], UT_ASCII), UT_ASCII, unit);
     ut_map_symbol_to_unit(ut_trim(symbols[i], enc), enc, unit);
+  }
+  ut_map_unit_to_symbol(unit, ut_trim(symbols[0], UT_ASCII), UT_ASCII);
   ut_map_unit_to_symbol(unit, ut_trim(symbols[0], enc), enc);
 }
 
@@ -167,8 +176,11 @@ void ud_unmap_symbols(CharacterVector symbols) {
   if (!unit) return;
 
   ut_unmap_unit_to_symbol(unit, enc);
-  for (int i = 0; i < symbols.size(); i++)
+  ut_unmap_unit_to_symbol(unit, UT_ASCII);
+  for (int i = 0; i < symbols.size(); i++) {
     ut_unmap_symbol_to_unit(sys, ut_trim(symbols[i], enc), enc);
+    ut_unmap_symbol_to_unit(sys, ut_trim(symbols[i], UT_ASCII), UT_ASCII);
+  }
 }
 
 /* Thin wrappers **************************************************************/
