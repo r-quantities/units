@@ -88,7 +88,7 @@ private:
     if (!is_digit && is_exponent)
       stop("invalid exponent");
     else if (is_digit) {
-      exponent = 0;
+      exponent = *(it++) - '0';
       for (; it != x.end() && std::isdigit(*it); ++it) {
         exponent = exponent * 10 + (*it - '0');
         if (exponent > max_exponent)

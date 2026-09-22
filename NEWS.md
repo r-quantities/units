@@ -12,8 +12,7 @@
 
 * Reject unit exponents beyond udunits' own limit of ±255 in the tokenizer
   instead of expanding them into repeated symbols, which made
-  `as_units("x-911543")` take minutes to fail, and consult udunits once per
-  distinct symbol in `as_units()`; #438
+  `as_units("x-911543")` take minutes to fail; #438
 
 # version 1.0-1
 

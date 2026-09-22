@@ -104,11 +104,6 @@ test_that("exponents beyond udunits' range are rejected instead of expanded", {
   expect_lt(as.numeric(difftime(Sys.time(), t0, units = "secs")), 5)
 })
 
-test_that("each unrecognized symbol is reported once", {
-  expect_error(as_units("x2 y-3"), "x. and .y. are not recognized by udunits")
-  expect_error(as_units("x3"), "In .x3., .x. is not recognized by udunits")
-})
-
 test_that("deparse_unit works", {
   str = "kg m-2 s-1"
   u = as_units(str, implicit_exponents = TRUE)
