@@ -10,6 +10,10 @@
 
 * Register ASCII versions of user-defined units; addressing #437
 
+* Reject unit exponents beyond udunits' own limit of ±255 in the tokenizer
+  instead of expanding them into repeated symbols, which made
+  `as_units("x-911543")` take minutes to fail; #438
+
 # version 1.0-1
 
 * Add internal workaround for udunits2 bug with parsing of units that contain
