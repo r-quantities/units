@@ -293,13 +293,16 @@ as_units.character <- function(x, ...,
 
   o <- try(su <- parse_unit(x, units_options("strict_tokenizer")), silent=TRUE)
   if(inherits(o, "try-error")) {
-    warning("Could not parse expression: ", sQuote(x),                # nocov
-            ". Returning as a single symbolic unit()", call. = FALSE) # nocov
-    return(symbolic_unit(x, check_is_valid = check_is_valid))         # nocov
+    warning("Could not parse expression: ", sQuote(x),
+            ". Returning as a single symbolic unit()", call. = FALSE)
+    return(symbolic_unit(x, check_is_valid = check_is_valid))
   }
 
+  # the tokenizer repeats a symbol once per unit of exponent, so consult
+  # udunits once per distinct symbol rather than once per repetition
+  vars <- unique(c(su$numerator, su$denominator))
+
   if (check_is_valid) {
-    vars <- c(su$numerator, su$denominator)
     valid <- vapply(vars, ud_is_parseable, logical(1L))
     if (!all(valid))
       stop(.msg_units_not_recognized(vars[!valid], x), call. = FALSE)
@@ -308,8 +311,9 @@ as_units.character <- function(x, ...,
   if (units_options("auto_convert_names_to_symbols")) {
     name_to_symbol <- function(chr)
       if (ud_is_parseable(chr) && length(sym <- ud_get_symbol(chr))) sym else chr
-    su$numerator <- vapply(su$numerator, name_to_symbol, character(1), USE.NAMES=FALSE)
-    su$denominator <- vapply(su$denominator, name_to_symbol, character(1), USE.NAMES=FALSE)
+    symbols <- vapply(vars, name_to_symbol, character(1), USE.NAMES=FALSE)
+    su$numerator <- symbols[match(su$numerator, vars)]
+    su$denominator <- symbols[match(su$denominator, vars)]
   }
 
   if (is.na(.units.simplify())) {
