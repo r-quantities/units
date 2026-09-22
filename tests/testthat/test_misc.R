@@ -78,6 +78,32 @@ test_that("parse_unit works", {
   expect_equal(u, u0)
 })
 
+test_that("exponents beyond udunits' range are rejected instead of expanded", {
+  # udunits accepts powers in [-255, 255]; anything beyond that used to be
+  # expanded into one repeated symbol per unit of exponent, so "x-911543"
+  # took minutes to fail (#438)
+  expect_error(units:::parse_unit("x-911543"), "exponent out of range")
+  expect_error(units:::parse_unit("m256"), "exponent out of range")
+  expect_error(units:::parse_unit("m^256"), "exponent out of range")
+  expect_error(units:::parse_unit("m^-256"), "exponent out of range")
+  expect_error(units:::parse_unit("m-256"), "exponent out of range")
+  # more digits than fit in an int must not overflow into a "valid" exponent
+  expect_error(units:::parse_unit("m99999999999999999999"), "exponent out of range")
+  expect_length(units:::parse_unit("m255")$numerator, 255L)
+  expect_length(units:::parse_unit("m-255")$denominator, 255L)
+  expect_length(units:::parse_unit("m^255")$numerator, 255L)
+  t0 <- Sys.time()
+  expect_warning(
+    expect_error(as_units("x-911543"), "not a unit recognized by udunits"),
+    "Could not parse expression"
+  )
+  expect_warning(
+    expect_error(as_units("m-911543"), "not a unit recognized by udunits"),
+    "Could not parse expression"
+  )
+  expect_lt(as.numeric(difftime(Sys.time(), t0, units = "secs")), 5)
+})
+
 test_that("as_units() consults udunits once per distinct symbol", {
   # the tokenizer repeats a symbol once per unit of exponent; the udunits
   # lookups must not repeat with it, and each unrecognized symbol is
@@ -86,7 +112,7 @@ test_that("as_units() consults udunits once per distinct symbol", {
   expect_error(as_units("x3"), "In .x3., .x. is not recognized by udunits")
   expect_equal(as_units("m255 s-255"), as_units("m^255/s^255"))
   expect_equal(as_units("kg2 m4 s-6 A-2"), as_units("kg^2 m^4 / (s^6 A^2)"))
-})
+ })
 
 test_that("deparse_unit works", {
   str = "kg m-2 s-1"

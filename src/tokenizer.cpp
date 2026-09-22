@@ -19,6 +19,12 @@ private:
   bool stay = false;
   bool strict = false;
 
+  // udunits' ut_raise() only accepts powers in [-255, 255], so a larger
+  // exponent can never form a valid unit. Rejecting it here also keeps
+  // combine() from expanding it into one symbol per unit of exponent, which
+  // made e.g. "x-911543" take minutes to fail (#438).
+  static constexpr int max_exponent = 255;
+
   /* helpers -----------------------------------------------------------------*/
 
   bool is_multiplicative(const char& c) {
@@ -83,8 +89,11 @@ private:
       stop("invalid exponent");
     else if (is_digit) {
       exponent = *(it++) - '0';
-      for (; it != x.end() && isdigit(*it); ++it)
+      for (; it != x.end() && std::isdigit(*it); ++it) {
         exponent = exponent * 10 + (*it - '0');
+        if (exponent > max_exponent)
+          stop("exponent out of range: udunits only supports powers between -255 and 255");
+      }
       if (is_negative) exponent = -exponent;
     }
 
