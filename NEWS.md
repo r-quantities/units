@@ -10,6 +10,9 @@
 
 * Register ASCII versions of user-defined units; addressing #437
 
+* `as_units()` consults udunits once per distinct symbol instead of once per
+  repetition of a symbol, and reports each unrecognized symbol once
+
 # version 1.0-1
 
 * Add internal workaround for udunits2 bug with parsing of units that contain

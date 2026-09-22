@@ -78,6 +78,16 @@ test_that("parse_unit works", {
   expect_equal(u, u0)
 })
 
+test_that("as_units() consults udunits once per distinct symbol", {
+  # the tokenizer repeats a symbol once per unit of exponent; the udunits
+  # lookups must not repeat with it, and each unrecognized symbol is
+  # reported once
+  expect_error(as_units("x2 y-3"), "x. and .y. are not recognized by udunits")
+  expect_error(as_units("x3"), "In .x3., .x. is not recognized by udunits")
+  expect_equal(as_units("m255 s-255"), as_units("m^255/s^255"))
+  expect_equal(as_units("kg2 m4 s-6 A-2"), as_units("kg^2 m^4 / (s^6 A^2)"))
+})
+
 test_that("deparse_unit works", {
   str = "kg m-2 s-1"
   u = as_units(str, implicit_exponents = TRUE)
