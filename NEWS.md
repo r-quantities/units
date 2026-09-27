@@ -18,6 +18,12 @@
   repetition of a symbol, and reports each unrecognized symbol once; #441
   addressing #440 @billdenney
 
+* Convert once per distinct pair of units instead of once per element in
+  `ud_convert()`, `ud_are_convertible()` and so in every conversion of `units`
+  objects, and parse each distinct unit once in `mixed_units()` and in
+  `set_units()` on mixed units; e.g., `set_units(x, km)` on 1e6 values takes
+  2 ms instead of 11 s; @billdenney
+
 # version 1.0-1
 
 * Add internal workaround for udunits2 bug with parsing of units that contain
