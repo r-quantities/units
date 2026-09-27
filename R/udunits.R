@@ -62,12 +62,11 @@ ud_char <- function(x) {
 
 ud_are_same <- function(x, y) {
   get_base <- function(x)
-    tail(strsplit(R_ut_format(R_ut_parse(x), definition=TRUE), " ")[[1]], 1)
+    tail(strsplit(R_ut_format(x, definition=TRUE), " ")[[1]], 1)
   identical(get_base(x), get_base(y))
 }
 
 ud_get_symbol = function(u) {
-  u <- R_ut_parse(u)
 	sym = R_ut_get_symbol(u)
 	if (!length(sym))
 		sym = R_ut_get_name(u)
@@ -80,5 +79,5 @@ ud_is_parseable = function(u) {
 }
 
 ud_parse <- function(u, names=FALSE, definition=FALSE, ascii=FALSE) {
-  R_ut_format(R_ut_parse(u), names, definition, ascii)
+  R_ut_format(u, names, definition, ascii)
 }

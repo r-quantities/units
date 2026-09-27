@@ -29,32 +29,16 @@ ud_convert_doubles <- function(x, from, to) {
     .Call('_units_ud_convert_doubles', PACKAGE = 'units', x, from, to)
 }
 
-ud_map_names <- function(names, unit) {
-    invisible(.Call('_units_ud_map_names', PACKAGE = 'units', names, unit))
+ud_map_unit <- function(symbols, names, def) {
+    invisible(.Call('_units_ud_map_unit', PACKAGE = 'units', symbols, names, def))
 }
 
 ud_unmap_names <- function(names) {
     invisible(.Call('_units_ud_unmap_names', PACKAGE = 'units', names))
 }
 
-ud_map_symbols <- function(symbols, unit) {
-    invisible(.Call('_units_ud_map_symbols', PACKAGE = 'units', symbols, unit))
-}
-
 ud_unmap_symbols <- function(symbols) {
     invisible(.Call('_units_ud_unmap_symbols', PACKAGE = 'units', symbols))
-}
-
-R_ut_get_dimensionless_unit_one <- function() {
-    .Call('_units_R_ut_get_dimensionless_unit_one', PACKAGE = 'units')
-}
-
-R_ut_new_base_unit <- function() {
-    .Call('_units_R_ut_new_base_unit', PACKAGE = 'units')
-}
-
-R_ut_new_dimensionless_unit <- function() {
-    .Call('_units_R_ut_new_dimensionless_unit', PACKAGE = 'units')
 }
 
 R_ut_get_name <- function(unit) {
@@ -65,43 +49,15 @@ R_ut_get_symbol <- function(unit) {
     .Call('_units_R_ut_get_symbol', PACKAGE = 'units', unit)
 }
 
-R_ut_scale <- function(unit, factor) {
-    .Call('_units_R_ut_scale', PACKAGE = 'units', unit, factor)
+R_ut_log <- function(unit, base) {
+    .Call('_units_R_ut_log', PACKAGE = 'units', unit, base)
 }
 
-R_ut_offset <- function(unit, origin) {
-    .Call('_units_R_ut_offset', PACKAGE = 'units', unit, origin)
+R_ut_parse <- function(unit) {
+    invisible(.Call('_units_R_ut_parse', PACKAGE = 'units', unit))
 }
 
-R_ut_multiply <- function(a, b) {
-    .Call('_units_R_ut_multiply', PACKAGE = 'units', a, b)
-}
-
-R_ut_invert <- function(a) {
-    .Call('_units_R_ut_invert', PACKAGE = 'units', a)
-}
-
-R_ut_divide <- function(numer, denom) {
-    .Call('_units_R_ut_divide', PACKAGE = 'units', numer, denom)
-}
-
-R_ut_raise <- function(a, i) {
-    .Call('_units_R_ut_raise', PACKAGE = 'units', a, i)
-}
-
-R_ut_root <- function(a, i) {
-    .Call('_units_R_ut_root', PACKAGE = 'units', a, i)
-}
-
-R_ut_log <- function(a, base) {
-    .Call('_units_R_ut_log', PACKAGE = 'units', a, base)
-}
-
-R_ut_parse <- function(name) {
-    .Call('_units_R_ut_parse', PACKAGE = 'units', name)
-}
-
-R_ut_format <- function(p, names = FALSE, definition = FALSE, ascii = FALSE) {
-    .Call('_units_R_ut_format', PACKAGE = 'units', p, names, definition, ascii)
+R_ut_format <- function(unit, names = FALSE, definition = FALSE, ascii = FALSE) {
+    .Call('_units_R_ut_format', PACKAGE = 'units', unit, names, definition, ascii)
 }
 

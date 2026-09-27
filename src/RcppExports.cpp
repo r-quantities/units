@@ -85,13 +85,14 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// ud_map_names
-void ud_map_names(CharacterVector names, xut_unit unit);
-RcppExport SEXP _units_ud_map_names(SEXP namesSEXP, SEXP unitSEXP) {
+// ud_map_unit
+void ud_map_unit(CharacterVector symbols, CharacterVector names, CharacterVector def);
+RcppExport SEXP _units_ud_map_unit(SEXP symbolsSEXP, SEXP namesSEXP, SEXP defSEXP) {
 BEGIN_RCPP
+    Rcpp::traits::input_parameter< CharacterVector >::type symbols(symbolsSEXP);
     Rcpp::traits::input_parameter< CharacterVector >::type names(namesSEXP);
-    Rcpp::traits::input_parameter< xut_unit >::type unit(unitSEXP);
-    ud_map_names(names, unit);
+    Rcpp::traits::input_parameter< CharacterVector >::type def(defSEXP);
+    ud_map_unit(symbols, names, def);
     return R_NilValue;
 END_RCPP
 }
@@ -104,16 +105,6 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
-// ud_map_symbols
-void ud_map_symbols(CharacterVector symbols, xut_unit unit);
-RcppExport SEXP _units_ud_map_symbols(SEXP symbolsSEXP, SEXP unitSEXP) {
-BEGIN_RCPP
-    Rcpp::traits::input_parameter< CharacterVector >::type symbols(symbolsSEXP);
-    Rcpp::traits::input_parameter< xut_unit >::type unit(unitSEXP);
-    ud_map_symbols(symbols, unit);
-    return R_NilValue;
-END_RCPP
-}
 // ud_unmap_symbols
 void ud_unmap_symbols(CharacterVector symbols);
 RcppExport SEXP _units_ud_unmap_symbols(SEXP symbolsSEXP) {
@@ -123,160 +114,56 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
-// R_ut_get_dimensionless_unit_one
-xut_unit R_ut_get_dimensionless_unit_one();
-RcppExport SEXP _units_R_ut_get_dimensionless_unit_one() {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    rcpp_result_gen = Rcpp::wrap(R_ut_get_dimensionless_unit_one());
-    return rcpp_result_gen;
-END_RCPP
-}
-// R_ut_new_base_unit
-xut_unit R_ut_new_base_unit();
-RcppExport SEXP _units_R_ut_new_base_unit() {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    rcpp_result_gen = Rcpp::wrap(R_ut_new_base_unit());
-    return rcpp_result_gen;
-END_RCPP
-}
-// R_ut_new_dimensionless_unit
-xut_unit R_ut_new_dimensionless_unit();
-RcppExport SEXP _units_R_ut_new_dimensionless_unit() {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    rcpp_result_gen = Rcpp::wrap(R_ut_new_dimensionless_unit());
-    return rcpp_result_gen;
-END_RCPP
-}
 // R_ut_get_name
-CharacterVector R_ut_get_name(xut_unit unit);
+CharacterVector R_ut_get_name(std::string unit);
 RcppExport SEXP _units_R_ut_get_name(SEXP unitSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
-    Rcpp::traits::input_parameter< xut_unit >::type unit(unitSEXP);
+    Rcpp::traits::input_parameter< std::string >::type unit(unitSEXP);
     rcpp_result_gen = Rcpp::wrap(R_ut_get_name(unit));
     return rcpp_result_gen;
 END_RCPP
 }
 // R_ut_get_symbol
-CharacterVector R_ut_get_symbol(xut_unit unit);
+CharacterVector R_ut_get_symbol(std::string unit);
 RcppExport SEXP _units_R_ut_get_symbol(SEXP unitSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
-    Rcpp::traits::input_parameter< xut_unit >::type unit(unitSEXP);
+    Rcpp::traits::input_parameter< std::string >::type unit(unitSEXP);
     rcpp_result_gen = Rcpp::wrap(R_ut_get_symbol(unit));
     return rcpp_result_gen;
 END_RCPP
 }
-// R_ut_scale
-xut_unit R_ut_scale(xut_unit unit, double factor);
-RcppExport SEXP _units_R_ut_scale(SEXP unitSEXP, SEXP factorSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::traits::input_parameter< xut_unit >::type unit(unitSEXP);
-    Rcpp::traits::input_parameter< double >::type factor(factorSEXP);
-    rcpp_result_gen = Rcpp::wrap(R_ut_scale(unit, factor));
-    return rcpp_result_gen;
-END_RCPP
-}
-// R_ut_offset
-xut_unit R_ut_offset(xut_unit unit, double origin);
-RcppExport SEXP _units_R_ut_offset(SEXP unitSEXP, SEXP originSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::traits::input_parameter< xut_unit >::type unit(unitSEXP);
-    Rcpp::traits::input_parameter< double >::type origin(originSEXP);
-    rcpp_result_gen = Rcpp::wrap(R_ut_offset(unit, origin));
-    return rcpp_result_gen;
-END_RCPP
-}
-// R_ut_multiply
-xut_unit R_ut_multiply(xut_unit a, xut_unit b);
-RcppExport SEXP _units_R_ut_multiply(SEXP aSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::traits::input_parameter< xut_unit >::type a(aSEXP);
-    Rcpp::traits::input_parameter< xut_unit >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(R_ut_multiply(a, b));
-    return rcpp_result_gen;
-END_RCPP
-}
-// R_ut_invert
-xut_unit R_ut_invert(xut_unit a);
-RcppExport SEXP _units_R_ut_invert(SEXP aSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::traits::input_parameter< xut_unit >::type a(aSEXP);
-    rcpp_result_gen = Rcpp::wrap(R_ut_invert(a));
-    return rcpp_result_gen;
-END_RCPP
-}
-// R_ut_divide
-xut_unit R_ut_divide(xut_unit numer, xut_unit denom);
-RcppExport SEXP _units_R_ut_divide(SEXP numerSEXP, SEXP denomSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::traits::input_parameter< xut_unit >::type numer(numerSEXP);
-    Rcpp::traits::input_parameter< xut_unit >::type denom(denomSEXP);
-    rcpp_result_gen = Rcpp::wrap(R_ut_divide(numer, denom));
-    return rcpp_result_gen;
-END_RCPP
-}
-// R_ut_raise
-xut_unit R_ut_raise(xut_unit a, int i);
-RcppExport SEXP _units_R_ut_raise(SEXP aSEXP, SEXP iSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::traits::input_parameter< xut_unit >::type a(aSEXP);
-    Rcpp::traits::input_parameter< int >::type i(iSEXP);
-    rcpp_result_gen = Rcpp::wrap(R_ut_raise(a, i));
-    return rcpp_result_gen;
-END_RCPP
-}
-// R_ut_root
-xut_unit R_ut_root(xut_unit a, int i);
-RcppExport SEXP _units_R_ut_root(SEXP aSEXP, SEXP iSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::traits::input_parameter< xut_unit >::type a(aSEXP);
-    Rcpp::traits::input_parameter< int >::type i(iSEXP);
-    rcpp_result_gen = Rcpp::wrap(R_ut_root(a, i));
-    return rcpp_result_gen;
-END_RCPP
-}
 // R_ut_log
-xut_unit R_ut_log(xut_unit a, double base);
-RcppExport SEXP _units_R_ut_log(SEXP aSEXP, SEXP baseSEXP) {
+CharacterVector R_ut_log(std::string unit, double base);
+RcppExport SEXP _units_R_ut_log(SEXP unitSEXP, SEXP baseSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
-    Rcpp::traits::input_parameter< xut_unit >::type a(aSEXP);
+    Rcpp::traits::input_parameter< std::string >::type unit(unitSEXP);
     Rcpp::traits::input_parameter< double >::type base(baseSEXP);
-    rcpp_result_gen = Rcpp::wrap(R_ut_log(a, base));
+    rcpp_result_gen = Rcpp::wrap(R_ut_log(unit, base));
     return rcpp_result_gen;
 END_RCPP
 }
 // R_ut_parse
-xut_unit R_ut_parse(std::string name);
-RcppExport SEXP _units_R_ut_parse(SEXP nameSEXP) {
+void R_ut_parse(std::string unit);
+RcppExport SEXP _units_R_ut_parse(SEXP unitSEXP) {
 BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::traits::input_parameter< std::string >::type name(nameSEXP);
-    rcpp_result_gen = Rcpp::wrap(R_ut_parse(name));
-    return rcpp_result_gen;
+    Rcpp::traits::input_parameter< std::string >::type unit(unitSEXP);
+    R_ut_parse(unit);
+    return R_NilValue;
 END_RCPP
 }
 // R_ut_format
-CharacterVector R_ut_format(xut_unit p, bool names, bool definition, bool ascii);
-RcppExport SEXP _units_R_ut_format(SEXP pSEXP, SEXP namesSEXP, SEXP definitionSEXP, SEXP asciiSEXP) {
+CharacterVector R_ut_format(std::string unit, bool names, bool definition, bool ascii);
+RcppExport SEXP _units_R_ut_format(SEXP unitSEXP, SEXP namesSEXP, SEXP definitionSEXP, SEXP asciiSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
-    Rcpp::traits::input_parameter< xut_unit >::type p(pSEXP);
+    Rcpp::traits::input_parameter< std::string >::type unit(unitSEXP);
     Rcpp::traits::input_parameter< bool >::type names(namesSEXP);
     Rcpp::traits::input_parameter< bool >::type definition(definitionSEXP);
     Rcpp::traits::input_parameter< bool >::type ascii(asciiSEXP);
-    rcpp_result_gen = Rcpp::wrap(R_ut_format(p, names, definition, ascii));
+    rcpp_result_gen = Rcpp::wrap(R_ut_format(unit, names, definition, ascii));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -289,22 +176,11 @@ static const R_CallMethodDef CallEntries[] = {
     {"_units_ud_compare", (DL_FUNC) &_units_ud_compare, 4},
     {"_units_ud_convertible", (DL_FUNC) &_units_ud_convertible, 2},
     {"_units_ud_convert_doubles", (DL_FUNC) &_units_ud_convert_doubles, 3},
-    {"_units_ud_map_names", (DL_FUNC) &_units_ud_map_names, 2},
+    {"_units_ud_map_unit", (DL_FUNC) &_units_ud_map_unit, 3},
     {"_units_ud_unmap_names", (DL_FUNC) &_units_ud_unmap_names, 1},
-    {"_units_ud_map_symbols", (DL_FUNC) &_units_ud_map_symbols, 2},
     {"_units_ud_unmap_symbols", (DL_FUNC) &_units_ud_unmap_symbols, 1},
-    {"_units_R_ut_get_dimensionless_unit_one", (DL_FUNC) &_units_R_ut_get_dimensionless_unit_one, 0},
-    {"_units_R_ut_new_base_unit", (DL_FUNC) &_units_R_ut_new_base_unit, 0},
-    {"_units_R_ut_new_dimensionless_unit", (DL_FUNC) &_units_R_ut_new_dimensionless_unit, 0},
     {"_units_R_ut_get_name", (DL_FUNC) &_units_R_ut_get_name, 1},
     {"_units_R_ut_get_symbol", (DL_FUNC) &_units_R_ut_get_symbol, 1},
-    {"_units_R_ut_scale", (DL_FUNC) &_units_R_ut_scale, 2},
-    {"_units_R_ut_offset", (DL_FUNC) &_units_R_ut_offset, 2},
-    {"_units_R_ut_multiply", (DL_FUNC) &_units_R_ut_multiply, 2},
-    {"_units_R_ut_invert", (DL_FUNC) &_units_R_ut_invert, 1},
-    {"_units_R_ut_divide", (DL_FUNC) &_units_R_ut_divide, 2},
-    {"_units_R_ut_raise", (DL_FUNC) &_units_R_ut_raise, 2},
-    {"_units_R_ut_root", (DL_FUNC) &_units_R_ut_root, 2},
     {"_units_R_ut_log", (DL_FUNC) &_units_R_ut_log, 2},
     {"_units_R_ut_parse", (DL_FUNC) &_units_R_ut_parse, 1},
     {"_units_R_ut_format", (DL_FUNC) &_units_R_ut_format, 4},

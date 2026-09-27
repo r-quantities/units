@@ -24,11 +24,48 @@ using namespace Rcpp;
 static ut_system *sys = NULL;
 static ut_encoding enc = UT_UTF8;
 
+/* Helpers ********************************************************************/
+
+static ut_unit_ptr parse_or_stop(std::string name) {
+  ut_unit_ptr unit(ut_parse(sys, ut_trim(name.data(), enc), enc));
+  if (!unit)
+    stop("syntax error, cannot parse '%s'", name);
+  return unit;
+}
+
+static CharacterVector format_unit(const ut_unit* unit, int opt) {
+  char buf[256];
+  if (ut_format(unit, buf, sizeof(buf), opt) == sizeof(buf))
+    warning("buffer too small!"); // #nocov
+  return CharacterVector::create(buf);
+}
+
+static void map_names(CharacterVector names, ut_unit* unit) {
+  if (!names.size() || !unit) return;
+
+  for (int i = 0; i < names.size(); i++) {
+    ut_map_name_to_unit(ut_trim(names[i], UT_ASCII), UT_ASCII, unit);
+    ut_map_name_to_unit(ut_trim(names[i], enc), enc, unit);
+  }
+  ut_map_unit_to_name(unit, ut_trim(names[0], UT_ASCII), UT_ASCII);
+  ut_map_unit_to_name(unit, ut_trim(names[0], enc), enc);
+}
+
+static void map_symbols(CharacterVector symbols, ut_unit* unit) {
+  if (!symbols.size() || !unit) return;
+
+  for (int i = 0; i < symbols.size(); i++) {
+    ut_map_symbol_to_unit(ut_trim(symbols[i], UT_ASCII), UT_ASCII, unit);
+    ut_map_symbol_to_unit(ut_trim(symbols[i], enc), enc, unit);
+  }
+  ut_map_unit_to_symbol(unit, ut_trim(symbols[0], UT_ASCII), UT_ASCII);
+  ut_map_unit_to_symbol(unit, ut_trim(symbols[0], enc), enc);
+}
+
 /* High-level functions *******************************************************/
 
 // [[Rcpp::export(rng=false)]]
 void ud_exit() {
-  R_gc();
   ut_free_system(sys);
   sys = NULL;
 }
@@ -77,13 +114,13 @@ IntegerVector ud_compare(NumericVector x, NumericVector y,
   for (std::string &attr : x.attributeNames())
     out.attr(attr) = x.attr(attr);
 
-  xut_unit ux(ut_parse(sys, ut_trim(xn.data(), enc), enc));
-  xut_unit uy(ut_parse(sys, ut_trim(yn.data(), enc), enc));
+  ut_unit_ptr ux(ut_parse(sys, ut_trim(xn.data(), enc), enc));
+  ut_unit_ptr uy(ut_parse(sys, ut_trim(yn.data(), enc), enc));
 
   if (ut_compare(ux.get(), uy.get()) != 0) {
     NumericVector y_cv = clone(y);
-    xcv_converter cv(ut_get_converter(uy.get(), ux.get()));
-    cv_convert_doubles(cv, &(y_cv[0]), y_cv.size(), &(y_cv[0]));
+    cv_converter_ptr cv(ut_get_converter(uy.get(), ux.get()));
+    cv_convert_doubles(cv.get(), &(y_cv[0]), y_cv.size(), &(y_cv[0]));
     std::swap(y, y_cv);
   }
 
@@ -107,12 +144,12 @@ IntegerVector ud_compare(NumericVector x, NumericVector y,
 
 // [[Rcpp::export(rng=false)]]
 LogicalVector ud_convertible(std::string from, std::string to) {
-  xut_unit u_from(ut_parse(sys, ut_trim(from.data(), enc), enc));
-  xut_unit u_to(ut_parse(sys, ut_trim(to.data(), enc), enc));
+  ut_unit_ptr u_from(ut_parse(sys, ut_trim(from.data(), enc), enc));
+  ut_unit_ptr u_to(ut_parse(sys, ut_trim(to.data(), enc), enc));
 
   if (!u_from || !u_to)
     return false;
-  return ut_are_convertible(u_from, u_to) != 0;
+  return ut_are_convertible(u_from.get(), u_to.get()) != 0;
 }
 
 // [[Rcpp::export(rng=false)]]
@@ -120,36 +157,41 @@ NumericVector ud_convert_doubles(NumericVector x, std::string from, std::string 
   if (x.size() == 0) return x;
   NumericVector out = clone(x);
 
-  xut_unit u_from(ut_parse(sys, ut_trim(from.data(), enc), enc));
-  xut_unit u_to(ut_parse(sys, ut_trim(to.data(), enc), enc));
+  ut_unit_ptr u_from(ut_parse(sys, ut_trim(from.data(), enc), enc));
+  ut_unit_ptr u_to(ut_parse(sys, ut_trim(to.data(), enc), enc));
 
-  xcv_converter cv(ut_get_converter(u_from.get(), u_to.get()));
-  cv_convert_doubles(cv, &(x[0]), x.size(), &(out[0]));
+  cv_converter_ptr cv(ut_get_converter(u_from.get(), u_to.get()));
+  cv_convert_doubles(cv.get(), &(x[0]), x.size(), &(out[0]));
 
   return out;
 }
 
+// Maps symbols and names to a new base unit if def is empty, to a new
+// dimensionless unit if def is "unitless", and to the unit def defines otherwise.
 // [[Rcpp::export(rng=false)]]
-void ud_map_names(CharacterVector names, xut_unit unit) {
-  if (!names.size() || !unit) return;
+void ud_map_unit(CharacterVector symbols, CharacterVector names,
+                 CharacterVector def)
+{
+  ut_unit_ptr unit;
+  if (!def.size())
+    unit.reset(ut_new_base_unit(sys));
+  else if (as<std::string>(def[0]) == "unitless")
+    unit.reset(ut_new_dimensionless_unit(sys));
+  else unit = parse_or_stop(as<std::string>(def[0]));
 
-  for (int i = 0; i < names.size(); i++) {
-    ut_map_name_to_unit(ut_trim(names[i], UT_ASCII), UT_ASCII, unit);
-    ut_map_name_to_unit(ut_trim(names[i], enc), enc, unit);
-  }
-  ut_map_unit_to_name(unit, ut_trim(names[0], UT_ASCII), UT_ASCII);
-  ut_map_unit_to_name(unit, ut_trim(names[0], enc), enc);
+  map_symbols(symbols, unit.get());
+  map_names(names, unit.get());
 }
 
 // [[Rcpp::export(rng=false)]]
 void ud_unmap_names(CharacterVector names) {
   if (!names.size()) return;
 
-  xut_unit unit(ut_parse(sys, ut_trim(names[0], enc), enc));
+  ut_unit_ptr unit(ut_parse(sys, ut_trim(names[0], enc), enc));
   if (!unit) return;
 
-  ut_unmap_unit_to_name(unit, enc);
-  ut_unmap_unit_to_name(unit, UT_ASCII);
+  ut_unmap_unit_to_name(unit.get(), enc);
+  ut_unmap_unit_to_name(unit.get(), UT_ASCII);
   for (int i = 0; i < names.size(); i++) {
     ut_unmap_name_to_unit(sys, ut_trim(names[i], enc), enc);
     ut_unmap_name_to_unit(sys, ut_trim(names[i], UT_ASCII), UT_ASCII);
@@ -157,26 +199,14 @@ void ud_unmap_names(CharacterVector names) {
 }
 
 // [[Rcpp::export(rng=false)]]
-void ud_map_symbols(CharacterVector symbols, xut_unit unit) {
-  if (!symbols.size() || !unit) return;
-
-  for (int i = 0; i < symbols.size(); i++) {
-    ut_map_symbol_to_unit(ut_trim(symbols[i], UT_ASCII), UT_ASCII, unit);
-    ut_map_symbol_to_unit(ut_trim(symbols[i], enc), enc, unit);
-  }
-  ut_map_unit_to_symbol(unit, ut_trim(symbols[0], UT_ASCII), UT_ASCII);
-  ut_map_unit_to_symbol(unit, ut_trim(symbols[0], enc), enc);
-}
-
-// [[Rcpp::export(rng=false)]]
 void ud_unmap_symbols(CharacterVector symbols) {
   if (!symbols.size()) return;
 
-  xut_unit unit(ut_parse(sys, ut_trim(symbols[0], enc), enc));
+  ut_unit_ptr unit(ut_parse(sys, ut_trim(symbols[0], enc), enc));
   if (!unit) return;
 
-  ut_unmap_unit_to_symbol(unit, enc);
-  ut_unmap_unit_to_symbol(unit, UT_ASCII);
+  ut_unmap_unit_to_symbol(unit.get(), enc);
+  ut_unmap_unit_to_symbol(unit.get(), UT_ASCII);
   for (int i = 0; i < symbols.size(); i++) {
     ut_unmap_symbol_to_unit(sys, ut_trim(symbols[i], enc), enc);
     ut_unmap_symbol_to_unit(sys, ut_trim(symbols[i], UT_ASCII), UT_ASCII);
@@ -185,95 +215,41 @@ void ud_unmap_symbols(CharacterVector symbols) {
 
 /* Thin wrappers **************************************************************/
 
-// # nocov start
+// These take a unit string rather than a unit, see units_types.h.
 
 // [[Rcpp::export(rng=false)]]
-xut_unit R_ut_get_dimensionless_unit_one() {
-  return xut_unit(ut_get_dimensionless_unit_one(sys));
-}
-
-// # nocov end
-
-// [[Rcpp::export(rng=false)]]
-xut_unit R_ut_new_base_unit() {
-  return xut_unit(ut_new_base_unit(sys));
-}
-
-// [[Rcpp::export(rng=false)]]
-xut_unit R_ut_new_dimensionless_unit() {
-  return xut_unit(ut_new_dimensionless_unit(sys));
-}
-
-// [[Rcpp::export(rng=false)]]
-CharacterVector R_ut_get_name(xut_unit unit) {
-  const char *s = ut_get_name(unit, enc);
+CharacterVector R_ut_get_name(std::string unit) {
+  ut_unit_ptr u(parse_or_stop(unit));
+  const char *s = ut_get_name(u.get(), enc);
   if (s == NULL)
     return CharacterVector::create();
   return CharacterVector::create(s); // #nocov
 }
 
 // [[Rcpp::export(rng=false)]]
-CharacterVector R_ut_get_symbol(xut_unit unit) {
-  const char *s = ut_get_symbol(unit, enc);
+CharacterVector R_ut_get_symbol(std::string unit) {
+  ut_unit_ptr u(parse_or_stop(unit));
+  const char *s = ut_get_symbol(u.get(), enc);
   if (s == NULL)
     return CharacterVector::create();
   return CharacterVector::create(s);
 }
 
-// # nocov start
-
 // [[Rcpp::export(rng=false)]]
-xut_unit R_ut_scale(xut_unit unit, double factor) {
-  return xut_unit(ut_scale(factor, unit));
+CharacterVector R_ut_log(std::string unit, double base) {
+  ut_unit_ptr u(parse_or_stop(unit));
+  ut_unit_ptr u_log(ut_log(base, u.get()));
+  return format_unit(u_log.get(), UT_ASCII);
+}
+
+// Throws if unit cannot be parsed.
+// [[Rcpp::export(rng=false)]]
+void R_ut_parse(std::string unit) {
+  parse_or_stop(unit);
 }
 
 // [[Rcpp::export(rng=false)]]
-xut_unit R_ut_offset(xut_unit unit, double origin) {
-  return xut_unit(ut_offset(unit, origin));
-}
-
-// [[Rcpp::export(rng=false)]]
-xut_unit R_ut_multiply(xut_unit a, xut_unit b) {
-  return xut_unit(ut_multiply(a, b));
-}
-
-// [[Rcpp::export(rng=false)]]
-xut_unit R_ut_invert(xut_unit a) {
-  return xut_unit(ut_invert(a));
-}
-
-// [[Rcpp::export(rng=false)]]
-xut_unit R_ut_divide(xut_unit numer, xut_unit denom) {
-  return xut_unit(ut_divide(numer, denom));
-}
-
-// [[Rcpp::export(rng=false)]]
-xut_unit R_ut_raise(xut_unit a, int i) {
-  return xut_unit(ut_raise(a, i));
-}
-
-// [[Rcpp::export(rng=false)]]
-xut_unit R_ut_root(xut_unit a, int i) {
-  return xut_unit(ut_root(a, i));
-}
-
-// # nocov end
-
-// [[Rcpp::export(rng=false)]]
-xut_unit R_ut_log(xut_unit a, double base) {
-  return xut_unit(ut_log(base, a));
-}
-
-// [[Rcpp::export(rng=false)]]
-xut_unit R_ut_parse(std::string name) {
-  xut_unit u(ut_parse(sys, ut_trim(name.data(), enc), enc));
-  if (!u)
-    stop("syntax error, cannot parse '%s'", name);
-  return u;
-}
-
-// [[Rcpp::export(rng=false)]]
-CharacterVector R_ut_format(xut_unit p, bool names = false,
+CharacterVector R_ut_format(std::string unit, bool names = false,
                             bool definition = false, bool ascii = false)
 {
   int opt = UT_ASCII;
@@ -283,8 +259,6 @@ CharacterVector R_ut_format(xut_unit p, bool names = false,
     opt = opt | UT_NAMES;
   if (definition)
     opt = opt | UT_DEFINITION;
-  char buf[256];
-  if (ut_format(p, buf, sizeof(buf), opt) == sizeof(buf))
-    warning("buffer too small!"); // #nocov
-  return CharacterVector::create(buf);
+  ut_unit_ptr u(parse_or_stop(unit));
+  return format_unit(u.get(), opt);
 }

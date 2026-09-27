@@ -133,7 +133,7 @@ expect_symbolic_nocheck <- function(u, n, d)
 
 test_that("exotic units work", {
   # check what udunits support
-  # units:::R_ut_format(units:::R_ut_parse(some_string))
+  # units:::R_ut_format(some_string)
 
   expect_symbolic("2.2 m s", c("2.2", "m", "s"), character(0))
   expect_symbolic("2.2*m*s", c("2.2", "m", "s"), character(0))

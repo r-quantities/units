@@ -30,3 +30,22 @@ test_that("ud_convert works with vectors", {
 test_that("ud_convert returns Error for incompatible units", {
   expect_error(ud_convert(100, "m", "kg"), "Units not convertible")
 })
+
+test_that("no udunits pointer outlives its unit system or the DLL", {
+  # A regression crashes R, so the scenario runs in a child process.
+  skip_if(!is.null(asNamespace("units")$.__DEVTOOLS__), "needs an installed units")
+  rscript <- file.path(R.home("bin"),
+                       if (.Platform$OS.type == "windows") "Rscript.exe" else "Rscript")
+  libs <- paste(c(dirname(find.package("units")), .libPaths()),
+                collapse = .Platform$path.sep)
+  # R CMD check sets R_TESTS, and a child R would try to source it at startup
+  r_tests <- Sys.getenv("R_TESTS", NA)
+  Sys.unsetenv("R_TESTS")
+  out <- suppressWarnings(system2(rscript, c("--vanilla",
+    shQuote(test_path("scripts", "hold-native-results.R")), shQuote(libs)),
+    stdout = TRUE, stderr = TRUE))
+  if (!is.na(r_tests)) Sys.setenv(R_TESTS = r_tests)
+
+  expect_equal(as.vector(out), c("untested routines: []", "pointers: []", "survived"))
+  expect_null(attr(out, "status"))
+})

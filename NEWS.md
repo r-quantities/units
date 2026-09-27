@@ -18,6 +18,11 @@
   repetition of a symbol, and reports each unrecognized symbol once; #441
   addressing #440 @billdenney
 
+* Keep udunits objects in C++ and free them there instead of handing them to R,
+  where a finalizer could free a unit after `unloadNamespace()` or
+  `load_units_xml()` had freed its unit system, or after the DLL had been
+  unloaded, and crash R; @billdenney
+
 # version 1.0-1
 
 * Add internal workaround for udunits2 bug with parsing of units that contain

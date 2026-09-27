@@ -79,16 +79,7 @@ install_unit <- function(symbol=character(0), def=character(0), name=character(0
     stop("Symbols/names with a percentage character '%' are not allowed ",
          "(see https://github.com/r-quantities/units/issues/289)")
 
-  if (!length(def)) {
-    ut_unit <- R_ut_new_base_unit()
-  } else if (identical(def, "unitless")) {
-    ut_unit <- R_ut_new_dimensionless_unit()
-  } else {
-    ut_unit <- R_ut_parse(def)
-  }
-
-  ud_map_symbols(symbol, ut_unit)
-  ud_map_names(name, ut_unit)
+  ud_map_unit(symbol, name, def)
 }
 
 #' @rdname install_unit
