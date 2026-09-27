@@ -18,6 +18,9 @@
   repetition of a symbol, and reports each unrecognized symbol once; #441
   addressing #440 @billdenney
 
+* Format units longer than 255 bytes in full instead of silently truncating
+  them, which made e.g. `convert_to_base()` fail on such units; @billdenney
+
 # version 1.0-1
 
 * Add internal workaround for udunits2 bug with parsing of units that contain
