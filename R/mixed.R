@@ -32,7 +32,22 @@ mixed_units.units = function(x, values, ...) {
 mixed_units.numeric = function(x, values, ...) {
 	#stopifnot(length(x) == length(values), is.character(values), is.numeric(x))
 	stopifnot(is.character(values), is.numeric(x))
-	.as.mixed_units(mapply(set_units, x, values, mode = "standard", SIMPLIFY = FALSE))
+	if (!ud_recycles(x, values))
+		return(.as.mixed_units(mapply(set_units, x, values, mode = "standard", SIMPLIFY = FALSE)))
+
+	# one set_units() per distinct unit, split back into one units object per value
+	n <- max(length(x), length(values))
+	nm <- names(x)
+	attributes(x) <- NULL
+	x <- rep_len(x, n)
+	values <- rep_len(values, n)
+	out <- vector("list", n)
+	for (i in split(seq_len(n), match(values, unique(values)))) {
+		u <- set_units(x[i], values[[i[1L]]], mode = "standard")
+		out[i] <- lapply(as.numeric(u), .as.units, value = units(u))
+	}
+	names(out) <- nm # as mapply() names its result
+	.as.mixed_units(out)
 }
 
 #' @export
@@ -76,7 +91,7 @@ set_units.mixed_units = function(x, value, ..., mode = "standard") {
   cv <- data.frame(
     val = as.numeric(x), from = I(units(x)), to = value, idx = seq_along(x),
     stringsAsFactors = FALSE)
-  sp <- paste(cv$from, cv$to, sep=".")
+  sp <- paste(vapply(cv$from, .mixed_units_key, ""), cv$to, sep=".")
   sp <- factor(sp, levels=unique(sp))
 
   # grouped conversion
@@ -89,6 +104,10 @@ set_units.mixed_units = function(x, value, ..., mode = "standard") {
   # reordering
   cv[order(cv$idx), ]$val
 }
+
+# Grouping key for the units of one mixed_units element: ud_char() is much
+# cheaper than as.character(), which pretty-prints.
+.mixed_units_key <- function(u) if (is.null(u)) "NULL" else ud_char(u)
 
 #' @export
 as_units.mixed_units = function(x, ...) {
