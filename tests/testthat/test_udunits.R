@@ -31,6 +31,26 @@ test_that("ud_convert returns Error for incompatible units", {
   expect_error(ud_convert(100, "m", "kg"), "Units not convertible")
 })
 
+test_that("units longer than 255 bytes are formatted in full", {
+  # 50 base units whose product formats as "zqaa.zqab.<...>", len bytes in all
+  long_unit <- function(len) {
+    syms <- paste0("zq", apply(expand.grid(letters, letters)[1:50, 2:1], 1,
+                               paste, collapse = ""))
+    syms[50] <- paste0(syms[50], strrep("z", len - 249))
+    syms
+  }
+  for (len in c(255, 256, 257, 300)) {
+    syms <- long_unit(len)
+    for (s in syms) install_unit(s)
+    u <- paste(syms, collapse = " ")
+    expect_identical(units:::ud_parse(u, definition = TRUE, ascii = TRUE),
+                     paste(syms, collapse = "."))
+    x <- set_units(1, u, mode = "standard")
+    expect_identical(units(convert_to_base(x))$numerator, syms)
+    remove_unit(syms)
+  }
+})
+
 # element by element, as ud_convert() and ud_are_convertible() used to convert
 convert_each <- function(x, from, to)
   mapply(units:::ud_convert_doubles, x, units:::ud_char(from), units:::ud_char(to))

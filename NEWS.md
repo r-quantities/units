@@ -18,11 +18,14 @@
   repetition of a symbol, and reports each unrecognized symbol once; #441
   addressing #440 @billdenney
 
+* Format units longer than 255 bytes in full instead of silently truncating
+  them, which made e.g. `convert_to_base()` fail on such units; #444 @billdenney
+
 * Convert once per distinct pair of units instead of once per element in
   `ud_convert()`, `ud_are_convertible()` and so in every conversion of `units`
   objects, and parse each distinct unit once in `mixed_units()` and in
   `set_units()` on mixed units; e.g., `set_units(x, km)` on 1e6 values takes
-  2 ms instead of 11 s; @billdenney
+  2 ms instead of 11 s; #445 @billdenney
 
 # version 1.0-1
 
