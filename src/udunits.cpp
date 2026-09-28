@@ -284,7 +284,13 @@ CharacterVector R_ut_format(xut_unit p, bool names = false,
   if (definition)
     opt = opt | UT_DEFINITION;
   char buf[256];
-  if (ut_format(p, buf, sizeof(buf), opt) == sizeof(buf))
-    warning("buffer too small!"); // #nocov
-  return CharacterVector::create(buf);
+  int len = ut_format(p, buf, sizeof(buf), opt);
+  if (len < 0)
+    stop("cannot format unit"); // #nocov (r_error_fn throws first)
+  if (len < (int) sizeof(buf))
+    return CharacterVector::create(buf);
+  // ut_format() truncated the unit to fit, and returned the length it needs
+  std::vector<char> longer(len + 1);
+  ut_format(p, longer.data(), longer.size(), opt);
+  return CharacterVector::create(longer.data());
 }
