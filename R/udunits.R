@@ -22,7 +22,19 @@ ud_are_convertible <- function(from, to, ...) {
     warning("variables `x` and `y` were unfortunate names, and are deprecated",
             "; please use `from` and `to` instead")
   }
-  mapply(ud_convertible, ud_char(from), ud_char(to), USE.NAMES=FALSE)
+  from <- ud_char(from)
+  to <- ud_char(to)
+  if (!ud_recycles(from, to))
+    return(mapply(ud_convertible, from, to, USE.NAMES=FALSE))
+
+  # one check per distinct pair of units
+  n <- max(length(from), length(to))
+  from <- rep_len(from, n)
+  to <- rep_len(to, n)
+  out <- logical(n)
+  for (i in ud_pairs(from, to))
+    out[i] <- ud_convertible(from[[i[1L]]], to[[i[1L]]])
+  out
 }
 
 #' @param x numeric vector
@@ -45,7 +57,41 @@ ud_are_convertible <- function(from, to, ...) {
 #' ud_convert(32, "degF", "degC")
 ud_convert <- function(x, from, to) {
   if (!length(x)) return(x)
-  mapply(ud_convert_doubles, x, ud_char(from), ud_char(to))
+  from <- ud_char(from)
+  to <- ud_char(to)
+  if (!is.atomic(x) || !ud_recycles(x, from, to))
+    return(mapply(ud_convert_doubles, x, from, to))
+
+  # one conversion per distinct pair of units, results in the original order
+  n <- max(length(x), length(from), length(to))
+  nm <- names(x)
+  attributes(x) <- NULL
+  if (length(x) != n) x <- rep_len(x, n)
+  if (length(from) == 1L && length(to) == 1L) {
+    out <- ud_convert_doubles(x, from, to)
+  } else {
+    from <- rep_len(from, n)
+    to <- rep_len(to, n)
+    out <- numeric(n)
+    for (i in ud_pairs(from, to))
+      out[i] <- ud_convert_doubles(x[i], from[[i[1L]]], to[[i[1L]]])
+  }
+  names(out) <- nm # as mapply() names its result
+  out
+}
+
+# Whether the arguments recycle to a common length without mapply()'s
+# zero-length and not-a-multiple cases, which are left to mapply() itself.
+ud_recycles <- function(...) {
+  len <- lengths(list(...))
+  all(len > 0L) && all(max(len) %% len == 0L)
+}
+
+# Indices of each distinct (from, to) pair, in order of first appearance.
+ud_pairs <- function(from, to) {
+  uf <- unique(from)
+  pair <- match(from, uf) + length(uf) * (match(to, unique(to)) - 1) # double: no overflow
+  split(seq_along(pair), match(pair, unique(pair)))
 }
 
 ud_char <- function(x) {

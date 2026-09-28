@@ -93,3 +93,29 @@ test_that("as.data.frame.mixed_units works", {
 
   expect_equal(df1, df2)
 })
+
+test_that("mixed_units() matches units made one by one", {
+  cases <- list(list(c(1, 2, 3, 4), c("m/s", "km/h", "mg/L", "g")),
+                list(c(a = 1, b = 2, c = 3), c("m", "m", "km")),
+                list(1:6, c("100 m", "2 km/h", "1", "%", "degC", "100 m")),
+                list(5, c("m", "ft", "m")),
+                list(c(1, NA, 3), "kg"))
+  for (a in cases)
+    expect_identical(unclass(mixed_units(a[[1]], a[[2]])),
+                     mapply(set_units, a[[1]], a[[2]], mode = "standard", SIMPLIFY = FALSE))
+})
+
+test_that("set_units() converts mixed units in order", {
+  x <- c(1, 1000, 2, 1, 3000)
+  from <- c("m", "mm", "m", "km", "mm")
+  s <- set_units(mixed_units(x, from), "m")
+  expect_equal(as.numeric(s), c(1, 1, 2, 1000, 3))
+  expect_identical(as.character(units(s)), rep("m", 5))
+
+  set.seed(1)
+  x <- rnorm(1000)
+  from <- sample(c("m", "mm", "km", "cm", "in", "ft"), 1000, replace = TRUE)
+  s <- set_units(mixed_units(x, from), "km")
+  expect_identical(as.numeric(s), ud_convert(x, from, "km"))
+  expect_identical(as.character(units(s)), rep("km", 1000))
+})
