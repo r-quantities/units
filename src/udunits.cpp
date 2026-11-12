@@ -129,6 +129,46 @@ NumericVector ud_convert_doubles(NumericVector x, std::string from, std::string 
   return out;
 }
 
+// Refuse an install before anything is mapped: a refusal half way leaves
+// mappings that remove_unit() cannot take out without unmapping the symbol or
+// name of the unit that was already there.
+// [[Rcpp::export(rng=false)]]
+void ud_check_free(CharacterVector symbols, CharacterVector names, xut_unit unit) {
+  if (!unit) return;
+
+  const ut_encoding encs[2] = {UT_ASCII, enc};
+  for (int e = 0; e < 2; e++) {
+    // a unit maps to one symbol and one name
+    if (symbols.size()) {
+      const char *cur = ut_get_symbol(unit, encs[e]);
+      if (cur != NULL && strcmp(cur, ut_trim(symbols[0], encs[e])) != 0)
+        stop("Unit already maps to \"%s\"", cur);
+    }
+    if (names.size()) {
+      const char *cur = ut_get_name(unit, encs[e]);
+      if (cur != NULL && strcmp(cur, ut_trim(names[0], encs[e])) != 0)
+        stop("Unit already maps to \"%s\"", cur);
+    }
+    // a symbol or a name maps to one unit
+    for (int i = 0; i < symbols.size(); i++) {
+      ut_unit *other = ut_get_unit_by_symbol(sys, ut_trim(symbols[i], encs[e]));
+      bool differs = other != NULL && ut_compare(other, unit) != 0;
+      ut_free(other);
+      if (differs)
+        stop("\"%s\" already maps to existing but different unit",
+             (const char *) symbols[i]);
+    }
+    for (int i = 0; i < names.size(); i++) {
+      ut_unit *other = ut_get_unit_by_name(sys, ut_trim(names[i], encs[e]));
+      bool differs = other != NULL && ut_compare(other, unit) != 0;
+      ut_free(other);
+      if (differs)
+        stop("\"%s\" already maps to existing but different unit",
+             (const char *) names[i]);
+    }
+  }
+}
+
 // [[Rcpp::export(rng=false)]]
 void ud_map_names(CharacterVector names, xut_unit unit) {
   if (!names.size() || !unit) return;

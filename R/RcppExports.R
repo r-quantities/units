@@ -29,6 +29,10 @@ ud_convert_doubles <- function(x, from, to) {
     .Call('_units_ud_convert_doubles', PACKAGE = 'units', x, from, to)
 }
 
+ud_check_free <- function(symbols, names, unit) {
+    invisible(.Call('_units_ud_check_free', PACKAGE = 'units', symbols, names, unit))
+}
+
 ud_map_names <- function(names, unit) {
     invisible(.Call('_units_ud_map_names', PACKAGE = 'units', names, unit))
 }

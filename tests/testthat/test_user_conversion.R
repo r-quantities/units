@@ -48,3 +48,27 @@ test_that("removing units works", {
   expect_error(install_unit("foo"))
   expect_silent(remove_unit("foo"))
 })
+
+test_that("a refused install_unit() maps nothing", {
+  # the unit already has a symbol
+  expect_error(install_unit("zzdeg", "1 degree"), "already maps")
+  expect_error(as_units("zzdeg"))
+  expect_silent(remove_unit("zzdeg"))
+  expect_equal(as.character(units(as_units("degree"))), "\u00b0")
+
+  # the unit already has a name
+  expect_error(install_unit(name = "zzdegree", def = "1 degree"), "already maps")
+  expect_error(as_units("zzdegree"))
+
+  # the name is refused: the symbol is not mapped either
+  install_unit("zzone", name = "zzone_name")
+  expect_error(install_unit("zztwo", "3 m", "zzone_name"), "already maps")
+  expect_error(as_units("zztwo"))
+
+  # a later symbol is refused: the earlier one is not mapped either
+  expect_error(install_unit(c("zzthree", "zzone"), "3 m"), "already maps")
+  expect_error(as_units("zzthree"))
+
+  # restore
+  remove_unit("zzone", "zzone_name")
+})

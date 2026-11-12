@@ -85,6 +85,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// ud_check_free
+void ud_check_free(CharacterVector symbols, CharacterVector names, xut_unit unit);
+RcppExport SEXP _units_ud_check_free(SEXP symbolsSEXP, SEXP namesSEXP, SEXP unitSEXP) {
+BEGIN_RCPP
+    Rcpp::traits::input_parameter< CharacterVector >::type symbols(symbolsSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type names(namesSEXP);
+    Rcpp::traits::input_parameter< xut_unit >::type unit(unitSEXP);
+    ud_check_free(symbols, names, unit);
+    return R_NilValue;
+END_RCPP
+}
 // ud_map_names
 void ud_map_names(CharacterVector names, xut_unit unit);
 RcppExport SEXP _units_ud_map_names(SEXP namesSEXP, SEXP unitSEXP) {
@@ -289,6 +300,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_units_ud_compare", (DL_FUNC) &_units_ud_compare, 4},
     {"_units_ud_convertible", (DL_FUNC) &_units_ud_convertible, 2},
     {"_units_ud_convert_doubles", (DL_FUNC) &_units_ud_convert_doubles, 3},
+    {"_units_ud_check_free", (DL_FUNC) &_units_ud_check_free, 3},
     {"_units_ud_map_names", (DL_FUNC) &_units_ud_map_names, 2},
     {"_units_ud_unmap_names", (DL_FUNC) &_units_ud_unmap_names, 1},
     {"_units_ud_map_symbols", (DL_FUNC) &_units_ud_map_symbols, 2},

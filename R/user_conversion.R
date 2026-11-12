@@ -87,6 +87,7 @@ install_unit <- function(symbol=character(0), def=character(0), name=character(0
     ut_unit <- R_ut_parse(def)
   }
 
+  ud_check_free(symbol, name, ut_unit)
   ud_map_symbols(symbol, ut_unit)
   ud_map_names(name, ut_unit)
 }
