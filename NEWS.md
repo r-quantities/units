@@ -27,6 +27,10 @@
   `set_units()` on mixed units; e.g., `set_units(x, km)` on 1e6 values takes
   2 ms instead of 11 s; #445 @billdenney
 
+* A refused `install_unit()` no longer leaves a symbol or name mapped, which
+  made a later `remove_unit()` strip the symbol of the existing unit; #447
+  addressing #448
+
 # version 1.0-1
 
 * Add internal workaround for udunits2 bug with parsing of units that contain
