@@ -81,9 +81,7 @@
 #' @export
 install_unit <- function(symbol=character(0), def=character(0), name=character(0)) {
   stopifnot(is.character(def), length(def) < 2)
-  stopifnot(is.character(symbol), is.character(name))
-  if (!length(symbol) && !length(name))
-    stop("at least one symbol or name must be specified")
+  .check_ids(symbol, name)
 
   # workaround for https://github.com/r-quantities/units/issues/289
   if (any(grepl("%", c(symbol, name), fixed=TRUE)))
@@ -101,12 +99,18 @@ install_unit <- function(symbol=character(0), def=character(0), name=character(0
   ud_install(symbol, name, ut_unit)
 }
 
-#' @rdname install_unit
-#' @export
-remove_unit <- function(symbol=character(0), name=character(0)) {
+.check_ids <- function(symbol, name) {
   stopifnot(is.character(symbol), is.character(name))
   if (!length(symbol) && !length(name))
     stop("at least one symbol or name must be specified")
+  if (!all(validEnc(c(symbol, name))))
+    stop("symbols and names must be valid strings in the current locale")
+}
+
+#' @rdname install_unit
+#' @export
+remove_unit <- function(symbol=character(0), name=character(0)) {
+  .check_ids(symbol, name)
 
   foreign <- ud_remove(symbol, name)
   if (length(foreign))

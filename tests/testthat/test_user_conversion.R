@@ -122,3 +122,19 @@ test_that("user-defined symbols are available in ASCII", {
   ud_set_encoding("ascii")
   expect_equal(ut_symbol("zzcell"), "zzcell")
 })
+
+test_that("non-ASCII symbols work, and invalid strings are refused", {
+  skip_if_not(l10n_info()[["UTF-8"]])
+
+  install_unit("zzµx")
+  expect_equal(ut_symbol("zzµx"), "zzµx")
+  remove_unit("zzµx")
+  expect_error(as_units("zzµx"))
+
+  # "\xff" alone passes udunits' own UTF-8 check
+  for (bad in c("zz\xff", "zz\xc3a")) {
+    expect_error(install_unit(c("zzok", bad), name = "zzokname"), "valid strings")
+    expect_error(as_units("zzok"))
+    expect_error(remove_unit(name = bad), "valid strings")
+  }
+})

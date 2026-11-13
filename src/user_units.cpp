@@ -234,10 +234,14 @@ void ud_install(CharacterVector symbols, CharacterVector names, xut_unit unit) {
   plan(NAME, nms, unit, todo);
 
   for (size_t i = 0; i < todo.size(); i++) {
+    // conflicts are refused when planning, and ids in an invalid encoding in
+    // install_unit(), so only a system error (UT_OS) can get here
     if (apply(todo[i], unit) != UT_SUCCESS) {
+      // # nocov start
       for (size_t j = done.size(); j-- > 0; )
         undo(done[j], unit);
       stop("could not map %s \"%s\"", kind_str(todo[i].kind), todo[i].id.c_str());
+      // # nocov end
     }
     done.push_back(todo[i]);
   }

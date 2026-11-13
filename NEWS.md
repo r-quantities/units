@@ -36,7 +36,8 @@
     aliases, e.g., `install_unit("deg2", "1 degree")`;
   - `remove_unit()` undoes only what `install_unit()` did, so it no longer
     strips the symbol or name of the unit an alias points to, and it leaves
-    symbols and names from the database untouched with a warning.
+    symbols and names from the database untouched with a warning;
+  - `NA`, empty, and invalid strings in the current locale are refused.
 
 # version 1.0-1
 
