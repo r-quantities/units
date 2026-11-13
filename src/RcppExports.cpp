@@ -85,42 +85,26 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// ud_map_names
-void ud_map_names(CharacterVector names, xut_unit unit);
-RcppExport SEXP _units_ud_map_names(SEXP namesSEXP, SEXP unitSEXP) {
-BEGIN_RCPP
-    Rcpp::traits::input_parameter< CharacterVector >::type names(namesSEXP);
-    Rcpp::traits::input_parameter< xut_unit >::type unit(unitSEXP);
-    ud_map_names(names, unit);
-    return R_NilValue;
-END_RCPP
-}
-// ud_unmap_names
-void ud_unmap_names(CharacterVector names);
-RcppExport SEXP _units_ud_unmap_names(SEXP namesSEXP) {
-BEGIN_RCPP
-    Rcpp::traits::input_parameter< CharacterVector >::type names(namesSEXP);
-    ud_unmap_names(names);
-    return R_NilValue;
-END_RCPP
-}
-// ud_map_symbols
-void ud_map_symbols(CharacterVector symbols, xut_unit unit);
-RcppExport SEXP _units_ud_map_symbols(SEXP symbolsSEXP, SEXP unitSEXP) {
+// ud_install
+void ud_install(CharacterVector symbols, CharacterVector names, xut_unit unit);
+RcppExport SEXP _units_ud_install(SEXP symbolsSEXP, SEXP namesSEXP, SEXP unitSEXP) {
 BEGIN_RCPP
     Rcpp::traits::input_parameter< CharacterVector >::type symbols(symbolsSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type names(namesSEXP);
     Rcpp::traits::input_parameter< xut_unit >::type unit(unitSEXP);
-    ud_map_symbols(symbols, unit);
+    ud_install(symbols, names, unit);
     return R_NilValue;
 END_RCPP
 }
-// ud_unmap_symbols
-void ud_unmap_symbols(CharacterVector symbols);
-RcppExport SEXP _units_ud_unmap_symbols(SEXP symbolsSEXP) {
+// ud_remove
+CharacterVector ud_remove(CharacterVector symbols, CharacterVector names);
+RcppExport SEXP _units_ud_remove(SEXP symbolsSEXP, SEXP namesSEXP) {
 BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< CharacterVector >::type symbols(symbolsSEXP);
-    ud_unmap_symbols(symbols);
-    return R_NilValue;
+    Rcpp::traits::input_parameter< CharacterVector >::type names(namesSEXP);
+    rcpp_result_gen = Rcpp::wrap(ud_remove(symbols, names));
+    return rcpp_result_gen;
 END_RCPP
 }
 // R_ut_get_dimensionless_unit_one
@@ -289,10 +273,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_units_ud_compare", (DL_FUNC) &_units_ud_compare, 4},
     {"_units_ud_convertible", (DL_FUNC) &_units_ud_convertible, 2},
     {"_units_ud_convert_doubles", (DL_FUNC) &_units_ud_convert_doubles, 3},
-    {"_units_ud_map_names", (DL_FUNC) &_units_ud_map_names, 2},
-    {"_units_ud_unmap_names", (DL_FUNC) &_units_ud_unmap_names, 1},
-    {"_units_ud_map_symbols", (DL_FUNC) &_units_ud_map_symbols, 2},
-    {"_units_ud_unmap_symbols", (DL_FUNC) &_units_ud_unmap_symbols, 1},
+    {"_units_ud_install", (DL_FUNC) &_units_ud_install, 3},
+    {"_units_ud_remove", (DL_FUNC) &_units_ud_remove, 2},
     {"_units_R_ut_get_dimensionless_unit_one", (DL_FUNC) &_units_R_ut_get_dimensionless_unit_one, 0},
     {"_units_R_ut_new_base_unit", (DL_FUNC) &_units_R_ut_new_base_unit, 0},
     {"_units_R_ut_new_dimensionless_unit", (DL_FUNC) &_units_R_ut_new_dimensionless_unit, 0},

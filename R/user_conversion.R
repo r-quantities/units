@@ -6,7 +6,18 @@
 #'
 #' At least one symbol or name is expected, but multiple symbols and/or names
 #' can be installed (and thus mapped to the same unit) or removed at the same
-#' time. The \code{def} argument enables arbitrary relationships with existing
+#' time. If \code{def} resolves to a unit that already has a symbol (resp.
+#' name), the new symbols (resp. names) are installed as aliases: they can be
+#' used as input, but the unit keeps its own symbol (resp. name) for output.
+#' Otherwise, the first symbol and the first name become those of the unit.
+#'
+#' An installation either succeeds as a whole or leaves the system unchanged:
+#' if any symbol or name already maps to a different unit, nothing is
+#' installed. Removing a symbol or name only undoes what \code{install_unit}
+#' did for it; symbols and names from the units database, or from anywhere
+#' else, are left untouched with a warning.
+#'
+#' The \code{def} argument enables arbitrary relationships with existing
 #' units using UDUNITS-2 syntax:
 #' \tabular{llll}{
 #'   \strong{String Type} \tab \strong{Using Names} \tab \strong{Using Symbols}
@@ -87,8 +98,7 @@ install_unit <- function(symbol=character(0), def=character(0), name=character(0
     ut_unit <- R_ut_parse(def)
   }
 
-  ud_map_symbols(symbol, ut_unit)
-  ud_map_names(name, ut_unit)
+  ud_install(symbol, name, ut_unit)
 }
 
 #' @rdname install_unit
@@ -98,6 +108,9 @@ remove_unit <- function(symbol=character(0), name=character(0)) {
   if (!length(symbol) && !length(name))
     stop("at least one symbol or name must be specified")
 
-  ud_unmap_symbols(symbol)
-  ud_unmap_names(name)
+  foreign <- ud_remove(symbol, name)
+  if (length(foreign))
+    warning("not installed by install_unit(), left unchanged: ",
+            paste0("'", foreign, "'", collapse = ", "), call. = FALSE)
+  invisible(NULL)
 }
