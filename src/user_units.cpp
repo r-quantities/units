@@ -147,7 +147,7 @@ void undo(const Mapping &m, const ut_unit *unit) {
     // ASCII, and with fallbacks otherwise, so compare before removing
     const char *cur = get_id(m.kind, unit, m.tree);
     if (cur == NULL || m.id != cur)
-      return;
+      return; // #nocov: a unit gets its own id only when it has none
     if (m.kind == SYMBOL)
       ut_unmap_unit_to_symbol(unit, m.tree);
     else ut_unmap_unit_to_name(unit, m.tree);
@@ -224,7 +224,7 @@ void units::registry_clear() {
 // [[Rcpp::export(rng=false)]]
 void ud_install(CharacterVector symbols, CharacterVector names, xut_unit unit) {
   if (!unit)
-    stop("invalid unit");
+    stop("invalid unit"); // #nocov: install_unit() always passes a valid unit
   std::vector<std::string> syms = clean(SYMBOL, symbols);
   std::vector<std::string> nms = clean(NAME, names);
 

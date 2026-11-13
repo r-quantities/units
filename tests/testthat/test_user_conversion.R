@@ -123,6 +123,33 @@ test_that("user-defined symbols are available in ASCII", {
   expect_equal(ut_symbol("zzcell"), "zzcell")
 })
 
+test_that("install_unit() and remove_unit() check their arguments", {
+  expect_error(install_unit(), "at least one")
+  expect_error(remove_unit(), "at least one")
+  expect_error(install_unit("zz%"), "percentage")
+
+  install_unit("zzdimless", "unitless")
+  expect_equal(units(set_units(set_units(1, zzdimless), 1)), units(set_units(1, 1)))
+  remove_unit("zzdimless")
+})
+
+test_that("NA and empty symbols and names are refused", {
+  expect_error(install_unit(NA_character_), "symbol cannot be NA")
+  expect_error(install_unit(name = NA_character_), "name cannot be NA")
+  expect_error(install_unit("  "), "symbol cannot be empty")
+  expect_error(remove_unit(name = ""), "name cannot be empty")
+})
+
+test_that("removing a unit's own symbol hands it to its oldest alias", {
+  install_unit("zzp")
+  install_unit("zzzq", "zzp") # older, but sorts last
+  install_unit("zzaq", "zzp")
+  remove_unit("zzp")
+  expect_equal(ut_symbol("zzaq"), "zzzq")
+  remove_unit(c("zzzq", "zzaq"))
+  expect_error(as_units("zzaq"))
+})
+
 test_that("non-ASCII symbols work, and invalid strings are refused", {
   skip_if_not(l10n_info()[["UTF-8"]])
 
