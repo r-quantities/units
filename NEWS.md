@@ -30,7 +30,7 @@
 * Fix spacing in `str()` output for `units` objects with R >= 4.7, where
   `str()` no longer starts with a blank; #450
 
-* Rework `install_unit()` and `remove_unit()`; addressing #448:
+* Rework `install_unit()` and `remove_unit()`; #449 addressing #448:
   - an installation either succeeds as a whole or maps nothing;
   - symbols and names for units that already have one are installed as
     aliases, e.g., `install_unit("deg2", "1 degree")`;
