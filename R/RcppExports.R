@@ -29,22 +29,6 @@ ud_convert_doubles <- function(x, from, to) {
     .Call('_units_ud_convert_doubles', PACKAGE = 'units', x, from, to)
 }
 
-ud_map_names <- function(names, unit) {
-    invisible(.Call('_units_ud_map_names', PACKAGE = 'units', names, unit))
-}
-
-ud_unmap_names <- function(names) {
-    invisible(.Call('_units_ud_unmap_names', PACKAGE = 'units', names))
-}
-
-ud_map_symbols <- function(symbols, unit) {
-    invisible(.Call('_units_ud_map_symbols', PACKAGE = 'units', symbols, unit))
-}
-
-ud_unmap_symbols <- function(symbols) {
-    invisible(.Call('_units_ud_unmap_symbols', PACKAGE = 'units', symbols))
-}
-
 R_ut_get_dimensionless_unit_one <- function() {
     .Call('_units_R_ut_get_dimensionless_unit_one', PACKAGE = 'units')
 }
@@ -103,5 +87,13 @@ R_ut_parse <- function(name) {
 
 R_ut_format <- function(p, names = FALSE, definition = FALSE, ascii = FALSE) {
     .Call('_units_R_ut_format', PACKAGE = 'units', p, names, definition, ascii)
+}
+
+ud_install <- function(symbols, names, unit) {
+    invisible(.Call('_units_ud_install', PACKAGE = 'units', symbols, names, unit))
+}
+
+ud_remove <- function(symbols, names) {
+    .Call('_units_ud_remove', PACKAGE = 'units', symbols, names)
 }
 

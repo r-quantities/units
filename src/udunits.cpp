@@ -8,7 +8,7 @@
   Functions to support the R interface to the udunits (API version 2) library
 */
 
-#include "units_types.h"
+#include "udunits.h"
 
 extern "C" {
   int r_error_fn(const char* fmt, va_list args) {
@@ -21,13 +21,16 @@ extern "C" {
 
 using namespace Rcpp;
 
-static ut_system *sys = NULL;
-static ut_encoding enc = UT_UTF8;
+ut_system *units::sys = NULL;
+ut_encoding units::enc = UT_UTF8;
+using units::sys;
+using units::enc;
 
 /* High-level functions *******************************************************/
 
 // [[Rcpp::export(rng=false)]]
 void ud_exit() {
+  units::registry_clear();
   R_gc();
   ut_free_system(sys);
   sys = NULL;
@@ -127,60 +130,6 @@ NumericVector ud_convert_doubles(NumericVector x, std::string from, std::string 
   cv_convert_doubles(cv, &(x[0]), x.size(), &(out[0]));
 
   return out;
-}
-
-// [[Rcpp::export(rng=false)]]
-void ud_map_names(CharacterVector names, xut_unit unit) {
-  if (!names.size() || !unit) return;
-
-  for (int i = 0; i < names.size(); i++) {
-    ut_map_name_to_unit(ut_trim(names[i], UT_ASCII), UT_ASCII, unit);
-    ut_map_name_to_unit(ut_trim(names[i], enc), enc, unit);
-  }
-  ut_map_unit_to_name(unit, ut_trim(names[0], UT_ASCII), UT_ASCII);
-  ut_map_unit_to_name(unit, ut_trim(names[0], enc), enc);
-}
-
-// [[Rcpp::export(rng=false)]]
-void ud_unmap_names(CharacterVector names) {
-  if (!names.size()) return;
-
-  xut_unit unit(ut_parse(sys, ut_trim(names[0], enc), enc));
-  if (!unit) return;
-
-  ut_unmap_unit_to_name(unit, enc);
-  ut_unmap_unit_to_name(unit, UT_ASCII);
-  for (int i = 0; i < names.size(); i++) {
-    ut_unmap_name_to_unit(sys, ut_trim(names[i], enc), enc);
-    ut_unmap_name_to_unit(sys, ut_trim(names[i], UT_ASCII), UT_ASCII);
-  }
-}
-
-// [[Rcpp::export(rng=false)]]
-void ud_map_symbols(CharacterVector symbols, xut_unit unit) {
-  if (!symbols.size() || !unit) return;
-
-  for (int i = 0; i < symbols.size(); i++) {
-    ut_map_symbol_to_unit(ut_trim(symbols[i], UT_ASCII), UT_ASCII, unit);
-    ut_map_symbol_to_unit(ut_trim(symbols[i], enc), enc, unit);
-  }
-  ut_map_unit_to_symbol(unit, ut_trim(symbols[0], UT_ASCII), UT_ASCII);
-  ut_map_unit_to_symbol(unit, ut_trim(symbols[0], enc), enc);
-}
-
-// [[Rcpp::export(rng=false)]]
-void ud_unmap_symbols(CharacterVector symbols) {
-  if (!symbols.size()) return;
-
-  xut_unit unit(ut_parse(sys, ut_trim(symbols[0], enc), enc));
-  if (!unit) return;
-
-  ut_unmap_unit_to_symbol(unit, enc);
-  ut_unmap_unit_to_symbol(unit, UT_ASCII);
-  for (int i = 0; i < symbols.size(); i++) {
-    ut_unmap_symbol_to_unit(sys, ut_trim(symbols[i], enc), enc);
-    ut_unmap_symbol_to_unit(sys, ut_trim(symbols[i], UT_ASCII), UT_ASCII);
-  }
 }
 
 /* Thin wrappers **************************************************************/

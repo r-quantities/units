@@ -30,6 +30,15 @@
 * Fix spacing in `str()` output for `units` objects with R >= 4.7, where
   `str()` no longer starts with a blank; #450
 
+* Rework `install_unit()` and `remove_unit()`; #449 addressing #448:
+  - an installation either succeeds as a whole or maps nothing;
+  - symbols and names for units that already have one are installed as
+    aliases, e.g., `install_unit("deg2", "1 degree")`;
+  - `remove_unit()` undoes only what `install_unit()` did, so it no longer
+    strips the symbol or name of the unit an alias points to, and it leaves
+    symbols and names from the database untouched with a warning;
+  - `NA`, empty, and invalid strings in the current locale are refused.
+
 # version 1.0-1
 
 * Add internal workaround for udunits2 bug with parsing of units that contain
