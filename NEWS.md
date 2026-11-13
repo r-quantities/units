@@ -27,6 +27,9 @@
   `set_units()` on mixed units; e.g., `set_units(x, km)` on 1e6 values takes
   2 ms instead of 11 s; #445 @billdenney
 
+* Fix spacing in `str()` output for `units` objects with R >= 4.7, where
+  `str()` no longer starts with a blank; #450
+
 # version 1.0-1
 
 * Add internal workaround for udunits2 bug with parsing of units that contain

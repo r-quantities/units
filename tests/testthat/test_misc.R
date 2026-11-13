@@ -177,9 +177,17 @@ test_that("seq works", {
 })
 
 test_that("str works", {
-  expect_snapshot({
-    str(set_units(1/1:3, m/s))
-  })
+  # compare with str() of the bare values, whose leading space varies across
+  # R versions
+  with_units <- function(out) sub("num", "Units: [m/s] num", out, fixed = TRUE)
+
+  x <- set_units(1/1:3, m/s)
+  expect_equal(capture.output(str(x)),
+               with_units(capture.output(str(drop_units(x)))))
+
+  df <- data.frame(x = x)
+  expect_equal(capture.output(str(df)),
+               with_units(capture.output(str(data.frame(x = drop_units(x))))))
 })
 
 test_that("subsetting keeps pillar attribute (#275)", {

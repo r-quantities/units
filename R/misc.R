@@ -126,8 +126,14 @@ seq.units = function(from, to, by = ((to - from)/(length.out - 1)),
 str.units = function(object, ...) {
   gr <- units_options("group")
   unit_string <- paste0(gr[1], as.character(attr(object, "units")), gr[2])
-  cat(paste0(" Units: ", unit_string))
-  str(drop_units(object), ...)
+  out <- utils::capture.output(str(drop_units(object), ...))
+  # keep the leading space str() uses for the bare object: R < 4.7 starts
+  # with one (" num ..."), later versions leave it to the caller ("num ...")
+  lead <- sub("^( *).*", "\\1", out[1])
+  out[1] <- paste0(lead, "Units: ", unit_string, " ",
+                   substring(out[1], nchar(lead) + 1))
+  cat(out, sep = "\n")
+  invisible()
 }
 
 #' @export
