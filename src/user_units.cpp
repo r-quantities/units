@@ -303,6 +303,25 @@ void set_aside(Kind owner, const std::string &id, const ut_unit *unit,
   }
 }
 
+// An id installed as both a symbol and a name is set aside once, under the
+// symbol. Hand the mappings set aside to the installed id of their own kind
+// when there is one: otherwise removing the symbol first would try to put a
+// name back while the new name still holds it, and nothing would restore it
+// once the name is removed.
+void reown(std::vector<Mapping> &done, const std::vector<std::string> ids[2]) {
+  for (size_t i = 0; i < done.size(); i++) {
+    Mapping &m = done[i];
+    if (!m.aside || m.owner == m.kind)
+      continue;
+    for (size_t j = 0; j < ids[m.kind].size(); j++)
+      if (key(m.kind, ids[m.kind][j]) == key(m.kind, m.id)) {
+        m.owner = m.kind;
+        m.owner_id = ids[m.kind][j];
+        break;
+      }
+  }
+}
+
 // Plan the mappings needed to install ids of one kind for a unit. An id that
 // already maps to the same unit needs nothing; one that maps, or is read as,
 // a different unit is refused here, before anything is mapped (with
@@ -399,6 +418,8 @@ CharacterVector ud_install(CharacterVector symbols, CharacterVector names,
         set_aside(SYMBOL, syms[i], unit, done, was);
       for (size_t i = 0; i < nms.size(); i++)
         set_aside(NAME, nms[i], unit, done, was);
+      const std::vector<std::string> installed[2] = {syms, nms};
+      reown(done, installed);
     }
 
     std::vector<Mapping> todo;

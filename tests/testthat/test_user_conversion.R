@@ -255,6 +255,37 @@ test_that("override = TRUE redefines database ids, and remove_unit() restores th
   remove_unit("zznew")
 })
 
+test_that("an id overridden as symbol and name is restored in any removal order", {
+  conv <- function(from, to) ud_convert(1, from, to)
+  restored <- function() {
+    expect_equal(conv("gal", "cm/s^2"), 1)
+    expect_equal(conv("Gal", "cm/s^2"), 1)
+    expect_equal(conv("gallon", "L"), 3.785412, tolerance = 1e-6)
+  }
+  install <- function() {
+    expect_message(install_unit("gal", "1 gallon", name = "gal", override = TRUE),
+                   "redefined")
+    expect_equal(conv("gal", "L"), 3.785412, tolerance = 1e-6)
+  }
+
+  install(); remove_unit(name = "gal"); remove_unit("gal"); restored()
+  install(); remove_unit("gal"); remove_unit(name = "gal"); restored()
+  install(); remove_unit("gal", name = "gal"); restored()
+
+  # different ids of the same unit
+  expect_message(install_unit(c("gal", "galn"), "1 gallon",
+                              name = c("gal", "galname"), override = TRUE))
+  expect_equal(conv("galname", "L"), 3.785412, tolerance = 1e-6)
+  remove_unit(c("gal", "galn"), c("gal", "galname"))
+  restored()
+
+  # one kind alone still restores
+  expect_message(install_unit("gal", "1 gallon", override = TRUE))
+  remove_unit("gal"); restored()
+  expect_message(install_unit(name = "gal", def = "1 gallon", override = TRUE))
+  remove_unit(name = "gal"); restored()
+})
+
 test_that("override = TRUE still refuses what it cannot undo or did not ask for", {
   conv <- function(from, to) ud_convert(1, from, to)
 
