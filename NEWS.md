@@ -39,6 +39,13 @@
     symbols and names from the database untouched with a warning;
   - `NA`, empty, and invalid strings in the current locale are refused.
 
+* `install_unit()` also refuses symbols and names that udunits already reads
+  as a different unit, which would otherwise silently redefine it (e.g., a name
+  `"m"`, or a symbol `"km"`) or never be reached (e.g., a symbol `"gal"`, which
+  the database name wins over), including names that only differ in case from
+  a symbol (e.g., `"KG"`), and ids that udunits does not read back as the new
+  unit (e.g., `"zz1"`).
+
 # version 1.0-1
 
 * Add internal workaround for udunits2 bug with parsing of units that contain

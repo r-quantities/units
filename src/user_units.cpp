@@ -120,6 +120,13 @@ unit_ptr lookup(Kind kind, const std::string &id) {
   return unit_ptr(u, ut_free);
 }
 
+// What udunits reads an id as: by name (case-insensitive), then by symbol,
+// then the same after stripping a prefix. An id of one kind can thus shadow
+// one of the other kind, or a prefixed unit.
+unit_ptr parse(const std::string &id) {
+  return unit_ptr(ut_parse(sys, id.c_str(), enc), ut_free);
+}
+
 const char *get_id(Kind kind, const ut_unit *unit, ut_encoding e) {
   return kind == SYMBOL ? ut_get_symbol(unit, e) : ut_get_name(unit, e);
 }
@@ -158,26 +165,82 @@ void undo(const Mapping &m, const ut_unit *unit) {
   }
 }
 
+// Names are found whatever their case, so a new name also shadows every
+// symbol that differs from it only in case (e.g., a name "KG" would make
+// "kg" and "mkg" read as the new unit). udunits cannot look up symbols
+// regardless of case, so refuse a name if any of its case variants is read
+// as a different unit. No database symbol, prefixed or not, is longer than 8
+// characters, so longer names are only checked against installed symbols.
+void check_case_variants(const std::string &id, const ut_unit *unit) {
+  std::vector<size_t> letters;
+  for (size_t i = 0; i < id.size(); i++)
+    if (std::isalpha((unsigned char) id[i]) && !(id[i] & 0x80))
+      letters.push_back(i);
+
+  if (letters.size() <= 12) {
+    for (unsigned long mask = 0; mask < (1UL << letters.size()); mask++) {
+      std::string v(id);
+      for (size_t j = 0; j < letters.size(); j++)
+        v[letters[j]] = (mask >> j) & 1 ?
+          std::toupper(v[letters[j]]) : std::tolower(v[letters[j]]);
+      if (v == id)
+        continue;
+      unit_ptr u = parse(v);
+      if (u && ut_compare(u.get(), unit) != 0)
+        stop("name \"%s\" would shadow \"%s\", which maps to a different unit",
+             id.c_str(), v.c_str());
+    }
+    return;
+  }
+
+  std::map<std::string, Entry>::iterator it;
+  for (it = registry[SYMBOL].begin(); it != registry[SYMBOL].end(); ++it)
+    if (key(NAME, it->first) == key(NAME, id) &&
+        ut_compare(it->second.unit.get(), unit) != 0)
+      stop("name \"%s\" would shadow \"%s\", which maps to a different unit",
+           id.c_str(), it->first.c_str());
+}
+
 // Plan the mappings needed to install ids of one kind for a unit. An id that
-// already maps to the same unit needs nothing; one that maps to a different
-// unit is refused here, before anything is mapped. The unit gets a symbol or
-// name of its own only if it has none yet; otherwise the ids are aliases.
+// already maps to the same unit needs nothing; one that maps, or is read as,
+// a different unit is refused here, before anything is mapped. The unit gets
+// a symbol or name of its own only if it has none yet; otherwise the ids are
+// aliases.
 void plan(Kind kind, const std::vector<std::string> &ids, const ut_unit *unit,
           std::vector<Mapping> &out) {
   for (size_t i = 0; i < ids.size(); i++) {
-    unit_ptr other = lookup(kind, ids[i]);
-    if (other) {
-      if (ut_compare(other.get(), unit) != 0)
-        stop("%s \"%s\" already maps to existing but different unit",
-             kind_str(kind), ids[i].c_str());
+    unit_ptr mapped = lookup(kind, ids[i]);
+    unit_ptr other = mapped ? mapped : parse(ids[i]);
+    if (other && ut_compare(other.get(), unit) != 0)
+      stop("%s \"%s\" already maps to existing but different unit",
+           kind_str(kind), ids[i].c_str());
+    if (mapped)
       continue;
-    }
+    if (kind == NAME)
+      check_case_variants(ids[i], unit);
     Mapping m = {kind, false, ids[i], UT_ASCII};
     out.push_back(m);
   }
   if (!ids.empty() && !has_id(kind, unit)) {
     Mapping m = {kind, true, ids[0], tree_for(ids[0])};
     out.push_back(m);
+  }
+}
+
+void rollback(const std::vector<Mapping> &done, const ut_unit *unit) {
+  for (size_t j = done.size(); j-- > 0; )
+    undo(done[j], unit);
+}
+
+void check_read_back(Kind kind, const std::vector<std::string> &ids,
+                     const ut_unit *unit, const std::vector<Mapping> &done) {
+  for (size_t i = 0; i < ids.size(); i++) {
+    unit_ptr u = parse(ids[i]);
+    if (!u || ut_compare(u.get(), unit) != 0) {
+      rollback(done, unit);
+      stop("%s \"%s\" cannot be installed: udunits does not read it as this unit",
+           kind_str(kind), ids[i].c_str());
+    }
   }
 }
 
@@ -237,14 +300,16 @@ void ud_install(CharacterVector symbols, CharacterVector names, xut_unit unit) {
     // conflicts are refused when planning, and ids in an invalid encoding in
     // install_unit(), so only a system error (UT_OS) can get here
     if (apply(todo[i], unit) != UT_SUCCESS) {
-      // # nocov start
-      for (size_t j = done.size(); j-- > 0; )
-        undo(done[j], unit);
-      stop("could not map %s \"%s\"", kind_str(todo[i].kind), todo[i].id.c_str());
-      // # nocov end
+      rollback(done, unit); // #nocov
+      stop("could not map %s \"%s\"", kind_str(todo[i].kind), todo[i].id.c_str()); // #nocov
     }
     done.push_back(todo[i]);
   }
+
+  // every id must now be read as this unit; e.g., "a1" is read as "a" to the
+  // power of 1, and a name shadows a symbol that differs only in case
+  check_read_back(SYMBOL, syms, unit, done);
+  check_read_back(NAME, nms, unit, done);
   record(done, unit);
 }
 

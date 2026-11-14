@@ -70,6 +70,39 @@ test_that("a refused install_unit() maps nothing", {
   remove_unit("zzc")
 })
 
+test_that("ids that udunits reads as another unit are refused", {
+  in_m <- function(x) as.numeric(set_units(set_units(1, x, mode = "standard"), m))
+
+  # udunits reads an id by name (whatever its case), then by symbol, then
+  # after stripping a prefix, so each of these would redefine a database unit
+  expect_error(install_unit(name = "m", def = "1 mile"), "already maps")
+  expect_error(install_unit("km", "1 mile"), "already maps")
+  expect_error(install_unit(name = "kilometer", def = "1 mile"), "already maps")
+  expect_error(install_unit(name = "KG", def = "2 kg"), "shadow \"kg\"")
+  expect_error(install_unit(name = "KILOM", def = "1 mile"), "shadow \"kilom\"")
+  expect_equal(in_m("m"), 1)
+  expect_equal(in_m("km"), 1000)
+  expect_equal(as.numeric(set_units(set_units(1, kg), g)), 1000)
+
+  # ... or would be unreachable, shadowed by a database name
+  expect_error(install_unit("gal", "1 gallon"), "already maps")
+
+  # long names are checked against installed symbols
+  install_unit("zzlongsymbolxyz")
+  expect_error(install_unit(name = "ZZLONGSYMBOLXYZ", def = "2 zzlongsymbolxyz"),
+               "shadow")
+  remove_unit("zzlongsymbolxyz")
+
+  # same unit, whatever the route: accepted as aliases
+  expect_silent(install_unit("zzkm", "1000 m", "KILOGRAMME_ZZ"))
+  expect_equal(in_m("zzkm"), 1000)
+  remove_unit("zzkm", "KILOGRAMME_ZZ")
+
+  # an id must be read back as the new unit: "zz1" is read as zz^1
+  expect_error(install_unit(c("zzok", "zz1")), "does not read it as this unit")
+  expect_error(as_units("zzok"))
+})
+
 test_that("symbols and names of existing units are installed as aliases", {
   install_unit("zzdeg", "1 degree", "zzdegree")
   expect_equal(set_units(set_units(180, zzdeg), rad), set_units(pi, rad))
