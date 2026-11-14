@@ -141,6 +141,11 @@ test_that("removing an alias keeps the unit's own symbol and name", {
 
 test_that("remove_unit() leaves units it did not install", {
   expect_warning(remove_unit("m", "second"), "left unchanged")
+  # whatever the route by which udunits reads them
+  expect_warning(remove_unit("km"), "left unchanged: 'km'")
+  expect_warning(remove_unit(name = "kilometer"), "left unchanged")
+  expect_warning(remove_unit(name = "m"), "left unchanged")
+  expect_warning(remove_unit("gal"), "left unchanged")
   expect_equal(set_units(set_units(1, km), m), set_units(1000, m))
   expect_equal(ut_symbol("m"), "m")
   expect_equal(ut_name("s"), "second")

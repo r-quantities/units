@@ -313,8 +313,9 @@ void ud_install(CharacterVector symbols, CharacterVector names, xut_unit unit) {
   record(done, unit);
 }
 
-// Undo the mappings made when installing these ids. Returns the ids that map
-// to a unit but were not installed by ud_install(), which are left untouched.
+// Undo the mappings made when installing these ids. Returns the ids that
+// udunits reads as a unit (e.g., "km", by prefix) but were not installed by
+// ud_install(), which are left untouched.
 // [[Rcpp::export(rng=false)]]
 CharacterVector ud_remove(CharacterVector symbols, CharacterVector names) {
   std::vector<std::string> ids[2] = {clean(SYMBOL, symbols), clean(NAME, names)};
@@ -326,7 +327,7 @@ CharacterVector ud_remove(CharacterVector symbols, CharacterVector names) {
     for (size_t i = 0; i < ids[k].size(); i++) {
       std::map<std::string, Entry>::iterator it = registry[k].find(key(kind, ids[k][i]));
       if (it == registry[k].end()) {
-        if (lookup(kind, ids[k][i]))
+        if (parse(ids[k][i]))
           foreign.push_back(ids[k][i]);
         continue;
       }
