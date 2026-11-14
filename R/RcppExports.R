@@ -89,8 +89,8 @@ R_ut_format <- function(p, names = FALSE, definition = FALSE, ascii = FALSE) {
     .Call('_units_R_ut_format', PACKAGE = 'units', p, names, definition, ascii)
 }
 
-ud_install <- function(symbols, names, unit) {
-    invisible(.Call('_units_ud_install', PACKAGE = 'units', symbols, names, unit))
+ud_install <- function(symbols, names, unit, override = FALSE) {
+    .Call('_units_ud_install', PACKAGE = 'units', symbols, names, unit, override)
 }
 
 ud_remove <- function(symbols, names) {

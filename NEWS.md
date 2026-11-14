@@ -44,7 +44,12 @@
   `"m"`, or a symbol `"km"`) or never be reached (e.g., a symbol `"gal"`, which
   the database name wins over), including names that only differ in case from
   a symbol (e.g., `"KG"`), and ids that udunits does not read back as the new
-  unit (e.g., `"zz1"`).
+  unit (e.g., `"zz1"`). `remove_unit()` warns about all such ids too.
+
+* New argument `override` in `install_unit()` to redefine symbols and names
+  from the database on purpose, e.g., `install_unit("gal", "1 gallon",
+  override = TRUE)`; the database mappings set aside are reported, and
+  `remove_unit()` restores them; addressing #451.
 
 # version 1.0-1
 

@@ -203,3 +203,75 @@ test_that("non-ASCII symbols work, and invalid strings are refused", {
     expect_error(remove_unit(name = bad), "valid strings")
   }
 })
+
+test_that("override = TRUE redefines database ids, and remove_unit() restores them", {
+  conv <- function(from, to) ud_convert(1, from, to)
+  expect_error(install_unit("zzx", override = NA))
+
+  # a database name, redefined as a name: case variants are the same name
+  expect_message(install_unit(name = "gal", def = "1 gallon", override = TRUE),
+                 "redefined name \"gal\"")
+  expect_equal(conv("gal", "L"), 3.785412, tolerance = 1e-6)
+  expect_equal(conv("Gal", "L"), 3.785412, tolerance = 1e-6)
+  expect_equal(conv("kgal", "L"), 3785.412, tolerance = 1e-6)
+  remove_unit(name = "gal")
+  expect_equal(conv("gal", "cm/s^2"), 1)
+  # "microN" is the name "micron" too, not micro-newton
+  expect_message(install_unit(name = "micron", def = "2 m", override = TRUE))
+  expect_equal(conv("microN", "m"), 2)
+  remove_unit(name = "micron")
+  expect_equal(conv("micron", "um"), 1)
+
+  # ... or as a symbol, which sets the name aside so that it does not win
+  expect_message(install_unit("gal", "1 gallon", override = TRUE),
+                 "redefined symbol \"gal\"")
+  expect_equal(conv("gal", "L"), 3.785412, tolerance = 1e-6)
+  remove_unit("gal")
+  expect_equal(conv("gal", "cm/s^2"), 1)
+
+  # the own symbol of a unit is set aside too, and restored
+  expect_message(install_unit("m", "1 mile", override = TRUE), "was meter")
+  expect_equal(conv("m", "ft"), 5280)
+  expect_equal(ut_symbol("meter"), character(0))
+  expect_equal(conv("meter", "ft"), 3.28084, tolerance = 1e-6)
+  remove_unit("m")
+  expect_equal(conv("m", "ft"), 3.28084, tolerance = 1e-6)
+  expect_equal(ut_symbol("meter"), "m")
+  # ... and its own name
+  expect_message(install_unit(name = "meter", def = "1 mile", override = TRUE),
+                 "was meter")
+  expect_equal(ut_name("m"), character(0))
+  remove_unit(name = "meter")
+  expect_equal(ut_name("m"), "meter")
+
+  # a prefixed meaning needs nothing set aside
+  expect_message(install_unit("km", "1 mile", override = TRUE), "was 1000 meter")
+  expect_equal(conv("km", "m"), 1609.344)
+  remove_unit("km")
+  expect_equal(conv("km", "m"), 1000)
+
+  # no conflict: a normal install
+  expect_silent(install_unit("zznew", "2 m", override = TRUE))
+  remove_unit("zznew")
+})
+
+test_that("override = TRUE still refuses what it cannot undo or did not ask for", {
+  conv <- function(from, to) ud_convert(1, from, to)
+
+  # other ids that a new name would shadow
+  expect_error(install_unit(name = "KG", def = "2 kg", override = TRUE), "shadow")
+  expect_equal(conv("kg", "g"), 1000)
+
+  # ids installed by install_unit()
+  install_unit("zzfoo")
+  expect_error(install_unit("zzfoo", "2 m", override = TRUE), "remove it first")
+  remove_unit("zzfoo")
+
+  # a failure after setting mappings aside puts them back
+  expect_error(install_unit(c("gal", "zz1"), "1 gallon", override = TRUE),
+               "does not read it as this unit")
+  expect_equal(conv("gal", "cm/s^2"), 1)
+
+  # and remove_unit() points to it
+  expect_warning(remove_unit("km"), "override = TRUE")
+})

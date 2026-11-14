@@ -6,7 +6,7 @@
 \title{Define or remove units}
 \usage{
 install_unit(symbol = character(0), def = character(0),
-  name = character(0))
+  name = character(0), override = FALSE)
 
 remove_unit(symbol = character(0), name = character(0))
 }
@@ -20,6 +20,9 @@ remove_unit(symbol = character(0), name = character(0))
 }}
 
 \item{name}{a vector of names to be installed/removed.}
+
+\item{override}{logical; if \code{TRUE}, symbols and names that are read as a
+different unit in the units database are redefined (see details).}
 }
 \description{
 Installing new symbols and/or names allows them to be used in \code{as_units},
@@ -35,10 +38,25 @@ used as input, but the unit keeps its own symbol (resp. name) for output.
 Otherwise, the first symbol and the first name become those of the unit.
 
 An installation either succeeds as a whole or leaves the system unchanged:
-if any symbol or name already maps to a different unit, nothing is
-installed. Removing a symbol or name only undoes what \code{install_unit}
-did for it; symbols and names from the units database, or from anywhere
-else, are left untouched with a warning.
+if any symbol or name is already read as a different unit, nothing is
+installed. Note that UDUNITS-2 reads an identifier by name (regardless of
+case), then by symbol, and then by removing a prefix, so a new symbol or
+name also collides with names or symbols of the other kind, with prefixed
+units (e.g., \code{"km"}), and, for names, with symbols that differ only in
+case (e.g., a name \code{"KG"} would shadow \code{"kg"}). Removing a symbol
+or name only undoes what \code{install_unit} did for it; symbols and names
+from the units database, or from anywhere else, are left untouched with a
+warning.
+
+To redefine a symbol or name from the database on purpose, use
+\code{override = TRUE}: the database mappings that give it another meaning
+are set aside (and reported with a message), and \code{remove_unit} puts
+them back. The new meaning also applies to prefixed forms (e.g., redefining
+\code{"gal"} redefines \code{"kgal"}), and to existing \code{units} objects
+that use the identifier, so it is best done at the start of a session.
+Identifiers installed by \code{install_unit} cannot be overridden, but must
+be removed first, and other identifiers that a new name would shadow are
+still refused.
 
 The \code{def} argument enables arbitrary relationships with existing
 units using UDUNITS-2 syntax:
@@ -92,5 +110,12 @@ set_units(cell/vol, "colony_forming_unit/ml")
 set_units(cell/vol, "ColonyFormingUnit/ml")
 # clean up
 remove_unit(c("cell", cfu_symbols), cfu_names)
+
+# redefine "gal" (in the database, the unit of acceleration cm/s^2)
+install_unit("gal", "1 gallon", override = TRUE)
+set_units(set_units(1, gal), L)
+# clean up: "gal" is cm/s^2 again
+remove_unit("gal")
+set_units(set_units(1, gal), cm/s^2)
 
 }

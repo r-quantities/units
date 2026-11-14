@@ -28,20 +28,38 @@ using units::enc;
 //
 // install_unit() applies every mapping or none, and records the mappings it
 // made, so that remove_unit() undoes exactly those and never touches mappings
-// from the database or from another install.
+// from the database or from another install. With override = TRUE, it may
+// also set aside the database mappings that give an id another meaning; they
+// are recorded too, and remove_unit() puts them back.
 
 namespace {
 
 enum Kind { SYMBOL = 0, NAME = 1 };
 
+typedef std::shared_ptr<ut_unit> unit_ptr;
+
 struct Mapping {
   Kind kind;
-  bool to_id;       // true: unit -> id; false: id -> unit
+  bool to_id;           // true: unit -> id; false: id -> unit
   std::string id;
-  ut_encoding tree; // unit -> id only: the tree that holds it
+  ut_encoding tree;     // unit -> id only: the tree that holds it
+  Kind owner;           // the installed id this mapping belongs to
+  std::string owner_id;
+  unit_ptr aside;       // set for a database mapping set aside by an
+                        // override: the unit it maps to or from
 };
 
-typedef std::shared_ptr<ut_unit> unit_ptr;
+Mapping mapping(Kind kind, bool to_id, const std::string &id,
+                ut_encoding tree = UT_ASCII) {
+  Mapping m;
+  m.kind = kind;
+  m.to_id = to_id;
+  m.id = id;
+  m.tree = tree;
+  m.owner = kind;
+  m.owner_id = id;
+  return m;
+}
 
 struct Entry {
   unit_ptr unit;
@@ -139,8 +157,17 @@ bool has_id(Kind kind, const ut_unit *unit) {
     get_id(kind, unit, UT_UTF8);
 }
 
+// For a mapping set aside, apply() removes it and undo() puts it back.
 ut_status apply(const Mapping &m, const ut_unit *unit) {
   const char *id = m.id.c_str();
+  if (m.aside) {
+    if (m.to_id)
+      return m.kind == SYMBOL ?
+        ut_unmap_unit_to_symbol(m.aside.get(), m.tree) :
+        ut_unmap_unit_to_name(m.aside.get(), m.tree);
+    return m.kind == SYMBOL ?
+      ut_unmap_symbol_to_unit(sys, id, enc) : ut_unmap_name_to_unit(sys, id, enc);
+  }
   if (m.to_id)
     return m.kind == SYMBOL ?
       ut_map_unit_to_symbol(unit, id, m.tree) : ut_map_unit_to_name(unit, id, m.tree);
@@ -149,7 +176,18 @@ ut_status apply(const Mapping &m, const ut_unit *unit) {
 }
 
 void undo(const Mapping &m, const ut_unit *unit) {
-  if (m.to_id) {
+  if (m.aside) {
+    const char *id = m.id.c_str();
+    if (m.to_id) {
+      if (m.kind == SYMBOL)
+        ut_map_unit_to_symbol(m.aside.get(), id, m.tree);
+      else ut_map_unit_to_name(m.aside.get(), id, m.tree);
+    } else {
+      if (m.kind == SYMBOL)
+        ut_map_symbol_to_unit(id, enc, m.aside.get());
+      else ut_map_name_to_unit(id, enc, m.aside.get());
+    }
+  } else if (m.to_id) {
     // only if it still holds this id: the tree is looked up directly for
     // ASCII, and with fallbacks otherwise, so compare before removing
     const char *cur = get_id(m.kind, unit, m.tree);
@@ -171,7 +209,14 @@ void undo(const Mapping &m, const ut_unit *unit) {
 // regardless of case, so refuse a name if any of its case variants is read
 // as a different unit. No database symbol, prefixed or not, is longer than 8
 // characters, so longer names are only checked against installed symbols.
-void check_case_variants(const std::string &id, const ut_unit *unit) {
+// With override, this runs before anything is set aside, and a variant that
+// is read as what the id itself meant is that same name, not another id.
+bool shadowed(const ut_unit *u, const ut_unit *unit, const ut_unit *was) {
+  return ut_compare(u, unit) != 0 && !(was && ut_compare(u, was) == 0);
+}
+
+void check_case_variants(const std::string &id, const ut_unit *unit,
+                         const ut_unit *was = NULL) {
   std::vector<size_t> letters;
   for (size_t i = 0; i < id.size(); i++)
     if (std::isalpha((unsigned char) id[i]) && !(id[i] & 0x80))
@@ -186,7 +231,7 @@ void check_case_variants(const std::string &id, const ut_unit *unit) {
       if (v == id)
         continue;
       unit_ptr u = parse(v);
-      if (u && ut_compare(u.get(), unit) != 0)
+      if (u && shadowed(u.get(), unit, was))
         stop("name \"%s\" would shadow \"%s\", which maps to a different unit",
              id.c_str(), v.c_str());
     }
@@ -196,51 +241,99 @@ void check_case_variants(const std::string &id, const ut_unit *unit) {
   std::map<std::string, Entry>::iterator it;
   for (it = registry[SYMBOL].begin(); it != registry[SYMBOL].end(); ++it)
     if (key(NAME, it->first) == key(NAME, id) &&
-        ut_compare(it->second.unit.get(), unit) != 0)
+        shadowed(it->second.unit.get(), unit, was))
       stop("name \"%s\" would shadow \"%s\", which maps to a different unit",
            id.c_str(), it->first.c_str());
 }
 
+std::string describe(const ut_unit *unit) {
+  char buf[256];
+  int len = ut_format(unit, buf, sizeof(buf), enc | UT_NAMES);
+  if (len < 0)
+    return "another unit"; // #nocov
+  if (len < (int) sizeof(buf))
+    return buf;
+  // # nocov start
+  std::vector<char> longer(len + 1);
+  ut_format(unit, longer.data(), longer.size(), enc | UT_NAMES);
+  return longer.data();
+} // # nocov end
+
+void put_aside(Mapping m, Kind owner, const std::string &id, unit_ptr old,
+               const ut_unit *unit, std::vector<Mapping> &done) {
+  m.owner = owner;
+  m.owner_id = id;
+  m.aside = old;
+  apply(m, unit);
+  done.push_back(m);
+}
+
+// With override, set aside, right away, the database mappings that give an
+// id another meaning: the id in either map (a leftover name would win over a
+// new symbol, and a leftover symbol could still be its unit's own), and the
+// symbol or name of those units when it is this id (otherwise they would be
+// printed as an id that is read as the new unit). A prefixed meaning, as in
+// "km", needs nothing: the id itself wins over it.
+void set_aside(Kind owner, const std::string &id, const ut_unit *unit,
+               std::vector<Mapping> &done, std::vector<std::string> &was) {
+  // what the id meant, by whatever route, before anything is set aside
+  unit_ptr before = parse(id);
+  if (before && ut_compare(before.get(), unit) != 0)
+    was.push_back(std::string(kind_str(owner)) + " \"" + id + "\" (was " +
+                  describe(before.get()) + ")");
+
+  for (int k = SYMBOL; k <= NAME; k++) {
+    Kind kind = (Kind) k;
+    unit_ptr old = lookup(kind, id);
+    if (!old || ut_compare(old.get(), unit) == 0)
+      continue;
+    if (registry[k].count(key(kind, id)))
+      stop("%s \"%s\" was installed by install_unit(); remove it first",
+           kind_str(kind), id.c_str());
+
+    put_aside(mapping(kind, false, id), owner, id, old, unit, done);
+    // one tree at a time: lookups in other trees fall back to ASCII, so the
+    // ASCII entry has to be out of the way to see what the next tree holds
+    const ut_encoding trees[2] = {UT_ASCII, enc};
+    for (int t = 0; t < 2; t++) {
+      const char *cur = get_id(kind, old.get(), trees[t]);
+      if (cur && key(kind, cur) == key(kind, id))
+        put_aside(mapping(kind, true, cur, trees[t]), owner, id, old, unit, done);
+    }
+  }
+}
+
 // Plan the mappings needed to install ids of one kind for a unit. An id that
 // already maps to the same unit needs nothing; one that maps, or is read as,
-// a different unit is refused here, before anything is mapped. The unit gets
-// a symbol or name of its own only if it has none yet; otherwise the ids are
-// aliases.
+// a different unit is refused here, before anything is mapped (with
+// override, what remains after set_aside() is a prefixed meaning, which the
+// new id takes over). The unit gets a symbol or name of its own only if it
+// has none yet; otherwise the ids are aliases.
 void plan(Kind kind, const std::vector<std::string> &ids, const ut_unit *unit,
-          std::vector<Mapping> &out) {
+          bool override, std::vector<Mapping> &out) {
   for (size_t i = 0; i < ids.size(); i++) {
     unit_ptr mapped = lookup(kind, ids[i]);
     unit_ptr other = mapped ? mapped : parse(ids[i]);
-    if (other && ut_compare(other.get(), unit) != 0)
+    if (other && ut_compare(other.get(), unit) != 0 && !override)
       stop("%s \"%s\" already maps to existing but different unit",
            kind_str(kind), ids[i].c_str());
     if (mapped)
       continue;
-    if (kind == NAME)
+    if (kind == NAME && !override) // with override, checked before set_aside()
       check_case_variants(ids[i], unit);
-    Mapping m = {kind, false, ids[i], UT_ASCII};
-    out.push_back(m);
+    out.push_back(mapping(kind, false, ids[i]));
   }
-  if (!ids.empty() && !has_id(kind, unit)) {
-    Mapping m = {kind, true, ids[0], tree_for(ids[0])};
-    out.push_back(m);
-  }
-}
-
-void rollback(const std::vector<Mapping> &done, const ut_unit *unit) {
-  for (size_t j = done.size(); j-- > 0; )
-    undo(done[j], unit);
+  if (!ids.empty() && !has_id(kind, unit))
+    out.push_back(mapping(kind, true, ids[0], tree_for(ids[0])));
 }
 
 void check_read_back(Kind kind, const std::vector<std::string> &ids,
-                     const ut_unit *unit, const std::vector<Mapping> &done) {
+                     const ut_unit *unit) {
   for (size_t i = 0; i < ids.size(); i++) {
     unit_ptr u = parse(ids[i]);
-    if (!u || ut_compare(u.get(), unit) != 0) {
-      rollback(done, unit);
+    if (!u || ut_compare(u.get(), unit) != 0)
       stop("%s \"%s\" cannot be installed: udunits does not read it as this unit",
            kind_str(kind), ids[i].c_str());
-    }
   }
 }
 
@@ -249,10 +342,10 @@ void record(const std::vector<Mapping> &done, const ut_unit *unit) {
   long seq = ++registry_seq;
   for (size_t i = 0; i < done.size(); i++) {
     const Mapping &m = done[i];
-    Entry &e = registry[m.kind][key(m.kind, m.id)];
+    Entry &e = registry[m.owner][key(m.owner, m.owner_id)];
     if (!e.unit) {
       e.unit = u;
-      e.id = m.id;
+      e.id = m.owner_id;
       e.seq = seq;
     }
     e.maps.push_back(m);
@@ -272,7 +365,7 @@ void promote(Kind kind, const ut_unit *unit) {
       best = &it->second;
   if (best == NULL)
     return;
-  Mapping m = {kind, true, best->id, tree_for(best->id)};
+  Mapping m = mapping(kind, true, best->id, tree_for(best->id));
   if (apply(m, best->unit.get()) == UT_SUCCESS)
     best->maps.push_back(m);
 }
@@ -284,33 +377,52 @@ void units::registry_clear() {
   registry[NAME].clear();
 }
 
+// Returns a description of each database mapping set aside by an override.
 // [[Rcpp::export(rng=false)]]
-void ud_install(CharacterVector symbols, CharacterVector names, xut_unit unit) {
+CharacterVector ud_install(CharacterVector symbols, CharacterVector names,
+                           xut_unit unit, bool override = false) {
   if (!unit)
     stop("invalid unit"); // #nocov: install_unit() always passes a valid unit
   std::vector<std::string> syms = clean(SYMBOL, symbols);
   std::vector<std::string> nms = clean(NAME, names);
 
   QuietUdunits quiet;
-  std::vector<Mapping> todo, done;
-  plan(SYMBOL, syms, unit, todo);
-  plan(NAME, nms, unit, todo);
-
-  for (size_t i = 0; i < todo.size(); i++) {
-    // conflicts are refused when planning, and ids in an invalid encoding in
-    // install_unit(), so only a system error (UT_OS) can get here
-    if (apply(todo[i], unit) != UT_SUCCESS) {
-      rollback(done, unit); // #nocov
-      stop("could not map %s \"%s\"", kind_str(todo[i].kind), todo[i].id.c_str()); // #nocov
+  std::vector<Mapping> done;
+  std::vector<std::string> was;
+  try {
+    if (override) {
+      for (size_t i = 0; i < nms.size(); i++) {
+        unit_ptr was = parse(nms[i]);
+        check_case_variants(nms[i], unit, was.get());
+      }
+      for (size_t i = 0; i < syms.size(); i++)
+        set_aside(SYMBOL, syms[i], unit, done, was);
+      for (size_t i = 0; i < nms.size(); i++)
+        set_aside(NAME, nms[i], unit, done, was);
     }
-    done.push_back(todo[i]);
-  }
 
-  // every id must now be read as this unit; e.g., "a1" is read as "a" to the
-  // power of 1, and a name shadows a symbol that differs only in case
-  check_read_back(SYMBOL, syms, unit, done);
-  check_read_back(NAME, nms, unit, done);
+    std::vector<Mapping> todo;
+    plan(SYMBOL, syms, unit, override, todo);
+    plan(NAME, nms, unit, override, todo);
+    for (size_t i = 0; i < todo.size(); i++) {
+      // conflicts are refused when planning, and ids in an invalid encoding
+      // in install_unit(), so only a system error (UT_OS) can get here
+      if (apply(todo[i], unit) != UT_SUCCESS)
+        stop("could not map %s \"%s\"", kind_str(todo[i].kind), todo[i].id.c_str()); // #nocov
+      done.push_back(todo[i]);
+    }
+
+    // every id must now be read as this unit; e.g., "a1" is read as "a" to
+    // the power of 1
+    check_read_back(SYMBOL, syms, unit);
+    check_read_back(NAME, nms, unit);
+  } catch (...) {
+    for (size_t j = done.size(); j-- > 0; )
+      undo(done[j], unit);
+    throw;
+  }
   record(done, unit);
+  return wrap(was);
 }
 
 // Undo the mappings made when installing these ids. Returns the ids that
@@ -334,9 +446,10 @@ CharacterVector ud_remove(CharacterVector symbols, CharacterVector names) {
       Entry e = it->second;
       registry[k].erase(it);
       bool primary = false;
+      // in reverse: this install's mappings first, then what it set aside
       for (size_t j = e.maps.size(); j-- > 0; ) {
         undo(e.maps[j], e.unit.get());
-        primary = primary || e.maps[j].to_id;
+        primary = primary || (e.maps[j].to_id && !e.maps[j].aside);
       }
       if (primary)
         promote(kind, e.unit.get());
