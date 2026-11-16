@@ -256,7 +256,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // ud_remove
-CharacterVector ud_remove(CharacterVector symbols, CharacterVector names);
+List ud_remove(CharacterVector symbols, CharacterVector names);
 RcppExport SEXP _units_ud_remove(SEXP symbolsSEXP, SEXP namesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;

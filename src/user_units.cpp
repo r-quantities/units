@@ -175,24 +175,25 @@ ut_status apply(const Mapping &m, const ut_unit *unit) {
     ut_map_symbol_to_unit(id, enc, unit) : ut_map_name_to_unit(id, enc, unit);
 }
 
-void undo(const Mapping &m, const ut_unit *unit) {
+// Returns whether a mapping set aside could be put back; removing a mapping
+// always succeeds.
+ut_status undo(const Mapping &m, const ut_unit *unit) {
   if (m.aside) {
     const char *id = m.id.c_str();
-    if (m.to_id) {
-      if (m.kind == SYMBOL)
-        ut_map_unit_to_symbol(m.aside.get(), id, m.tree);
-      else ut_map_unit_to_name(m.aside.get(), id, m.tree);
-    } else {
-      if (m.kind == SYMBOL)
-        ut_map_symbol_to_unit(id, enc, m.aside.get());
-      else ut_map_name_to_unit(id, enc, m.aside.get());
-    }
-  } else if (m.to_id) {
+    if (m.to_id)
+      return m.kind == SYMBOL ?
+        ut_map_unit_to_symbol(m.aside.get(), id, m.tree) :
+        ut_map_unit_to_name(m.aside.get(), id, m.tree);
+    return m.kind == SYMBOL ?
+      ut_map_symbol_to_unit(id, enc, m.aside.get()) :
+      ut_map_name_to_unit(id, enc, m.aside.get());
+  }
+  if (m.to_id) {
     // only if it still holds this id: the tree is looked up directly for
     // ASCII, and with fallbacks otherwise, so compare before removing
     const char *cur = get_id(m.kind, unit, m.tree);
     if (cur == NULL || m.id != cur)
-      return; // #nocov: a unit gets its own id only when it has none
+      return UT_SUCCESS; // #nocov: a unit gets its own id only when it has none
     if (m.kind == SYMBOL)
       ut_unmap_unit_to_symbol(unit, m.tree);
     else ut_unmap_unit_to_name(unit, m.tree);
@@ -201,6 +202,26 @@ void undo(const Mapping &m, const ut_unit *unit) {
       ut_unmap_symbol_to_unit(sys, m.id.c_str(), enc);
     else ut_unmap_name_to_unit(sys, m.id.c_str(), enc);
   }
+  return UT_SUCCESS;
+}
+
+// Whether an installed id needs a mapping set aside out of the way, i.e.,
+// whether set_aside() for that id, of either kind, would set it aside: it
+// looks up symbols as they are, and names whatever their case. So an id
+// installed both as a symbol and as a name shares what was set aside.
+bool holds(const std::string &id, const Mapping &m) {
+  return m.kind == SYMBOL ? id == m.id : key(NAME, id) == key(NAME, m.id);
+}
+
+// Another installed entry that still needs this mapping set aside, if any.
+Entry *holder(const Mapping &m) {
+  for (int k = SYMBOL; k <= NAME; k++) {
+    std::map<std::string, Entry>::iterator it;
+    for (it = registry[k].begin(); it != registry[k].end(); ++it)
+      if (holds(it->second.id, m))
+        return &it->second;
+  }
+  return NULL;
 }
 
 // Names are found whatever their case, so a new name also shadows every
@@ -278,9 +299,10 @@ void set_aside(Kind owner, const std::string &id, const ut_unit *unit,
                std::vector<Mapping> &done, std::vector<std::string> &was) {
   // what the id meant, by whatever route, before anything is set aside
   unit_ptr before = parse(id);
+  std::string desc;
   if (before && ut_compare(before.get(), unit) != 0)
-    was.push_back(std::string(kind_str(owner)) + " \"" + id + "\" (was " +
-                  describe(before.get()) + ")");
+    desc = std::string(kind_str(owner)) + " \"" + id + "\" (was " +
+      describe(before.get());
 
   for (int k = SYMBOL; k <= NAME; k++) {
     Kind kind = (Kind) k;
@@ -292,6 +314,9 @@ void set_aside(Kind owner, const std::string &id, const ut_unit *unit,
            kind_str(kind), id.c_str());
 
     put_aside(mapping(kind, false, id), owner, id, old, unit, done);
+    // a name is one entry whatever its case, so all its spellings go
+    if (kind == NAME && owner == SYMBOL && !desc.empty())
+      desc += "; the name \"" + id + "\" is set aside, in any letter case";
     // one tree at a time: lookups in other trees fall back to ASCII, so the
     // ASCII entry has to be out of the way to see what the next tree holds
     const ut_encoding trees[2] = {UT_ASCII, enc};
@@ -301,6 +326,8 @@ void set_aside(Kind owner, const std::string &id, const ut_unit *unit,
         put_aside(mapping(kind, true, cur, trees[t]), owner, id, old, unit, done);
     }
   }
+  if (!desc.empty())
+    was.push_back(desc + ")");
 }
 
 // Plan the mappings needed to install ids of one kind for a unit. An id that
@@ -425,13 +452,19 @@ CharacterVector ud_install(CharacterVector symbols, CharacterVector names,
   return wrap(was);
 }
 
-// Undo the mappings made when installing these ids. Returns the ids that
-// udunits reads as a unit (e.g., "km", by prefix) but were not installed by
-// ud_install(), which are left untouched.
+// Undo the mappings made when installing these ids. A mapping set aside is
+// handed to another installed id that still needs it out of the way (the
+// same id of the other kind), and put back only when none is left, so the
+// order of removal does not matter. Returns the ids that udunits reads as a
+// unit (e.g., "km", by prefix) but were neither installed by ud_install()
+// nor put back by this call, which are left untouched, and the mappings that
+// could not be put back.
 // [[Rcpp::export(rng=false)]]
-CharacterVector ud_remove(CharacterVector symbols, CharacterVector names) {
+List ud_remove(CharacterVector symbols, CharacterVector names) {
   std::vector<std::string> ids[2] = {clean(SYMBOL, symbols), clean(NAME, names)};
-  CharacterVector foreign;
+  std::vector<std::string> unknown[2];
+  std::vector<Mapping> restored;
+  CharacterVector foreign, lost;
 
   QuietUdunits quiet;
   for (int k = SYMBOL; k <= NAME; k++) {
@@ -439,21 +472,47 @@ CharacterVector ud_remove(CharacterVector symbols, CharacterVector names) {
     for (size_t i = 0; i < ids[k].size(); i++) {
       std::map<std::string, Entry>::iterator it = registry[k].find(key(kind, ids[k][i]));
       if (it == registry[k].end()) {
-        if (parse(ids[k][i]))
-          foreign.push_back(ids[k][i]);
+        unknown[k].push_back(ids[k][i]);
         continue;
       }
       Entry e = it->second;
       registry[k].erase(it);
       bool primary = false;
-      // in reverse: this install's mappings first, then what it set aside
+      // in reverse: this install's mappings first, then what it set aside;
+      // handed over mappings go first in the holder, to be undone last too
+      std::vector<Mapping>::iterator front;
+      Entry *last = NULL;
       for (size_t j = e.maps.size(); j-- > 0; ) {
-        undo(e.maps[j], e.unit.get());
-        primary = primary || (e.maps[j].to_id && !e.maps[j].aside);
+        const Mapping &m = e.maps[j];
+        Entry *h = m.aside ? holder(m) : NULL;
+        if (h) {
+          if (h != last) {
+            front = h->maps.begin();
+            last = h;
+          }
+          front = h->maps.insert(front, m);
+          continue;
+        }
+        if (undo(m, e.unit.get()) != UT_SUCCESS)
+          lost.push_back(std::string(kind_str(m.kind)) + " \"" + m.id + "\""); // #nocov
+        else if (m.aside)
+          restored.push_back(m);
+        primary = primary || (m.to_id && !m.aside);
       }
       if (primary)
         promote(kind, e.unit.get());
     }
   }
-  return foreign;
+
+  // an id that this call put back, e.g., a name set aside by a symbol, was
+  // not left untouched
+  for (int k = SYMBOL; k <= NAME; k++)
+    for (size_t i = 0; i < unknown[k].size(); i++) {
+      bool put_back = false;
+      for (size_t j = 0; j < restored.size() && !put_back; j++)
+        put_back = restored[j].kind == k && holds(unknown[k][i], restored[j]);
+      if (!put_back && parse(unknown[k][i]))
+        foreign.push_back(unknown[k][i]);
+    }
+  return List::create(_["foreign"] = foreign, _["lost"] = lost);
 }

@@ -30,7 +30,10 @@
 #' that use the identifier, so it is best done at the start of a session.
 #' Identifiers installed by \code{install_unit} cannot be overridden, but must
 #' be removed first, and other identifiers that a new name would shadow are
-#' still refused.
+#' still refused. As names are matched regardless of case, overriding a symbol
+#' also sets aside a database name spelled the same in any letter case (e.g.,
+#' overriding the symbol \code{"gal"} makes \code{"Gal"} unavailable until it
+#' is removed); override the name instead to redefine every spelling.
 #'
 #' The \code{def} argument enables arbitrary relationships with existing
 #' units using UDUNITS-2 syntax:
@@ -141,10 +144,14 @@ install_unit <- function(symbol=character(0), def=character(0), name=character(0
 remove_unit <- function(symbol=character(0), name=character(0)) {
   .check_ids(symbol, name)
 
-  foreign <- ud_remove(symbol, name)
-  if (length(foreign))
+  res <- ud_remove(symbol, name)
+  if (length(res$lost)) # nocov start
+    warning("could not restore the database ", paste(res$lost, collapse = ", "),
+            "; reload the database with load_units_xml()", call. = FALSE)
+  # nocov end
+  if (length(res$foreign))
     warning("not installed by install_unit(), left unchanged: ",
-            paste0("'", foreign, "'", collapse = ", "),
+            paste0("'", res$foreign, "'", collapse = ", "),
             "; use install_unit(..., override = TRUE) to redefine them",
             call. = FALSE)
   invisible(NULL)

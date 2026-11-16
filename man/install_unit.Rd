@@ -56,7 +56,10 @@ them back. The new meaning also applies to prefixed forms (e.g., redefining
 that use the identifier, so it is best done at the start of a session.
 Identifiers installed by \code{install_unit} cannot be overridden, but must
 be removed first, and other identifiers that a new name would shadow are
-still refused.
+still refused. As names are matched regardless of case, overriding a symbol
+also sets aside a database name spelled the same in any letter case (e.g.,
+overriding the symbol \code{"gal"} makes \code{"Gal"} unavailable until it
+is removed); override the name instead to redefine every spelling.
 
 The \code{def} argument enables arbitrary relationships with existing
 units using UDUNITS-2 syntax:

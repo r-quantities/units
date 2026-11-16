@@ -255,6 +255,78 @@ test_that("override = TRUE redefines database ids, and remove_unit() restores th
   remove_unit("zznew")
 })
 
+test_that("an id overridden as symbol and name is restored in any removal order", {
+  # from #453 by @vorpalvorpal
+  conv <- function(from, to) ud_convert(1, from, to)
+  restored <- function() {
+    expect_equal(conv("gal", "cm/s^2"), 1)
+    expect_equal(conv("Gal", "cm/s^2"), 1)
+    expect_equal(conv("gallon", "L"), 3.785412, tolerance = 1e-6)
+  }
+  install <- function() {
+    expect_message(install_unit("gal", "1 gallon", name = "gal", override = TRUE),
+                   "redefined")
+    expect_equal(conv("gal", "L"), 3.785412, tolerance = 1e-6)
+  }
+
+  install(); remove_unit(name = "gal"); remove_unit("gal"); restored()
+  install(); remove_unit("gal"); remove_unit(name = "gal"); restored()
+  install(); remove_unit("gal", name = "gal"); restored()
+
+  # different ids of the same unit
+  expect_message(install_unit(c("gal", "galn"), "1 gallon",
+                              name = c("gal", "galname"), override = TRUE))
+  expect_equal(conv("galname", "L"), 3.785412, tolerance = 1e-6)
+  remove_unit(c("gal", "galn"), c("gal", "galname"))
+  restored()
+
+  # one kind alone still restores
+  expect_message(install_unit("gal", "1 gallon", override = TRUE))
+  remove_unit("gal"); restored()
+  expect_message(install_unit(name = "gal", def = "1 gallon", override = TRUE))
+  remove_unit(name = "gal"); restored()
+})
+
+test_that("an id overridden as symbol and name keeps working until both are removed", {
+  conv <- function(from, to) ud_convert(1, from, to)
+
+  # removing one kind leaves the other override in place, in one call...
+  suppressMessages(install_unit("gal", "1 gallon", name = "gal", override = TRUE))
+  remove_unit(name = "gal")
+  expect_equal(conv("gal", "L"), 3.785412, tolerance = 1e-6)
+  remove_unit("gal")
+  expect_equal(conv("gal", "cm/s^2"), 1)
+
+  # ... or in separate calls, in either order
+  for (symbol_first in c(TRUE, FALSE)) {
+    suppressMessages(install_unit("gal", "1 gallon", override = TRUE))
+    suppressMessages(install_unit(name = "gal", def = "1 gallon", override = TRUE))
+    if (symbol_first) remove_unit("gal") else remove_unit(name = "gal")
+    expect_equal(conv("gal", "L"), 3.785412, tolerance = 1e-6)
+    if (symbol_first) remove_unit(name = "gal") else remove_unit("gal")
+    expect_equal(conv("gal", "cm/s^2"), 1)
+    expect_equal(conv("Gal", "cm/s^2"), 1)
+  }
+
+  # a symbol in another letter case needs the same name out of the way
+  suppressMessages(install_unit("gal", "1 gallon", override = TRUE))
+  install_unit("GAL", "2 gallon")
+  remove_unit("gal")
+  expect_equal(conv("GAL", "gallon"), 2)
+  remove_unit("GAL")
+  expect_equal(conv("gal", "cm/s^2"), 1)
+})
+
+test_that("a symbol override sets aside the name in any letter case", {
+  conv <- function(from, to) tryCatch(ud_convert(1, from, to), error = function(e) NA)
+  expect_message(install_unit("gal", "1 gallon", override = TRUE),
+                 "the name \"gal\" is set aside, in any letter case")
+  expect_true(is.na(conv("Gal", "cm/s^2")))
+  # the name half was put back by the symbol: no warning
+  expect_silent(remove_unit("gal", "gal"))
+  expect_equal(conv("Gal", "cm/s^2"), 1)
+})
+
 test_that("override = TRUE still refuses what it cannot undo or did not ask for", {
   conv <- function(from, to) ud_convert(1, from, to)
 
