@@ -15,8 +15,8 @@ show_usage () {
 }
 
 fail  () { echo $@ && exit 1; }
-build () { $CMD build . -t $TAG; }
-run   () { $CMD run --rm -it -v $PWD/../:/mnt:z -w /mnt $@; }
+build () { $CMD build --pull=newer . -t $TAG; }
+run   () { $CMD run --rm -it -v "$PWD/../:/mnt:z" -w /mnt "$@"; }
 
 case $1 in
   check)
@@ -35,6 +35,11 @@ case $1 in
     ;;
   add_broken)
     run $TAG Rscript -e "revdepcheck::revdep_add_broken(install_failures=TRUE)"
+    ;;
+  add)
+    [[ -z ${2+x} ]] && fail "Error: at least one package must be provided"
+    pkgs=$(printf "'%s'," "${@:2}")
+    run $TAG Rscript -e "revdepcheck::revdep_add(packages=c(${pkgs%,}))"
     ;;
   interactive)
     run $TAG R
