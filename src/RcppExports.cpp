@@ -243,18 +243,20 @@ BEGIN_RCPP
 END_RCPP
 }
 // ud_install
-void ud_install(CharacterVector symbols, CharacterVector names, xut_unit unit);
-RcppExport SEXP _units_ud_install(SEXP symbolsSEXP, SEXP namesSEXP, SEXP unitSEXP) {
+CharacterVector ud_install(CharacterVector symbols, CharacterVector names, xut_unit unit, bool override);
+RcppExport SEXP _units_ud_install(SEXP symbolsSEXP, SEXP namesSEXP, SEXP unitSEXP, SEXP overrideSEXP) {
 BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< CharacterVector >::type symbols(symbolsSEXP);
     Rcpp::traits::input_parameter< CharacterVector >::type names(namesSEXP);
     Rcpp::traits::input_parameter< xut_unit >::type unit(unitSEXP);
-    ud_install(symbols, names, unit);
-    return R_NilValue;
+    Rcpp::traits::input_parameter< bool >::type override(overrideSEXP);
+    rcpp_result_gen = Rcpp::wrap(ud_install(symbols, names, unit, override));
+    return rcpp_result_gen;
 END_RCPP
 }
 // ud_remove
-CharacterVector ud_remove(CharacterVector symbols, CharacterVector names);
+List ud_remove(CharacterVector symbols, CharacterVector names);
 RcppExport SEXP _units_ud_remove(SEXP symbolsSEXP, SEXP namesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -288,7 +290,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_units_R_ut_log", (DL_FUNC) &_units_R_ut_log, 2},
     {"_units_R_ut_parse", (DL_FUNC) &_units_R_ut_parse, 1},
     {"_units_R_ut_format", (DL_FUNC) &_units_R_ut_format, 4},
-    {"_units_ud_install", (DL_FUNC) &_units_ud_install, 3},
+    {"_units_ud_install", (DL_FUNC) &_units_ud_install, 4},
     {"_units_ud_remove", (DL_FUNC) &_units_ud_remove, 2},
     {NULL, NULL, 0}
 };

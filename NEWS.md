@@ -30,14 +30,24 @@
 * Fix spacing in `str()` output for `units` objects with R >= 4.7, where
   `str()` no longer starts with a blank; #450
 
-* Rework `install_unit()` and `remove_unit()`; #449 addressing #448:
+* Rework `install_unit()` and `remove_unit()`; #449, #452 addressing #448, #451:
   - an installation either succeeds as a whole or maps nothing;
   - symbols and names for units that already have one are installed as
     aliases, e.g., `install_unit("deg2", "1 degree")`;
+  - symbols and names that udunits already reads as a different unit are
+    refused, as they would otherwise silently redefine it (e.g., a name `"m"`,
+    or a symbol `"km"`) or never be reached (e.g., a symbol `"gal"`, which the
+    database name wins over), including names that only differ in case from a
+    symbol (e.g., `"KG"`), and so are ids that udunits does not read back as
+    the new unit (e.g., `"zz1"`);
+  - `NA`, empty, and invalid strings in the current locale are refused;
   - `remove_unit()` undoes only what `install_unit()` did, so it no longer
     strips the symbol or name of the unit an alias points to, and it leaves
     symbols and names from the database untouched with a warning;
-  - `NA`, empty, and invalid strings in the current locale are refused.
+  - new argument `override` to redefine symbols and names from the database
+    on purpose, e.g., `install_unit("gal", "1 gallon", override = TRUE)`; the
+    database mappings set aside are reported, and `remove_unit()` restores
+    them.
 
 # version 1.0-1
 
